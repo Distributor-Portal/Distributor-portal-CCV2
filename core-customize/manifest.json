@@ -18,14 +18,6 @@
             {
                 "location": "hybris/config/environments/local-dev.properties",
                 "persona": "development"
-            },
-            {
-                "location": "hybris/config/environments/local-stage.properties",
-                "persona": "staging"
-            },
-            {
-                "location": "hybris/config/environments/local-Prod.Properties",
-                "persona": "production"
             }
         ],
         "extensions": {
