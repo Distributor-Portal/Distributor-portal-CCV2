@@ -2,12 +2,13 @@
     "commerceSuiteVersion": "2005",
     "enableImageProcessingService": true,
     "extensions": [
-        "cloudmediaconversion",  
+        "cloudmediaconversion",
+		"addonsupport",		
         "mediaconversionbackoffice",
-        "energizerstorefront",
         "energizerfulfilmentprocess",
         "energizercore",
         "energizerfacades",
+		"energizerstorefront",
         "energizertest",
         "energizerinitialdata",
         "energizerbackoffice"
