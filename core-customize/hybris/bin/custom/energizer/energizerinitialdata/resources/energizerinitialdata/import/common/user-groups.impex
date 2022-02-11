@@ -1,0 +1,73 @@
+#
+# Import Customers
+# 
+$b2bgroup=b2bgroup
+$b2bcustomergroup=b2bcustomergroup
+$customergroup=customergroup
+$b2bviewergroup=b2bviewergroup
+$personalCare=personalCare
+$personalCareEMEA=personalCareEMEA
+
+$passwordEncoding=md5
+$defaultPassword=123456
+$setPassword=@password[translator=de.hybris.platform.impex.jalo.translators.ConvertPlaintextToEncodedUserPasswordTranslator][default='$passwordEncoding:$defaultPassword']
+
+
+INSERT_UPDATE B2BUnit;&CustID;uid[unique=true,allownull=true];groups(uid);active[allownull=true];reportingOrganization(uid);approvalProcessCode;Approvers(uid);Addresses(&addId);
+
+INSERT_UPDATE Address;&addId;owner(&CustID)[unique=true];streetname[unique=true];postalcode[unique=true];duplicate[unique=true];town;country(isocode);billingAddress;contactAddress;shippingAddress;unloadingAddress;firstname;lastname;email;gender(code);middlename;phone1;title(code);url;company;fax;department
+
+INSERT_UPDATE B2BCustomer;uid[unique=true,allownull=true];$setPassword;Approvers(uid);active[allownull=true];email[allownull=true];ldapaccount[allownull=true];loginDisabled[allownull=true];name;groups(uid);sessionCurrency(isocode);
+
+INSERT_UPDATE B2BBudget;Unit(uid)[allownull=true];active[allownull=true];budget;code[unique=true,allownull=true];currency(isocode)[allownull=true];dateRange[dateformat=dd.MM.yyyy hh:mm:ss,allownull=true];name[lang=es];name[lang=en];
+
+INSERT_UPDATE B2BCostCenter;Unit(uid)[allownull=true];active[allownull=true];code[unique=true,allownull=true];currency(isocode)[allownull=true];name[lang=es];name[lang=en];budgets(code);
+
+INSERT_UPDATE B2BBudgetExceededPermission;Unit(uid)[allownull=true];active[allownull=true];code[unique=true,allownull=true];
+
+INSERT_UPDATE B2BOrderThresholdPermission;Unit(uid)[allownull=true];active[allownull=true];code[unique=true,allownull=true];currency(isocode)[allownull=true];threshold[allownull=true];
+
+INSERT_UPDATE B2BOrderThresholdTimespanPermission;Unit(uid)[allownull=true];active[allownull=true];code[unique=true,allownull=true];currency(isocode)[allownull=true];range(code,itemtype(code))[allownull=true];threshold[allownull=true];
+
+# Create B2BUserGroups
+INSERT_UPDATE B2BUserGroup;Unit(uid)[allownull=true];uid[unique=true,allownull=true];members(uid);permissions(code)[collection-delimiter=|]
+
+# Add Permissions to B2BCustomer
+UPDATE B2BCUSTOMER;uid[unique=true];permissions(code)[collection-delimiter=|];
+
+
+# Create UserGroup
+INSERT_UPDATE UserGroup;UID[unique=true];locname[lang=es];locname[lang=en];description;groups(uid);readableLanguages(isocode);writeableLanguages(isocode);
+;$b2bviewergroup;B2B Viewer Group;B2B Viewer Group;B2B Viewer Group;b2bgroup;es,en;es,en;
+
+#Create Users
+
+INSERT_UPDATE Employee;UID[unique=true];$setPassword;description;name;groups(uid)[mode=append];sessionLanguage(isocode);sessionCurrency(isocode)
+;AccountManager;;AccountManager;Account Manager;employeegroup,acctmgrgroup;en;USD
+;CustomerService;;CustomerService;Customer Service;customerservicegroup,employeegroup;en;USD
+;CSAgentUser;;CSAgentUser;CSAgent User;csagentgroup,employeegroup;en;USD
+;CockpitUser;;CockpitUser;Cockpit User;cockpitgroup,employeegroup;en;USD
+;CMSManager;;CMSManager;CMS Manager;cmsmanagergroup,employeegroup;en;USD
+;ProductManager;;ProductManager;Product Manager;productmanagergroup,employeegroup;en;USD
+;SalesrepUser;;SalesrepUser;Sales Representative;salesrepgroup,employeegroup;en;USD
+;Customermanager;;CustomerManager;Customer Manager;customermanagergroup,employeegroup;en;USD
+
+
+###### Start | Two user group created for LATAM and EMEA site ###################### 
+INSERT_UPDATE UserGroup;uid[unique=true];locname[lang=es];locname[lang=en];
+;personalCare;personalCare LATAM;personalCare LATAM;
+;personalCareEMEA;personalCare EMEA;personalCare EMEA;
+
+###### End | Two user group created for LATAM and EMEA site ########################
+
+# Adding existing users to a specific usergroup
+INSERT_UPDATE EnergizerB2BCustomer;uid[unique=true];groups(uid)[mode=append]
+#;sreenivas.manikanta@emea-edgewell.com;personalCare
+#;ravikant.reddy@emea-edgewell.com;personalCare
+
+INSERT_UPDATE EnergizerB2BCustomer;uid[unique=true];groups(uid)[mode=append]
+#;siddu.sanka@edgewell.com;personalCare
+#;surendra.na@mindtree.com;personalCare
+#;siddaraju.nagappa@mindtree.com;personalCare
+#;erik.villa@edgewell.com;personalCare
+#;ankit.sahay@mindtree.com;personalCare

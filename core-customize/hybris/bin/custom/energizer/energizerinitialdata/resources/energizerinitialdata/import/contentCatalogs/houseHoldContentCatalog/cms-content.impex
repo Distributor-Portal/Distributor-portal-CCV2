@@ -1,0 +1,270 @@
+# ImpEx for Importing CMS Content
+
+# Macros / Replacement Parameter definitions
+$contentCatalog=houseHoldContentCatalog
+$productCatalog=houseHoldProductCatalog
+$storeName=houseHold
+
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default=Staged])[unique=true,default=$productCatalog:Staged]
+$siteResource=jar:com.energizer.initialdata.setup.InitialDataSystemSetup&/energizerinitialdata/import/contentCatalogs/$contentCatalog
+
+
+$picture=media(code, $contentCV)
+$lang=en
+
+
+
+
+# Content catalog for CMS contents
+INSERT_UPDATE ContentCatalog;id[unique=true];defaultCatalog
+;$contentCatalog;true
+
+
+# CMS Site Settings
+UPDATE CMSSite;uid[unique=true];defaultPreviewCategory(code, $productCV);defaultPreviewProduct(code, $productCV)
+
+
+
+# Site Logo
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText
+;;/images/theme/HHLogo.png;HHLogo.png;$siteResource/images/theme/HHLogo.png;image/png;Energizer
+
+
+# Site Logo Component
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink;$picture[lang=$lang]
+;;SiteLogoComponent;Site Logo Component;SiteLogoComponent;/;/images/theme/HHLogo.png
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&componentRef;target(code)[default='sameWindow']
+;;HomepageNavLink;Home Page Nav Link;/;HomepageNavLink
+;;Energizer_Batteries_Link;Energizer Batteries Link;c/Energizer Batteries;Energizer_Batteries_Link
+;;Eveready_Batteries_Link;Eveready Batteries Link;c/Eveready Batteries;Eveready_Batteries_Link
+;;Lighting_Products_Link;Lighting Products Link;c/Lighting Products;Lighting_Products_Link
+;;Rechargeable_Link;Rechargeable Link;c/Rechargeable;Rechargeable_Link
+;;Specialty_Batteries_Link;Specialty Batteries Link;c/Specialty Batteries;Specialty_Batteries_Link
+;;Energizer_Max_Link;Energizer Max Link;c/Energizer Batteries-Energizer Max;Energizer_Max_Link
+;;Advanced_Lithium_Link;Advanced Lithium Link;c/Energizer Batteries-Advanced Lithium;Advanced_Lithium_Link
+;;Ultimate_Lithium_Link;Ultimate Lithium Link;c/Energizer Batteries-Ultimate Lithium;Ultimate_Lithium_Link
+;;Eco_Advanced_Link;Eco Advanced Link;c/Energizer Batteries-Eco Advanced;Eco_Advanced_Link
+;;Extra_Duration_Link;Extra Duration Link;c/Eveready Batteries-Extra Duration & Super Heavy Duty;Extra_Duration_Link
+;;Eveready_Gold_Link;Eveready Gold Link;c/Eveready Batteries-Eveready Gold;Eveready_Gold_Link
+;;Heavy_Duty_Link;Heavy Duty Link;c/Eveready Batteries-Heavy Duty;Heavy_Duty_Link
+;;General_Purpose_Link;General Purpose Link;c/Eveready Batteries-General Purpose;General_Purpose_Link
+;;Eveready_Silver_Link;Eveready Silver Link;c/Eveready Batteries-Eveready Silver;Eveready_Silver_Link
+;;Nightlights_Link;Nightlights Link;c/Lighting Products-Nightlights;Nightlights_Link
+;;Handsfree_Lights_Link;Handsfree Lights Link;c/Lighting Products-Handsfree Lights;Handsfree_Lights_Link
+;;Kids_Lights_Link;Kids Lights Link;c/Lighting Products-Kids Lights;Kids_Lights_Link
+;;Handheld_Lights_Link;Handheld Lights Link;c/Lighting Products-Handheld Lights;Handheld_Lights_Link
+;;Area_Lights_Link;Area Lights Link;c/Lighting Products-Area Lights;Area_Lights_Link
+;;Spot_Lights_Link;Spot Lights Link;c/Lighting Products-Spot Lights;Spot_Lights_Link
+;;Chargers_Link;Chargers Link;c/Rechargeable-Chargers;Chargers_Link
+;;Batteries_Link;Batteries Link;c/Rechargeable-Batteries;Batteries_Link
+;;Electronic_Batteries_Link;Electronic Batteries Link;c/Specialty Batteries-Electronic Batteries;Electronic_Batteries_Link
+;;Photo_Batteries_Link;Photo Batteries Link;c/Specialty Batteries-Photo Batteries;Photo_Batteries_Link
+;;Watch_Batteries_Link;Watch Batteries Link;c/Specialty Batteries-Watch Batteries;Watch_Batteries_Link
+;;Hearing_Aid_Batteries_Link;Hearing Aid Batteries Link;c/Specialty Batteries-Hearing Aid Batteries;Hearing_Aid_Batteries_Link
+
+
+# CMS Navigation Nodes #
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;children(uid,$contentCV)[mode=append]
+;root;;root;;
+
+INSERT_UPDATE NavigationBarComponent;$contentCV[unique=true];uid[unique=true];name;wrapAfter;link(uid, $contentCV);styleClass;navigationNode(&nodeRef);dropDownLayout(code)[default=AUTO];&componentRef
+;;Energizer_Batteries_Bar_Component;Energizer Batteries Bar Component;10;Energizer_Batteries_Link;;Energizer_Batteries_Nav_Node;;Energizer_Batteries_Bar_Component
+;;Eveready_Batteries_Bar_Component;Eveready Batteries Bar Component;10;Eveready_Batteries_Link;;Eveready_Batteries_Nav_Node;;Eveready_Batteries_Bar_Component
+;;Lighting_Products_Bar_Component;Lighting Products Bar Component;10;Lighting_Products_Link;;Lighting_Products_Nav_Node;;Lighting_Products_Bar_Component
+;;Rechargeable_Bar_Component;Rechargeable Bar Component;10;Rechargeable_Link;;Rechargeable_Nav_Node;;Rechargeable_Bar_Component
+;;Specialty_Batteries_Bar_Component;Specialty Batteries Bar Component;10;Specialty_Batteries_Link;;Specialty_Batteries_Nav_Node;;Specialty_Batteries_Bar_Component
+
+
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);children(uid,$contentCV)[mode=append];links(&componentRef);&nodeRef
+;SiteRootNode;;SiteRootNode;root;;HomepageNavLink;SiteRootNode
+;Energizer_Batteries_Nav_Node;;Energizer Batteries;SiteRootNode; ; ;Energizer_Batteries_Nav_Node
+;Eveready_Batteries_Nav_Node;;Eveready Batteries;SiteRootNode; ; ;Eveready_Batteries_Nav_Node
+;Lighting_Products_Nav_Node;;Lighting Products;SiteRootNode; ; ;Lighting_Products_Nav_Node
+;Rechargeable_Nav_Node;;Rechargeable;SiteRootNode; ; ;Rechargeable_Nav_Node
+;Specialty_Batteries_Nav_Node;;Specialty_Batteries;SiteRootNode; ; ;Specialty_Batteries_Nav_Node
+;Advanced_Lithium_Nav_Node;;Advanced Lithium;Energizer_Batteries_Nav_Node; ;Advanced_Lithium_Link;Advanced_Lithium_Nav_Node
+;Eco_Advanced_Nav_Node;;Eco Advanced;Energizer_Batteries_Nav_Node; ;Eco_Advanced_Link;Eco_Advanced_Nav_Node
+;Energizer_Max_Nav_Node;;Energizer Max;Energizer_Batteries_Nav_Node; ;Energizer_Max_Link;Energizer_Max_Nav_Node
+;Ultimate_Lithium_Nav_Node;;Ultimate Lithium;Energizer_Batteries_Nav_Node; ;Ultimate_Lithium_Link;Ultimate_Lithium_Nav_Node
+;Eveready_Gold_Nav_Node;;Eveready Gold;Eveready_Batteries_Nav_Node; ;Eveready_Gold_Link;Eveready_Gold_Nav_Node
+;Eveready_Silver_Nav_Node;;Eveready Silver;Eveready_Batteries_Nav_Node; ;Eveready_Silver_Link;Eveready_Silver_Nav_Node
+;Extra_Duration_Nav_Node;;Extra Duration;Eveready_Batteries_Nav_Node; ;Extra_Duration_Link;Extra_Duration_Nav_Node
+;General_Purpose_Nav_Node;;General Purpose;Eveready_Batteries_Nav_Node; ;General_Purpose_Link;General_Purpose_Nav_Node
+;Heavy_Duty_Nav_Node;;Heavy Duty;Eveready_Batteries_Nav_Node; ;Heavy_Duty_Link;Heavy_Duty_Nav_Node
+;Area_Lights_Nav_Node;;Area Lights;Lighting_Products_Nav_Node; ;Area_Lights_Link;Area_Lights_Nav_Node
+;Handheld_Lights_Nav_Node;;Handheld Lights;Lighting_Products_Nav_Node; ;Handheld_Lights_Link;Handheld_Lights_Nav_Node
+;Handsfree_Lights_Nav_Node;;Handsfree Lights;Lighting_Products_Nav_Node; ;Handsfree_Lights_Link;Handsfree_Lights_Nav_Node
+;Kids_Lights_Nav_Node;;Kids Lights;Lighting_Products_Nav_Node; ;Kids_Lights_Link;Kids_Lights_Nav_Node
+;Nightlights_Nav_Node;;Nightlights;Lighting_Products_Nav_Node; ;Nightlights_Link;Nightlights_Nav_Node
+;Spot_Lights_Nav_Node;;Spot Lights;Lighting_Products_Nav_Node; ;Spot_Lights_Link;Spot_Lights_Nav_Node
+;Batteries_Nav_Node;;Batteries;Rechargeable_Nav_Node; ;Batteries_Link;Batteries_Nav_Node
+;Chargers_Nav_Node;;Chargers;Rechargeable_Nav_Node; ;Chargers_Link;Chargers_Nav_Node
+;Electronic_Batteries_Nav_Node;;Electronic Batteries;Specialty_Batteries_Nav_Node; ;Electronic_Batteries_Link;Electronic_Batteries_Nav_Node
+;Hearing_Aid_Batteries_Nav_Node;;Hearing Aid Batteries;Specialty_Batteries_Nav_Node; ;Hearing_Aid_Batteries_Link;Hearing_Aid_Batteries_Nav_Node
+;Photo_Batteries_Nav_Node;;Photo Batteries;Specialty_Batteries_Nav_Node; ;Photo_Batteries_Link;Photo_Batteries_Nav_Node
+;Watch_Batteries_Nav_Node;;Watch Batteries;Specialty_Batteries_Nav_Node; ;Watch_Batteries_Link;Watch_Batteries_Nav_Node
+
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow']
+;;UserLoginLink;User Login Link;/login;UserLoginLink;UserLoginLink
+;;MyAccountLink;My Account Link;/my-account;MyAccountLink;MyAccountLink
+;;MyCompanyLink;My Company Link;/my-company/organization-management;MyCompanyLink;MyCompanyLink
+;;LogoutLink;Logout Link;/logout;LogoutLink;LogoutLink
+#;;StoreFinderLink;Store Finder Link;/store-finder;StoreFinderLink;StoreFinderLink
+;;QuickOrderPageLink;Quick Order;/my-account/quickorder;QuickOrderPageLink;QuickOrderPageLink
+;;ExcelOrderPageLink;Excel Order;/my-account/excelfileupload;ExcelOrderPageLink;ExcelOrderPageLink
+
+INSERT_UPDATE CMSUserGroupRestriction;$contentCV[unique=true];uid[unique=true];name;userGroups(uid);includeSubgroups;components(&componentRef)
+;;CustomerGroupRestriction;Customer Group Restriction;b2bcustomergroup,b2badmingroup;true;MyAccountLink
+;;AdminGroupRestriction;Admin Group Restriction;b2badmingroup;true;MyCompanyLink
+;;ApproverGroupRestriction;Approver Group Restriction;b2bapprovergroup;true;MyAccountLink
+;;ViewerGroupRestriction;Viewer Group Restriction;b2bviewergroup;true;MyAccountLink
+
+# CMS User Restrictions
+INSERT_UPDATE CMSUserRestriction;$contentCV[unique=true];uid[unique=true];name;users(uid);components(&componentRef);&componentRef
+;;AnonymousUserRestriction;Anonymous User Restriction;anonymous;UserLoginLink;AnonymousUserRestriction
+
+INSERT_UPDATE CMSInverseRestriction;$contentCV[unique=true];uid[unique=true];name;originalRestriction(&componentRef);components(&componentRef)
+;;LoggedInRestriction;Logged In Restriction;AnonymousUserRestriction;LogoutLink
+
+
+# CMS User Group Restrictions
+UPDATE CMSUserGroupRestriction;$contentCV[unique=true];uid[unique=true];components(uid,$contentCV)[mode=append]
+;;CustomerGroupRestriction;QuickOrderPageLink,ExcelOrderPageLink
+
+# CMS Navigation Nodes - Header
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);links(&linkRef);&nodeRef
+;HeaderLinksNode;;Header Links;SiteRootNode;UserLoginLink,MyAccountLink,MyCompanyLink,QuickOrderPageLink,ExcelOrderPageLink,LogoutLink;HeaderLinksNode
+
+# Header Navigation Component - Header
+INSERT_UPDATE HeaderNavigationComponent;$contentCV[unique=true];uid[unique=true];name;wrapAfter;link(uid, $contentCV);styleClass;navigationNode(&nodeRef);dropDownLayout(code)[default=AUTO];&componentRef
+;;DefaultHeaderNavigationComponent;Header Navigation Component;0;HomepageNavLink;;HeaderLinksNode;;DefaultHeaderNavigationComponent
+
+
+
+# CMS Mini Cart Component
+INSERT_UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;totalDisplay(code);shownProductCount;lightboxBannerComponent(&componentRef)
+;;MiniCart;Mini Cart;MiniCart;TOTAL;4
+
+
+# CMS SearchBox Components
+INSERT_UPDATE SearchBoxComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;SearchBox;Search Box;SearchBox
+
+# CMS Language and Currency Component
+INSERT_UPDATE LanguageCurrencyComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;LangCurrencyComponent;Language and Currency Component;LangCurrencyComponent
+
+
+
+# Site Logo
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText
+;;/images/banners/homepage/ENR_Battery.jpg;ENR_Battery.jpg;$siteResource/images/banners/homepage/ENR_Battery.jpg;image/jpg;Energizer AA
+;;/images/banners/homepage/ENR_Lights.jpg;ENR_Lights.jpg;$siteResource/images/banners/homepage/ENR_Lights.jpg;image/jpg;Energizer Portable Lighting
+;;/images/banners/homepage/EVR_Battery.jpg;EVR_Battery.jpg;$siteResource/images/banners/homepage/EVR_Battery.jpg;image/jpg;Eveready Non-Rechargeable
+;;/images/banners/homepage/EVR_Lights.jpg;EVR_Lights.jpg;$siteResource/images/banners/homepage/EVR_Lights.jpg;image/jpg;Eveready Portable Lighting
+
+
+# Site Logo Component
+INSERT_UPDATE BannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink;$picture[lang=$lang];external
+;;HomePageBannerComponent11;Homepage banner component11;HomePageBannerComponent11;c/Energizer Batteries;/images/banners/homepage/ENR_Battery.jpg;true
+;;HomePageBannerComponent22;Homepage banner component22;HomePageBannerComponent22;c/Lighting Products;/images/banners/homepage/ENR_Lights.jpg;true
+;;HomePageBannerComponent33;Homepage banner component33;HomePageBannerComponent33;c/Eveready Batteries;/images/banners/homepage/EVR_Battery.jpg;true
+;;HomePageBannerComponent44;Homepage banner component44;HomePageBannerComponent44;c/Lighting Products;/images/banners/homepage/EVR_Lights.jpg;true
+
+
+
+
+INSERT_UPDATE RotatingImagesComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;banners(&componentRef)
+;;rotatingbanner;rotatingbanner;rotatingbanner;HomePageBannerComponent11,HomePageBannerComponent22,HomePageBannerComponent33,HomePageBannerComponent44
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;Section1Slot-EnergizerHomePageBanner;rotatingbanner
+
+
+# ContentSlotForPage 
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true];;;
+;;Section1-EnergizerHomePageBanner;Section1;;Section1Slot-EnergizerHomePageBanner;;;
+
+
+
+# Content Slots
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;SiteLogoSlot;SiteLogoComponent
+;;NavigationBarSlot;Energizer_Batteries_Bar_Component,Eveready_Batteries_Bar_Component,Lighting_Products_Bar_Component,Rechargeable_Bar_Component,Specialty_Batteries_Bar_Component
+;;HeaderLinksSlot;DefaultHeaderNavigationComponent
+;;SearchBoxSlot;SearchBox,LangCurrencyComponent
+;;MiniCartSlot;MiniCart
+
+#add to cart component to PDP
+# CMS Action Restrictions
+INSERT_UPDATE CMSActionRestriction;$contentCV[unique=true];uid[unique=true];name;
+;;ActionRestriction;A CMSAction restriction;
+
+# CMS ProductAddToCart Components
+INSERT_UPDATE ProductAddToCartComponent;$contentCV[unique=true];uid[unique=true];name;actions(&actionRef);&componentRef
+;;AddToCart;Product Add To Cart;AddToCartAction;AddToCart
+
+# CMS AddToCart Action
+INSERT_UPDATE AddToCartAction;$contentCV[unique=true];uid[unique=true];url;name;restrictions(uid,$contentCV);&actionRef
+;;AddToCartAction;/cart/add;Product Add To Cart Action;ActionRestriction;AddToCartAction
+
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(uid,$contentCV)
+;;AddToCartSlot;AddToCart
+
+# CMS Mini Cart Component
+INSERT_UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;totalDisplay(code);shownProductCount;lightboxBannerComponent(&componentRef);restrictions(uid,$contentCV)
+;;MiniCart;Mini Cart;MiniCart;TOTAL;3;;CustomerGroupRestriction
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ProductDetailsPageTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;AddToCart-ProductDetails;AddToCart;;AddToCartSlot;true
+
+# Footer Component
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&componentRef;target(code)[default='sameWindow']
+;;AboutUSLink;About US Link;"http://www.energizerholdings.com/en/company/about-us/Pages/default.aspx";AboutUSLink;newWindow
+#;;CopyRightLink;CopyRight Link;"";CopyRightLink;sameWindow
+#;;TrademarkLink;Trademark Link;"http://www.energizerholdings.com/en/pages/legal.aspx";TrademarkLink;sameWindow
+;;TermsAndConditionsLink;Terms And Conditions Link;"http://www.energizerholdings.com/en/pages/legal.aspx";TermsAndConditionsLink;newWindow
+;;PrivacyPolicyLink;Privacy Policy Link;"http://www.energizerholdings.com/en/pages/privacypolicy.aspx";PrivacyPolicyLink;newWindow
+;;ContactUSLink;Contact US Link;"http://www.energizerholdings.com/en/pages/contactus.aspx";ContactUSLink;newWindow
+;;LegalLink;Legal Link;"http://www.energizerholdings.com/en/pages/legal.aspx";LegalLink;newWindow
+;;FAQLink;FAQ Link;"http://www.energizerholdings.com/en/pages/legal.aspx";FAQLink;newWindow
+
+#INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];mime;realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite=true];folder(qualifier)[default='images'];;
+#;;frequentlyAskedQuestionsPage;text/png;;;;;
+
+# Simple Content Pages
+#UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];previewImage(code, $contentCV);linkComponents(uid, $contentCV);;;;;
+#;;faq;frequentlyAskedQuestionsPage;FAQLink;;;;;
+
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);links(&componentRef);&nodeRef
+;SiteRootNode;;SiteRootNode;root;;SiteRootNode;EnergizerNavNode;;Energizer Site;SiteRootNode;;EnergizerNavNode
+;FooterNavNode;;Footer Nav Node;EnergizerNavNode;AboutUSLink,TermsAndConditionsLink,PrivacyPolicyLink,ContactUSLink,LegalLink,FAQLink;FooterNavNode
+
+INSERT_UPDATE FooterComponent;$contentCV[unique=true];uid[unique=true];wrapAfter;navigationNodes(&nodeRef);&componentRef
+;;FooterComponent;2;FooterNavNode;FooterComponent
+
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang];&componentRef
+;;FooterParagraphComponent;"<br/>&copy;2015 Energizer &nbsp;&nbsp;&nbsp;Trademark:Energizer and certain graphic designs are trademarks of Energizer";FooterParagraphComponent
+;;EmptyCartMessageParagraphComponent;"<h2>You have no items in your Cart.</h2>";EmptyCartMessageParagraphComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;FooterSlot;FooterComponent,FooterParagraphComponent
+;;EmptyCartMessageParagraphComponentSlot;EmptyCartMessageParagraphComponent
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='CartPageTemplate'];contentSlot(uid,$contentCV)[unique=true]
+;;MiddleContent-CartPageSlot;MiddleContent;;EmptyCartMessageParagraphComponentSlot
+
+
+
+#removing the search text box from the login page as suggested in the observations
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;LoginPage_SearchBoxSlot;LangCurrencyComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position;contentSlot(uid,$contentCV)[unique=true];page(uid,$contentCV)
+;;SearchBox-LoginPage1;SearchBox;LoginPage_SearchBoxSlot;login
+

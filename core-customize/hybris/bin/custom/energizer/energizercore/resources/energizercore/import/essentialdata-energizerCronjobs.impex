@@ -1,0 +1,299 @@
+#importing EnergizerCronjobs for csv feeds
+# Import config properties into impex macros
+
+$productCatalog=personalCareProductCatalog
+$productCatalogEMEA=personalCareEMEAProductCatalog
+UPDATE GenericItem[processor=de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor];pk[unique=true]
+
+$usdCurrency=USD
+$eurCurrency=EUR
+$interfaceTypeEnergizerCustomer = $config-interfaceType_EnergizerCustomer
+$interfaceTypeSalesArea=$config-interfaceType_SalesArea
+$interfaceTypeB2BUser =$config-interfaceType_B2BUser
+$interfaceTypeProductMedia =$config-interfaceType_ProductMedia
+$interfaceTypeCustomerAddress =$config-interfaceType_CustomerAddress
+$interfaceTypeProduct =$config-interfaceType_Product
+$interfaceTypeConversion =$config-interfaceType_Conversion
+$interfaceTypeCMIR =$config-interfaceType_CMIR
+$interfaceTypeLeadTime = $config-interfaceType_LeadTime
+$interfaceTypeEnergizerOfflineOrder = $config-interfaceType_EnergizerOfflineOrder
+$interfaceTypeEnergizerOrderUpdate = $config-interfaceType_EnergizerOrderUpdate
+$interfaceTypeProductCategory = $config-interfaceType_EnergizerProductCategory
+$interfaceTypePasswordExpiry = $config-interfaceType_EnergizerPasswordExpiry
+$sharedFolderPath=$config-sharedFolderPath
+
+$technicalEmailAddressLATAM=$config-technical_EmailAddress_personalCare
+$businessEmailAddressLATAM=$config-business_EmailAddress_personalCare
+$emailAddress=$config-email_Address
+
+$technicalEmailAddressEMEA=$config-technical_EmailAddress_personalCareEMEA
+$businessEmailAddressEMEA=$config-business_EmailAddress_personalCareEMEA
+$orderStuckEmailAddress=$config-order.stuck.mail.to
+#Added property file for WeSell Implementation - START
+$interfaceTypeEnergizerB2BEmployee = $config-interfaceType_EnergizerB2BEmployee
+$interfaceTypeEnergizerShipment=$config-interfaceType_EnergizerShipment
+
+$wesellRegion=$config-region.wesell
+$latamRegion=$config-region.latam
+$emeaRegion=$config-region.emea
+
+#Added property file for WeSell Implementation - END
+
+# REGION SPECIFIC MASTER DATA CRONJOBS REMOVE SCRIPT
+REMOVE EnergizerCronJob;code[unique=true];
+#LATAM Cronjobs
+;energizerCustomerCSVProcessor;
+;energizerSalesUOMCSVProcessor;
+;energizerB2BUserCSVProcessor;
+;energizerProductMediaJob;
+;energizerCustomerAddressCSVProcessor;
+;energizerProductCSVProcessor;
+;energizerProductConversionCSVProcessor;
+;energizerCMIRCSVProcessor;
+;energizerLeadTimeCSVProcessor;
+;energizerOfflineOrderCSVProcessor;
+;energizerOrderUpdateCSVProcessor;
+;energizerProductNameCSVProcessor;
+;energizerCategory2CategoryCSVProcessor;
+;energizerProduct2CategoryCSVProcessor;
+;energizerProductHierarchyCSVProcessor;
+;energizerOrphanedProductsCronJob;
+;energizerPasswordExpiryJob;
+;energizerCMIRMonitorCronJob;
+;energizerOrderStuckCronJob;
+;energizerCronJobsStatusJob
+#;energizerB2BEmployeeCSVProcessor;
+;energizerShipmentCSVProcessor;
+;energizerCMIRCleanUpCronJob;
+;energizerPriceRowCleanUpCronJob;
+
+#EMEA Cronjobs
+;energizerCustomerEMEACSVProcessor;
+;energizerSalesUOMEMEACSVProcessor;
+;energizerB2BUserEMEACSVProcessor;
+;energizerCustomerAddressEMEACSVProcessor;
+;energizerProductEMEACSVProcessor;
+;energizerProductConversionEMEACSVProcessor;
+;energizerCMIREMEACSVProcessor;
+;energizerLeadTimeEMEACSVProcessor;
+;energizerOfflineOrderEMEACSVProcessor;
+;energizerOrderUpdateEMEACSVProcessor;
+;energizerProductNameEMEACSVProcessor;
+;energizerCategory2CategoryEMEACSVProcessor;
+;energizerProduct2CategoryEMEACSVProcessor;
+;energizerProductHierarchyEMEACSVProcessor;
+;energizerOrphanedProductsEMEACronJob;
+;energizerPasswordExpiryEMEAJob;
+;energizerCMIRMonitorEMEACronJob;
+;energizerProductMediaEMEAJob;
+;energizerOrderStuckEMEACronJob;
+;energizerShipmentEMEACSVProcessor;
+
+#WESELL Cronjobs
+;energizerCustomerWESELLCSVProcessor;
+;energizerSalesUOMWESELLCSVProcessor;
+;energizerB2BUserWESELLCSVProcessor;
+;energizerCustomerAddressWESELLCSVProcessor;
+;energizerProductWESELLCSVProcessor;
+;energizerProductConversionWESELLCSVProcessor;
+;energizerCMIRWESELLCSVProcessor;
+;energizerLeadTimeWESELLCSVProcessor;
+;energizerOfflineOrderWESELLCSVProcessor;
+;energizerOrderUpdateWESELLCSVProcessor;
+;energizerProductNameWESELLCSVProcessor;
+;energizerCategory2CategoryWESELLCSVProcessor;
+;energizerProduct2CategoryWESELLCSVProcessor;
+;energizerProductHierarchyWESELLCSVProcessor;
+;energizerOrphanedProductsWESELLCronJob;
+;energizerPasswordExpiryWESELLJob;
+;energizerCMIRMonitorWESELLCronJob;
+;energizerProductMediaWESELLJob;
+;energizerOrderStuckWESELLCronJob;
+;energizerB2BEmployeeCSVProcessor;
+;energizerShipmentWESELLCSVProcessor;
+
+#Creation of LATAM specific cronjobs
+INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sessionLanguage(isoCode);type;displayName;emailAddress;technicalEmailAddress;businessEmailAddress;sendEmail[default=false];sessionCurrency(isoCode)[default=$usdCurrency];catalogName[default=$productCatalog];catalogVersion[default=Online];path[default=$sharedFolderPath\LATAM];region[default=$latamRegion]
+;energizerCustomerCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerCustomer;Customer Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerSalesUOMCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeSalesArea;Sales UOM Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerB2BUserCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeB2BUser;B2B User Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerProductMediaJob;energizerProductMediaCSVProcessor;en;energizerProductMediaCSVProcessor;Product Media Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerCustomerAddressCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeCustomerAddress;Customer Address Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerProductCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeProduct;Product Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerProductConversionCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeConversion;Product Conversion Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerCMIRCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeCMIR;Product CMIR Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerLeadTimeCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeLeadTime;Lead Time Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerOfflineOrderCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerOfflineOrder;Offline Order Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerOrderUpdateCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerOrderUpdate;Order Update Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerProductNameCSVProcessor;energizerCSVFeedCronJob;en;energizerProductNameCSVProcessor;Product Name Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerCategory2CategoryCSVProcessor;energizerCSVFeedCronJob;en;energizerCategory2CategoryRelationCSVProcessor;Category2Category Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerProduct2CategoryCSVProcessor;energizerCSVFeedCronJob;en;energizerProduct2CategoryCSVProcessor;Product2Category Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerProductHierarchyCSVProcessor;energizerCSVFeedCronJob;en;energizerProductHierarchyCSVProcessor;Product Hierarchy Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerOrphanedProductsCronJob;energizerOrphanedProductsJob;en;;Orphaned Products Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerPasswordExpiryJob;energizerPasswordExpiryJob;en;energizerPasswordExpiryJob;Password Expiry Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerCMIRMonitorCronJob;energizerCMIRMonitorJob;en;;CMIR Monitor Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerOrderStuckCronJob;energizerOrderStuckJob;en;;Order Stuck Job;$orderStuckEmailAddress;$orderStuckEmailAddress;$orderStuckEmailAddress;;;
+;energizerCronJobsStatusJob;energizerCronJobsStatusJob;en;;CronJob Status Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerShipmentCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerShipment;Shipment Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerCMIRCleanUpCronJob;energizerCMIRCleanUpJob;en;;CMIR Clean Up Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerPriceRowCleanUpCronJob;energizerPriceRowCleanUpJob;en;;Price Row Clean Up Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+
+#Creation of EMEA specific cronjobs
+INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sessionLanguage(isoCode);type;displayName;emailAddress;technicalEmailAddress;businessEmailAddress;sendEmail[default=false];sessionCurrency(isoCode)[default=$eurCurrency];catalogName[default=$productCatalogEMEA];catalogVersion[default=Online];path[default=$sharedFolderPath\EMEA];region[default=$emeaRegion]
+;energizerCustomerEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerCustomer;Customer Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerSalesUOMEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeSalesArea;Sales UOM Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerB2BUserEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeB2BUser;B2B User Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerProductMediaEMEAJob;energizerProductMediaCSVProcessor;en;energizerProductMediaCSVProcessor;Product Media EMEA Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerCustomerAddressEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeCustomerAddress;Customer Address Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerProductEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeProduct;Product Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerProductConversionEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeConversion;Product Conversion Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerCMIREMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeCMIR;Product CMIR Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerLeadTimeEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeLeadTime;Lead Time Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerOfflineOrderEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerOfflineOrder;Offline Order Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerOrderUpdateEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerOrderUpdate;Order Update Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerProductNameEMEACSVProcessor;energizerCSVFeedCronJob;en;energizerProductNameCSVProcessor;Product Name Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerCategory2CategoryEMEACSVProcessor;energizerCSVFeedCronJob;en;energizerCategory2CategoryRelationCSVProcessor;Category2Category Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerProduct2CategoryEMEACSVProcessor;energizerCSVFeedCronJob;en;energizerProduct2CategoryCSVProcessor;Product2Category Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerProductHierarchyEMEACSVProcessor;energizerCSVFeedCronJob;en;energizerProductHierarchyCSVProcessor;Product Hierarchy Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerOrphanedProductsEMEACronJob;energizerOrphanedProductsJob;en;;Orphaned Products Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerPasswordExpiryEMEAJob;energizerPasswordExpiryJob;en;energizerPasswordExpiryJob;Password Expiry Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerCMIRMonitorEMEACronJob;energizerCMIRMonitorJob;en;;CMIR Monitor EMEA Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+;energizerOrderStuckEMEACronJob;energizerOrderStuckJob;en;;Order Stuck EMEA Job;$orderStuckEmailAddress;$orderStuckEmailAddress;$orderStuckEmailAddress;;;
+;energizerShipmentEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerShipment;Shipment Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
+#EMEA End-----
+
+#Creation of WESELL specific cronjobs
+INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sessionLanguage(isoCode);type;displayName;emailAddress;technicalEmailAddress;businessEmailAddress;sendEmail[default=false];sessionCurrency(isoCode)[default=$usdCurrency];catalogName[default=$productCatalog];catalogVersion[default=Online];path[default=$sharedFolderPath\WESELL];region[default=$wesellRegion]
+;energizerCustomerWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerCustomer;Customer Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerSalesUOMWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeSalesArea;Sales UOM Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerB2BUserWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeB2BUser;B2B User Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+#;energizerProductMediaWESELLJob;energizerProductMediaCSVProcessor;en;energizerProductMediaCSVProcessor;Product Media Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerCustomerAddressWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeCustomerAddress;Customer Address Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerProductWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeProduct;Product Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerProductConversionWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeConversion;Product Conversion Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerCMIRWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeCMIR;Product CMIR Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerLeadTimeWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeLeadTime;Lead Time Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerOfflineOrderWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerOfflineOrder;Offline Order Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerOrderUpdateWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerOrderUpdate;Order Update Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerProductNameWESELLCSVProcessor;energizerCSVFeedCronJob;en;energizerProductNameCSVProcessor;Product Name Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerCategory2CategoryWESELLCSVProcessor;energizerCSVFeedCronJob;en;energizerCategory2CategoryRelationCSVProcessor;Category2Category Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerProduct2CategoryWESELLCSVProcessor;energizerCSVFeedCronJob;en;energizerProduct2CategoryCSVProcessor;Product2Category Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerProductHierarchyWESELLCSVProcessor;energizerCSVFeedCronJob;en;energizerProductHierarchyCSVProcessor;Product Hierarchy Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerOrphanedProductsWESELLCronJob;energizerOrphanedProductsJob;en;;Orphaned Products Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerPasswordExpiryWESELLJob;energizerPasswordExpiryJob;en;energizerPasswordExpiryJob;Password Expiry Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerCMIRMonitorWESELLCronJob;energizerCMIRMonitorJob;en;;CMIR Monitor Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerOrderStuckWESELLCronJob;energizerOrderStuckJob;en;;Order Stuck Job;$orderStuckEmailAddress;$orderStuckEmailAddress;$orderStuckEmailAddress;;;
+;energizerB2BEmployeeCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerB2BEmployee;EnergizerB2BEmployee Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+;energizerShipmentWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerShipment;Shipment Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
+#WESELL End -----
+
+# COMMON SUPPORT CRONJOBS REMOVE SCRIPT
+REMOVE CronJob;code[unique=true];
+;energizerCustomerUsersListCronJob;
+;energizerCustomerUsersListEMEACronJob;
+;userManagementSendEMailCronJob;
+;userManagementSendEMailEMEACronJob;
+;userManagementSendEmailWESELLCronJob;
+;energizerOrderReprocessCronjob;
+
+INSERT_UPDATE CronJob;code[unique=true];job(code)[forceWrite=true];sessionLanguage(isoCode);emailAddress;sendEmail[default=false];sessionCurrency(isoCode)
+;energizerCustomerUsersListCronJob;energizerCustomerUsersListJob;en;$emailAddress;;$usdCurrency;
+;energizerCustomerUsersListEMEACronJob;energizerCustomerUsersListJob;en;$emailAddress;;$eurCurrency;
+
+#--------------------------------------------------------------------------------------------------------------
+#				This is to send a email notification or registration email to B2BUnit Admin user     #
+#--------------------------------------------------------------------------------------------------------------
+
+#INSERT_UPDATE CronJob; code[unique=true];job(code);singleExecutable;sessionLanguage(isocode);sendEmail[default=false];sessionCurrency(isoCode);
+#;userManagementSendEMailCronJob;userManagementSendEMailJob;false;en;;USD;
+#;userManagementSendEMailEMEACronJob;userManagementSendEMailJob;false;en;;EUR;
+
+INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];displayName;sessionLanguage(isoCode);emailAddress;sendEmail[default=false];sessionCurrency(isoCode);userType;region
+;userManagementSendEMailCronJob;userManagementSendEMailJob;User Management Send Email Cronjob;en;;;USD;customer;$latamRegion
+;userManagementSendEMailEMEACronJob;userManagementSendEMailJob;User Management Send Email EMEA Cronjob;en;;;EUR;customer;$emeaRegion
+;userManagementSendEmailWESELLCronJob;userManagementSendEMailJob;User Management Send Email WESELL Cronjob;en;$emailAddress;;$usdCurrency;employee;$wesellRegion
+
+INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sessionLanguage(isoCode);emailAddress;sendEmail[default=false];sessionCurrency(isoCode);region
+;energizerOrderReprocessCronjob;energizerOrderReprocessJob;en;;;USD;$latamRegion
+
+#------------------------------------------------------------------
+# This is the trigger schedule for all the Cronjobs
+#------------------------------------------------------------------
+
+#FINAL RECOMMENDED SCHEDULE AS ON 09 DEC 2020 (ALL CRONJOBS IN THEIR ORDER OF EXECUTION)
+INSERT_UPDATE Trigger;cronjob(code)[unique=true];cronExpression
+#EMEA Cronjobs
+	#DAILY CSV FEED
+;energizerProductEMEACSVProcessor;0 0 14 ? * *
+;energizerProductNameEMEACSVProcessor;0 10 14 ? * *
+;energizerProductConversionEMEACSVProcessor;0 20 14 ? * *
+;energizerCMIRMonitorEMEACronJob;0 30 14 ? * *
+;energizerCMIREMEACSVProcessor;0 50 14 ? * *
+;energizerOrderUpdateEMEACSVProcessor;0 10 15 ? * *
+	#APPLICATION SUPPORT
+;energizerPasswordExpiryEMEAJob;0 0 9 ? * *
+;energizerOrderStuckEMEACronJob;0 5 9 ? * *
+;energizerOrphanedProductsEMEACronJob;0 10 9 ? * *
+;userManagementSendEMailEMEACronJob;0 0/6 * * * ?
+	#MANUAL CSV FILE
+;energizerCustomerEMEACSVProcessor;0 0 10 ? * *
+;energizerCustomerAddressEMEACSVProcessor;0 5 10 ? * *
+;energizerB2BUserEMEACSVProcessor;0 10 10 ? * *
+;energizerCategory2CategoryEMEACSVProcessor;0 15 10 ? * *
+;energizerProductHierarchyEMEACSVProcessor;0 20 10 ? * *
+;energizerProduct2CategoryEMEACSVProcessor;0 30 10 ? * *
+;energizerProductMediaEMEAJob;0 40 10 ? * *
+;energizerShipmentEMEACSVProcessor;0 50 10 ? * *
+;energizerLeadTimeEMEACSVProcessor;0 55 10 ? * *
+
+#LATAM Cronjobs
+	#DAILY CSV FEED
+;energizerCustomerCSVProcessor;0 0 19 ? * *
+;energizerCustomerAddressCSVProcessor;0 10 19 ? * *
+;energizerProductCSVProcessor;0 20 19 ? * *
+;energizerProductNameCSVProcessor;0 30 19 ? * *
+;energizerProductConversionCSVProcessor;0 40 19 ? * *
+;energizerProductHierarchyCSVProcessor;0 55 19 ? * *
+;energizerShipmentCSVProcessor;0 5 20 ? * *
+;energizerCMIRMonitorCronJob;0 10 20 ? * *
+;energizerCMIRCSVProcessor;0 30 20 ? * *
+;energizerOfflineOrderCSVProcessor;0 50 20 ? * *
+;energizerOrderUpdateCSVProcessor;0 0 21 ? * *
+	#APPLICATION SUPPORT
+;energizerPasswordExpiryJob;0 20 9 ? * *
+;energizerOrderStuckCronJob;0 25 9 ? * *
+;energizerOrphanedProductsCronJob;0 30 9 ? * *
+;userManagementSendEMailCronJob;0 0/8 * * * ?
+	#MANUAL CSV FILE
+;energizerB2BUserCSVProcessor;0 0 11 ? * *
+;energizerCategory2CategoryCSVProcessor;0 5 11 ? * *
+;energizerProduct2CategoryCSVProcessor;0 10 11 ? * *
+;energizerProductMediaJob;0 20 11 ? * *
+;energizerLeadTimeCSVProcessor;0 30 11 ? * *
+
+#WESELL Cronjobs
+	#DAILY CSV FEED
+;energizerCustomerWESELLCSVProcessor;0 40 21 ? * *
+;energizerCustomerAddressWESELLCSVProcessor;0 55 21 ? * *
+;energizerB2BEmployeeCSVProcessor;0 10 22 ? * *
+;energizerProductWESELLCSVProcessor;0 30 22 ? * *
+;energizerProductNameWESELLCSVProcessor;0 50 22 ? * *
+;energizerProductConversionWESELLCSVProcessor;0 10 23 ? * *
+;energizerProductHierarchyWESELLCSVProcessor;0 35 23 ? * *
+;energizerShipmentWESELLCSVProcessor;0 55 23 ? * *
+;energizerCMIRMonitorWESELLCronJob;0 5 0 ? * *
+;energizerCMIRWESELLCSVProcessor;0 5 3 ? * *
+;energizerOrderUpdateWESELLCSVProcessor;0 5 6 ? * *
+	#APPLICATION SUPPORT
+;energizerPasswordExpiryWESELLJob;0 40 9 ? * *
+;energizerOrderStuckWESELLCronJob;0 45 9 ? * *
+;energizerOrphanedProductsWESELLCronJob;0 50 9 ? * *
+;userManagementSendEmailWESELLCronJob;0 0/10 * * * ?
+	#MANUAL CSV FILE
+;energizerCategory2CategoryWESELLCSVProcessor;0 36 11 ? * *
+;energizerProduct2CategoryWESELLCSVProcessor;0 40 11 ? * *
+
+#COMMON Cronjobs
+;energizerOrderReprocessCronjob;0 0 12 ? * *
+;energizerCronJobsStatusJob;0 10 12 ? * *
+

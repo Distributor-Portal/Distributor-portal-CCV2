@@ -1,0 +1,1247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2014 hybris AG All rights reserved. This software is the confidential and proprietary information 
+	of hybris ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with 
+	the terms of the license agreement you entered into with hybris. -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Spring Integration -->
+	<!-- SystemSetup for the energizercore -->
+	<bean id="b2bAcceleratorCoreSystemSetup" class="com.energizer.core.setup.CoreSystemSetup" parent="abstractCoreSystemSetup">
+		<property name="setupSyncJobService" ref="b2bSetupSyncJobService" />
+	</bean>
+
+	<!-- Solr field value providers -->
+
+	<bean id="volumeAwareProductPriceValueProvider" class="com.energizer.core.solr.provider.VolumeAwareProductPriceValueProvider"
+		parent="abstractPropertyFieldValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+		<property name="priceService" ref="priceService" />
+		<property name="commonI18NService" ref="commonI18NService" />
+		<property name="sessionService" ref="sessionService" />
+		<property name="userService" ref="userService" />
+		<property name="priceComparator" ref="volumePriceComparator" />
+		<property name="catalogVersionService" ref="catalogVersionService" />
+	</bean>
+
+	<bean id="volumePriceComparator" class="com.energizer.core.VolumeAwarePriceInformationComparator" scope="singleton" />
+
+	<bean id="productVolumePricesProvider" class="com.energizer.core.solr.provider.ProductVolumePricesProvider" parent="abstractPropertyFieldValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+		<property name="priceService" ref="priceService" />
+	</bean>
+
+	<bean id="powertoolsCategorySource" parent="variantCategorySource">
+		<property name="rootCategory" value="1" /> <!-- '1' is the root icecat category -->
+	</bean>
+	<bean id="powertoolsVariantCategorySource" parent="variantCategorySource" />
+
+	<bean id="powertoolsBrandCategorySource" parent="defaultCategorySource">
+		<property name="rootCategory" value="brands" /> <!-- 'brands' is the root of the brands hierarchy -->
+	</bean>
+
+	<bean id="abstractCategoryCodeValueProvider" abstract="true"
+		class="de.hybris.platform.commerceservices.search.solrfacetsearch.provider.impl.CategoryCodeValueProvider" parent="abstractPropertyFieldValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+		<property name="commonI18NService" ref="commonI18NService" />
+	</bean>
+	<bean id="abstractCategoryNameValueProvider" abstract="true"
+		class="de.hybris.platform.commerceservices.search.solrfacetsearch.provider.impl.CategoryNameValueProvider" parent="abstractPropertyFieldValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+		<property name="commonI18NService" ref="commonI18NService" />
+	</bean>
+
+	<bean id="powertoolsCategoryCodeValueProvider" parent="abstractCategoryCodeValueProvider">
+		<property name="categorySource" ref="powertoolsCategorySource" />
+	</bean>
+	<bean id="powertoolsBrandCategoryCodeValueProvider" parent="abstractCategoryCodeValueProvider">
+		<property name="categorySource" ref="powertoolsBrandCategorySource" />
+	</bean>
+	<bean id="powertoolsVariantCategoryCodeValueProvider" parent="abstractCategoryCodeValueProvider">
+		<property name="categorySource" ref="powertoolsVariantCategorySource" />
+	</bean>
+
+
+	<bean id="powertoolsCategoryNameValueProvider" parent="abstractCategoryNameValueProvider">
+		<property name="categorySource" ref="powertoolsCategorySource" />
+	</bean>
+	<bean id="powertoolsBrandCategoryNameValueProvider" parent="abstractCategoryNameValueProvider">
+		<property name="categorySource" ref="powertoolsBrandCategorySource" />
+	</bean>
+
+	<bean id="image515ValueProvider" parent="abstractImageValueProvider">
+		<property name="mediaFormat" value="300Wx300H" />
+	</bean>
+	<bean id="image300ValueProvider" parent="abstractImageValueProvider">
+		<property name="mediaFormat" value="300Wx300H" />
+	</bean>
+	<bean id="image96ValueProvider" parent="abstractImageValueProvider">
+		<property name="mediaFormat" value="96Wx96H" />
+	</bean>
+	<bean id="image65ValueProvider" parent="abstractImageValueProvider">
+		<property name="mediaFormat" value="96Wx96H" />
+	</bean>
+	<bean id="image30ValueProvider" parent="abstractImageValueProvider">
+		<property name="mediaFormat" value="96Wx96H" />
+	</bean>
+
+	<bean id="productUrlValueProvider" class="de.hybris.platform.commerceservices.search.solrfacetsearch.provider.impl.ProductUrlValueProvider"
+		parent="abstractPropertyFieldValueProvider">
+		<property name="urlResolver" ref="productModelUrlResolver" />
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+		<property name="i18nService" ref="i18nService" />
+		<property name="commonI18NService" ref="commonI18NService" />
+	</bean>
+
+	<bean id="promotionCodeValueProvider" class="de.hybris.platform.commerceservices.search.solrfacetsearch.provider.impl.PromotionCodeValueProvider"
+		parent="abstractPropertyFieldValueProvider">
+		<property name="promotionsService" ref="promotionsService" />
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+	</bean>
+
+	<bean id="promotionImageValueProvider" class="de.hybris.platform.commerceservices.search.solrfacetsearch.provider.impl.PrimaryPromotionImageValueProvider"
+		parent="abstractPropertyFieldValueProvider">
+		<property name="promotionsService" ref="promotionsService" />
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+	</bean>
+
+	<!-- Event listeners are singletons, therefore the dependency for a bean in tenant-scope must be configured with a lookup method. -->
+	<bean id="b2b-customerRegistrationEventListener" class="com.energizer.core.event.RegistrationEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+
+	</bean>
+	<!--	WeSell Implementation -  Added Code Changes for Sales Rep registration - by Venkat -->
+	<bean id="b2b-employeeRegistrationEventListener" class="com.energizer.core.event.RegistrationEmployeeEventListener" parent="abstractSiteEventListener">
+			<property name="modelService" ref="modelService" />
+			<property name="businessProcessService" ref="businessProcessService" />
+	</bean>
+	<!--	WeSell Implementation -  Added Code Changes for Sales Rep registration - by Venkat -->
+	<bean id="b2b-forgottenPasswordEventListener" class="com.energizer.core.event.ForgottenPasswordEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+
+	</bean>
+	
+	<bean id="b2b-unlockAccountEventListener" class="com.energizer.core.event.UnlockAccountEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+	</bean>
+	<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->	
+	<bean id="b2b-B2BWeSellForgottenPwdEventListner" class="com.energizer.core.event.B2BEmployeeForgottenPwdEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+
+	</bean>
+	
+	<bean id="b2b-employeeUnlockAccountEventListener" class="com.energizer.core.event.B2BEmployeeUnlockAccountEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->	
+	</bean>
+	
+	<bean id="b2b-submitOrderEventListener" class="com.energizer.core.event.SubmitOrderEventListener" parent="abstractSiteEventListener">
+		<property name="businessProcessService" ref="businessProcessService" />
+		<property name="modelService" ref="modelService" />
+		<property name="baseStoreService" ref="baseStoreService" />
+	</bean>
+	<bean id="b2b-orderConfirmationEventListener" class="com.energizer.core.event.OrderConfirmationEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+	</bean>
+
+	<!-- Process resourcess definition -->
+
+	<bean id="b2bCustomerRegistrationEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/customerRegistrationEmailProcess.xml" />
+	</bean>
+	<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->	
+	<bean id="b2bEmployeeRegistrationEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/employeeRegistrationEmailProcess.xml" />
+	</bean>
+	<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->	
+	
+	<bean id="b2bForgottenPasswordEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/forgottenPasswordEmailProcess.xml" />
+	</bean>
+	
+	<bean id="b2bUnlockAccountEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/unlockAccountEmailProcess.xml" />
+	</bean>
+	<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->	
+	<bean id="b2bEmployeeForgottenPasswordEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/employeeForgottenPasswordEmailProcess.xml" />
+	</bean>
+	<bean id="b2bEmployeeUnlockAccountEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/employeeUnlockAccountEmailProcess.xml" />
+	</bean>
+	<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->	
+	<bean id="b2bOrderConfirmationEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/orderConfirmationEmailProcess.xml" />
+	</bean>
+	<bean id="replenishmentOrderConfirmationEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/replenishmentOrderConfirmationEmailProcess.xml" />
+	</bean>
+	<bean id="replenishmentOrderProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/replenishmentOrderProcess.xml" />
+	</bean>
+
+	<bean id="replenishmentOrderPlacedProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/replenishmentOrderPlacedEmailProcess.xml" />
+	</bean>
+
+	<bean id="quoteOrderApproveProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/quoteOrderApproveEmailProcess.xml" />
+	</bean>
+
+	<bean id="quoteOrderRejectProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/quoteOrderRejectEmailProcess.xml" />
+	</bean>
+
+	<!-- Actions -->
+	<bean id="abstractAction" class="de.hybris.platform.processengine.action.AbstractAction" abstract="true">
+		<property name="modelService" ref="modelService" />
+		<property name="processParameterHelper" ref="processParameterHelper" />
+	</bean>
+
+	<bean id="sendEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.SendEmailAction" parent="abstractAction">
+		<property name="emailService" ref="emailService" />
+	</bean>
+
+	<bean id="generateB2BCustomerRegistrationEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="frontendTemplateName" value="CustomerRegistrationEmailTemplate" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<!-- rma: fixed circular reference issue with BTG 4/29/2011 -->
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+	
+	<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->	
+	
+	<bean id="generateB2BEmployeeRegistrationEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="frontendTemplateName" value="EmployeeRegistrationEmailTemplate" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<!-- rma: fixed circular reference issue with BTG 4/29/2011 -->
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+	
+	<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->	
+	
+	<bean id="generateB2BForgottenPasswordEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="frontendTemplateName" value="ForgottenPasswordEmailTemplate" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+	
+	<bean id="generateB2BUnlockAccountEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="frontendTemplateName" value="UnlockAccountEmailTemplate" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->	
+	<bean id="generateB2BEmployeeForgottenPasswordEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction"> 
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" /> 
+		<property name="frontendTemplateName" value="B2BEmployeeForgottenPasswordEmailTemplate" /> 
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" /> 
+	</bean>
+	
+	<bean id="generateB2BEmployeeUnlockAccountEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction"> 
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" /> 
+		<property name="frontendTemplateName" value="B2BEmployeeUnlockAccountEmailTemplate" /> 
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" /> 
+	</bean>
+<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->
+	<bean id="generateB2BOrderConfirmationEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="frontendTemplateName" value="OrderConfirmationEmailTemplate" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+
+	<bean id="generateB2BReplenishmentOrderConfirmationEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="frontendTemplateName" value="ReplenishmentOrderConfirmationEmailTemplate" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+
+	<bean id="generateB2BReplenishmentOrderPlacedEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="frontendTemplateName" value="ReplenishmentOrderPlacedEmailTemplate" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+
+	<bean id="generateB2BQuoteOrderApproveEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="frontendTemplateName" value="QuoteOrderApproveEmailTemplate" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+
+	<bean id="generateB2BQuoteOrderRejectEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="frontendTemplateName" value="QuoteOrderRejectEmailTemplate" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+
+	<bean id="removeSentEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.RemoveSentEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+	</bean>
+
+	<!-- Simple Suggestion Service -->
+	<alias alias="b2bSimpleSuggestionService" name="b2bDefaultSimpleSuggestionService" />
+	<bean id="b2bDefaultSimpleSuggestionService" class="com.energizer.core.suggestion.impl.DefaultSimpleSuggestionService">
+		<property name="simpleSuggestionDao" ref="b2bSimpleSuggestionDao" />
+	</bean>
+	<alias alias="b2bSimpleSuggestionDao" name="b2bDefaultSimpleSuggestionDao" />
+	<bean id="b2bDefaultSimpleSuggestionDao" class="com.energizer.core.suggestion.dao.impl.DefaultSimpleSuggestionDao" parent="abstractItemDao">
+		<property name="flexibleSearchService" ref="flexibleSearchService" />
+	</bean>
+
+	<bean id="b2bMccSiteUrlHelper" class="com.energizer.core.util.MccSiteUrlHelper">
+		<property name="siteBaseUrlResolutionService" ref="siteBaseUrlResolutionService" />
+		<property name="cmsSiteService" ref="cmsSiteService" />
+	</bean>
+
+	<!-- SALES QUOTE ACC PROCESS -->
+	<!-- <bean id="salesQuoteProcess" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/b2bACCSalesquote.xml" />
+	</bean> -->
+
+	<alias alias="b2bQuoteBusinessProcessStrategy" name="acceleratorQuoteBusinessProcessStrategy" />
+	<bean id="acceleratorQuoteBusinessProcessStrategy" class="de.hybris.platform.b2b.strategies.impl.DefaultB2BQuoteBusinessProcessStrategy"
+		parent="defaultB2BQuoteBusinessProcessStrategy">
+		<property name="processCode" value="accSalesQuote" />
+		<property name="processName" value="PENDING_QUOTE" />
+	</bean>
+
+	<!-- Process resourcess definition -->
+	<!-- APPROVAL PROCESS -->
+	<bean id="b2bAccApprovalProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/b2bAccOrderApproval.xml" />
+	</bean>
+
+	<bean id="orderPendingApprovalEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/orderPendingApprovalEmailProcess.xml" />
+	</bean>
+
+	<bean id="orderApprovalRejectionEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/energizercore/processes/orderApprovalRejectionEmailProcess.xml" />
+	</bean>
+
+	<bean id="startWorkflowForAdmin" class="com.energizer.core.actions.StartWorkFlowForAdmin" parent="abstractProceduralB2BOrderApproveAction">
+		<property name="b2bWorkflowIntegrationService" ref="b2bWorkflowIntegrationService" />
+		<property name="permissionResultHelper" ref="permissionResultHelper" />
+		<property name="workflowProcessingService" ref="workflowProcessingService" />
+		<property name="workflowService" ref="newestWorkflowService" />
+		<property name="b2bUnitService" ref="b2bUnitService" />
+		<property name="userService" ref="userService" />
+	</bean>
+	
+	<bean id="startWorkFlowForApprovers" class="com.energizer.core.actions.StartWorkFlowForApprovers" parent="abstractProceduralB2BOrderApproveAction">
+		<property name="b2bWorkflowIntegrationService" ref="b2bWorkflowIntegrationService" />
+		<property name="permissionResultHelper" ref="permissionResultHelper" />
+		<property name="workflowProcessingService" ref="workflowProcessingService" />
+		<property name="workflowService" ref="newestWorkflowService" />
+	</bean>
+
+	<bean id="checkCreditCardOrderAction" class="com.energizer.core.actions.CheckCreditCardOrderAction" parent="abstractSimpleB2BApproveOrderDecisionAction">
+	</bean>
+
+	<bean id="b2bSetupSyncJobService" class="com.energizer.core.setup.impl.B2BDefaultSetupSyncJobService" parent="defaultSetupSyncJobService">
+		<property name="cronJobService" ref="cronJobService" />
+		<property name="flexibleSearchService" ref="flexibleSearchService" />
+	</bean>
+
+	<bean id="powertoolsCatalogSyncJobPerformable" class="com.energizer.core.setup.MultipleCatalogsSyncJobPerformable" parent="abstractJobPerformable">
+		<property name="setupSyncJobService" ref="setupSyncJobService" />
+	</bean>
+
+<!-- 	<bean id="organizationOrdersReportingJob" class="com.energizer.core.btg.OrganizationOrdersReportingJob" parent="abstractJobPerformable">
+		<property name="b2BUnitService" ref="b2bUnitService" />
+		<property name="commonI18NService" ref="commonI18NService" />
+		<property name="catalogVersionService" ref="catalogVersionService" />
+		<property name="currencies">
+			<list>
+				<value>USD</value>
+				<value>EUR</value>
+				<value>CAD</value>
+			</list>
+		</property>
+		<property name="catalog" value="powertoolsProductCatalog" />
+	</bean> 
+
+	<bean id="organizationCategoryPurchasedReportingJob" class="com.energizer.core.btg.OrganizationOrdersReportingJob" parent="abstractJobPerformable">
+		<property name="b2BUnitService" ref="b2bUnitService" />
+		<property name="commonI18NService" ref="commonI18NService" />
+		<property name="catalogVersionService" ref="catalogVersionService" />
+		<property name="currencies">
+			<list>
+				<value>USD</value>
+				<value>EUR</value>
+				<value>CAD</value>
+			</list>
+		</property>
+		<property name="categories">
+			<list>
+				<value>1360</value>
+			</list>
+		</property>
+		<property name="catalog" value="powertoolsProductCatalog" />
+
+	</bean>
+
+	<bean id="abstractTotalSpentByOrgOperandProvider" abstract="true"
+		class="com.energizer.core.btg.condition.operand.valueproviders.AbstractTotalSpentByOrgOperandProvider" parent="abstractOrderOperandValueProvider" />
+
+	<bean id="organizationTotalSpentInCurrencyLastYearOperandValueProvider"
+		class="com.energizer.core.btg.condition.operand.valueproviders.OrganizationTotalSpentInCurrencyLastYearOperandValueProvider"
+		parent="abstractTotalSpentByOrgOperandProvider">
+		<property name="b2bUnitService" ref="b2bUnitService" />
+	</bean>
+
+	<bean id="organizationTotalSpentInCurrencyRelativeDateOperandValueProvider"
+		class="com.energizer.core.btg.condition.operand.valueproviders.OrganizationTotalSpentInCurrencyRelativeDateOperandValueProvider"
+		parent="abstractTotalSpentByOrgOperandProvider">
+		<property name="b2bUnitService" ref="b2bUnitService" />
+	</bean>   -->
+
+	<bean id="b2b-orderCPendingApprovalEventListener" class="com.energizer.core.event.OrderPendingApprovalEventListener" parent="abstractEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+
+	</bean>
+
+	<bean id="b2b-replenishmentOrderConfirmationEventListener" class="com.energizer.core.event.ReplenishmentOrderConfirmationEventListener"
+		parent="abstractEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+	</bean>
+
+	<bean id="b2b-replenishmentOrderPlacedEventListener" class="com.energizer.core.event.ReplenishmentOrderPlacedEventListener"
+		parent="abstractEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+	</bean>
+
+	<bean id="b2b-orderApprovalRejectionEventListener" class="com.energizer.core.event.OrderApprovalRejectionEventListener"
+		parent="abstractEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+	</bean>
+
+	<bean id="abstractQuoteEventListener" class="com.energizer.core.event.QuoteEventListener" abstract="true"
+		parent="abstractOrderEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="orderHistoryService" ref="orderHistoryService" />
+	</bean>
+
+	<bean id="b2b-quoteApprovedEventListener" class="com.energizer.core.event.QuoteApprovedEventListener" parent="abstractQuoteEventListener">
+		<property name="i18NService" ref="i18NService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+	</bean>
+
+	<bean id="b2b-quoteRejectedEventListener" class="com.energizer.core.event.QuoteRejectedEventListener" parent="abstractQuoteEventListener">
+		<property name="i18NService" ref="i18NService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+	</bean>
+
+	<bean id="abstractMerchantEventListener" class="com.energizer.core.event.AbstractMerchantEventListener" abstract="true"
+		parent="abstractOrderEventListener" />
+
+	<bean id="b2b-merchantApprovedEventListener" class="com.energizer.core.event.MerchantApprovedEventListener" parent="abstractMerchantEventListener">
+		<property name="createSnapshot" value="true" />
+	</bean>
+
+	<bean id="b2b-merchantRejectedEventListener" class="com.energizer.core.event.MerchantRejectedEventListener" parent="abstractMerchantEventListener">
+		<property name="createSnapshot" value="true" />
+	</bean>
+
+	<bean id="b2b-orderApprovedEventListener" class="com.energizer.core.event.OrderApprovedEventListener" parent="abstractOrderEventListener">
+		<property name="createSnapshot" value="true" />
+
+	</bean>
+
+	<bean id="b2b-orderRejectedEventListener" class="com.energizer.core.event.OrderRejectedEventListener" parent="abstractOrderEventListener">
+		<property name="createSnapshot" value="true" />
+	</bean>
+
+	<bean id="abstractOrderEventListener" class="com.energizer.core.event.AbstractOrderEventListener" abstract="true"
+		parent="abstractEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="orderHistoryService" ref="orderHistoryService" />
+		<property name="i18NService" ref="i18NService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+	</bean>
+
+	<bean id="informOfOrderApproval" class="com.energizer.core.actions.B2BAcceleratorInformOfOrderApproval">
+		<property name="fromAddress" value="b2b@hybris.com" />
+		<property name="b2bEmailService" ref="b2bEmailService" />
+	</bean>
+
+	<bean id="submitOrderToSAP" class="com.energizer.core.actions.SubmitOrderToSAP" parent="abstractProceduralB2BOrderApproveAction">
+	</bean>
+
+	<bean id="setBookingLineEntries" class="com.energizer.core.actions.AcceleratorBookingLineEntries" parent="abstractSimpleB2BApproveOrderDecisionAction" />
+
+	<bean id="generateB2BOrderPendingApprovalEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="frontendTemplateName" value="OrderPendingApprovalEmailTemplate" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+
+	<bean id="sendOrderPendingApprovalNotification" class="com.energizer.core.actions.SendOrderPendingApprovalNotification"
+		parent="abstractAction">
+		<property name="eventService" ref="eventService" />
+	</bean>
+	
+	<bean id="UpdatedSentStatusInOrderAction" class="com.energizer.core.actions.UpdatedSentStatusInOrderAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+	</bean>
+
+	<!-- actions -->
+	<bean name="cloneCartAction" class="com.energizer.core.actions.replenishment.CloneCartAction" parent="abstractAction">
+		<property name="typeService" ref="typeService" />
+		<property name="cartService" ref="cartService" />
+		<property name="userService" ref="userService" />
+		<property name="guidKeyGenerator" ref="guidKeyGenerator" />
+	</bean>
+
+	<bean name="calculateCartAction" class="com.energizer.core.actions.replenishment.CalculateCartAction" parent="abstractAction">
+		<property name="commerceCartService" ref="commerceCartService" />
+		<property name="impersonationService" ref="impersonationService" />
+	</bean>
+
+	<bean name="authorizePaymentAction" class="com.energizer.core.actions.replenishment.AuthorizePaymentAction" parent="abstractAction">
+		<property name="commerceCheckoutService" ref="b2bCommerceCheckoutService" />
+		<property name="impersonationService" ref="impersonationService" />
+	</bean>
+
+	<bean name="placeOrderAction" class="com.energizer.core.actions.replenishment.PlaceOrderAction" parent="abstractAction">
+		<property name="commerceCheckoutService" ref="b2bCommerceCheckoutService" />
+		<property name="impersonationService" ref="impersonationService" />
+	</bean>
+	<bean name="confirmationAction" class="com.energizer.core.actions.replenishment.ConfirmationAction" parent="abstractAction">
+		<property name="eventService" ref="eventService" />
+	</bean>
+
+	<bean id="sendReplenishmentOrderPlacedNotification" class="com.energizer.core.actions.SendReplenishmentOrderPlacedNotification">
+		<property name="eventService" ref="eventService" />
+	</bean>
+
+	<bean id="auditAutoApproval" class="de.hybris.platform.b2b.process.approval.actions.SystemAuditAction" parent="abstractProceduralB2BOrderApproveAuditAction">
+		<property name="permissionResultHelper" ref="permissionResultHelper" />
+		<property name="messageKey" value="approval.process.orderapprovedautomatically" />
+	</bean>
+
+	<bean id="auditSubmittedToMerchantForApproval" class="de.hybris.platform.b2b.process.approval.actions.SystemAuditAction"
+		parent="abstractProceduralB2BOrderApproveAuditAction">
+		<property name="permissionResultHelper" ref="permissionResultHelper" />
+		<property name="messageKey" value="approval.process.submittedtomerchant" />
+	</bean>
+
+	<bean id="createQuoteOrderHistory" class="com.energizer.core.actions.CreateQuoteOrderHistory" parent="abstractSimpleB2BApproveOrderDecisionAction">
+		<property name="orderHistoryService" ref="orderHistoryService" />
+		<property name="modelService" ref="modelService" />
+		<property name="userService" ref="userService" />
+	</bean>
+
+	<bean id="checkOrderEntryCostCentersActive" class="com.energizer.core.actions.CheckOrderEntryCostCentersActive" parent="abstractSimpleB2BApproveOrderDecisionAction" />
+
+	<bean id="startFulfilmentProcessAction" parent="abstractProceduralB2BOrderApproveAction" class="com.energizer.core.actions.StartFulfilmentProcessAction">
+		<property name="businessProcessService" ref="businessProcessService" />
+	</bean>
+
+	<!-- Send rejection notification -->
+	<bean id="sendOrderApprovalRejectionNotification" class="com.energizer.core.actions.SendOrderApprovalRejectionNotification"
+		parent="abstractAction">
+		<property name="eventService" ref="eventService" />
+	</bean>
+
+	<bean id="generateB2BOrderApprovalRejectionEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="frontendTemplateName" value="OrderApprovalRejectionEmailTemplate" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+
+	<bean id="auditStartOfApproval" class="de.hybris.platform.b2b.process.approval.actions.SystemAuditAction" parent="abstractProceduralB2BOrderApproveAuditAction">
+		<property name="permissionResultHelper" ref="permissionResultHelper" />
+		<property name="messageKey" value="approval.process.ordersubmitted" />
+	</bean>
+
+	<bean id="auditOrderRejection" class="de.hybris.platform.b2b.process.approval.actions.SystemAuditAction" parent="abstractProceduralB2BOrderApproveAuditAction">
+		<property name="permissionResultHelper" ref="permissionResultHelper" />
+		<property name="messageKey" value="approval.process.orderrejected" />
+	</bean>
+
+	<bean id="auditOrderApproval" class="de.hybris.platform.b2b.process.approval.actions.SystemAuditAction" parent="abstractProceduralB2BOrderApproveAuditAction">
+		<property name="permissionResultHelper" ref="permissionResultHelper" />
+		<property name="messageKey" value="approval.process.orderapproved" />
+	</bean>
+
+	<!-- checkout flow configuration -->
+	<!-- We force the Single step checkout strategy. -->
+	<alias alias="b2bCheckoutFlowStrategy" name="b2bSingleStepCheckoutFlowStrategy" />
+
+	<bean id="b2bSingleStepCheckoutFlowStrategy" class="com.energizer.core.checkout.flow.impl.FixedB2BCheckoutFlowStrategy">
+		<property name="checkoutFlow" value="SINGLE" />
+	</bean>
+
+	<bean id="b2bMultiStepCheckoutFlowStrategy" class="com.energizer.core.checkout.flow.impl.FixedB2BCheckoutFlowStrategy">
+		<property name="checkoutFlow" value="MULTISTEP" />
+	</bean>
+
+	<!--Checkout PCI Strategies -->
+	<alias alias="b2bCheckoutPciStrategy" name="configuredB2BCheckoutPciStrategy" />
+	<bean id="configuredB2BCheckoutPciStrategy" class="com.energizer.core.checkout.pci.impl.ConfiguredB2BCheckoutPciStrategy">
+		<!-- This strategy looks in the session to see if HOP is the chosen option. HOP is only valid if configured in the application properties 
+			file. Defaults to wsCheckoutPciStrategy. -->
+		<property name="siteConfigService" ref="siteConfigService" />
+
+		<!-- Default to the wsCheckoutPciStrategy -->
+		<property name="defaultCheckoutPciStrategy" ref="b2bWSCheckoutPciStrategy" />
+	</bean>
+
+	<bean id="b2bWSCheckoutPciStrategy" class="com.energizer.core.checkout.pci.impl.FixedB2BCheckoutPciStrategy">
+		<!-- Use the Payment extension web services to create credit card details -->
+		<property name="subscriptionPciOption" value="DEFAULT" />
+	</bean>
+	<bean id="b2bHOPCheckoutPciStrategy" class="com.energizer.core.checkout.pci.impl.FixedB2BCheckoutPciStrategy">
+		<!-- Use the Hosted Order Payment to create credit card details -->
+		<property name="subscriptionPciOption" value="HOP" />
+	</bean>
+
+	<bean id="b2bSendOrderPlacedNotificationAction" class="com.energizer.core.actions.SendOrderPlacedNotificationAction" parent="abstractAction">
+		<property name="eventService" ref="eventService" />
+	</bean>
+
+
+	<alias name="defaultVariantCategorySource" alias="variantCategorySource" />
+	<bean id="defaultVariantCategorySource" class="com.energizer.core.search.solrfacetsearch.provider.impl.VariantCategorySource"
+		parent="defaultCategorySource">
+		<property name="productSource" ref="variantProductSource"></property>
+	</bean>
+
+	<bean id="variantProductSource" class="com.energizer.core.search.solrfacetsearch.provider.impl.VariantProductSource" />
+
+	<bean id="variantProductStockLevelStatusValueProvider" class="com.energizer.core.search.solrfacetsearch.provider.impl.VariantProductStockLevelStatusValueProvider"
+		parent="defaultProductStockLevelStatusValueProvider">
+		<property name="productSource" ref="variantProductSource"></property>
+	</bean>
+
+	<bean id="abstractMultidimensionalProductFieldValueProvider" abstract="true"
+		class="com.energizer.core.search.solrfacetsearch.provider.AbstractMultidimensionalProductFieldValueProvider" parent="abstractPropertyFieldValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+	</bean>
+
+	<alias name="defaultMultidimentionalProductFlagValueProvider" alias="multidimentionalProductFlagValueProvider" />
+	<bean id="defaultMultidimentionalProductFlagValueProvider" class="com.energizer.core.search.solrfacetsearch.provider.impl.MultidimentionalProductFlagValueProvider"
+		parent="abstractMultidimensionalProductFieldValueProvider" />
+
+	<alias name="defaultProductPriceRangeValueProvider" alias="productPriceRangeValueProvider" />
+	<bean id="defaultProductPriceRangeValueProvider" class="com.energizer.core.search.solrfacetsearch.provider.impl.ProductPriceRangeValueProvider"
+		parent="abstractMultidimensionalProductFieldValueProvider" />
+
+	<alias name="defaultFirstGenericVariantProductUrlValueProvider" alias="firstGenericVariantProductUrlValueProvider" />
+	<bean id="defaultFirstGenericVariantProductUrlValueProvider" class="com.energizer.core.search.solrfacetsearch.provider.impl.FirstGenericVariantProductUrlValueProvider"
+		parent="abstractMultidimensionalProductFieldValueProvider">
+		<property name="productModelUrlResolver" ref="productModelUrlResolver" />
+		<property name="genericVariantProductModelComparator" ref="genericVariantProductModelComparator" />
+	</bean>
+
+	<alias name="defaultFirstVariantCategoryNameListValueProvider" alias="firstVariantCategoryNameListValueProvider" />
+	<bean id="defaultFirstVariantCategoryNameListValueProvider" class="com.energizer.core.search.solrfacetsearch.provider.impl.FirstVariantCategoryNameListValueProvider"
+		parent="abstractMultidimensionalProductFieldValueProvider">
+		<property name="variantValueCategoryModelPriorityComparator" ref="variantValueCategoryModelPriorityComparator" />
+		<property name="variantValueCategoryModelSequenceComparator" ref="variantValueCategoryModelSequenceComparator" />
+		<property name="categoryManager" ref="customSolrFirstVariantCategoryManager" />
+	</bean>
+
+	<bean id="genericVariantProductModelComparator" class="com.energizer.core.search.solrfacetsearch.provider.entity.GenericVariantProductModelComparator">
+		<property name="variantValueCategoryModelPriorityComparator" ref="variantValueCategoryModelPriorityComparator" />
+	</bean>
+
+	<bean id="variantValueCategoryModelPriorityComparator" class="com.energizer.core.search.solrfacetsearch.provider.entity.VariantValueCategoryModelPriorityComparator">
+		<property name="categoryService" ref="categoryService" />
+	</bean>
+
+	<bean id="variantValueCategoryModelSequenceComparator" class="com.energizer.core.search.solrfacetsearch.provider.entity.VariantValueCategoryModelSequenceComparator" />
+
+	<bean id="customSolrFirstVariantCategoryManager" class="com.energizer.core.search.solrfacetsearch.provider.impl.SolrFirstVariantCategoryManager">
+		<property name="l10NService" ref="l10nService" />
+	</bean>
+
+	<bean id="energizerProductB2BUnitValueProvider" class="com.energizer.core.solr.provider.EnergizerProductB2BUnitValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+	</bean>
+
+	<bean id="energizerCategorySegmentValueProvider" class="com.energizer.core.solr.provider.EnergizerProductSegmentValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+		<property name="energizerCategoryTypeSearchService" ref="energizerCategoryTypeSearchService" />
+		<property name="configurationService" ref="configurationService" />
+	</bean>
+
+	<bean id="energizerCategoryFamilyValueProvider" class="com.energizer.core.solr.provider.EnergizerProductFamilyValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+		<property name="energizerCategoryTypeSearchService" ref="energizerCategoryTypeSearchService" />
+		<property name="configurationService" ref="configurationService" />
+	</bean>
+
+	<bean id="energizerCategoryGroupValueProvider" class="com.energizer.core.solr.provider.EnergizerProductGroupValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+		<property name="energizerCategoryTypeSearchService" ref="energizerCategoryTypeSearchService" />
+		<property name="configurationService" ref="configurationService" />
+	</bean>
+
+	<bean id="energizerShippingPointValueProvider" class="com.energizer.core.solr.provider.EnergizerProductShippingPointValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+		<property name="energizerProductService" ref="energizerProductService" />
+	</bean>
+
+	<bean id="energizerAttributeFacetValueProvider" class="com.energizer.core.solr.provider.EnergizerProductAttributeFacetValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+	</bean>
+	
+	<bean id="energizerCustomerMaterialDescriptionValueProvider" class="com.energizer.core.solr.provider.EnergizerProductCustomerMaterialDescriptionValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider" />
+		<property name="energizerProductService" ref="energizerProductService" />
+	</bean>
+
+
+	<bean id="energizerSolrQueryManipulationService" class="com.energizer.core.solr.query.impl.DefaultEnergizerSolrQueryManipulationService">
+
+	</bean>
+	<bean id="energizerCSVFeedCronJob" class="com.energizer.core.datafeed.EnergizerCSVFeedCronJob" autowire="byName">
+		<property name="cronJobService" ref="cronJobService" />
+	</bean>
+
+	<!-- ******** Start Energizer Product data related Processor ********** -->
+	<bean id="energizerProductCSVProcessor" class="com.energizer.core.datafeed.processor.product.EnergizerProductCSVProcessor"
+		autowire="byName" />
+	<bean id="energizerProductMediaCSVProcessor" class="com.energizer.core.datafeed.processor.product.EnergizerMediaCSVProcessor"
+		autowire="byName" />
+	<bean id="energizerProductConversionCSVProcessor" class="com.energizer.core.datafeed.processor.product.EnergizerProductConversionCSVProcessor"
+		autowire="byName" />
+	<bean id="energizerCMIRCSVProcessor" class="com.energizer.core.datafeed.processor.product.EnergizerCMIRCSVProcessor"
+		autowire="byName" />
+	<bean id="energizerSalesAreaUomCSVProcessor" class="com.energizer.core.datafeed.processor.product.EnergizerSalesUOMCSVProcessor"
+		autowire="byName" />
+	<bean id="energizerCustomerCSVProcessor" class="com.energizer.core.datafeed.processor.customer.EnergizerCustomerCSVProcessor"
+		autowire="byName" />
+	<bean id="energizerB2BUserCSVProcessor" class=" com.energizer.core.datafeed.processor.customer.EnergizerB2BUserCSVProcessor"
+		autowire="byName"></bean>
+	<bean id="energizerCustomerAddressCSVProcessor" class="com.energizer.core.datafeed.processor.customer.EnergizerCustomerAddressCSVProcessor"
+		autowire="byName"></bean>
+	<bean id="energizerCustomerLeadTimeCSVProcessor" class="com.energizer.core.datafeed.processor.customer.EnergizerCustomerLeadTimeCSVProcessor"
+		autowire="byName" />
+	<bean id="energizerOrphanedProductsJob" class="com.energizer.core.datafeed.processor.product.EnergizerOrphanedProductProcessor"
+		autowire="byName" />	
+
+	<bean id="energizerProduct2CategoryCSVProcessor" class="com.energizer.core.datafeed.processor.product.EnergizerProduct2CategoryRelationCSVProcessor"
+		autowire="byName" />
+
+	<bean id="userManagementSendEMailJob" class="com.energizer.core.datafeed.processor.EnergizerUserManagementSendMailJob"
+		autowire="byName">
+		<property name="cronJobService" ref="cronJobService" />
+	</bean>	
+		
+	<bean id="energizerCMIRMonitorJob" class="com.energizer.core.datafeed.processor.product.EnergizerCMIRMonitorJob"
+		autowire="byName">
+		<property name="cronJobService" ref="cronJobService" />
+	</bean>	
+
+	<bean id="energizerCustomerUsersListJob" class="com.energizer.core.datafeed.EnergizerCustomerUsersListJob"
+		autowire="byName" />
+	
+	<!-- ******** End Energizer Product data related Processor ********** -->
+
+	<!-- ******** Start Energizer Order data related Processor ********** -->
+	<bean id="energizerOfflineOrderCSVProcessor" class="com.energizer.core.datafeed.processor.order.EnergizerOfflineOrderCSVProcessor"
+		autowire="byName" />
+	<bean id="energizerOrderUpdateCSVProcessor" class="com.energizer.core.datafeed.processor.order.EnergizerOrderUpdateCSVProcessor"
+		autowire="byName" >
+		<property name="orderConverter" ref="orderConverter" />
+	</bean>
+	<bean id="energizerCronJobsStatusJob" class="com.energizer.core.errorcronjobs.EnergizerCronJobsStatusJob" autowire="byName" />
+	<bean id="energizerCMIRCleanUpJob" class="com.energizer.core.cleanup.EnergizerCMIRCleanUpJob" autowire="byName" />
+	
+	<bean id="energizerPriceRowCleanUpJob" class="com.energizer.core.cleanup.EnergizerPriceRowCleanUpJob" autowire="byName" />  
+	<!-- ******** End Energizer Order data related Processor ********** -->
+
+	<bean id="energizerCategoryTypeSearchService" class="com.energizer.core.solr.query.impl.DefaultEnergizerCategoryTypeSearchService">
+		<property name="categoryService" ref="categoryService" />
+	</bean>
+
+	<!-- Start View Order History -->
+
+	<bean id="defaultEnergizerB2BOrderHistoryDAO" class="com.energizer.services.order.dao.impl.DefaultEnergizerB2BOrderHistoryDAO"
+		autowire="byName" />
+	<bean id="defaultEnergizerB2BOrderHistoryService" class="com.energizer.services.order.impl.DefaultEnergizerB2BOrderHistoryService"
+		autowire="byName" />
+	<!-- End of View Order History -->
+
+
+	<!-- Validators -->
+	<bean id="uomMoqValidator" class="com.energizer.core.business.impl.UOMMOQEnergizerBusinessRuleValidator" >
+	</bean>
+
+	<bean id="minimumOrderValueValidator" class="com.energizer.core.business.impl.MinimumOrderValueEnergizerBusinessRuleValidator"
+		scope="prototype">
+	</bean>
+
+	<bean id="shippingPointsEnergizerBusinessRuleValidator" class="com.energizer.core.business.impl.ShippingPointsEnergizerBusinessRuleValidator">
+	</bean>
+	<bean id="orderEntryBusinessRulesService" class="com.energizer.core.business.service.impl.DefaultEnergizerOrderEntryBusinessRuleValidationService"
+		scope="prototype">
+		<property name="validators">
+			<list>
+				<ref bean="uomMoqValidator" />
+				<ref bean="shippingPointsEnergizerBusinessRuleValidator" />
+			</list>
+		</property>
+	</bean>
+	<bean id="orderBusinessRulesService" class="com.energizer.core.business.service.impl.DefaultEnergizerOrderBusinessRuleValidationService"
+		scope="prototype">
+		<property name="validators">
+			<list>
+				<ref bean="minimumOrderValueValidator" />
+			</list>
+		</property>
+	</bean>
+	<bean id="cartEntryBusinessRulesService" class="com.energizer.core.business.service.impl.DefaultEnergizerOrderEntryBusinessRuleValidationService" >
+		<property name="validators">
+			<list>
+				<ref bean="uomMoqValidator" />
+				<!-- <ref bean="shippingPointsEnergizerBusinessRuleValidator"/> -->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="shippingPointBusinessRulesService" class="com.energizer.core.business.service.impl.DefaultEnergizerOrderEntryBusinessRuleValidationService" >
+		<property name="validators">
+			<list>
+				 <ref bean="shippingPointsEnergizerBusinessRuleValidator"/>
+			</list>
+		</property>
+	</bean>
+	
+
+	<!-- Services -->
+	<!-- <bean id="energizerService" class="com.energizer.service.impl.EnergizerServiceImpl"></bean> -->
+
+	<bean id="energizerB2BUnitService" class="com.energizer.services.product.impl.DefaultEnergizerB2BUnitService"></bean>
+
+	<bean id="energizerSalesUOMService" class="com.energizer.services.product.impl.DefaultEnergizerSalesAreaUOMService"></bean>
+
+	<!-- DAOS -->
+	<bean id="energizerSalesUOMDao" class="com.energizer.services.product.dao.impl.DefaultEnergizerSalesUOMDao"></bean>
+
+	<bean id="energizerB2BUnitDao" class="com.energizer.services.product.dao.impl.DefaultEnergizerB2BUnitDao"></bean>
+
+	<alias alias="energizerProductDAO" name="b2bEnergizerProductDAO" />
+	<bean id="b2bEnergizerProductDAO" class="com.energizer.services.product.dao.impl.DefaultEnergizerProductDAO">
+	</bean>
+
+	<alias name="defaulEenergizerProductService" alias="energizerProductService" />
+	<bean id="defaulEenergizerProductService" class="com.energizer.services.product.impl.DefaultEnergizerProductService">
+		<property name="energizerProductDAO" ref="energizerProductDAO" />
+	</bean>
+
+	<alias name="excelRowtoModelService" alias="energizerExcelRowtoModelService" />
+	<bean id="excelRowtoModelService" class="com.energizer.services.product.impl.DefaultEnergizerExcelRowtoModelService">
+	</bean>
+
+
+	<!-- *********************** Order Releted Services and DAO *************** -->
+	<alias name="defaultEnergizerOrderService" alias="energizerOrderService" />
+	<bean id="defaultEnergizerOrderService" class="com.energizer.services.order.impl.DefaultEnergizerOrderService">
+	</bean>
+
+	<alias name="defaultEnergizerOrderDAO" alias="energizerOrderDAO" />
+	<bean id="defaultEnergizerOrderDAO" class="com.energizer.services.order.dao.impl.DefaultEnergizerOrderDAO">
+	</bean>
+
+
+	<!-- *********************** Order Processing Start *************** -->
+	<bean id="phoneNumberConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.energizer.core.data.PhoneNumberData" />
+		<!-- <property name="populators">
+			<list>
+				<ref bean="phoneNumberPopulator" />
+			</list>
+		</property> -->
+	</bean>
+
+	<bean id="metricUnitPopulator" class="com.energizer.core.populators.MetricUnitPopulator" />
+	<bean id="metricUnitConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.energizer.core.data.MetricUnitData" />
+		<property name="populators">
+			<list>
+				<ref bean="metricUnitPopulator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="energizerB2BUnitPopulator" class="com.energizer.core.populators.EnergizerB2BUnitPopulator">
+		<property name="currencyConverter" ref="currencyConverter" />
+		<!-- <property name="phoneNumberConverter" ref="phoneNumberConverter" /> -->
+		<property name="b2bUnitConverter" ref="b2bUnitConverter" />
+		<property name="priceDataFactory" ref="priceDataFactory" />
+	</bean>
+	<bean id="energizerB2BUnitConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.energizer.core.data.EnergizerB2BUnitData" />
+		<property name="populators">
+			<list>
+				<ref bean="energizerB2BUnitPopulator" />
+			</list>
+		</property>
+	</bean>
+
+	<alias alias="energizerB2BOrderDAO" name="defaultEnergizerB2BOrderDAO" />
+	<bean id="defaultEnergizerB2BOrderDAO" class="com.energizer.services.order.dao.impl.DefaultEnergizerB2BOrderDAO">
+	</bean>
+
+	<alias alias="energizerB2BOrderService" name="defaultEnergizerB2BOrderService" />
+	<bean id="defaultEnergizerB2BOrderService" class="com.energizer.services.order.impl.DefaultEnergizerB2BOrderService">
+		<property name="priceDataFactory" ref="priceDataFactory" />
+		<property name="commonI18NService" ref="commonI18NService" />
+	</bean>
+	<!-- *********************** Order Processing End *************** -->
+
+	<alias name="defaulEenergizerCartService" alias="energizerCartService" />
+	<bean id="defaulEenergizerCartService" class="com.energizer.services.order.impl.DefaultEnergizerCartService">
+	</bean>
+
+
+	<alias name="defaultEnergizerInvoiceService" alias="invoiceService" />
+	<bean id="defaultEnergizerInvoiceService" class="com.energizer.core.invoice.impl.DefaultEnergizerInvoiceService">
+	</bean>
+
+	<alias name="restEnergizerInvoiceService" alias="invoiceService" />
+	<bean id="restEnergizerInvoiceService" class="com.energizer.core.invoice.impl.RestEnergizerInvoiceService">
+	</bean>
+
+	<bean id="energizerProductNameCSVProcessor" class="com.energizer.core.datafeed.processor.EnergizerMaterialNameCSVProcessor" />
+
+	<bean id="currentFactoryFindPricingStrategy" class="com.energizer.order.strategies.calculation.impl.EnergizerFindPricingFactoryStrategy"
+		parent="abstractBusinessService" />
+
+	<!-- code review comments fixes for Customer Address -->
+	<bean id="defaultEnergizerAddressService" class="com.energizer.core.datafeed.service.impl.DefaultEnergizerAddressService"
+		autowire="byName" />
+	<bean id="defaultEnergizerAddressFacade" class="com.energizer.core.datafeed.facade.impl.DefaultEnergizerAddressFacade"
+		autowire="byName" />
+	<bean id="defaultEnergizerCustomerLeadTimeService" class="com.energizer.core.datafeed.service.impl.DefaultEnergizerCustomerLeadTimeService"
+		autowire="byName" />
+	<bean id="defaultEnergizerCustomerLeadTimeFacade" class="com.energizer.core.datafeed.facade.impl.DefaultEnergizerCustomerLeadTimeFacade"
+		autowire="byName" />
+
+
+	<bean id="energizerProductHierarchyCSVProcessor" class="com.energizer.core.datafeed.processor.EnergizerProductCategoryCSVProcessor" />
+
+	<bean id="energizerCategory2CategoryRelationCSVProcessor" class="com.energizer.core.datafeed.processor.EnergizerCategory2CategoryRelationCSVProcessor" />
+
+	<alias alias="emailGenerationService" name="energizerEmailGenerationService" />
+	<bean id="energizerEmailGenerationService" class="com.energizer.core.util.EnergizerEmailGenerationService" parent="defaultEmailGenerationService">
+		<property name="emailService" ref="emailService" />
+		<property name="rendererService" ref="rendererService" />
+		<property name="emailContextFactory" ref="emailContextFactory" />
+	</bean>
+	
+	<bean id="submitOrderToSAPFailedNotificationEventListner"
+		class="com.energizer.core.event.SubmitOrderToSAPFailedNotificationEventListner"
+		parent="abstractEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+
+	</bean>
+	<bean id="sendsubmitOrderToSAPFailedNotificationEmailProcess"
+		class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource"
+			value="classpath:/energizercore/processes/sendsubmitOrderToSAPFailedNotificationEmailProcess.xml" />
+	</bean>
+	
+	<bean id="sendsubmitOrderToSAPFailedNotification"
+		class="com.energizer.core.actions.SendsubmitOrderToSAPFailedNotification">
+		<property name="eventService" ref="eventService" />
+	</bean>
+	
+	<bean id="energizerGenericEmailGenerationService"
+		class="com.energizer.core.services.email.EnergizerGenericEmailGenerationService">
+	</bean>
+	
+	<bean id="energizerGenericEmailContext"
+		class="com.energizer.core.services.email.context.EnergizerGenericEmailContext"
+		scope="prototype">
+		<property name="customerEmailResolutionService" ref="customerEmailResolutionService"/>
+		<property name="siteBaseUrlResolutionService" ref="siteBaseUrlResolutionService"/>
+		<property name="configurationService" ref="configurationService"/>
+		<property name="urlEncoderService" ref="urlEncoderService"/>
+	</bean>
+	
+	<bean id="energizerPasswordExpiryEmailContext" class="com.energizer.core.services.email.context.EnergizerPasswordExpiryEmailContext"
+	parent="energizerGenericEmailContext"></bean>
+	
+	
+	
+	<bean id="generateSendsubmitOrderToSAPFailedNotificationEmail"
+		class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+		parent="abstractAction">
+		<property name="modelService" ref="modelService" />
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+		<property name="frontendTemplateName" value="QuoteSendSubmitOrderToSAPFailedTemplate" />
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailGenerationService" ref="emailGenerationService" />
+	</bean>
+	<bean id="baseMessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource" >
+		<property name="basenames">
+			<list>
+				<value>\energizercore\messages\email-errorMessage</value>
+			</list>
+		</property>
+		<property name="defaultEncoding" value="us-ascii"/>
+		<!-- The number of seconds to cache loaded properties files. Set to -1 (never) for production. -->
+		<property name="cacheSeconds" value="#{configurationService.configuration.getProperty('storefront.resourceBundle.cacheSeconds')}"/>
+		<property name="fallbackToSystemLocale" value="false"/>
+	</bean>
+	
+	<alias alias="customerAccountService" name="energizerCustomerAccountService"/>
+	<bean id="energizerCustomerAccountService"
+			class="de.hybris.platform.commerceservices.customer.impl.DefaultCustomerAccountService">
+		<property name="userService" ref="userService"/>
+		<property name="paymentService" ref="paymentService"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="flexibleSearchService" ref="flexibleSearchService"/>
+		<property name="i18nService" ref="i18nService"/>
+		<property name="passwordEncoderService" ref="passwordEncoderService"/>
+		<property name="secureTokenService" ref="secureTokenService"/>
+		<property name="tokenValiditySeconds" value="1800"/> <!-- #{configurationService.configuration.getProperty('forgottenPassword.emailContext.expiresInSeconds')}-->
+		<property name="customerAccountDao" ref="customerAccountDao"/>
+		<property name="baseSiteService" ref="baseSiteService"/>
+		<property name="baseStoreService" ref="baseStoreService"/>
+		<property name="eventService" ref="eventService"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+		<property name="customerEmailResolutionService" ref="customerEmailResolutionService"/>
+		<property name="passwordEncoding" value="md5"/>
+		<property name="typeService" ref="typeService"/>
+		<property name="customerNameStrategy" ref="defaultCustomerNameStrategy"/>
+		<property name="timeService" ref="timeService"/>
+		<property name="monthsForOrderExpiry"
+					 value="#{configurationService.configuration.getProperty('guest.orderstatuspage.access.expiry.month')}"/>
+		<property name="commerceCommonI18NService" ref="commerceCommonI18NService"/>
+		<property name="configurationService" ref="configurationService"/>
+	</bean>
+	
+
+	<bean id="findApprovers"
+	      class="com.energizer.core.actions.FindApprovers"
+	      parent="abstractSimpleB2BApproveOrderDecisionAction">
+		<property name="b2bPermissionService" ref="energizerB2BPermissionService"/>
+		<property name="permissionResultHelper" ref="permissionResultHelper"/>
+	</bean>
+	
+	<bean id="energizerB2BPermissionService"
+	      class="com.energizer.services.order.EnergizerB2BPermissionService"
+	      parent="defaultB2BPermissionService">
+	</bean>
+	<!-- Redefined defaultProductModelUrlResolver to avoid looping of product url in apache.
+		the issue was if there is + symbol in product description, the + symbol will be encrypted in product url
+		and when this encrypted url passes thru apache, apache could not resolve the url as + symbol is a reserved 
+		character and request will end up in infinite loop
+   -->
+	<alias name="defaultProductModelUrlResolver" alias="productModelUrlResolver"/>
+	<bean id="defaultProductModelUrlResolver"
+			class="de.hybris.platform.commerceservices.url.impl.DefaultProductModelUrlResolver">
+		<property name="threadContextService" ref="threadContextService"/>
+		<property name="commerceCategoryService" ref="commerceCategoryService"/>
+		<property name="baseSiteService" ref="baseSiteService"/>
+		<property name="defaultPattern" value="/{category-path}/{product-code}/p/{product-code}"/>
+		<property name="productAndCategoryHelper" ref="productAndCategoryHelper"/>
+	</bean>
+
+	<bean id="energizerPasswordExpiryJob" class="com.energizer.core.datafeed.processor.customer.EnergizerPasswordExpiryJob"
+		autowire="byName" />
+	<bean id="defaultEnergizerPasswordExpiryFacade" class="com.energizer.core.datafeed.facade.impl.DefaultEnergizerPasswordExpiryFacade"
+	autowire="byName"></bean>
+		
+	<bean id="defaultEnergizerPasswordGenerateFacade" class="com.energizer.core.datafeed.facade.impl.DefaultEnergizerPasswordGenerateFacade"
+	autowire="byName"></bean>	
+	
+
+	
+	<!--  approval process changes starts -->
+	<!-- <alias alias="b2BAbstractWorkflowAutomatedAction" name="energizerB2BAbstractWorkflowAutomatedAction"/> -->
+	<bean id="b2BAbstractWorkflowAutomatedAction" class="com.energizer.core.actions.B2BAbstractWorkflowAutomatedAction" abstract="true" >
+		<property name="modelService" ref="modelService"/>
+	</bean>
+	<!-- <alias alias="approveDecisionAutomatedAction" name="energizerApproveDecisionAutomatedAction"/> -->
+	<bean name="approveDecisionAutomatedAction" class="com.energizer.core.actions.ApproveDecisionAutomatedAction" parent="b2BAbstractWorkflowAutomatedAction">
+		<property name="eventService" ref="eventService"/>
+	</bean>
+	
+	<!-- Increasing limit of configurable maximum product quantity that can be added to the cart - START -->
+	<alias name="defaultCommerceUpdateCartEntryStrategy" alias="commerceUpdateCartEntryStrategy"/>
+	<bean id="defaultCommerceUpdateCartEntryStrategy"
+			class="de.hybris.platform.commerceservices.order.impl.DefaultCommerceUpdateCartEntryStrategy"
+			parent="abstractCommerceCartStrategy">
+		<property name="commerceUpdateCartEntryHooks" ref="commerceUpdateCartEntryMethodHooks"/>
+		<property name="configurationService" ref="configurationService"/>
+		<!--  <property name="forceInStockMaxQuantity" value="9999999" />  -->
+		<property name="forceInStockMaxQuantity" value="${max.order.quantity}" />
+		<property name="entryMergeStrategy" ref="entryMergeStrategy"/>
+	</bean>
+	
+	<alias name="defaultCommerceAddToCartStrategy" alias="commerceAddToCartStrategy"/>
+	<bean id="defaultCommerceAddToCartStrategy"
+			class="de.hybris.platform.commerceservices.order.impl.DefaultCommerceAddToCartStrategy"
+			parent="abstractCommerceAddToCartStrategy">
+		<property name="commerceAddToCartMethodHooks" ref="commerceAddToCartMethodHooks"/>
+		<property name="configurationService" ref="configurationService"/>
+		 <!-- <property name="forceInStockMaxQuantity" value="9999999" />  -->
+		 <property name="forceInStockMaxQuantity" value="${max.order.quantity}" />
+		 <!-- <property name="configuratorSettingsService" ref="configuratorSettingsService"/> -->
+		 <property name="entryMergeStrategy" ref="entryMergeStrategy"/>
+	</bean>
+	
+	<!-- Increasing limit of configurable maximum product quantity that can be added to the cart - END -->
+	
+	<bean id="energizerOrderStuckJob" class="com.energizer.core.order.EnergizerOrderStuckJob" autowire="byName" />
+	
+	<alias name="defaultEnergizerDeliveryNoteDao" alias="deliveryNoteDao" />
+	<bean id="defaultEnergizerDeliveryNoteDao" class="com.energizer.services.delivery.note.dao.impl.DefaultEnergizerDeliveryNoteDAO">
+		<!-- <property name="flexibleSearchService" ref="flexibleSearchService"/> -->
+	</bean>
+	
+	<alias name="defaultEnergizerDeliveryNoteService" alias="deliveryNoteService" />
+	<bean id="defaultEnergizerDeliveryNoteService" class="com.energizer.core.delivery.note.impl.DefaultEnergizerDeliveryNoteService">
+		<!-- <property name="deliveryNoteDao" ref="deliveryNoteDao" /> -->
+	</bean>
+	<!-- Added Bean for WeSell Implementation - START -->
+	<bean id="defaultEnergizerB2BEmployeeService" class="com.energizer.services.b2bemployee.impl.DefaultEnergizerB2BEmployeeService"/>
+	<bean id="defaultEnergizerB2BEmployeeDao" class="com.energizer.services.b2bemployee.dao.DefaultEnergizerB2BEmployeeDao"/>	
+	
+	<bean id="energizerShipmentCSVProcessor" class="com.energizer.core.datafeed.processor.customer.EnergizerShipmentCSVProcessor"
+		autowire="byName"></bean>
+		
+		<bean id="energizerB2BEmployeeCSVProcessor" class="com.energizer.core.datafeed.processor.customer.EnergizerB2BEmployeeCSVProcessor"
+		autowire="byName"></bean>
+		
+	<bean id="energizerB2BEmployeePopulator" class="com.energizer.core.populators.EnergizerB2BEmployeePopulator">
+		<property name="energizerB2BUnitConverter" ref="energizerB2BUnitConverter" />
+	</bean>
+	
+	<bean id="energizerB2BEmployeeConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.energizer.facades.employee.data.EnergizerB2BEmployeeData" />
+		<property name="populators">
+			<list>
+				<ref bean="energizerB2BEmployeePopulator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="energizerOrderReprocessJob" class="com.energizer.core.order.process.EnergizerOrderReprocessJob" autowire="byName" >
+	</bean>
+	
+	<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->
+	<bean id="defaultB2BEmployeeAccountService" class="com.energizer.services.b2bemployee.impl.DefaultB2BEmployeeAccountService" parent="defaultCustomerAccountService">
+		<property name="eventService" ref="eventService"/>
+	</bean>
+	<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->
+	
+	<!--  Added for Order auto approval action for WeSell Sales Rep orders - START -->
+	<bean id="checkOrderRequireAdminApproval"
+	      class="com.energizer.core.actions.CheckOrderRequireAdminApproval"
+	      parent="abstractSimpleB2BApproveOrderDecisionAction">
+		<property name="b2bPermissionService" ref="energizerB2BPermissionService"/>
+		<property name="permissionResultHelper" ref="permissionResultHelper"/>
+	</bean>
+		
+	<alias name="defaultEnergizerCommerceSearchTextPopulator" alias="commerceSearchTextPopulator" />
+	<bean id="defaultEnergizerCommerceSearchTextPopulator" class="de.hybris.platform.commerceservices.search.solrfacetsearch.populators.SearchTextPopulator">
+		<property name="freeTextQueryBuilders">
+			<list>
+				<bean class="com.energizer.core.solr.query.impl.DefaultEnergizerFreeTextQueryBuilder">
+					<property name="propertyName" value="ean" />
+					<property name="boost" value="100" />
+				</bean>
+				<bean class="com.energizer.core.solr.query.impl.DefaultEnergizerFreeTextQueryBuilder">
+					<property name="propertyName" value="code" />
+					<property name="boost" value="90" />
+				</bean>
+				<bean class="com.energizer.core.solr.query.impl.DefaultEnergizerFreeTextQueryBuilder">
+					<property name="propertyName" value="name" />
+					<property name="boost" value="50" />
+				</bean>
+				<bean class="com.energizer.core.solr.query.impl.DefaultEnergizerFreeTextQueryBuilder">
+					<property name="propertyName" value="manufacturerName" />
+					<property name="boost" value="40" />
+				</bean>
+				<bean
+					class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.ClassificationFreeTextQueryBuilder">
+					<property name="boost" value="30" />
+				</bean>
+				<bean class="com.energizer.core.solr.query.impl.DefaultEnergizerFreeTextQueryBuilder">
+					<property name="propertyName" value="keywords" />
+					<property name="boost" value="20" />
+				</bean>
+				<bean class="com.energizer.core.solr.query.impl.DefaultEnergizerFreeTextQueryBuilder">
+					<property name="propertyName" value="categoryName" />
+					<property name="boost" value="10" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<alias name="defaultCommerceProductSearchService" alias="commerceProductSearchService" />
+	<alias name="defaultEnergizerCommerceSolrProductSearchService" alias="defaultCommerceProductSearchService" />
+	<bean id="defaultEnergizerCommerceSolrProductSearchService" class="com.energizer.core.solr.query.impl.DefaultEnergizerSolrProductSearchService" parent="defaultCommerceSolrProductSearchService"/>
+	
+	<!--  Added for Order auto approval action for WeSell Sales Rep orders - END -->
+	
+	<alias name="defaultEnergizerCalculationService" alias="calculationService"/>
+	<bean id="defaultEnergizerCalculationService" class="com.energizer.services.order.impl.DefaultEnergizerCalculationService"
+			parent="defaultCalculationService">
+	</bean>
+	<bean id="energizerWesellVirtualID" class="com.energizer.core.wesell.virtualid.creation.impl.DefaultEnergizerWesellVirtualID"/>
+	
+	<!-- Added Bean for WeSell Implementation - END -->
+</beans>

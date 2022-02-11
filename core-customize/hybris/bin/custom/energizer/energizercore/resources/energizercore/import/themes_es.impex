@@ -1,0 +1,9 @@
+# Import Themes
+#
+# Localization de
+#
+
+$lang=es
+
+UPDATE SiteTheme;code[unique=true];name[lang=$lang]
+;green;Green;

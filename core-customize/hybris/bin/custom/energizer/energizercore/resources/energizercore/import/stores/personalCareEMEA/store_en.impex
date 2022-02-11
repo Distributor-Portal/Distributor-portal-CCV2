@@ -1,0 +1,12 @@
+# 
+# Import the Powertools BaseStore
+#
+# Localization en
+#
+
+$lang=en
+
+$storeUid=personalCareEMEA
+
+UPDATE BaseStore;uid[unique=true];name[lang=$lang]
+;$storeUid;"PersonalCare EMEA Products";

@@ -1,0 +1,27 @@
+#
+# Import the Solr CronJob Trigger configuration for the personalCareEMEA store
+#
+
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];second;minute;hour;day;month;year;relative;active;maxAcceptableDelay
+
+# Run the full-personalCareEMEAIndex-cronJob at 3:35 AM every day
+#;full-personalCareEMEAIndex-cronJob;0;35;3;-1;-1;-1;false;false;-1
+
+# Run the update-personalCareEMEAIndex-cronJob every 1 hour
+#;update-personalCareEMEAIndex-cronJob;0;0;1;-1;-1;-1;true;false;-1
+
+
+#FINAL RECOMMENDED SCHEDULE AS ON 09 DEC 2020 (ALL CRONJOBS IN THEIR ORDER OF EXECUTION - RESOLVE CRONJOBS CONFLICTS)
+# Run the full-personalCareEMEAIndex-cronJob at 15:45 AM every day
+#;full-personalCareEMEAIndex-cronJob;0;45;15;-1;-1;-1;false;true;-1
+
+# Run the update-personalCareEMEAIndex-cronJob every 8 hours
+#;update-personalCareEMEAIndex-cronJob;0;0;8;-1;-1;-1;true;true;-1
+ 
+ #Run the update job using cronExpression 
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];cronExpression
+# Run the full-personalCareEMEAIndex-cronJob at 15:45 AM every day
+;full-personalCareEMEAIndex-cronJob;0 45 15 ? * *
+# Run the update-personalCareEMEAIndex-cronJob every 8 hours
+;update-personalCareEMEAIndex-cronJob;0 0 */8 ? * *
+ 

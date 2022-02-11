@@ -1,0 +1,128 @@
+# ImpEx for Importing CMS Content
+# Spanish Localisation
+
+# Macros / Replacement Parameter definitions
+$contentCatalog=personalCareContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$picture=media(code, $contentCV);
+$siteResource=jar:com.energizer.initialdata.constants.EnergizerInitialDataConstants&/energizerinitialdata/import/contentCatalogs/$contentCatalog
+
+
+# Language
+$lang=es
+
+
+# CMS Image Components
+UPDATE CMSImageComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+
+# CMS Link Components
+UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];linkName[lang=$lang]
+;;HomepageNavLink;Energizer
+;;Feminine_Care_Link;Feminine Care
+;;Playtex_Link;Playtex
+;;Carefree_Link;Carefree
+;;Stayfree_Link;Stayfree
+;;Ob_Link;OB
+;;Infant_Care_Link;Infant Care
+;;Infant_Playtex_Link;Playtex
+;;Shaving_Link;Shaving
+;;Schick_Link;Schick
+;;Edge_Link;Edge
+;;Skintimate_Link;Skintimate
+;;Skin_Care_Link;Skin Care
+;;Personal_Cleansing_Clothes_Link;Personal Cleansing Clothes
+;;Wet_Ones_Link;Wet Ones
+;;SkinCare_Playtex_Link;Playtex
+;;Sun_Care_Link;Sun Care
+;;Banana_Boat_Link;Banana Boat
+;;Hawaiian_Tropic_Link;Hawaiian Tropic
+;;CatalogDownloadPageLink;Descarga del catálogo
+#;;UserLoginLink;Login
+#;;MyAccountLink;My Account
+#;;MyCompanyLink;My Company
+#;;LogoutLink;Logout
+#;;StoreFinderLink;Store Locator
+#;;QuickOrderPageLink;Quick Order
+#;;ExcelOrderPageLink;Excel Order
+#;;AboutUSLink;About US
+#;;CopyRightLink;©2015 Energizer
+#;;TrademarkLink;Trademark
+#;;TermsAndConditionsLink;Terms And Conditions
+#;;PrivacyPolicyLink;Privacy Policy
+#;;ContactUSLink;Contact US
+#;;LegalLink;Legal
+#;;FAQLink;FAQS
+
+# Lightbox Banner for Mini Cart
+UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText;&imageRef
+
+
+
+# CMS Mini Cart Component
+UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;title[lang=$lang]
+
+# CMS Tab Paragraph Components
+UPDATE CMSTabParagraphComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang];content[lang=$lang]
+
+# CMS Footer Component
+UPDATE FooterComponent;$contentCV[unique=true];uid[unique=true];notice[lang=$lang]
+
+# CMS Paragraph Components
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+
+# CMS Product References Components
+UPDATE ProductReferencesComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# CMS PurchasedCategorySuggestion Components
+UPDATE PurchasedCategorySuggestionComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# Category Pages
+UPDATE CategoryPage;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# CMS Navigation Nodes
+UPDATE CMSNavigationNode;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+#;;Playtex_Nav_Node;Playtex
+#;;Carefree_Nav_Node;Carefree
+#;;Stayfree_Nav_Node;Stayfree
+
+
+# CMS Banner Components
+
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText
+#;;/images/banners/homepage/Banner 950 x 600px Banana Boat Sport ESP.png;Banner 950 x 600px Banana Boat Sport ESP.png;$siteResource/images/banners/homepage/Banner 950 x 600px Banana Boat Sport ESP.png;image/jpg;Banana Boat
+#;;/images/banners/homepage/Banner 950 x 600px Ozono Duo Defense ESP.jpg;Banner 950 x 600px Ozono Duo Defense ESP.jpg;$siteResource/images/banners/homepage/Banner 950 x 600px Ozono Duo Defense ESP.jpg;image/jpg;Ozono Defense
+#;;/images/banners/homepage/Banner 950 x 600px Playtex ESP.jpg;Banner 950 x 600px Playtex ESP.jpg;$siteResource/images/banners/homepage/Banner 950 x 600px Playtex ESP.jpg;image/jpg;Playtex
+#;;/images/banners/homepage/Banner 950 x 600px SWS Mujer ESP.jpg;Banner 950 x 600px SWS Mujer ESP.jpg;$siteResource/images/banners/homepage/Banner 950 x 600px SWS Mujer ESP.jpg;image/jpg;SWS Mujer
+#;;/images/banners/homepage/Banner 950 x 600px Xtreme3 Ultimate ESP.jpg;Banner 950 x 600px Xtreme3 Ultimate ESP.jpg;$siteResource/images/banners/homepage/Banner 950 x 600px Xtreme3 Ultimate ESP.jpg;image/jpg;Xtreme3 Ultimate
+;;/images/banners/homepage/Banner-950-x-533px-Dry-Balance-Sport-BB.jpg;Banner-950-x-533px-Dry-Balance-Sport-BB.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Dry-Balance-Sport-BB.jpg;image/jpg;Banana Boat
+;;/images/banners/homepage/Banner-950-x-533px-Playtex-ESP.jpg;Banner-950-x-533px-Playtex-ESP.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Playtex-ESP.jpg;image/jpg;Playtex
+;;/images/banners/homepage/Banner-950-x-533px-SWS-Fem-ESP.jpg;Banner-950-x-533px-SWS-Fem-ESP.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-SWS-Fem-ESP.jpg;image/jpg;SWS Mujer
+;;/images/banners/homepage/Banner-950-x-533px-Xtreme3-Ultimate-ESP.jpg;Banner-950-x-533px-Xtreme3-Ultimate-ESP.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Xtreme3-Ultimate-ESP.jpg;image/jpg;Xtreme3 Ultimate
+;;/images/banners/homepage/Banner-950-x-533px-Crefree-Breathe-ESP.jpg;Banner-950-x-533px-Crefree-Breathe-ESP.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Crefree-Breathe-ESP.jpg;image/jpg;Carefree
+;;/images/banners/homepage/Banner-950-x-533px-Stayfree-Carefree-ESP.jpg;Banner-950-x-533px-Stayfree-Carefree-ESP.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Stayfree-Carefree-ESP.jpg;image/jpg;Stayfree
+;;/images/banners/homepage/Banner-950-x-533px-Master-Brand-HT-ESP.jpg;Banner-950-x-533px-Master-Brand-HT-ESP.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Master-Brand-HT-ESP.jpg;image/jpg;Hawaiian Tropic
+
+
+# Site Logo Component
+UPDATE BannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink;$picture[lang=$lang];external
+#;;HomePageBannerComponent11;Homepage banner component11;HomePageBannerComponent11;http://www.bananaboatlatinoamerica.com/;/images/banners/homepage/Banner 950 x 600px Banana Boat Sport ESP.png;true
+#;;HomePageBannerComponent22;Homepage banner component22;HomePageBannerComponent22;http://www.hawaiiantropiclatinoamerica.com/;/images/banners/homepage/Banner 950 x 600px Ozono Duo Defense ESP.jpg;true
+#;;HomePageBannerComponent33;Homepage banner component33;HomePageBannerComponent33;http://www.playtexlatinoamerica.com/;/images/banners/homepage/Banner 950 x 600px Playtex ESP.jpg;true
+#;;HomePageBannerComponent44;Homepage banner component44;HomePageBannerComponent44;http://www.schicklatinoamerica.com/;/images/banners/homepage/Banner 950 x 600px SWS Mujer ESP.jpg;true
+#;;HomePageBannerComponent55;Homepage banner component55;HomePageBannerComponent55;http://www.schicklatinoamerica.com/;/images/banners/homepage/Banner 950 x 600px Xtreme3 Ultimate ESP.jpg;true
+;;HomePageBannerComponent11;Homepage banner component11;HomePageBannerComponent11;http://www.bananaboatlatinoamerica.com/;/images/banners/homepage/Banner-950-x-533px-Dry-Balance-Sport-BB.jpg;true
+;;HomePageBannerComponent22;Homepage banner component22;HomePageBannerComponent22;http://www.playtexlatinoamerica.com/;/images/banners/homepage/Banner-950-x-533px-Playtex-ESP.jpg;true
+;;HomePageBannerComponent33;Homepage banner component33;HomePageBannerComponent33;http://www.schicklatinoamerica.com/;/images/banners/homepage/Banner-950-x-533px-SWS-Fem-ESP.jpg;true
+;;HomePageBannerComponent44;Homepage banner component44;HomePageBannerComponent44;http://www.schicklatinoamerica.com/;/images/banners/homepage/Banner-950-x-533px-Xtreme3-Ultimate-ESP.jpg;true
+;;HomePageBannerComponent55;Homepage banner component55;HomePageBannerComponent55;http://www.getcarefree.com/;/images/banners/homepage/Banner-950-x-533px-Crefree-Breathe-ESP.jpg;true
+;;HomePageBannerComponent66;Homepage banner component66;HomePageBannerComponent66;http://www.stayfree.com/;/images/banners/homepage/Banner-950-x-533px-Stayfree-Carefree-ESP.jpg;true
+;;HomePageBannerComponent77;Homepage banner component77;HomePageBannerComponent77;http://www.hawaiiantropiclatinoamerica.com/;/images/banners/homepage/Banner-950-x-533px-Master-Brand-HT-ESP.jpg;true
+
+
+
+
+
+
+
+
+

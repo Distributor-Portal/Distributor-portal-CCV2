@@ -1,0 +1,175 @@
+# ImpEx for Importing CMS Content
+# Spanish Localisation
+
+# Macros / Replacement Parameter definitions
+$contentCatalog=personalCareEMEAContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$picture=media(code, $contentCV);
+$siteResource=jar:com.energizer.initialdata.constants.EnergizerInitialDataConstants&/energizerinitialdata/import/contentCatalogs/$contentCatalog
+
+
+# Language
+$lang=es
+
+
+# CMS Image Components
+UPDATE CMSImageComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+
+# CMS Link Components
+UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];linkName[lang=$lang]
+
+#Starting - Added CMS Link Components for personalCareEMEA - START
+;;HomepageEMEANavLink;Energizer
+;;Sun_Skin_Care_EMEA_Link;"Sun & Skin Care"
+;;Wet_Shave_EMEA_Link;Wet Shave
+;;Sun_Care_EMEA_Link;Sun Care
+;;Disposables_EMEA_Link;Disposables
+;;Mens_Systems_EMEA_Link;"Men's Systems"
+;;Shave_Prep_EMEA_Link;Shave Prep
+;;Womens_Systems_EMEA_Link;"Women's Systems"
+;;Banana_Boat_EMEA_Link;Banana Boat
+;;Hawaiian_Tropic_EMEA_Link;Hawaiian Tropic
+;;Exacta3_Extra3_EMEA_Link;"Exacta3/Extra3"
+;;Lng_Hndl_Rubber_Disposables_EMEA_Link;"Lng Hndl/Rubber Disposables"
+;;Low_End_Double_Disposables_EMEA_Link;Low End Double Disposables
+;;Low_End_Single_Disposables_EMEA_Link;Low End Single Disposables
+;;Other_PBG_Disposables_EMEA_Link;Other PBG Disposables
+;;Quattro_Disposables_EMEA_Link;Quattro Disposables
+;;Slim_Twin_EII_Disposables_EMEA_Link;"Slim Twin/EII Disposables"
+;;Xtreme_3_Disposables_EMEA_Link;Xtreme 3 Disposables
+;;Hydro_Blades_EMEA_Link;Hydro Blades
+;;Hydro_Razors_EMEA_Link;Hydro Razors
+;;Mens_Other_Blades_EMEA_Link;"Men's Other Blades"
+;;Mens_Other_Razors_EMEA_Link;"Men's Other Razors"
+;;Quattro_Blades_EMEA_Link;Quattro Blades
+;;Quattro_Razors_EMEA_Link;Quattro Razors
+;;Quattro_Trimmers_EMEA_Link;Quattro Trimmers
+;;Legacy_Shave_Preps_EMEA_Link;Legacy Shave Preps
+;;Intuition_Blades_EMEA_Link;Intuition Blades
+;;Intuition_Razors_EMEA_Link;Intuition Razors
+;;Lady_P_Silk_Blades_EMEA_Link;"Lady P/Silk Blades"
+;;Lady_P_Silk_Razors_EMEA_Link;"Lady P/Silk Razors"
+;;Quattro_for_Women_Blades_EMEA_Link;Quattro for Women Blades
+;;Quattro_for_Women_Razors_EMEA_Link;Quattro for Women Razors
+;;Quattro_for_Women_Trimmers_EMEA_Link;Quattro for Women Trimmers
+#Ending - Added CMS Link Components for personalCareEMEA - END
+
+
+;;CatalogDownloadPageLink;Descarga del catálogo
+#;;UserLoginLink;Login
+#;;MyAccountLink;My Account
+#;;MyCompanyLink;My Company
+#;;LogoutLink;Logout
+#;;StoreFinderLink;Store Locator
+#;;QuickOrderPageLink;Quick Order
+#;;ExcelOrderPageLink;Excel Order
+#;;AboutUSLink;About US
+#;;CopyRightLink;©2015 Energizer
+#;;TrademarkLink;Trademark
+#;;TermsAndConditionsLink;Terms And Conditions
+#;;PrivacyPolicyLink;Privacy Policy
+#;;ContactUSLink;Contact US
+#;;LegalLink;Legal
+#;;FAQLink;FAQS
+
+# Lightbox Banner for Mini Cart
+UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText;&imageRef
+
+
+
+# CMS Mini Cart Component
+UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;title[lang=$lang]
+
+# CMS Tab Paragraph Components
+UPDATE CMSTabParagraphComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang];content[lang=$lang]
+
+# CMS Footer Component
+UPDATE FooterComponent;$contentCV[unique=true];uid[unique=true];notice[lang=$lang]
+
+# CMS Paragraph Components
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+
+# CMS Product References Components
+UPDATE ProductReferencesComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# CMS PurchasedCategorySuggestion Components
+UPDATE PurchasedCategorySuggestionComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# Category Pages
+UPDATE CategoryPage;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# CMS Navigation Nodes
+UPDATE CMSNavigationNode;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+#Starting - Added CMS Link Components for personalCareEMEA - START
+;;Sun_Skin_Care_EMEA_Nav_Node;"Sun & Skin Care"
+;;Wet_Shave_EMEA_Nav_Node;Wet Shave
+;;Sun_Care_EMEA_Nav_Node;Sun Care
+;;Disposables_EMEA_Nav_Node;Disposables
+;;Mens_Systems_EMEA_Nav_Node;"Men's Systems"
+;;Shave_Prep_EMEA_Nav_Node;Shave Prep
+;;Womens_Systems_EMEA_Nav_Node;"Women's Systems"
+;;Banana_Boat_EMEA_Nav_Node;Banana Boat
+;;Hawaiian_Tropic_EMEA_Nav_Node;Hawaiian Tropic
+;;Exacta3_Extra3_EMEA_Nav_Node;"Exacta3/Extra3"
+;;Lng_Hndl_Rubber_Disposables_EMEA_Nav_Node;"Lng Hndl/Rubber Disposables"
+;;Low_End_Double_Disposables_EMEA_Nav_Node;Low End Double Disposables
+;;Low_End_Single_Disposables_EMEA_Nav_Node;Low End Single Disposables
+;;Other_PBG_Disposables_EMEA_Nav_Node;Other PBG Disposables
+;;Quattro_Disposables_EMEA_Nav_Node;Quattro Disposables
+;;Slim_Twin_EII_Disposables_EMEA_Nav_Node;"Slim Twin/EII Disposables"
+;;Xtreme_3_Disposables_EMEA_Nav_Node;Xtreme 3 Disposables
+;;Hydro_Blades_EMEA_Nav_Node;Hydro Blades
+;;Hydro_Razors_EMEA_Nav_Node;Hydro Razors
+;;Mens_Other_Blades_EMEA_Nav_Node;"Men's Other Blades"
+;;Mens_Other_Razors_EMEA_Nav_Node;"Men's Other Razors"
+;;Quattro_Blades_EMEA_Nav_Node;Quattro Blades
+;;Quattro_Razors_EMEA_Nav_Node;Quattro Razors
+;;Quattro_Trimmers_EMEA_Nav_Node;Quattro Trimmers
+;;Legacy_Shave_Preps_EMEA_Nav_Node;Legacy Shave Preps
+;;Intuition_Blades_EMEA_Nav_Node;Intuition Blades
+;;Intuition_Razors_EMEA_Nav_Node;Intuition Razors
+;;Lady_P_Silk_Blades_EMEA_Nav_Node;"Lady P/Silk Blades"
+;;Lady_P_Silk_Razors_EMEA_Nav_Node;"Lady P/Silk Razors"
+;;Quattro_for_Women_Blades_EMEA_Nav_Node;Quattro for Women Blades
+;;Quattro_for_Women_Razors_EMEA_Nav_Node;Quattro for Women Razors
+;;Quattro_for_Women_Trimmers_EMEA_Nav_Node;Quattro for Women Trimmers
+#Ending - Added CMS Link Components for personalCareEMEA - END
+
+#;;Playtex_Nav_Node;Playtex
+#;;Carefree_Nav_Node;Carefree
+#;;Stayfree_Nav_Node;Stayfree
+
+
+# CMS Banner Components
+
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText
+;;/images/banners/homepage/playtex 950px x 600px.jpg;playtex 950px x 600px.jpg;$siteResource/images/banners/homepage/playtex 950px x 600px.jpg;image/jpg;Playtex
+;;/images/banners/homepage/banners 950px x600px carefree.jpg;banners 950px x600px carefree.jpg;$siteResource/images/banners/homepage/banners 950px x600px carefree.jpg;image/jpg;Carefree
+;;/images/banners/homepage/banners 950px x600px stayfree.jpg;banners 950px x600px stayfree.jpg;$siteResource/images/banners/homepage/banners 950px x600px stayfree.jpg;image/jpg;Stayfree
+;;/images/banners/homepage/BB  950px x 600px BB.jpg;BB  950px x 600px BB.jpg;$siteResource/images/banners/homepage/BB  950px x 600px BB.jpg;image/jpg;Banana Boat
+;;/images/banners/homepage/banners 950px x600px HT.jpg;banners 950px x600px HT.jpg;$siteResource/images/banners/homepage/banners 950px x600px HT.jpg;image/jpg;Hawaiian Tropic
+;;/images/banners/homepage/banners 950px x600px X3.jpg;banners 950px x600px X3.jpg;$siteResource/images/banners/homepage/banners 950px x600px X3.jpg;image/jpg;Schick 3
+;;/images/banners/homepage/banners 950px x600px Q4.jpg;banners 950px x600px Q4.jpg;$siteResource/images/banners/homepage/banners 950px x600px Q4.jpg;image/jpg;Schick Quattro
+
+
+# Site Logo Component
+UPDATE BannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink;$picture[lang=$lang];external
+;;HomePageBannerComponent11;Homepage banner component11;HomePageBannerComponent11;http://www.schicklatinoamerica.com/;/images/banners/homepage/banners 950px x600px X3.jpg;true
+;;HomePageBannerComponent22;Homepage banner component22;HomePageBannerComponent22;http://www.hawaiiantropiclatinoamerica.com/;/images/banners/homepage/banners 950px x600px HT.jpg;true
+;;HomePageBannerComponent33;Homepage banner component33;HomePageBannerComponent33;http://www.schicklatinoamerica.com/;/images/banners/homepage/banners 950px x600px Q4.jpg;true
+;;HomePageBannerComponent44;Homepage banner component44;HomePageBannerComponent44;http://www.bananaboatlatinoamerica.com/;/images/banners/homepage/BB  950px x 600px BB ENG.jpg;true
+;;HomePageBannerComponent55;Homepage banner component55;HomePageBannerComponent55;http://www.playtexlatinoamerica.com/;/images/banners/homepage/playtex 950px x 600px.jpg;true
+;;HomePageBannerComponent66;Homepage banner component66;HomePageBannerComponent66;http://www.carefreeliners.com;/images/banners/homepage/banners 950px x600px carefree.jpg;true
+;;HomePageBannerComponent77;Homepage banner component77;HomePageBannerComponent77;http://www.stayfree.com/;/images/banners/homepage/banners 950px x600px stayfree.jpg;true
+
+
+
+
+
+
+
+
+
+
+

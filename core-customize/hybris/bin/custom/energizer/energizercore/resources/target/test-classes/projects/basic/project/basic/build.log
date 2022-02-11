@@ -1,0 +1,353 @@
+[INFO] Error stacktraces are turned on.
+[INFO] Scanning for projects...
+[INFO] Downloading: https://repo.maven.apache.org/maven2/io/spring/platform/platform-bom/1.1.1.RELEASE/platform-bom-1.1.1.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/io/spring/platform/platform-bom/1.1.1.RELEASE/platform-bom-1.1.1.RELEASE.pom (49 KB at 36.8 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-starter-parent/1.2.1.RELEASE/spring-boot-starter-parent-1.2.1.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-starter-parent/1.2.1.RELEASE/spring-boot-starter-parent-1.2.1.RELEASE.pom (7 KB at 71.8 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/1.2.1.RELEASE/spring-boot-dependencies-1.2.1.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/1.2.1.RELEASE/spring-boot-dependencies-1.2.1.RELEASE.pom (53 KB at 204.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-framework-bom/4.1.4.RELEASE/spring-framework-bom-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-framework-bom/4.1.4.RELEASE/spring-framework-bom-4.1.4.RELEASE.pom (5 KB at 36.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-releasetrain/Evans-SR1/spring-data-releasetrain-Evans-SR1.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-releasetrain/Evans-SR1/spring-data-releasetrain-Evans-SR1.pom (4 KB at 37.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/data/build/spring-data-build/1.5.1.RELEASE/spring-data-build-1.5.1.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/data/build/spring-data-build/1.5.1.RELEASE/spring-data-build-1.5.1.RELEASE.pom (3 KB at 25.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/integration/spring-integration-bom/4.1.2.RELEASE/spring-integration-bom-4.1.2.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/integration/spring-integration-bom/4.1.2.RELEASE/spring-integration-bom-4.1.2.RELEASE.pom (8 KB at 56.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-bom/3.2.5.RELEASE/spring-security-bom-3.2.5.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-bom/3.2.5.RELEASE/spring-security-bom-3.2.5.RELEASE.pom (4 KB at 41.3 KB/sec)
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Spring MVC Application 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-surefire-plugin/2.12.4/maven-surefire-plugin-2.12.4.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-surefire-plugin/2.12.4/maven-surefire-plugin-2.12.4.pom (11 KB at 75.8 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire/2.12.4/surefire-2.12.4.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire/2.12.4/surefire-2.12.4.pom (14 KB at 99.8 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-surefire-plugin/2.12.4/maven-surefire-plugin-2.12.4.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-surefire-plugin/2.12.4/maven-surefire-plugin-2.12.4.jar (30 KB at 148.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-war-plugin/2.1.1/maven-war-plugin-2.1.1.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-war-plugin/2.1.1/maven-war-plugin-2.1.1.pom (7 KB at 62.6 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-war-plugin/2.1.1/maven-war-plugin-2.1.1.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-war-plugin/2.1.1/maven-war-plugin-2.1.1.jar (76 KB at 103.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-webmvc/4.1.4.RELEASE/spring-webmvc-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-webmvc/4.1.4.RELEASE/spring-webmvc-4.1.4.RELEASE.pom (12 KB at 40.6 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.1.4.RELEASE/spring-beans-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.1.4.RELEASE/spring-beans-4.1.4.RELEASE.pom (3 KB at 25.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-core/4.1.4.RELEASE/spring-core-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-core/4.1.4.RELEASE/spring-core-4.1.4.RELEASE.pom (3 KB at 25.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-context/4.1.4.RELEASE/spring-context-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-context/4.1.4.RELEASE/spring-context-4.1.4.RELEASE.pom (5 KB at 12.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.1.4.RELEASE/spring-aop-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.1.4.RELEASE/spring-aop-4.1.4.RELEASE.pom (3 KB at 7.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.1.4.RELEASE/spring-expression-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.1.4.RELEASE/spring-expression-4.1.4.RELEASE.pom (2 KB at 18.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-web/4.1.4.RELEASE/spring-web-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-web/4.1.4.RELEASE/spring-web-4.1.4.RELEASE.pom (8 KB at 44.8 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-config/3.2.5.RELEASE/spring-security-config-3.2.5.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-config/3.2.5.RELEASE/spring-security-config-3.2.5.RELEASE.pom (13 KB at 62.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-core/3.2.5.RELEASE/spring-security-core-3.2.5.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-core/3.2.5.RELEASE/spring-security-core-3.2.5.RELEASE.pom (9 KB at 59.9 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-web/3.2.5.RELEASE/spring-security-web-3.2.5.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-web/3.2.5.RELEASE/spring-security-web-3.2.5.RELEASE.pom (8 KB at 56.2 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/thymeleaf/thymeleaf-spring4/2.1.4.RELEASE/thymeleaf-spring4-2.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/thymeleaf/thymeleaf-spring4/2.1.4.RELEASE/thymeleaf-spring4-2.1.4.RELEASE.pom (12 KB at 64.2 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/thymeleaf/thymeleaf/2.1.4.RELEASE/thymeleaf-2.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/thymeleaf/thymeleaf/2.1.4.RELEASE/thymeleaf-2.1.4.RELEASE.pom (10 KB at 50.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/ognl/ognl/3.0.8/ognl-3.0.8.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/ognl/ognl/3.0.8/ognl-3.0.8.pom (7 KB at 12.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/unbescape/unbescape/1.1.0.RELEASE/unbescape-1.1.0.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/unbescape/unbescape/1.1.0.RELEASE/unbescape-1.1.0.RELEASE.pom (10 KB at 92.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.8/slf4j-api-1.7.8.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.8/slf4j-api-1.7.8.pom (3 KB at 30.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/1.7.8/slf4j-parent-1.7.8.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/1.7.8/slf4j-parent-1.7.8.pom (13 KB at 94.6 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/thymeleaf/extras/thymeleaf-extras-springsecurity3/2.1.1.RELEASE/thymeleaf-extras-springsecurity3-2.1.1.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/thymeleaf/extras/thymeleaf-extras-springsecurity3/2.1.1.RELEASE/thymeleaf-extras-springsecurity3-2.1.1.RELEASE.pom (10 KB at 29.6 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/javassist/javassist/3.18.1-GA/javassist-3.18.1-GA.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/javassist/javassist/3.18.1-GA/javassist-3.18.1-GA.pom (10 KB at 46.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/com/zaxxer/HikariCP/2.2.5/HikariCP-2.2.5.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/com/zaxxer/HikariCP/2.2.5/HikariCP-2.2.5.pom (13 KB at 48.2 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/com/zaxxer/HikariCP-parent/2.2.5/HikariCP-parent-2.2.5.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/com/zaxxer/HikariCP-parent/2.2.5/HikariCP-parent-2.2.5.pom (8 KB at 61.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-orm/4.1.4.RELEASE/spring-orm-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-orm/4.1.4.RELEASE/spring-orm-4.1.4.RELEASE.pom (7 KB at 53.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-jdbc/4.1.4.RELEASE/spring-jdbc-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-jdbc/4.1.4.RELEASE/spring-jdbc-4.1.4.RELEASE.pom (4 KB at 38.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-tx/4.1.4.RELEASE/spring-tx-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-tx/4.1.4.RELEASE/spring-tx-4.1.4.RELEASE.pom (4 KB at 34.6 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-entitymanager/4.3.7.Final/hibernate-entitymanager-4.3.7.Final.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-entitymanager/4.3.7.Final/hibernate-entitymanager-4.3.7.Final.pom (4 KB at 31.8 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/logging/jboss-logging/3.1.3.GA/jboss-logging-3.1.3.GA.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/logging/jboss-logging/3.1.3.GA/jboss-logging-3.1.3.GA.pom (5 KB at 50.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/jboss-parent/9/jboss-parent-9.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/jboss-parent/9/jboss-parent-9.pom (28 KB at 114.8 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/logging/jboss-logging-annotations/1.2.0.Beta1/jboss-logging-annotations-1.2.0.Beta1.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/logging/jboss-logging-annotations/1.2.0.Beta1/jboss-logging-annotations-1.2.0.Beta1.pom (2 KB at 21.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/logging/jboss-logging-tools-parent/1.2.0.Beta1/jboss-logging-tools-parent-1.2.0.Beta1.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/logging/jboss-logging-tools-parent/1.2.0.Beta1/jboss-logging-tools-parent-1.2.0.Beta1.pom (4 KB at 37.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/jboss-parent/10/jboss-parent-10.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/jboss-parent/10/jboss-parent-10.pom (30 KB at 105.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-core/4.3.7.Final/hibernate-core-4.3.7.Final.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-core/4.3.7.Final/hibernate-core-4.3.7.Final.pom (4 KB at 38.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/jboss-transaction-api_1.2_spec-1.0.0.Final.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/jboss-transaction-api_1.2_spec-1.0.0.Final.pom (5 KB at 44.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hibernate/common/hibernate-commons-annotations/4.0.5.Final/hibernate-commons-annotations-4.0.5.Final.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hibernate/common/hibernate-commons-annotations/4.0.5.Final/hibernate-commons-annotations-4.0.5.Final.pom (3 KB at 22.6 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final.pom (3 KB at 22.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/jandex/1.1.0.Final/jandex-1.1.0.Final.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/jandex/1.1.0.Final/jandex-1.1.0.Final.pom (3 KB at 24.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/jboss-parent/5/jboss-parent-5.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/jboss-parent/5/jboss-parent-5.pom (19 KB at 109.9 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/javax/el/javax.el-api/2.2.5/javax.el-api-2.2.5.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/javax/el/javax.el-api/2.2.5/javax.el-api-2.2.5.pom (11 KB at 81.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/net/java/jvnet-parent/1/jvnet-parent-1.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/net/java/jvnet-parent/1/jvnet-parent-1.pom (5 KB at 45.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hsqldb/hsqldb/2.3.2/hsqldb-2.3.2.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hsqldb/hsqldb/2.3.2/hsqldb-2.3.2.pom (2 KB at 13.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-jpa/1.7.1.RELEASE/spring-data-jpa-1.7.1.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-jpa/1.7.1.RELEASE/spring-data-jpa-1.7.1.RELEASE.pom (13 KB at 54.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/data/build/spring-data-parent/1.5.1.RELEASE/spring-data-parent-1.5.1.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/data/build/spring-data-parent/1.5.1.RELEASE/spring-data-parent-1.5.1.RELEASE.pom (21 KB at 123.9 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-framework-bom/4.0.7.RELEASE/spring-framework-bom-4.0.7.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-framework-bom/4.0.7.RELEASE/spring-framework-bom-4.0.7.RELEASE.pom (6 KB at 39.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-commons/1.9.1.RELEASE/spring-data-commons-1.9.1.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-commons/1.9.1.RELEASE/spring-data-commons-1.9.1.RELEASE.pom (7 KB at 46.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/slf4j/jcl-over-slf4j/1.7.8/jcl-over-slf4j-1.7.8.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/slf4j/jcl-over-slf4j/1.7.8/jcl-over-slf4j-1.7.8.pom (2 KB at 20.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/aspectj/aspectjrt/1.8.4/aspectjrt-1.8.4.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/aspectj/aspectjrt/1.8.4/aspectjrt-1.8.4.pom (2 KB at 10.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-mongodb/1.6.1.RELEASE/spring-data-mongodb-1.6.1.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-mongodb/1.6.1.RELEASE/spring-data-mongodb-1.6.1.RELEASE.pom (6 KB at 11.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-mongodb-parent/1.6.1.RELEASE/spring-data-mongodb-parent-1.6.1.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-mongodb-parent/1.6.1.RELEASE/spring-data-mongodb-parent-1.6.1.RELEASE.pom (5 KB at 11.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/mongodb/mongo-java-driver/2.12.4/mongo-java-driver-2.12.4.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/mongodb/mongo-java-driver/2.12.4/mongo-java-driver-2.12.4.pom (869 B at 6.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-validator/5.1.3.Final/hibernate-validator-5.1.3.Final.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-validator/5.1.3.Final/hibernate-validator-5.1.3.Final.pom (14 KB at 29.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-validator-parent/5.1.3.Final/hibernate-validator-parent-5.1.3.Final.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-validator-parent/5.1.3.Final/hibernate-validator-parent-5.1.3.Final.pom (27 KB at 70.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/arquillian/arquillian-bom/1.0.2.Final/arquillian-bom-1.0.2.Final.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/arquillian/arquillian-bom/1.0.2.Final/arquillian-bom-1.0.2.Final.pom (11 KB at 61.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/shrinkwrap/shrinkwrap-bom/1.0.1/shrinkwrap-bom-1.0.1.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/shrinkwrap/shrinkwrap-bom/1.0.1/shrinkwrap-bom-1.0.1.pom (4 KB at 7.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/shrinkwrap/resolver/shrinkwrap-resolver-bom/1.0.0-beta-7/shrinkwrap-resolver-bom-1.0.0-beta-7.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/shrinkwrap/resolver/shrinkwrap-resolver-bom/1.0.0-beta-7/shrinkwrap-resolver-bom-1.0.0-beta-7.pom (4 KB at 33.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/shrinkwrap/descriptors/shrinkwrap-descriptors-bom/2.0.0-alpha-3/shrinkwrap-descriptors-bom-2.0.0-alpha-3.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/shrinkwrap/descriptors/shrinkwrap-descriptors-bom/2.0.0-alpha-3/shrinkwrap-descriptors-bom-2.0.0-alpha-3.pom (5 KB at 33.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.pom (8 KB at 19.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/com/fasterxml/classmate/1.0.0/classmate-1.0.0.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/com/fasterxml/classmate/1.0.0/classmate-1.0.0.pom (7 KB at 30.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/ch/qos/logback/logback-classic/1.1.2/logback-classic-1.1.2.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/ch/qos/logback/logback-classic/1.1.2/logback-classic-1.1.2.pom (12 KB at 25.6 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/ch/qos/logback/logback-parent/1.1.2/logback-parent-1.1.2.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/ch/qos/logback/logback-parent/1.1.2/logback-parent-1.1.2.pom (15 KB at 39.6 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/ch/qos/logback/logback-core/1.1.2/logback-core-1.1.2.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/ch/qos/logback/logback-core/1.1.2/logback-core-1.1.2.pom (5 KB at 39.2 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.pom (612 B at 6.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.pom (13 KB at 73.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.pom (2 KB at 16.2 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.pom (2 KB at 13.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/com/google/guava/guava/17.0/guava-17.0.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/com/google/guava/guava/17.0/guava-17.0.pom (6 KB at 58.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/17.0/guava-parent-17.0.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/17.0/guava-parent-17.0.pom (8 KB at 11.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/mockito/mockito-core/1.10.8/mockito-core-1.10.8.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/mockito/mockito-core/1.10.8/mockito-core-1.10.8.pom (2 KB at 13.8 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/objenesis/objenesis/2.1/objenesis-2.1.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/objenesis/objenesis/2.1/objenesis-2.1.pom (3 KB at 25.8 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/objenesis/objenesis-parent/2.1/objenesis-parent-2.1.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/objenesis/objenesis-parent/2.1/objenesis-parent-2.1.pom (17 KB at 97.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/assertj/assertj-core/1.5.0/assertj-core-1.5.0.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/assertj/assertj-core/1.5.0/assertj-core-1.5.0.pom (5 KB at 43.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/assertj/assertj-parent-pom/1.2.2/assertj-parent-pom-1.2.2.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/assertj/assertj-parent-pom/1.2.2/assertj-parent-pom-1.2.2.pom (10 KB at 70.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-library/1.3/hamcrest-library-1.3.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-library/1.3/hamcrest-library-1.3.pom (820 B at 8.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-test/4.1.4.RELEASE/spring-test-4.1.4.RELEASE.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-test/4.1.4.RELEASE/spring-test-4.1.4.RELEASE.pom (7 KB at 18.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-webmvc/4.1.4.RELEASE/spring-webmvc-4.1.4.RELEASE.jar
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.1.4.RELEASE/spring-beans-4.1.4.RELEASE.jar
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.1.4.RELEASE/spring-expression-4.1.4.RELEASE.jar
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-core/4.1.4.RELEASE/spring-core-4.1.4.RELEASE.jar
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-context/4.1.4.RELEASE/spring-context-4.1.4.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-expression/4.1.4.RELEASE/spring-expression-4.1.4.RELEASE.jar (253 KB at 87.9 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-web/4.1.4.RELEASE/spring-web-4.1.4.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-beans/4.1.4.RELEASE/spring-beans-4.1.4.RELEASE.jar (692 KB at 88.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-config/3.2.5.RELEASE/spring-security-config-3.2.5.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-webmvc/4.1.4.RELEASE/spring-webmvc-4.1.4.RELEASE.jar (764 KB at 70.9 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-core/3.2.5.RELEASE/spring-security-core-3.2.5.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-web/4.1.4.RELEASE/spring-web-4.1.4.RELEASE.jar (698 KB at 62.2 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.1.4.RELEASE/spring-aop-4.1.4.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-context/4.1.4.RELEASE/spring-context-4.1.4.RELEASE.jar (1003 KB at 80.2 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-web/3.2.5.RELEASE/spring-security-web-3.2.5.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-core/4.1.4.RELEASE/spring-core-4.1.4.RELEASE.jar (984 KB at 76.9 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/thymeleaf/thymeleaf-spring4/2.1.4.RELEASE/thymeleaf-spring4-2.1.4.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-config/3.2.5.RELEASE/spring-security-config-3.2.5.RELEASE.jar (398 KB at 28.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/thymeleaf/thymeleaf/2.1.4.RELEASE/thymeleaf-2.1.4.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-core/3.2.5.RELEASE/spring-security-core-3.2.5.RELEASE.jar (359 KB at 24.6 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/ognl/ognl/3.0.8/ognl-3.0.8.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-aop/4.1.4.RELEASE/spring-aop-4.1.4.RELEASE.jar (351 KB at 22.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/unbescape/unbescape/1.1.0.RELEASE/unbescape-1.1.0.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-web/3.2.5.RELEASE/spring-security-web-3.2.5.RELEASE.jar (335 KB at 20.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/thymeleaf/extras/thymeleaf-extras-springsecurity3/2.1.1.RELEASE/thymeleaf-extras-springsecurity3-2.1.1.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/thymeleaf/thymeleaf-spring4/2.1.4.RELEASE/thymeleaf-spring4-2.1.4.RELEASE.jar (220 KB at 13.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/com/zaxxer/HikariCP/2.2.5/HikariCP-2.2.5.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/thymeleaf/extras/thymeleaf-extras-springsecurity3/2.1.1.RELEASE/thymeleaf-extras-springsecurity3-2.1.1.RELEASE.jar (34 KB at 2.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/javassist/javassist/3.18.1-GA/javassist-3.18.1-GA.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/ognl/ognl/3.0.8/ognl-3.0.8.jar (223 KB at 13.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-orm/4.1.4.RELEASE/spring-orm-4.1.4.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/com/zaxxer/HikariCP/2.2.5/HikariCP-2.2.5.jar (78 KB at 4.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-jdbc/4.1.4.RELEASE/spring-jdbc-4.1.4.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/unbescape/unbescape/1.1.0.RELEASE/unbescape-1.1.0.RELEASE.jar (137 KB at 7.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-tx/4.1.4.RELEASE/spring-tx-4.1.4.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/thymeleaf/thymeleaf/2.1.4.RELEASE/thymeleaf-2.1.4.RELEASE.jar (781 KB at 38.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-entitymanager/4.3.7.Final/hibernate-entitymanager-4.3.7.Final.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-tx/4.1.4.RELEASE/spring-tx-4.1.4.RELEASE.jar (247 KB at 11.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/logging/jboss-logging/3.1.3.GA/jboss-logging-3.1.3.GA.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/logging/jboss-logging/3.1.3.GA/jboss-logging-3.1.3.GA.jar (56 KB at 2.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/logging/jboss-logging-annotations/1.2.0.Beta1/jboss-logging-annotations-1.2.0.Beta1.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/logging/jboss-logging-annotations/1.2.0.Beta1/jboss-logging-annotations-1.2.0.Beta1.jar (12 KB at 0.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-core/4.3.7.Final/hibernate-core-4.3.7.Final.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-orm/4.1.4.RELEASE/spring-orm-4.1.4.RELEASE.jar (368 KB at 16.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/jandex/1.1.0.Final/jandex-1.1.0.Final.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-jdbc/4.1.4.RELEASE/spring-jdbc-4.1.4.RELEASE.jar (417 KB at 17.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hibernate/common/hibernate-commons-annotations/4.0.5.Final/hibernate-commons-annotations-4.0.5.Final.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/jandex/1.1.0.Final/jandex-1.1.0.Final.jar (75 KB at 3.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hibernate/common/hibernate-commons-annotations/4.0.5.Final/hibernate-commons-annotations-4.0.5.Final.jar (74 KB at 3.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/jboss-transaction-api_1.2_spec-1.0.0.Final.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/jboss-transaction-api_1.2_spec-1.0.0.Final.jar (28 KB at 1.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/javax/el/javax.el-api/2.2.5/javax.el-api-2.2.5.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar (111 KB at 4.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hsqldb/hsqldb/2.3.2/hsqldb-2.3.2.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/javax/el/javax.el-api/2.2.5/javax.el-api-2.2.5.jar (38 KB at 1.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-jpa/1.7.1.RELEASE/spring-data-jpa-1.7.1.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/javassist/javassist/3.18.1-GA/javassist-3.18.1-GA.jar (698 KB at 26.8 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-commons/1.9.1.RELEASE/spring-data-commons-1.9.1.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-entitymanager/4.3.7.Final/hibernate-entitymanager-4.3.7.Final.jar (633 KB at 24.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/aspectj/aspectjrt/1.8.4/aspectjrt-1.8.4.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/aspectj/aspectjrt/1.8.4/aspectjrt-1.8.4.jar (115 KB at 4.2 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/slf4j/jcl-over-slf4j/1.7.8/jcl-over-slf4j-1.7.8.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/slf4j/jcl-over-slf4j/1.7.8/jcl-over-slf4j-1.7.8.jar (17 KB at 0.6 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-mongodb/1.6.1.RELEASE/spring-data-mongodb-1.6.1.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-jpa/1.7.1.RELEASE/spring-data-jpa-1.7.1.RELEASE.jar (215 KB at 7.4 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/mongodb/mongo-java-driver/2.12.4/mongo-java-driver-2.12.4.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-commons/1.9.1.RELEASE/spring-data-commons-1.9.1.RELEASE.jar (485 KB at 14.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-validator/5.1.3.Final/hibernate-validator-5.1.3.Final.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/mongodb/mongo-java-driver/2.12.4/mongo-java-driver-2.12.4.jar (578 KB at 16.5 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-mongodb/1.6.1.RELEASE/spring-data-mongodb-1.6.1.RELEASE.jar (530 KB at 15.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/com/fasterxml/classmate/1.0.0/classmate-1.0.0.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/com/fasterxml/classmate/1.0.0/classmate-1.0.0.jar (59 KB at 1.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.8/slf4j-api-1.7.8.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.8/slf4j-api-1.7.8.jar (32 KB at 0.9 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/ch/qos/logback/logback-classic/1.1.2/logback-classic-1.1.2.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar (63 KB at 1.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/ch/qos/logback/logback-core/1.1.2/logback-core-1.1.2.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/ch/qos/logback/logback-classic/1.1.2/logback-classic-1.1.2.jar (265 KB at 6.9 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.jar (3 KB at 0.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hsqldb/hsqldb/2.3.2/hsqldb-2.3.2.jar (1439 KB at 37.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar (84 KB at 2.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/ch/qos/logback/logback-core/1.1.2/logback-core-1.1.2.jar (418 KB at 10.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/com/google/guava/guava/17.0/guava-17.0.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-validator/5.1.3.Final/hibernate-validator-5.1.3.Final.jar (620 KB at 14.7 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/mockito/mockito-core/1.10.8/mockito-core-1.10.8.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar (227 KB at 5.3 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/assertj/assertj-core/1.5.0/assertj-core-1.5.0.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar (763 KB at 16.0 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-library/1.3/hamcrest-library-1.3.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-library/1.3/hamcrest-library-1.3.jar (52 KB at 1.1 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/objenesis/objenesis/2.1/objenesis-2.1.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/assertj/assertj-core/1.5.0/assertj-core-1.5.0.jar (563 KB at 11.6 KB/sec)
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/springframework/spring-test/4.1.4.RELEASE/spring-test-4.1.4.RELEASE.jar
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/objenesis/objenesis/2.1/objenesis-2.1.jar (41 KB at 0.8 KB/sec)
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/mockito/mockito-core/1.10.8/mockito-core-1.10.8.jar (1123 KB at 20.7 KB/sec)
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/springframework/spring-test/4.1.4.RELEASE/spring-test-4.1.4.RELEASE.jar (491 KB at 9.0 KB/sec)
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/com/google/guava/guava/17.0/guava-17.0.jar (2191 KB at 34.4 KB/sec)
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/hibernate/hibernate-core/4.3.7.Final/hibernate-core-4.3.7.Final.jar (5146 KB at 72.5 KB/sec)
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ basic ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ basic ---
+[INFO] Compiling 19 source files to D:\Users\kaushik.ganguly\gc_github_workspace\kutty_shop\target\test-classes\projects\basic\project\basic\target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] Failure executing javac, but could not parse the error:
+javac: invalid target release: 1.8
+Usage: javac <options> <source files>
+use -help for a list of possible options
+
+[INFO] 1 error
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 01:32 min
+[INFO] Finished at: 2015-02-06T20:02:41-06:00
+[INFO] Final Memory: 11M/120M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:2.3.2:compile (default-compile) on project basic: Compilation failure
+[ERROR] Failure executing javac, but could not parse the error:
+[ERROR] javac: invalid target release: 1.8
+[ERROR] Usage: javac <options> <source files>
+[ERROR] use -help for a list of possible options
+[ERROR] -> [Help 1]
+org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:2.3.2:compile (default-compile) on project basic: Compilation failure
+Failure executing javac, but could not parse the error:
+javac: invalid target release: 1.8
+Usage: javac <options> <source files>
+use -help for a list of possible options
+
+
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:212)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:153)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:145)
+	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:116)
+	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:80)
+	at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build(SingleThreadedBuilder.java:51)
+	at org.apache.maven.lifecycle.internal.LifecycleStarter.execute(LifecycleStarter.java:120)
+	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:355)
+	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:155)
+	at org.apache.maven.cli.MavenCli.execute(MavenCli.java:584)
+	at org.apache.maven.cli.MavenCli.doMain(MavenCli.java:216)
+	at org.apache.maven.cli.MavenCli.main(MavenCli.java:160)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced(Launcher.java:289)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.launch(Launcher.java:229)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode(Launcher.java:415)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.main(Launcher.java:356)
+Caused by: org.apache.maven.plugin.CompilationFailureException: Compilation failure
+Failure executing javac, but could not parse the error:
+javac: invalid target release: 1.8
+Usage: javac <options> <source files>
+use -help for a list of possible options
+
+
+	at org.apache.maven.plugin.AbstractCompilerMojo.execute(AbstractCompilerMojo.java:656)
+	at org.apache.maven.plugin.CompilerMojo.execute(CompilerMojo.java:128)
+	at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo(DefaultBuildPluginManager.java:132)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:208)
+	... 19 more
+[ERROR] 
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

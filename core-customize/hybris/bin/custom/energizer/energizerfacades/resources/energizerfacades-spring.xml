@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2014 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Facades -->
+
+	<alias name="defaultB2BFlexibleSearchProductSearchFacade" alias="b2bProductFlexibleSearchFacade" />
+	<bean id="defaultB2BFlexibleSearchProductSearchFacade"
+		class="com.energizer.facades.search.impl.DefaultB2BFlexibleSearchProductSearchFacade"
+		parent="abstractB2BProductSearchFacade">
+		<property name="b2bProductService" ref="defaultB2BProductService" />
+		<!-- <property name="flexibleSearchPopulator" ref="b2bFlexibleSearchPopulator" /> -->
+		<property name="flexibleSearchPopulator" ref="b2bProductConfiguredPopulator" />
+	</bean>
+	<alias name="defaultEnergizerB2BOrderFacade" alias="energizerB2BOrderFacade" />
+	<bean id="defaultEnergizerB2BOrderFacade" class="com.energizer.facades.order.impl.DefaultEnergizerB2BOrderFacade" parent="defaultOrderFacade">
+		<property name="b2bOrderService" ref="b2bOrderService"/>
+		<property name="orderConverter" ref="orderConverter"/>
+	</bean>
+	<!-- <alias alias="b2bFlexibleSearchPopulator" name="defaultB2BFlexibleSearchPopulator" />
+	<bean id="defaultB2BFlexibleSearchPopulator"
+		class="com.energizer.facades.search.converters.populator.DefaultB2BFlexibleSearchPopulator">
+		<property name="productConfiguredPopulator" ref="b2bProductConfiguredPopulator" />
+		<property name="productConfiguredPopulator" ref="productVariantConfiguredPopulator"/>
+	</bean> -->
+	
+	<alias alias="b2bFlexibleSearchPopulator" name="defaultB2BFlexibleSearchPopulator"/>
+	<bean id="defaultB2BFlexibleSearchPopulator" class="de.hybris.platform.b2bacceleratorfacades.search.converters.impl.DefaultB2BFlexibleSearchPopulator">
+		<property name="productConfiguredPopulator" ref="productVariantConfiguredPopulator"/>
+		<property name="productBasicSearchOptions" ref="productBasicSearchOptions"/>
+	</bean>
+
+	<alias name="defaultB2BSolrProductSearchFacade" alias="b2bSolrProductSearchFacade" />
+	<bean id="defaultB2BSolrProductSearchFacade"
+		class="com.energizer.facades.search.impl.DefaultB2BSolrProductSearchFacade"
+		parent="abstractB2BProductSearchFacade">
+		<property name="productSearchFacade" ref="productSearchFacade" />
+	</bean>
+
+
+	<bean id="abstractB2BProductSearchFacade"
+		class="com.energizer.facades.search.AbstractB2BProductSearchFacade"
+		abstract="true">
+		<property name="productConfiguredPopulator" ref="b2bProductConfiguredPopulator" />
+		<property name="productFacade" ref="b2bProductFacade" />
+		<property name="productService" ref="productService" />
+	</bean>
+
+
+	<alias alias="b2bSimpleSuggestionFacade" name="b2bDefaultSimpleSuggestionFacade" />
+	<bean id="b2bDefaultSimpleSuggestionFacade"
+		class="com.energizer.facades.suggestion.impl.DefaultSimpleSuggestionFacade">
+		<property name="b2bSimpleSuggestionService" ref="b2bSimpleSuggestionService" />
+		<property name="userService" ref="userService" />
+		<property name="categoryService" ref="categoryService" />
+		<property name="productPricePopulator" ref="productPricePopulator" />
+		<property name="productPrimaryImagePopulator" ref="productPrimaryImagePopulator" />
+		<property name="productConverter" ref="productConverter" />
+	</bean>
+
+	<bean id="b2bProductFacade" parent="defaultProductFacade">
+		<property name="productConfiguredPopulator" ref="b2bProductConfiguredPopulator" />
+	</bean>
+
+	<alias name="defaultProductPriceRangePopulator" alias="productPriceRangePopulator" />
+	<bean id="defaultProductPriceRangePopulator" parent="baseProductPopulator"
+		class="com.energizer.facades.product.populators.ProductPriceRangePopulator">
+		<property name="priceDataFactory" ref="priceDataFactory" />
+		<property name="priceService" ref="priceService" />
+	</bean>
+
+
+	<alias name="defaultProductVariantMatrixPopulator" alias="productVariantMatrixPopulator" />
+	<bean id="defaultProductVariantMatrixPopulator"
+		class="com.energizer.facades.product.populators.ProductVariantMatrixPopulator">
+		<property name="modelService" ref="modelService" />
+		<property name="variantMatrixElementPopulator" ref="variantMatrixElementPopulator" />
+		<property name="valueCategoryComparator" ref="variantValueCategoryModelPriorityComparator" />
+	</bean>
+
+
+
+
+
+	<alias name="defaultVariantOptionPopulator" alias="variantOptionPopulator" />
+	<bean id="defaultVariantOptionPopulator"
+		class="de.hybris.platform.commercefacades.converter.impl.DefaultConfigurablePopulator">
+		<property name="populators">
+			<map key-type="com.energizer.facades.product.ProductVariantOption"
+				merge="true">
+				<entry key="STOCK" value-ref="variantOptionDataStockPopulator" />
+				<entry key="URL" value-ref="variantOptionDataUrlPopulator" />
+				<entry key="PRICE" value-ref="variantOptionDataPricePopulator" />
+				<entry key="MEDIA" value-ref="variantOptionDataMediaPopulator" />
+			</map>
+		</property>
+	</bean>
+
+	<alias name="defaultVariantOptionDataUrlPopulator" alias="variantOptionDataUrlPopulator" />
+	<bean id="defaultVariantOptionDataUrlPopulator"
+		class="com.energizer.facades.variant.populators.VariantOptionDataUrlPopulator">
+		<property name="productModelUrlResolver" ref="productModelUrlResolver" />
+	</bean>
+
+	<alias name="defaultVariantOptionDataStockPopulator" alias="variantOptionDataStockPopulator" />
+	<bean id="defaultVariantOptionDataStockPopulator"
+		class="com.energizer.facades.variant.populators.VariantOptionDataStockPopulator">
+	</bean>
+
+	<bean id="variantMatrixElementPopulator"
+		class="com.energizer.facades.product.populators.VariantMatrixElementPopulator" />
+
+	<alias name="defaultVariantOptionDataPricePopulator" alias="variantOptionDataPricePopulator" />
+	<bean id="defaultVariantOptionDataPricePopulator"
+		class="com.energizer.facades.variant.populators.VariantOptionDataPricePopulator">
+		<property name="commercePriceService" ref="commercePriceService" />
+		<property name="priceDataFactory" ref="priceDataFactory" />
+	</bean>
+
+	<alias name="defaultVariantOptionDataMediaPopulator" alias="variantOptionDataMediaPopulator" />
+	<bean id="defaultVariantOptionDataMediaPopulator"
+		class="com.energizer.facades.variant.populators.VariantOptionDataMediaPopulator">
+		<property name="acceleratorImageFormatMapping" ref="imageFormatMapping" />
+		<property name="imageFormats">
+			<list>
+				<value>zoom</value>
+				<value>product</value>
+				<value>thumbnail</value>
+				<value>cartIcon</value>
+				<value>styleSwatch</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="b2bProductConfiguredPopulator" parent="defaultProductConfiguredPopulator">
+		<property name="populators">
+			<map key-type="de.hybris.platform.commercefacades.product.ProductOption"
+				merge="true">
+				<entry key="PRICE_RANGE" value-ref="productPriceRangePopulator" />
+				<entry key="VOLUME_PRICES" value-ref="productVolumePricesPopulator" />
+				<entry key="VARIANT_MATRIX" value-ref="productVariantMatrixPopulator" />
+				<entry key="VARIANT_MATRIX_BASE" value-ref="productVariantMatrixPopulator" />
+				<entry key="VARIANT_MATRIX_ALL_OPTIONS" value-ref="configVariantMatrixDataPopulator" />
+				<entry key="VARIANT_MATRIX_URL" value-ref="configVariantOptionDataUrlPopulator" />
+				<entry key="VARIANT_MATRIX_MEDIA" value-ref="configVariantOptionDataMediaPopulator" />
+				<entry key="VARIANT_MATRIX_PRICE" value-ref="configVariantOptionDataPricePopulator" />
+				<entry key="VARIANT_MATRIX_STOCK" value-ref="configVariantOptionDataStockPopulator" />
+				<entry key="URL" value-ref="productUrlPopulator" />
+				<entry key="IMAGES" value-ref="productPrimaryImagePopulator" />
+			</map>
+		</property>
+	</bean>
+
+
+	<bean id="configVariantOptionDataUrlPopulator" parent="configVariantMatrixDataPopulator">
+		<property name="productVariantOptionList">
+			<list>
+				<value>URL</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="configVariantOptionDataStockPopulator" parent="configVariantMatrixDataPopulator">
+		<property name="productVariantOptionList">
+			<list>
+				<value>STOCK</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="configVariantOptionDataMediaPopulator" parent="configVariantMatrixDataPopulator">
+		<property name="productVariantOptionList">
+			<list>
+				<value>MEDIA</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="configVariantOptionDataPricePopulator" parent="configVariantMatrixDataPopulator">
+		<property name="productVariantOptionList">
+			<list>
+				<value>PRICE</value>
+			</list>
+		</property>
+	</bean>
+
+	<alias name="defaultConfigVariantMatrixDataPopulator" alias="configVariantMatrixDataPopulator" />
+	<bean id="defaultConfigVariantMatrixDataPopulator"
+		class="com.energizer.facades.product.populators.ProductVariantOptionDataPopulator">
+		<property name="modelService" ref="modelService" />
+		<property name="productVariantOptionList">
+			<list>
+				<value>URL</value>
+				<value>MEDIA</value>
+				<value>PRICE</value>
+				<value>STOCK</value>
+			</list>
+		</property>
+		<property name="variantOptionDataPopulator" ref="defaultVariantOptionPopulator" />
+	</bean>
+
+
+
+
+
+	<!-- accelerator Image Format Mappings -->
+	<alias name="acceleratorImageFormatMapping" alias="imageFormatMapping" />
+	<bean id="acceleratorImageFormatMapping" parent="defaultImageFormatMapping">
+		<property name="mapping">
+			<map>
+				<entry key="superZoom" value="300Wx300H" />
+				<entry key="zoom" value="300Wx300H" />
+				<entry key="store" value="300Wx300H" />
+				<entry key="product" value="300Wx300H" />
+				<entry key="thumbnail" value="96Wx96H" />
+				<entry key="cartIcon" value="96Wx96H" />
+				<entry key="styleSwatch" value="96Wx96H" />
+			</map>
+		</property>
+	</bean>
+
+	<alias name="acceleratorProductPrimaryImagePopulator" alias="productPrimaryImagePopulator" />
+	<bean id="acceleratorProductPrimaryImagePopulator" parent="defaultProductPrimaryImagePopulator">
+		<property name="imageFormats">
+			<list>
+				<value>zoom</value>
+				<value>product</value>
+				<value>thumbnail</value>
+				<value>cartIcon</value>
+			</list>
+		</property>
+	</bean>
+
+	<alias name="acceleratorProductGalleryImagesPopulator" alias="productGalleryImagesPopulator" />
+	<bean id="acceleratorProductGalleryImagesPopulator" parent="defaultProductGalleryImagesPopulator">
+		<property name="imageFormats">
+			<list>
+				<value>zoom</value>
+				<value>product</value>
+				<value>thumbnail</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Email -->
+
+	<alias alias="emailContextFactory" name="acceleratorEmailContextFactory" />
+	<bean id="acceleratorEmailContextFactory" parent="defaultEmailContextFactory">
+		<property name="contextResolutionStrategy" ref="b2bProcessContextResolutionStrategy" />
+		<property name="emailContextVariables">
+			<map merge="true">
+				<entry key="themeResourceUrl-powertools" value="{baseUrl}/_ui/{theme}" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="customerEmailContext"
+		class="com.energizer.facades.process.email.context.CustomerEmailContext"
+		parent="abstractEmailContext" scope="prototype">
+		<property name="customerConverter" ref="customerConverter" />
+	</bean>
+	
+	<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->	
+	<bean id="employeeRegistrationEmailContext"
+		class="com.energizer.facades.process.email.context.B2BEmployeeRegistrationEmailContext"
+		parent="customerEmailContext" scope="prototype">
+		<property name="energizerB2BEmployeeConverter" ref="energizerB2BEmployeeConverter" />
+	</bean>
+	
+	<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->	
+
+	<bean id="b2bForgottenPasswordEmailContext"
+		class="com.energizer.facades.process.email.context.ForgottenPasswordEmailContext"
+		parent="customerEmailContext" scope="prototype">
+		<property name="customerConverter" ref="customerConverter" />
+	</bean>
+	
+	<bean id="b2bUnlockAccountEmailContext"
+		class="com.energizer.facades.process.email.context.UnlockAccountEmailContext"
+		parent="customerEmailContext" scope="prototype">
+		<property name="customerConverter" ref="customerConverter" />
+	</bean>
+<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->	
+	<bean id="b2bEmployeeForgottenPasswordEmailContext"
+		class="com.energizer.facades.process.email.context.B2BEmployeeForgottenPasswordEmailContext"
+		parent="customerEmailContext" scope="prototype">
+		<property name="energizerB2BEmployeeConverter" ref="energizerB2BEmployeeConverter" />
+	</bean>
+	
+	<bean id="b2bEmployeeUnlockAccountEmailContext"
+		class="com.energizer.facades.process.email.context.B2BEmployeeUnlockAccountEmailContext"
+		parent="b2bUnlockAccountEmailContext" scope="prototype">
+		<property name="energizerB2BEmployeeConverter" ref="energizerB2BEmployeeConverter" />
+	</bean>
+<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->
+	<bean id="orderReplenishmentEmailContext"
+		class="com.energizer.facades.process.email.context.OrderReplenishmentEmailContext"
+		parent="abstractEmailContext" scope="prototype">
+		<property name="scheduledCartConverter" ref="scheduledCartConverter" />
+	</bean>
+
+	<bean id="b2bOrderNotificationContext"
+		class="com.energizer.facades.process.email.context.OrderNotificationEmailContext"
+		parent="abstractEmailContext" scope="prototype">
+		<property name="orderConverter" ref="orderConverter" />
+	</bean>
+
+	<alias name="defaultB2BCheckoutFlowFacade" alias="b2bCheckoutFlowFacade" />
+	<bean id="defaultB2BCheckoutFlowFacade"
+		class="com.energizer.facades.flow.impl.DefaultB2BCheckoutFlowFacade"
+		parent="defaultB2BCheckoutFacade">
+		<property name="checkoutFlowStrategy" ref="b2bCheckoutFlowStrategy" />
+		<property name="checkoutPciStrategy" ref="b2bCheckoutPciStrategy" />
+	</bean>
+
+	<alias name="b2bDefaultStoreFinderFacade" alias="b2bStoreFinderFacade" />
+	<bean id="b2bDefaultStoreFinderFacade"
+		class="de.hybris.platform.commercefacades.storefinder.impl.DefaultStoreFinderFacade">
+		<property name="baseStoreService" ref="baseStoreService" />
+		<property name="storeFinderService" ref="storeFinderService" />
+		<property name="searchPagePointOfServiceDistanceConverter"
+			ref="b2bSearchPagePointOfServiceDistanceConverter" />
+		<property name="pointOfServiceConverter" ref="pointOfServiceConverter" />
+		<property name="pointOfServiceDistanceConverter" ref="pointOfServiceDistanceConverter" />
+	</bean>
+
+	<alias name="b2bDefaultSearchPagePointOfServiceDistanceConverter"
+		alias="b2bSearchPagePointOfServiceDistanceConverter" />
+	<bean id="b2bDefaultSearchPagePointOfServiceDistanceConverter"
+		parent="abstractPopulatingConverter">
+		<lookup-method name="createTarget" bean="storeFinderSearchPageData" />
+		<property name="populators">
+			<list>
+				<ref bean="b2bSearchPagePointOfServiceDistancePopulator" />
+			</list>
+		</property>
+	</bean>
+
+	<alias name="yb2bacceleratorSearchPagePointOfServiceDistancePopulator"
+		alias="b2bSearchPagePointOfServiceDistancePopulator" />
+	<bean id="yb2bacceleratorSearchPagePointOfServiceDistancePopulator"
+		class="com.energizer.facades.storefinder.populators.SearchPagePointOfServiceDistancePopulator">
+		<property name="pointOfServiceDistanceConverter" ref="pointOfServiceDistanceConverter" />
+	</bean>
+
+	<alias name="variantCommerceSearchResultProductPopulator" alias="commerceSearchResultProductPopulator" />
+	<bean id="variantCommerceSearchResultProductPopulator"
+		class="com.energizer.facades.search.converters.populator.VariantSearchResultProductPopulator"
+		parent="defaultCommerceSearchResultProductPopulator">
+		<property name="categoryManager" ref="solrFirstVariantCategoryManager" />
+	</bean>
+
+	<alias name="energizerSearchResultProductPopulator" alias="commerceSearchResultProductPopulator" />
+	<bean id="energizerSearchResultProductPopulator"
+		class="com.energizer.facades.product.populators.EnergizerSearchResultProductPopulator"
+		parent="defaultCommerceSearchResultProductPopulator">
+		<property name="productService" ref="productService"/>
+	</bean>
+
+	<!-- ************ Start Product Details Page Bean defination ******************* -->
+
+	<bean id="energizerProductData"
+		class="de.hybris.platform.commercefacades.product.data.ProductData"
+		scope="prototype" />
+
+	<bean id="energizerProductPopulator"
+		class="com.energizer.facades.product.populators.EnergizerProductPopulator" />
+
+	<alias name="defaultEnergizerProductConverter" alias="productConverter" />
+	<bean id="defaultEnergizerProductConverter" parent="abstractPopulatingConverter">
+		<lookup-method name="createTarget" bean="energizerProductData" />
+		<property name="populators">
+			<list merge="true">
+				<ref bean="productPopulator" />
+				<ref bean="energizerProductPopulator" />				
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="energizerProductSearchResultListPopulator"
+		class="com.energizer.facades.search.populators.EnergizerProductSearchResultListPopulator"
+		parent="energizerSearchResultProductPopulator">
+	</bean>
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="commerceSearchResultProductConverter" />
+		<property name="add" ref="energizerProductSearchResultListPopulator" />
+	</bean>
+
+
+	<!-- ************ End Product Details Page Bean defination ******************* -->
+
+	<!-- Catalog Download  -->
+	<bean id="defaultEnergizerCatalogDownloadFacade"
+		class="com.energizer.facades.catalogdownload.impl.DefaultEnergizerCatalogDownloadFacade"/>
+		<bean id="advancedTypeExportScriptGenerator"
+		class="com.energizer.facades.catalogdownload.AdvancedTypeExportScriptGenerator" scope="prototype">
+		
+		</bean>
+	<!-- End of Catalog Download  -->
+
+	
+	<!-- Start View order history -->
+	<bean id="defaultEnergizerB2BOrderHistoryFacade"
+		class="com.energizer.facades.order.impl.DefaultEnergizerB2BOrderHistoryFacade"/>
+	<bean id="defaultEnergizerB2BOrderHistoryDAO"
+		class="com.energizer.services.order.dao.impl.DefaultEnergizerB2BOrderHistoryDAO"/>
+	<bean id="defaultEnergizerB2BOrderHistoryService"
+		class="com.energizer.services.order.impl.DefaultEnergizerB2BOrderHistoryService"/>
+	<!-- End View order history -->
+
+
+
+
+	<!-- Start PasswordQuestions List -->
+	<bean id="defaultEnergizerB2BPasswordQuestionsFacade"
+		class="com.energizer.facades.accounts.impl.DefaultEnergizerB2BPasswordQuestionsFacade">
+		<property name="energizerPasswordQuestionsConverter" ref="energizerPasswordQuestionsConverter" />
+	</bean>
+	<bean id="defaultEnergizerB2BPasswordQuestionsDAO"
+		class="com.energizer.services.account.dao.impl.DefaultEnergizerB2BPasswordQuestionsDAO"/>
+	<bean id="defaultEnergizerB2BPasswordQuestionsService"
+		class="com.energizer.services.account.impl.DefaultEnergizerB2BPasswordQuestionsService"/>
+	<!-- End PasswordQuestions List -->
+
+
+	<alias name="defaultEnergizerPasswordQuestionsConverter" alias="energizerPasswordQuestionsConverter"/>
+	<bean id="defaultEnergizerPasswordQuestionsConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.energizer.core.data.EnergizerPasswordQuestionsData"/>
+		<property name="populators">
+			<list>
+				<ref bean="energizerPasswordQuestionsPopulator"/>
+			</list>
+		</property>
+	</bean>
+
+
+<alias name="defaultEnergizerPasswordQuestionsPopulator" alias="energizerPasswordQuestionsPopulator"/>
+	<bean id="defaultEnergizerPasswordQuestionsPopulator"
+			class="com.energizer.facades.accounts.populators.EnergizerPasswordQuestionsPopulator"/>
+
+
+	<!-- Start Unit Check -->
+		
+	<alias name="defaultEnergizerCompanyB2BCommerceService" alias="energizerCompanyB2BCommerceService" />
+	<bean id="defaultEnergizerCompanyB2BCommerceService"
+		class="com.energizer.facades.accounts.impl.DefaultEnergizerCompanyB2BCommerceService">
+		<property name="userService" ref="userService"/>
+		<property name="secureTokenService" ref="secureTokenService"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="eventService" ref="eventService"/>
+		<property name="tokenValiditySeconds" value="1800"/> <!-- #{configurationService.configuration.getProperty('forgottenPassword.emailContext.expiresInSeconds')}-->
+		<property name="baseStoreService" ref="baseStoreService"/>
+		<property name="baseSiteService" ref="baseSiteService"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+	</bean>	
+		
+	<alias name="defaultEnergizerCompanyB2BCommerceFacade" alias="energizerCompanyB2BCommerceFacade" />
+	<bean id="defaultEnergizerCompanyB2BCommerceFacade"
+		class="com.energizer.facades.accounts.impl.DefaultEnergizerCompanyB2BCommerceFacade" parent="customerFacade">
+		<property name="defaultEnergizerCompanyB2BCommerceService" ref="defaultEnergizerCompanyB2BCommerceService" />
+	</bean>	
+		
+	<!-- End of Unit Check -->
+	<!-- End View order history -->
+	
+	<!-- UOM price calculation strategy -->	
+	<alias name="energizerCurrentFactoryFindPricingStrategy" alias="currentFactoryFindPricingStrategy"/>
+	<bean id="energizerCurrentFactoryFindPricingStrategy"
+			class="com.energizer.order.strategies.calculation.impl.EnergizerFindPricingFactoryStrategy" parent="abstractBusinessService"/>
+			
+	<bean id="quickOrderFacade"
+		class="com.energizer.facades.quickorder.DefaultEnergizerQuickOrderFacade"></bean>
+	
+	<alias name="excelRowtoModelFacade" alias="energizerExcelRowtoModelFacade"/>
+    <bean id="excelRowtoModelFacade" class="com.energizer.facades.order.impl.DefaultEnergizerExcelUploadFacade" />
+ 
+	
+	<!-- *********************** Order Processing Start *************** -->
+	
+	
+	<alias name="energizerAddressPopulator" alias="energizerAddressPopulator"/>
+	<bean id="energizerAddressPopulator"
+		class="com.energizer.facades.search.populators.EnergizerAddressPopulator">
+		<property name="addressFormatConverterMap">
+			<map>
+				<entry key="US" value-ref="usSingleLineAddressFormatConverter"/>
+				<entry key="GB" value-ref="ukSingleLineAddressFormatConverter"/>
+				<entry key="DE" value-ref="deSingleLineAddressFormatConverter"/>
+				<entry key="JP" value-ref="jpSingleLineAddressFormatConverter"/>
+			</map>
+		</property>
+		<property name="defaultAddressFormatConverter" ref="usSingleLineAddressFormatConverter"/>
+	</bean>
+	<alias name="energizerAddressConverter" alias="energizerAddressConverter"/>
+	<bean id="energizerAddressConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="de.hybris.platform.commercefacades.user.data.AddressData"/>
+		<property name="populators">
+			<list>
+				<ref bean="energizerAddressPopulator" />
+			</list>
+		</property>
+	</bean>
+	
+	<alias name="energizerCartPopulator" alias="energizerCartPopulator"/>
+	<bean id="energizerCartPopulator"
+		class="com.energizer.facades.search.populators.EnergizerCartPopulator">
+		<property name="promotionResultConverter" ref="promotionResultConverter" />
+		<property name="promotionsService" ref="promotionsService" />
+		<property name="modelService" ref="modelService" />
+		<property name="addressConverter" ref="addressConverter" />
+		<property name="deliveryModeConverter" ref="deliveryModeConverter" />
+		<property name="zoneDeliveryModeConverter" ref="zoneDeliveryModeConverter" />
+		<property name="creditCardPaymentInfoConverter" ref="creditCardPaymentInfoConverter" />
+		<property name="orderEntryConverter" ref="orderEntryConverter" />
+		<property name="priceDataFactory" ref="priceDataFactory" />
+		<property name="commonI18NService" ref="commonI18NService" />
+		<property name="typeService" ref="typeService" />
+		<property name="principalConverter" ref="principalConverter" />
+		<property name="metricUnitConverter" ref="metricUnitConverter" />
+		<property name="energizerB2BUnitConverter" ref="energizerB2BUnitConverter" />
+		<property name="energizerAddressConverter" ref="energizerAddressConverter" />
+		<property name="commerceEntryGroupUtils" ref="commerceEntryGroupUtils"/>
+		<property name="entryGroupConverter" ref="entryGroupConverter"/>
+		<property name="entryGroupService" ref="entryGroupService"/>
+		<property name="orderCommentConverter" ref="orderCommentConverter"/>
+		<property name="quoteConverter" ref="quoteConverter"/>
+		<property name="virtualEntryGroupStrategy" ref="virtualEntryGroupStrategy"/>
+	</bean>
+	<alias name="energizerCartConverter" alias="energizerCartConverter"/>
+	<bean id="energizerCartConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="de.hybris.platform.commercefacades.order.data.CartData"/>
+		<property name="populators">
+			<list>
+				<ref bean="energizerCartPopulator" />
+				<ref bean="orderAppliedVouchersPopulator" />
+				<ref bean="pickupOrderEntryGroupPopulator" />
+				<ref bean="deliveryOrderEntryGroupPopulator" />
+			</list>
+		</property>
+	</bean>
+	<alias name="defaultAddressConverter" alias="addressConverter"/>
+	<bean id="defaultAddressConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="de.hybris.platform.commercefacades.user.data.AddressData"/>
+		<property name="populators">
+			<list>
+				<ref bean="addressPopulator"/>
+				<ref bean="energizerAddressPopulator"/>				
+			</list>
+		</property>
+	</bean>
+
+	<alias name="energizerOrderPopulator" alias="orderPopulator"/>
+	<bean id="energizerOrderPopulator"
+		class="com.energizer.facades.search.populators.EnergizerOrderPopulator">
+		<property name="promotionResultConverter" ref="promotionResultConverter" />
+		<property name="promotionsService" ref="promotionsService" />
+		<property name="modelService" ref="modelService" />
+		<property name="addressConverter" ref="addressConverter" />
+		<property name="deliveryModeConverter" ref="deliveryModeConverter" />
+		<property name="zoneDeliveryModeConverter" ref="zoneDeliveryModeConverter" />
+		<property name="creditCardPaymentInfoConverter" ref="creditCardPaymentInfoConverter" />
+		<property name="orderEntryConverter" ref="orderEntryConverter" />
+		<property name="priceDataFactory" ref="priceDataFactory" />
+		<property name="commonI18NService" ref="commonI18NService" />
+		<property name="typeService" ref="typeService" />
+		<property name="principalConverter" ref="principalConverter" />
+		<property name="entryGroupConverter" ref="entryGroupConverter"/>
+		<property name="entryGroupService" ref="entryGroupService"/>
+		<property name="commerceEntryGroupUtils" ref="commerceEntryGroupUtils"/>
+		<property name="virtualEntryGroupStrategy" ref="virtualEntryGroupStrategy"/>
+		<property name="orderCommentConverter" ref="orderCommentConverter"/>
+	</bean>
+	<alias name="energizerOrderConverter" alias="energizerOrderConverter"/>
+	<bean id="energizerOrderConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="de.hybris.platform.commercefacades.order.data.OrderData"/>
+		<property name="populators">
+			<list>
+				<ref bean="energizerOrderPopulator" />
+			</list>
+		</property>
+	</bean>
+	
+	
+	<alias name="energizerCustomerPopulator" alias="customerPopulator"/>
+	<bean id="energizerCustomerPopulator"
+		class="com.energizer.facades.accounts.populators.EnergizerCustomerPopulator">
+		<property name="currencyConverter" ref="currencyConverter"/>
+		<property name="languageConverter" ref="languageConverter"/>
+		<property name="customerNameStrategy" ref="customerNameStrategy"/>
+		<property name="energizerCustomerConverter" ref="energizerCustomerConverter"/>		
+	</bean>
+	<alias name="energizerCustomerConverter" alias="energizerCustomerConverter"/>
+	<bean id="energizerCustomerConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="de.hybris.platform.commercefacades.user.data.CustomerData"/>
+		<property name="populators">
+			<list>
+				<ref bean="energizerCustomerPopulator" />
+			</list>
+		</property>
+	</bean>
+	
+
+	<alias name="energizerOrderEntryPopulator" alias="orderEntryPopulator"/>
+	<bean id="energizerOrderEntryPopulator"
+		class="com.energizer.facades.search.populators.EnergizerOrderEntryPopulator">
+		<property name="productConverter" ref="productConverter" />
+		<property name="priceDataFactory" ref="priceDataFactory" />
+		<property name="entryOrderChecker" ref="commerceOrderEntryModifiableChecker" />
+		<property name="deliveryModeConverter" ref="deliveryModeConverter" />
+		<property name="pointOfServiceConverter" ref="pointOfServiceConverter" />
+		 <property name="productConfigurationConverter" ref="orderEntryProductInfoConverter"/>
+		 <property name="entryGroupService" ref="entryGroupService"/>
+		<property name="orderCommentConverter" ref="orderCommentConverter" />
+	</bean>
+	<alias name="energizerOrderEntryConverter" alias="energizerOrderEntryConverter"/>
+	<bean id="energizerOrderEntryConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="de.hybris.platform.commercefacades.order.data.OrderEntryData"/>
+		<property name="populators">
+			<list>
+				<ref bean="orderEntryPopulator" />
+			</list>
+		</property>
+	</bean>
+	
+  <alias name="energizerOrderHistoryPopulator" alias="energizerOrderHistoryPopulator"/>
+	<bean id="energizerOrderHistoryPopulator"
+		class="com.energizer.facades.search.populators.EnergizerOrderHistoryPopulator">
+		<property name="enumerationService" ref="enumerationService"/>
+		<property name="priceDataFactory" ref="priceDataFactory"/>
+		<property name="orderConverter" ref="orderConverter"/>
+	</bean>
+	<alias name="energizerOrderHistoryConverter" alias="energizerOrderHistoryConverter"/>
+	<bean id="energizerOrderHistoryConverter" parent="abstractPopulatingConverter" >
+		<property name="targetClass" value="de.hybris.platform.commercefacades.order.data.OrderHistoryData"/>
+		<property name="populators">
+			<list>
+				<ref bean="energizerOrderHistoryPopulator" />
+			</list>
+		</property>
+	</bean>
+	
+	<alias alias="energizerB2BCheckoutFlowFacade" name="defaultEnergizerB2BCheckoutFlowFacade"  />
+	<bean id="defaultEnergizerB2BCheckoutFlowFacade"
+		class="com.energizer.facades.flow.impl.DefaultEnergizerB2BCheckoutFlowFacade"
+		parent="defaultB2BCheckoutFlowFacade">
+		<property name="energizerOrderConverter" ref="energizerOrderConverter"/>
+		<property name="orderEntryConverter" ref="orderEntryConverter" />
+		<property name="energizerAddressConverter" ref="energizerAddressConverter" />
+		<property name="energizerCartConverter" ref="energizerCartConverter"/>
+		<property name="energizerB2BUnitConverter" ref="energizerB2BUnitConverter"/>
+	</bean>
+	<!--*********************** Order Processing End *************** -->	
+	
+	<!--*********************** added viewer roles for EnergizerUserGroup as part of implementation*************** -->
+	<alias name="defaultEnergizerGroupsLookUpStrategy" alias="energizerGroupsLookUpStrategy"/>
+	<bean name="defaultEnergizerGroupsLookUpStrategy"
+		class="com.energizer.facades.accounts.impl.DefaultEnergizerGroupsLookUpStrategy"
+		>
+		<property name="groups">
+			<list>
+				<value>b2badmingroup</value>
+				<value>b2bcustomergroup</value>
+				<value>b2bapprovergroup</value>
+				<value>b2bviewergroup</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- *********************** ContactNumberPopulator *************** -->
+	<bean id="contactNumberPopulator" class="com.energizer.facades.accounts.populators.ContactNumberPopulator" />
+<!-- 	<bean id="contactNumberConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="de.hybris.platform.commercefacades.user.data.CustomerData" />
+		<property name="populators">
+			<list>
+				<ref bean="contactNumberPopulator" />
+			</list>
+		</property>
+	</bean>
+ -->	
+ 
+ <bean parent="modifyPopulatorList">
+		<property name="list" ref="customerConverter" />
+		<property name="add" ref="contactNumberPopulator" />
+	</bean>
+ 
+ 
+	<!--*********************** added new populator as part of implementation***************-->
+	<alias name="defaultEnergizerCustomerReversePopulator" alias="energizerCustomerReversePopulator" />
+	<bean id="defaultEnergizerCustomerReversePopulator" class="com.energizer.facades.accounts.populators.EnergizerB2BCustomerReversePopulator">
+		<property name="customerNameStrategy" ref="customerNameStrategy"/>
+<!-- 		<property name="companyB2BCommerceService" ref="companyB2BCommerceService"/> -->
+		<property name="b2BCommerceB2BUserGroupService" ref="b2bCommerceB2BUserGroupService"/>
+		<property name="userService" ref="userService"/>
+		<property name="energizerGroupsLookUpStrategy" ref="energizerGroupsLookUpStrategy"/>
+		<property name="b2bUnitService" ref="b2bUnitService"/>
+		<property name="b2bCommerceUnitService" ref="b2bCommerceUnitService"/>		
+	</bean>
+	 <bean id="defaultInvoiceFacade" class="com.energizer.facades.order.impl.DefaultEnergizerInvoiceFacade" autowire="byName"></bean>
+
+     <alias name="defaultB2BCommerceBudgetFacade" alias="b2bCommerceBudgetFacade" />
+	  <bean id="defaultB2BCommerceBudgetFacade"
+		class="de.hybris.platform.b2bacceleratorfacades.company.impl.DefaultB2BCommerceBudgetFacade"
+		 parent="b2bCommerceFacade">
+	  </bean>
+	  
+	  <alias name="defaultB2BCommerceCostCenterFacade" alias="b2bCommerceCostCenterFacade" />
+	<bean id="defaultB2BCommerceCostCenterFacade"
+		class="de.hybris.platform.b2bacceleratorfacades.company.impl.DefaultB2BCommerceCostCenterFacade"
+		 parent="b2bCommerceFacade">
+	</bean>
+	
+	<!-- *******Added in migration to 5.7 -->
+	
+		<!-- <alias alias="b2bFlexibleSearchConverter" name="defaultB2BFlexibleSearchConverter"/>
+	<bean id="defaultB2BFlexibleSearchConverter" class="de.hybris.platform.b2bacceleratorfacades.search.converters.impl.DefaultB2BFlexibleSearchConverter">
+	<bean id="defaultB2BFlexibleSearchConverter" parent="abstractPopulatingConverter">
+		<property name="productConfiguredPopulator" ref="b2bProductConfiguredPopulator"/>
+        <property name="productBasicSearchOptions" ref="productBasicSearchOptions"/>
+	</bean> -->
+	
+	<alias alias="energizerB2BCartFacade" name="defaultEnergizerB2BCartFacade"/>
+	<bean id="defaultEnergizerB2BCartFacade"
+		class="com.energizer.facades.flow.impl.DefaultEnergizerB2BCartFacade">
+		<property name="cartModificationConverter" ref="cartModificationConverter"></property>
+	</bean>
+	
+	<alias name="defaultEnergizerDeliveryNoteFacade" alias="deliveryNoteFacade" />
+	<bean id="defaultEnergizerDeliveryNoteFacade" class="com.energizer.facades.order.impl.DefaultEnergizerDeliveryNoteFacade">
+		<!-- <property name="deliveryNoteService" ref="defaultEnergizerDeliveryNoteService"/> --> 
+	</bean>
+	<!-- Added Bean for WeSell Implementation - START -->
+	<bean id="defaultB2BEmployeeFacade" class="com.energizer.facades.b2bemployee.impl.DefaultEnergizerB2BEmployeeFacade"/>	
+	
+	<alias name="defaultEnergizerCustomerFacade" alias="customerFacade"/>
+	<bean id="defaultEnergizerCustomerFacade" class="com.energizer.facades.accounts.impl.DefaultEnergizerCustomerFacade" parent="defaultCustomerFacade">
+	<!-- <property name="defaultB2BEmployeeAccountService" ref="defaultB2BEmployeeAccountService"></property> -->
+    </bean> 
+	<!-- Added Bean for WeSell Implementation - END -->
+</beans>

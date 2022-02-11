@@ -1,0 +1,54 @@
+#
+# Import the CMS content for the Powertools site emails
+#
+# Localization es
+#
+$contentCatalog=personalCareContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$emailResource=jar:com.energizer.core.setup.CoreSystemSetup&/energizercore/import/contentCatalogs/$contentCatalog/emails
+$emailid=orderportal@edgewell.com
+
+# Language
+$lang=es
+
+# CMS components velocity templates
+UPDATE RendererTemplate;code[unique=true];description[lang=$lang];templateScript[lang=$lang,translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+ ;personalCare-BannerComponent-template;CMSBannerComponent Template;$emailResource/email-bannerComponentTemplate.vm;
+ ;personalCare-CMSImageComponent-template;CMSImageComponent Template;$emailResource/email-cmsImageComponentTemplate.vm;
+ ;personalCare-CMSLinkComponent-template;CMSLinkComponent Template;$emailResource/email-cmsLinkComponentTemplate.vm;
+ ;personalCare-CMSParagraphComponent-template;CMSParagraphComponent Template;$emailResource/email-cmsParagraphComponentTemplate.vm;
+ ;personalCare-SimpleBannerComponent-template;CMSSimpleBannerComponent Template;$emailResource/email-bannerComponentTemplate.vm;
+
+# Email velocity templates
+UPDATE RendererTemplate;code[unique=true];description[lang=$lang];templateScript[lang=$lang,translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+ ;energizer_Email_Customer_Registration_Body;Customer Registration Email Body;$emailResource/email-customerRegistrationBody.vm;
+ ;energizer_Email_Customer_Registration_Subject;Customer Registration Email Subject;$emailResource/email-customerRegistrationSubject.vm;
+ ;energizer_Email_Forgotten_Password_Body;Forgotten Password Email Body;$emailResource/email-forgottenPasswordBody.vm;
+ ;energizer_Email_Forgotten_Password_Subject;Forgotten Password Email Subject;$emailResource/email-forgottenPasswordSubject.vm;
+ ;energizer_Email_Unlock_Account_Body;Unlock Account Email Body;$emailResource/email-unlockAccountBody.vm;
+ ;energizer_Email_Unlock_Account_Subject;Unlock Account Email Subject;$emailResource/email-unlockAccountSubject.vm;
+ ;energizer_Email_Order_ApprovalRejection_Body;Order Approval Rejection Email Body;$emailResource/email-orderApprovalRejectionBody.vm;
+ ;energizer_Email_Order_ApprovalRejection_Subject;Order Approval Rejection Email Subject;$emailResource/email-orderApprovalRejectionSubject.vm;
+ ;energizer_Email_Order_Confirmation_Body;Order Confirmation Email Body;$emailResource/email-orderConfirmationBody.vm;
+ ;energizer_Email_Order_Confirmation_Subject;Order Confirmation Email Subject;$emailResource/email-orderConfirmationSubject.vm;
+ ;energizer_Email_Order_PendingApproval_Body;Order Pending Approval Email Body;$emailResource/email-orderPendingApprovalBody.vm;
+ ;energizer_Email_Order_PendingApproval_Subject;Order Pending Approval Email Subject;$emailResource/email-orderPendingApprovalSubject.vm;
+ ;energizer_Email_Quote_Order_Approve_Body;Quote Order Approval Email Body;$emailResource/email-quoteOrderApprovalBody.vm;
+ ;energizer_Email_Quote_Order_Approve_Subject;Quote Order Approval Email Subject;$emailResource/email-quoteOrderApprovalSubject.vm;
+ ;energizer_Email_Quote_Order_Reject_Body;Quote Order Reject Email Body;$emailResource/email-quoteOrderRejectionBody.vm;
+ ;energizer_Email_Quote_Order_Reject_Subject;Quote Order Reject Email Subject;$emailResource/email-quoteOrderRejectionSubject.vm;
+ ;energizer_Email_Replenishment_Order_Confirmation_Body;Order Confirmation Email Body;$emailResource/email-replenishmentOrderConfirmationBody.vm;
+ ;energizer_Email_Replenishment_Order_Confirmation_Subject;Order Confirmation Email Subject;$emailResource/email-replenishmentOrderConfirmationSubject.vm;
+ ;energizer_Email_Replenishment_Order_Placed_Body;Order Confirmation Email Subject;$emailResource/email-replenishmentOrderPlacedBody.vm;
+ ;energizer_Email_Replenishment_Order_Placed_Subject;Order Confirmation Email Subject;$emailResource/email-replenishmentOrderPlacedSubject.vm;
+
+# Email Pages
+UPDATE EmailPage;$contentCV[unique=true];uid[unique=true];fromEmail[lang=$lang];fromName[lang=$lang]
+ ;;CustomerRegistrationEmail;$emailid;"Order Portal Team"
+ ;;ForgottenPasswordEmail;$emailid;"Order Portal Team"
+ ;;UnlockAccountEmail;$emailid;"Order Portal Team"
+ ;;OrderApprovalRejectionEmail;$emailid;"Order Portal Team"
+ ;;OrderConfirmationEmail;$emailid;"Order Portal Team"
+ ;;OrderPendingApprovalEmail;$emailid;"Order Portal Team"
+ ;;ReplenishmentOrderConfirmationEmail;$emailid;"Order Portal Team"
+ ;;ReplenishmentOrderPlacedEmail;$emailid;"Order Portal Team"

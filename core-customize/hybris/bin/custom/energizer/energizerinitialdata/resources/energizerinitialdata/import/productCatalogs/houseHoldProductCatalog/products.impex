@@ -1,0 +1,21 @@
+# ImpEx for Importing Products
+
+# Macros / Replacement Parameter definitions
+$productCatalog=energizerProductCatalog
+
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$supercategories=supercategories(code, $catalogVersion)
+$approved=approvalstatus(code)[default='check']
+
+# Insert Products
+#INSERT_UPDATE EnergizerProduct;code[unique=true];$supercategories;manufacturerName;manufacturerAID;unit(code);ean;$approved;$catalogVersion
+#;PRD001;SEG1001FAM1001;Energizer;;;;approved;
+#;PRD002;SEG1001FAM1002;Energizer;;;;approved;
+#;PRD003;SEG1002FAM1001;Energizer;;;;approved;
+#;PRD004;SEG1002FAM1002;Energizer;;;;approved;
+#;PRD005;SEG1003FAM1001;Energizer;;;;approved;
+#;PRD006;SEG1003FAM1002;Energizer;;;;approved;
+#;PRD007;SEG1004FAM1001;Energizer;;;;approved;
+#;PRD008;SEG1004FAM1002;Energizer;;;;approved;
+
+INSERT_UPDATE EnergizerProduct;code[unique=true];$supercategories;manufacturerName;manufacturerAID;unit(code);ean;$approved;$catalogVersion

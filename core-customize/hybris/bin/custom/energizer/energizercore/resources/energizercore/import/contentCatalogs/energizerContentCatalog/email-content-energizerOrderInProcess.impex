@@ -1,0 +1,65 @@
+$contentCatalog=energizerContentCatalog
+$energier=energizer
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$wideContent=CMSImageComponent,BannerComponent
+$jarResourceCms=jar:com.energizer.core.setup.CoreSystemSetup&/energizercore/import/cockpits/cmscockpit
+$emailResource=jar:com.energizer.core.setup.CoreSystemSetup&/energizercore/import/contentCatalogs/$contentCatalog/emails
+$emailid=shweta.hegde@mindtree.com
+
+# Language
+$lang=en
+
+
+# CMS components velocity templates
+UPDATE RendererTemplate;code[unique=true];description[lang=$lang];templateScript[lang=$lang,translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+;energizer-BannerComponent-template;CMSBannerComponent Template;$emailResource/email-bannerComponentTemplate.vm;
+;energizer-CMSImageComponent-template;CMSImageComponent Template;$emailResource/email-cmsImageComponentTemplate.vm;
+;energizer-CMSLinkComponent-template;CMSLinkComponent Template;$emailResource/email-cmsLinkComponentTemplate.vm;
+;energizer-CMSParagraphComponent-template;CMSParagraphComponent Template;$emailResource/email-cmsParagraphComponentTemplate.vm;
+;energizer-SimpleBannerComponent-template;CMSSimpleBannerComponent Template;$emailResource/email-bannerComponentTemplate.vm;
+
+
+
+# Preview Image for use in the CMS Cockpit
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];mime;realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite=true]
+;;EmailPageModel_preview;text/gif;EmailPageModel_preview.gif;$jarResourceCms/preview-images/EmailPageModel_preview.gif
+
+# Create the sendingSubmitOrderToSAPFailed email page template
+INSERT_UPDATE EmailPage;$contentCV[unique=true];uid[unique=true];name;masterTemplate(uid,$contentCV);defaultPage;approvalStatus(code)[default='approved'];fromEmail[lang=en];fromName[lang=en]
+;;EnergizerOrderInProcessEmail; Send Submit Order To SAP Failed Email;EnergizerOrderInProcessEmailTemplate;true;;$emailid;Customer Services Team
+
+UPDATE EmailPage;$contentCV[unique=true];uid[unique=true];previewImage(code, $contentCV)
+;;EnergizerOrderInProcessEmail;EmailPageModel_preview
+
+# Email page Template
+INSERT_UPDATE EmailPageTemplate;$contentCV[unique=true];uid[unique=true];name;active;frontendTemplateName;subject(code);htmlTemplate(code);restrictedPageTypes(code)
+;;EnergizerOrderInProcessEmailTemplate;Quote Send Submit Order To SAP Failed Template;true;EnergizerOrderInProcessEmailTemplate;energizer_Email_Order_InProcess_Subject;energizer_Email_Order_InProcess_Body;EmailPage
+
+# Email velocity templates
+INSERT_UPDATE RendererTemplate;code[unique=true];contextClass;rendererType(code)[default='velocity']
+;energizer_Email_Order_InProcess_Body;com.energizer.facades.process.email.context.OrderNotificationEmailContext
+;energizer_Email_Order_InProcess_Subject;com.energizer.facades.process.email.context.OrderNotificationEmailContext
+
+
+# Rendered template
+# Email velocity templates
+UPDATE RendererTemplate;code[unique=true];description[lang=$lang];templateScript[lang=$lang,translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+;energizer_Email_Order_InProcess_Body;Create order failed email body;$emailResource/email-sendSubmitOrderToSAPFailedNotificationBody.vm
+;energizer_Email_Order_InProcess_Subject;Create order failed email subject;$emailResource/email-sendSubmitOrderToSAPFailedNotificationSubject.vm
+ 
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='EnergizerOrderInProcessEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;;logo
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+# Create Content Slots
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active
+;;EmailTopSlot;Default Email Top Slot;true
+;;EmailBottomSlot;Default Email Bottom Slot;true
+
+
+# Bind Content Slots to Email Page Templates
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='EnergizerOrderInProcessEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-EnergizerOrderInProcessEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-EnergizerOrderInProcessEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-EnergizerOrderInProcessEmail;BottomContent;;EmailBottomSlot;true

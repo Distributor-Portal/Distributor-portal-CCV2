@@ -1,0 +1,155 @@
+# ImpEx for Importing CMS Content
+# English Localisation
+
+# Macros / Replacement Parameter definitions
+$contentCatalog=personalCareEMEAContentCatalog
+$storeName=personalCareEMEA
+
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$picture=media(code, $contentCV);
+$siteResource=jar:com.energizer.initialdata.setup.InitialDataSystemSetup&/energizerinitialdata/import/store/$storeName
+
+# Language
+$lang=en
+
+
+# CMS Image Components
+UPDATE CMSImageComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+
+# CMS Link Components
+UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];linkName[lang=$lang]
+
+#Starting - Added CMS Link Components for personalCareEMEA - START
+;;HomepageEMEANavLink;Energizer
+;;Sun_Skin_Care_EMEA_Link;"Sun & Skin Care"
+;;Wet_Shave_EMEA_Link;Wet Shave
+;;Sun_Care_EMEA_Link;Sun Care
+;;Disposables_EMEA_Link;Disposables
+;;Mens_Systems_EMEA_Link;"Men's Systems"
+;;Shave_Prep_EMEA_Link;Shave Prep
+;;Womens_Systems_EMEA_Link;"Women's Systems"
+;;Banana_Boat_EMEA_Link;Banana Boat
+;;Hawaiian_Tropic_EMEA_Link;Hawaiian Tropic
+;;Exacta3_Extra3_EMEA_Link;"Exacta3/Extra3"
+;;Lng_Hndl_Rubber_Disposables_EMEA_Link;"Lng Hndl/Rubber Disposables"
+;;Low_End_Double_Disposables_EMEA_Link;Low End Double Disposables
+;;Low_End_Single_Disposables_EMEA_Link;Low End Single Disposables
+;;Other_PBG_Disposables_EMEA_Link;Other PBG Disposables
+;;Quattro_Disposables_EMEA_Link;Quattro Disposables
+;;Slim_Twin_EII_Disposables_EMEA_Link;"Slim Twin/EII Disposables"
+;;Xtreme_3_Disposables_EMEA_Link;Xtreme 3 Disposables
+;;Hydro_Blades_EMEA_Link;Hydro Blades
+;;Hydro_Razors_EMEA_Link;Hydro Razors
+;;Mens_Other_Blades_EMEA_Link;"Men's Other Blades"
+;;Mens_Other_Razors_EMEA_Link;"Men's Other Razors"
+;;Quattro_Blades_EMEA_Link;Quattro Blades
+;;Quattro_Razors_EMEA_Link;Quattro Razors
+;;Quattro_Trimmers_EMEA_Link;Quattro Trimmers
+;;Legacy_Shave_Preps_EMEA_Link;Legacy Shave Preps
+;;Intuition_Blades_EMEA_Link;Intuition Blades
+;;Intuition_Razors_EMEA_Link;Intuition Razors
+;;Lady_P_Silk_Blades_EMEA_Link;"Lady P/Silk Blades"
+;;Lady_P_Silk_Razors_EMEA_Link;"Lady P/Silk Razors"
+;;Quattro_for_Women_Blades_EMEA_Link;Quattro for Women Blades
+;;Quattro_for_Women_Razors_EMEA_Link;Quattro for Women Razors
+;;Quattro_for_Women_Trimmers_EMEA_Link;Quattro for Women Trimmers
+;;Hydro_Silk_Blades_EMEA_Link;Hydro Silk Blades
+;;Hydro_Silk_Razors_EMEA_Link;Hydro Silk Razors
+#Ending - Added CMS Link Components for personalCareEMEA - END
+
+;;UserLoginLink;Login
+;;MyAccountLink;My Account
+;;MyCompanyLink;My Company
+;;LogoutLink;Logout
+#;;StoreFinderLink;Store Locator
+;;QuickOrderPageLink;Quick Order
+;;ExcelOrderPageLink;Excel Order
+;;CatalogDownloadPageLink;Catalog Download
+;;AboutUSLink;About us
+#;;CopyRightLink;©2015 Energizer
+#;;TrademarkLink;Trademark
+#;;TermsAndConditionsLink;Terms And Conditions
+;;PrivacyPolicyLink;Privacy Policy
+;;ContactUSLink;Contact us
+;;LegalLink;Legal
+;;FAQLink;FAQs
+;;TermsOfServiceLink;Terms Of Service
+;;TermsAndConditionsLink;Terms And Conditions
+
+# Lightbox Banner for Mini Cart
+UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText;&imageRef
+
+UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+
+# CMS Mini Cart Component
+UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;title[lang=$lang]
+
+# CMS Tab Paragraph Components
+UPDATE CMSTabParagraphComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang];content[lang=$lang]
+
+# CMS Footer Component
+UPDATE FooterComponent;$contentCV[unique=true];uid[unique=true];notice[lang=$lang]
+
+# CMS Paragraph Components
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+
+# CMS Product References Components
+UPDATE ProductReferencesComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# CMS PurchasedCategorySuggestion Components
+UPDATE PurchasedCategorySuggestionComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# Category Pages
+UPDATE CategoryPage;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# CMS Navigation Nodes
+UPDATE CMSNavigationNode;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+#Starting - Added CMS Link Components for personalCareEMEA - START
+;;Sun_Skin_Care_EMEA_Nav_Node;"Sun & Skin Care"
+;;Wet_Shave_EMEA_Nav_Node;Wet Shave
+;;Sun_Care_EMEA_Nav_Node;Sun Care
+;;Disposables_EMEA_Nav_Node;Disposables
+;;Mens_Systems_EMEA_Nav_Node;"Men's Systems"
+;;Shave_Prep_EMEA_Nav_Node;Shave Prep
+;;Womens_Systems_EMEA_Nav_Node;"Women's Systems"
+;;Banana_Boat_EMEA_Nav_Node;Banana Boat
+;;Hawaiian_Tropic_EMEA_Nav_Node;Hawaiian Tropic
+;;Exacta3_Extra3_EMEA_Nav_Node;"Exacta3/Extra3"
+;;Lng_Hndl_Rubber_Disposables_EMEA_Nav_Node;"Lng Hndl/Rubber Disposables"
+;;Low_End_Double_Disposables_EMEA_Nav_Node;Low End Double Disposables
+;;Low_End_Single_Disposables_EMEA_Nav_Node;Low End Single Disposables
+;;Other_PBG_Disposables_EMEA_Nav_Node;Other PBG Disposables
+;;Quattro_Disposables_EMEA_Nav_Node;Quattro Disposables
+;;Slim_Twin_EII_Disposables_EMEA_Nav_Node;"Slim Twin/EII Disposables"
+;;Xtreme_3_Disposables_EMEA_Nav_Node;Xtreme 3 Disposables
+;;Hydro_Blades_EMEA_Nav_Node;Hydro Blades
+;;Hydro_Razors_EMEA_Nav_Node;Hydro Razors
+;;Mens_Other_Blades_EMEA_Nav_Node;"Men's Other Blades"
+;;Mens_Other_Razors_EMEA_Nav_Node;"Men's Other Razors"
+;;Quattro_Blades_EMEA_Nav_Node;Quattro Blades
+;;Quattro_Razors_EMEA_Nav_Node;Quattro Razors
+;;Quattro_Trimmers_EMEA_Nav_Node;Quattro Trimmers
+;;Legacy_Shave_Preps_EMEA_Nav_Node;Legacy Shave Preps
+;;Intuition_Blades_EMEA_Nav_Node;Intuition Blades
+;;Intuition_Razors_EMEA_Nav_Node;Intuition Razors
+;;Lady_P_Silk_Blades_EMEA_Nav_Node;"Lady P/Silk Blades"
+;;Lady_P_Silk_Razors_EMEA_Nav_Node;"Lady P/Silk Razors"
+;;Quattro_for_Women_Blades_EMEA_Nav_Node;Quattro for Women Blades
+;;Quattro_for_Women_Razors_EMEA_Nav_Node;Quattro for Women Razors
+;;Quattro_for_Women_Trimmers_EMEA_Nav_Node;Quattro for Women Trimmers
+#Ending - Added CMS Link Components for personalCareEMEA - END
+
+
+#;;Playtex_Nav_Node;Playtex
+#;;Carefree_Nav_Node;Carefree
+#;;Stayfree_Nav_Node;Stayfree
+
+
+# CMS Banner Components
+UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText;&imageRef
+
+UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+
+UPDATE BannerComponent;$contentCV[unique=true];uid[unique=true];headline[lang=$lang];$picture[lang=$lang];content[lang=$lang]
+

@@ -1,0 +1,1489 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2014 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="items.xsd">
+
+	<collectiontypes>
+		<collectiontype elementtype="Catalog" code="DependentCatalogs"
+			autocreate="true" type="list" />
+		<collectiontype elementtype="Unit" code="UnitList"
+			autocreate="true" type="list" />
+		<collectiontype elementtype="java.lang.String" code="StringList"
+			autocreate="true" type="list" />
+		<collectiontype elementtype="EnergizerCMIR" code="CMIRList"
+			autocreate="true" type="list" />
+		<collectiontype elementtype="EnergizerProductConversionFactor"
+			code="EnergizerProductConversionFactorList" autocreate="true" type="list" />
+        <collectiontype elementtype="java.lang.String" code="palStackList"
+			autocreate="true" type="list" />
+		<collectiontype elementtype="EnergizerB2BEmployee"
+			code="workingForList" autocreate="true" type="set" />
+	</collectiontypes>
+
+	<enumtypes>
+		<enumtype code="OrderStatus" autocreate="false" generate="true"
+			dynamic="true">
+			<value code="PENDING" />
+			<value code="IN_PROCESS" />
+			<value code="SHIPPED" />
+			<value code="INVOICED" />
+			<!-- <value code="CANCELLED" /> -->
+		</enumtype>
+		<enumtype generate="true" code="B2BCheckoutFlowEnum"
+			autocreate="true" dynamic="true">
+			<model package="com.energizer.core.enums"/>
+			<value code="SINGLE" />
+			<value code="MULTISTEP" />
+		</enumtype>
+		<enumtype generate="true" code="B2BCheckoutPciOptionEnum"
+			autocreate="true" dynamic="true">
+			<model package="com.energizer.core.enums"/>
+			<value code="Default" />
+			<value code="HOP" />
+		</enumtype>
+		
+		<enumtype code="CronJobResult" autocreate="false" generate="true" >
+            <description>The result reports on how the CronJob's last run was.</description>
+            <model package="de.hybris.platform.cronjob.enums"/>
+            <value code="FILE_NOT_FOUND">
+                <description>The CronJob was started but no file found to process.</description>
+            </value>
+        </enumtype>
+        <enumtype code="PhoneNumberFormat" autocreate="true"
+            generate="true" dynamic="true">
+            <value code="LOCAL" />
+            <value code="INTERNATIONAL" />
+        </enumtype>
+	</enumtypes>
+	
+	 <maptypes>	
+	   <maptype code="palStackMap" argumenttype="java.lang.Integer"
+         returntype="palStackList" generate="true" autocreate="true" />
+         
+         <maptype code="obsoleteStatusMap" argumenttype="java.lang.String"
+         returntype="java.lang.String" generate="true" autocreate="true" />
+      </maptypes>
+	
+	<relations>
+		<relation code="AbstractOrder2B2BPermissionResults"
+		          localized="false" generate="false" autocreate="false">
+			<sourceElement type="AbstractOrder" qualifier="Order"
+			               cardinality="one">
+				<modifiers read="true" write="true" search="true"/>
+			</sourceElement>
+			<targetElement type="B2BPermissionResult" qualifier="PermissionResults"
+			               cardinality="many" collectiontype="collection">
+			<!-- <targetElement type="B2BPermissionResult" qualifier="PermissionResults"
+			               cardinality="many" collectiontype="collection" ordered="true"> -->
+				<modifiers read="true" write="true" search="true" partof="true"/>
+			</targetElement>
+		</relation>
+		<!-- Added Relation for WeSell Implementation - START -->	
+		<relation code="EnergizerB2BEmployeeB2BUnitRelation" autocreate="true" generate="true" localized="false"> 
+			<deployment table="B2BEmp2B2BUnitRel" typecode="10321" />
+			<sourceElement type="EnergizerB2BEmployee" qualifier="employee" cardinality="many" collectiontype="set">
+				<modifiers read="true" write="true" search="true"/>
+			</sourceElement>
+			<targetElement type="EnergizerB2BUnit" qualifier="b2bUnitList" cardinality="many" collectiontype="set">
+				<modifiers read="true" write="true" search="true" />
+			</targetElement>
+		</relation>
+		<!-- Added Relation for WeSell Implementation - END -->
+	</relations>
+	<itemtypes>
+		<!-- Add your item definitions here -->
+
+		<itemtype code="HeaderNavigationComponent" autocreate="true"
+			generate="true" extends="NavigationBarComponent"
+			jaloclass="de.hybris.platform.acceleratorcms.jalo.components.HeaderNavigationComponent">
+			<description>It represents navigation bar component that contains cms navigation node. Nodes structure can be built in a hierarchical way.</description>
+		</itemtype>
+		<itemtype code="MultipleCatalogsSyncCronJob" extends="CronJob"
+			autocreate="true" generate="true"
+			jaloclass="com.energizer.core.jalo.MultipleCatalogsSyncCronJob">
+			<attributes>
+				<attribute type="DependentCatalogs" qualifier="contentCatalogs">
+					<modifiers optional="false" initial="true" />
+					<persistence type="property" />
+					<description>
+						List of content catalogs used for CatalogVersionSyncJob
+					</description>
+				</attribute>
+				<attribute type="Catalog" qualifier="productCatalog">
+					<modifiers optional="false" initial="true" />
+					<persistence type="property" />
+					<description>
+						Products catalog used for CatalogVersionSyncJob
+					</description>
+				</attribute>
+			</attributes>
+		</itemtype>
+
+	<!--	<typegroup name="btg">
+			<itemtype code="OrganizationOrderStatistics" autocreate="true"
+				generate="true" jaloclass="com.energizer.core.jalo.btg.OrganizationOrderStatistics">
+				<description>Used to collect order total information within an organization</description>
+				<deployment table="OrganizationOrderStats" typecode="6214" />
+				<attributes>
+					<attribute qualifier="unit" type="B2BUnit">
+						<description>The root unit of an organization</description>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="currency" type="Currency">
+						<description>The currency of orders</description>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="orderTotal" type="java.lang.Double">
+						<description>The total of all orders for an organization</description>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="date" type="java.util.Date">
+						<description>The date for which to gather order total information</description>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="category" type="java.lang.String">
+						<description>The category for which to gather order total information</description>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="catalog" type="java.lang.String">
+						<description>The catalog code to which the category belongs to</description>
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+				<indexes>
+					<index name="orgStatsIdx" unique="false">
+						<key attribute="unit" />
+						<key attribute="currency" />
+						<key attribute="date" />
+					</index>
+				</indexes>
+			</itemtype> 
+
+
+			<itemtype code="OrganizationOrdersReportingCronJob"
+				autocreate="true" generate="true" extends="CronJob"
+				jaloclass="com.energizer.core.jalo.btg.OrganizationOrdersReportingCronJob">
+			</itemtype>
+
+			<itemtype code="BTGOrganizationTotalSpentInCurrencyLastYearOperand"
+				extends="BTGAbstractOrderOperand" autocreate="true" generate="true"
+				jaloclass="com.energizer.core.jalo.btg.BTGOrganizationTotalSpentInCurrencyLastYearOperand">
+				<description>Gets total of all orders for an organization in the prior year for a given catalog category
+					if provided
+				</description>
+				<attributes>
+					<attribute type="Currency" qualifier="currency">
+						<persistence type="property" />
+					</attribute>
+					<attribute type="java.lang.String" qualifier="productCatalogId">
+						<persistence type="property" />
+						<modifiers optional="true" />
+					</attribute>
+					<attribute type="java.lang.String" qualifier="categoryCode">
+						<persistence type="property" />
+						<modifiers optional="true" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="BTGOrganizationTotalSpentInCurrencyRelativeDatesOperand"
+				extends="BTGOrganizationTotalSpentInCurrencyLastYearOperand"
+				autocreate="true" generate="true"
+				jaloclass="com.energizer.core.jalo.btg.BTGOrganizationTotalSpentInCurrencyRelativeDatesOperand">
+				<description>Gets total of all orders for an organization in the past period specified for a given catalog
+					category if provided
+				</description>
+				<attributes>
+					<attribute type="java.lang.Integer" qualifier="value">
+						<persistence type="property" />
+					</attribute>
+					<attribute type="IntervalResolution" qualifier="unit">
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+		</typegroup>  -->
+
+
+
+
+
+		<!-- Energizer Specific Data Models -->
+		<typegroup name="EnergizerDataModels">
+
+			<itemtype code="EnergizerB2BUnit" extends="B2BUnit"
+				autocreate="true" generate="true"
+				jaloclass="com.energizer.core.jalo.EnergizerB2BUnit">
+				<description>Customized B2BUnit with SAP specific data
+                        </description>
+				<attributes>
+					<!-- customer account ID maintain in ID OOTB field -->
+					<!-- customer primary admin - maintain in contact person OOTB field -->
+					<!-- sold to address (EnergizerAddress) - maintain in addresses OOTB 
+						field -->
+					<attribute qualifier="salesOrganisation" type="java.lang.String">
+						<description>Sales Organisation</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute  qualifier="enableContainerOptimization" type="java.lang.Boolean">
+					<modifiers />
+					<persistence type="property" />
+					<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					</attribute>
+					<attribute qualifier="distributionChannel" type="java.lang.String">
+						<description>Distribution Channel</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="division" type="java.lang.String">
+						<description>Division</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="region" type="java.lang.String">
+						<description>Region</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					
+					<!-- EMEA expansion, added FreightType to store value as container or truck -->
+					
+					<attribute qualifier="freightType" type="java.lang.String">
+						<description>FreightType</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					
+					<attribute qualifier="customerAccountName" type="java.lang.String">
+						<description>Customer Account Name</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="orderBlock" type="java.lang.Boolean">
+						<description>Order Block Flag</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="currencyPreference" type="Currency">
+						<description>Currency Preference for Customer Account</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="minimumOrderValue" type="java.math.BigDecimal">
+						<description>Minimum order value</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="maxUserLimit" type="java.lang.String">
+						<description>Maximum User limit for the the customer account</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="salesPersonEmailId" type="java.lang.String">
+						<description>Email ID for the Energizer sales person</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="languagePreference" type="java.lang.String">
+						<description>default language preference for a customer - iso code</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<!-- <attribute qualifier="contactNumber" type="PhoneNumber">
+						<description>Phone Number</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute> -->
+					<attribute qualifier="erpOrderingType" type="java.lang.String">
+						<description>the account can place orders domestic/export orders. ZFT - export order/ ZOR - domestic order</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					
+					<!-- Added PALLET Type for EMEA Container Optimization -->
+					<attribute qualifier="palletType" type="java.lang.String">
+						<description>The Pallet type, EU or US</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="salesArea" type="java.lang.String">
+						<description>Whether this B2B unit belongs to LATAM (or) EMEA (or) WESELL</description>
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+					<!-- Added item for WeSell Implementation - START -->
+					<attribute qualifier="energizerCreditLimit" type="java.lang.String">
+						<description>B2B Unit total credit amount</description>
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="customerBalance" type="java.lang.String">
+						<description>Remaining customer balance amount</description>
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="creditAvailable" type="java.lang.String">
+						<description>B2B unit credit amount available</description>
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+					<!-- Added item for WeSell Implementation - END -->
+				</attributes>
+			</itemtype>
+
+
+			<itemtype code="EnergizerProduct" extends="Product"
+				autocreate="true" generate="true"
+				jaloclass="com.energizer.core.jalo.EnergizerProduct">
+				<description>Energizer Product model with SAP specific data
+				</description>
+				<attributes>
+					<!-- EnergizerMaterialNumber field - OOTB uid -->
+					<!-- EnergizerMaterialDescription field - OOTB name -->
+					<!-- ListPrice field - OOTB - a price row without a B2B unit -->
+					<!-- Categories field - OOTB -->
+					<!-- Thumbnail Image field - OOTB -->
+					<!-- Display Image field - OOTB -->
+					<attribute qualifier="obsolete" type="java.lang.Boolean">
+						<description>Obsolete status - if obsolete then disable add to cart button</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<!-- <attribute qualifier="productWeight" type="MetricUnit"> <description>product 
+						weight for each</description> <modifiers /> <persistence type="property" 
+						/> </attribute> <attribute qualifier="productVolume" type="MetricUnit"> <description>product 
+						volume for each</description> <modifiers /> <persistence type="property" 
+						/> </attribute> -->
+					<attribute qualifier="productConversionFactors"
+						type="EnergizerProductConversionFactorList">
+						<description>product conversion factors for all packs possible for a product</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="productCMIR" type="CMIRList">
+						<description>CMIR list</description>
+						<modifiers />
+						<persistence type="property">
+	                        <columntype database="oracle">
+	                            <value>CLOB</value>
+	                        </columntype>
+	                        <columntype database="sap">
+	                            <value>NCLOB</value>
+	                        </columntype>
+	                        <columntype database="mysql">
+	                            <value>TEXT</value>
+	                        </columntype>
+	                        <columntype>
+	                            <value>HYBRIS.LONG_STRING</value>
+	                        </columntype>
+                    	</persistence>
+					</attribute>
+					<attribute qualifier="segmentCode" type="java.lang.String">
+						<description>Segment code</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="segmentName" type="java.lang.String">
+						<description>Segment Name</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="familyCode" type="java.lang.String">
+						<description>Family Code</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="familyName" type="java.lang.String">
+						<description>Family Name</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="groupCode" type="java.lang.String">
+						<description>Group code</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="groupName" type="java.lang.String">
+						<description>Group Name</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="subGroupCode" type="java.lang.String">
+						<description>Sub group Code</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="subGroupName" type="java.lang.String">
+						<description>Sub group Name</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="searchAttribute" type="java.lang.String">
+						<description>Search attribute</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="sapCategoryConcatValue" type="java.lang.String">
+						<description>SAP category concatenated value</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="imageReferenceId" type="java.lang.String">
+						<description>Image Reference ID</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="isPBG" type="java.lang.Boolean">
+						<description>If 'true', then it is a PBG Product and Non-PBG otherwise.</description>
+						<modifiers/>
+						<persistence type="property" />						
+					</attribute>
+					<attribute qualifier="obsoleteStatusMap" type="obsoleteStatusMap">
+						<description>This is to store the sales orgs specific obsolete status for a product.</description>
+						<modifiers read="true" write="true"/>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="nonObsoleteSalesOrgsString" type="java.lang.String">
+						<description>This attribute will store the sales orgs that have this product as non-obsolete concatenated by '-'.</description>
+						<modifiers read="true" write="true" />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+
+			<itemtype code="EnergizerCMIR" extends="GenericItem"
+				autocreate="true" generate="true" jaloclass="com.energizer.core.jalo.EnergizerCMIR">
+				<description>CMIR Record</description>
+				<deployment table="en_cmir" typecode="10201" />
+				<attributes>
+					<attribute qualifier="b2bUnit" type="EnergizerB2BUnit">
+						<description>b2b unit Id</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="erpMaterialId" type="java.lang.String">
+						<description>erpMaterial Id</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="customerMaterialId" type="java.lang.String">
+						<description>customer specific material Id</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="customerMaterialDescription" type="localized:java.lang.String">
+						<description>customer specific material description</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="shippingPoint" type="java.lang.String">
+						<description>shipping point id for a customer</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="uom" type="java.lang.String">
+						<description>UOM for the customer</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="orderingUnit" type="java.lang.Integer">
+						<description>ordering unit for default qty for adding to cart and to allow multiples of this value for ordering/add to cart</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute type="java.lang.Boolean" qualifier="isActive">
+					<modifiers />
+					<persistence type="property" />
+					<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+					</attribute>
+					<attribute qualifier="siteId" type="java.lang.String">
+						<description>Site to which the CMIR belongs to</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="isWeSellProduct" type="java.lang.Boolean" >
+						<description>Whether it is a WeSell product</description>
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="custPriceUOM" type="java.lang.String" >
+						<description>Customer price UOM</description>
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="cmirOwner" type="java.lang.String" >
+						<description>Whether the CMIR belongs to LATAM (or) EMEA (or) WESELL</description>
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+				<indexes>
+					<index name="isActive">
+						<key attribute="isActive" />
+					</index>
+					<index name="b2bUnit">
+						<key attribute="b2bUnit" />
+					</index>
+				</indexes>
+			</itemtype>
+
+
+			<itemtype code="EnergizerProductConversionFactor" extends="GenericItem"
+				autocreate="true" generate="true"
+				jaloclass="com.energizer.core.jalo.EnergizerProductConversionFactor">
+				<description>Energizer ProductConversion Factor</description>
+				<deployment table="en_pcf" typecode="10206" />
+				<attributes>
+					<attribute qualifier="packageCode" type="java.lang.String">
+						<description>This could be Each - EACH/Interpack - INTERPACK /Case - CASE /Layer - LAYER /Pallet - PALLET</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute type="java.lang.String" qualifier="erpMaterialId">
+						<description> This would map to Product code</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="alternateUOM" type="java.lang.String">
+						<description>Alternate Unit Of Measure, which would be case</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="conversionMultiplier" type="java.lang.Integer">
+						<description>this is the conversion multiplier for conversion to eaches</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="packageVolume" type="MetricUnit">
+						<description>volume of the package for the product</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="packageWeight" type="MetricUnit">
+						<description>weight of the package for the product</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					
+					<attribute qualifier="packageLength" type="MetricUnit">
+						<description>length of the package for the product</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="packageWidth" type="MetricUnit">
+						<description>width of the package for the product</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="packageHeight" type="MetricUnit">
+						<description>height of the package for the product</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+
+			<itemtype code="EnergizerSalesAreaUOM" extends="GenericItem"
+				autocreate="true" generate="true"
+				jaloclass="com.energizer.core.jalo.EnergizerSalesAreaUOM">
+				<deployment table="en_slsuom" typecode="10209" />
+				<attributes>
+					<attribute type="java.lang.String" qualifier="familyID">
+						<description>Family ID</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="salesOrganisation" type="java.lang.String">
+						<description>Sales Organisation</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="distributionChannel" type="java.lang.String">
+						<description>Distribution Channel</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="division" type="java.lang.String">
+						<description>Division</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute type="java.lang.String" qualifier="customerAccountId">
+						<description>Customer Account ID</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute type="java.lang.String" qualifier="measureOfQuantity">
+						<description>Measure Of Quantity (MOQ)</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute type="java.lang.String" qualifier="unitOfMeasure">
+						<description>Unit Of Measurement (UOM)</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+
+			<itemtype code="EnergizerB2BUnitLeadTime" autocreate="true"
+				generate="true" jaloclass="com.energizer.core.jalo.EnergizerB2BUnitLeadTime">
+
+				<description>Custom lead time(estimated time of delivery) mapping
+				</description>
+				<deployment table="en_ldtm" typecode="10203" />
+				<attributes>
+					<attribute qualifier="b2bUnitId" type="EnergizerB2BUnit">
+						<description>Energizer B2BUnit ID</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+
+					<attribute qualifier="soldToAddressId" type="java.lang.String">
+						<description>Energizer Address ID</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="shippingPointId" type="java.lang.String">
+						<description>Shipping Point Name</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="leadTime" type="java.lang.Integer">
+						<description>Estimated delivery time in days</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="EnergizerPasswordQuestions" autocreate="true"
+				generate="true">
+
+				<description>Storing Password Questions to be displayed
+				</description>
+				<deployment table="en_password" typecode="10228" />
+				<attributes>
+					
+										
+					<attribute qualifier="passwordQuestion" type="localized:java.lang.String" >
+						<description>PasswordQuestion</description>
+						<persistence type="property" />
+					</attribute>
+
+				</attributes>
+			</itemtype>
+
+
+			<itemtype code="EnergizerB2BCustomer" extends="B2BCustomer"
+				autocreate="true" generate="true"
+				jaloclass="com.energizer.core.jalo.EnergizerB2BCustomer">
+				<description>Customized B2BCustomer with SAP specific data
+				</description>
+				<attributes>
+					<!-- user uid - OOTB - use the customer email address -->
+					<!-- user email address - OOTB Email Address -->
+					<!-- user first name - OOTB Name -->
+					<!-- user status - OOTB active field -->
+					<attribute qualifier="lastName" type="java.lang.String">
+						<description>Last Name of the customer</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="contactNumber" type="java.lang.String">
+						<description>Phone Number</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="registrationEmailFlag" type="java.lang.Boolean">
+						<description>When flag true, email has been send otherwize false.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute type="java.lang.String" qualifier="previousPasswords">
+					<description>latest 5 passwords will be stored with delimeter seperated</description>
+					<persistence type="property" />
+					</attribute>
+					<attribute type="java.util.Date" qualifier="passwordModifiedTime">
+					<description>password updated time</description>
+					<persistence type="property" />
+					</attribute>
+					<attribute type="java.lang.Boolean" qualifier="isPasswordQuestionSet">
+					<modifiers />
+					<persistence type="property" />
+					<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+
+			<itemtype code="EnergizerShippingPoint" extends="GenericItem"
+				autocreate="true" generate="true"
+				jaloclass="com.energizer.core.jalo.EnergizerShippingPoint">
+
+				<description>Custom Data Model to maintain the shipping point list
+				</description>
+				<deployment table="en_shppt" typecode="10202" />
+				<attributes>
+
+					<attribute qualifier="shippingPointId" type="java.lang.String">
+						<description>Shipping point ID</description>
+						<modifiers unique="true" />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="shippingPointName" type="java.lang.String">
+						<description>Shipping Point Name</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<!-- <attribute qualifier="shippingPointAddress" type="EnergizerAddress"> -->
+					<attribute qualifier="shippingPointAddress" type="Address">
+						<description>Shipping Point address</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="shippingPointLocation" type="java.lang.String">
+						<description>Shipping Point location</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+
+			<itemtype code="EnergizerPriceRow" extends="PriceRow"
+				autocreate="true" generate="true"
+				jaloclass="com.energizer.core.jalo.EnergizerPriceRow">
+				<description>Energizer Price row for custom price based on b2bunit
+				</description>
+				<attributes>
+					<!-- currency field - OOTB -->
+					<!-- UOM field - OOTB -->
+					<!-- price field - OOTB -->
+					<attribute qualifier="b2bUnit" type="EnergizerB2BUnit">
+						<description>Energizer B2BUnit ID</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+                    <attribute type="java.lang.Boolean" qualifier="isActive">
+					<modifiers />
+					<persistence type="property" />
+					<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<!-- <itemtype code="EnergizerAddress" extends="Address" autocreate="true" 
+				generate="true" jaloclass="com.energizer.core.jalo.EnergizerAddress"> -->
+
+			<itemtype code="Address" autocreate="false" generate="false">
+				<description>Energizer address with specific SAP address ID
+                        </description>
+				<attributes>
+					<attribute qualifier="erpAddressId" type="java.lang.String">
+						<description>SAP specific Id</description>
+						<!-- <modifiers unique="true" /> -->
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="salesPersonEmailId" type="java.lang.String">
+						<description>SAP specific Id</description>
+						<!-- <modifiers unique="true" /> -->
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="displayName" type="java.lang.String">
+						<description>SAP specific Id</description>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="active" type="java.lang.Boolean">
+						<description>SAP specific Id</description>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="soldToAddressId" type="java.lang.String">
+						<description>Sold-To addressId</description>
+						<persistence type="property" />
+						<modifiers/>
+					</attribute>
+			    </attributes>
+			</itemtype>
+
+			<itemtype code="MetricUnit" extends="GenericItem"
+				autocreate="true" generate="true">
+
+				<description>Metric Unit for volume or weight
+				</description>
+				<deployment table="en_mtut" typecode="10204" />
+				<attributes>
+					<attribute qualifier="measurement" type="java.lang.Double">
+						<description>This will be the value</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="measuringUnits" type="java.lang.String">
+						<description>This will be the measuring units.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<!-- <itemtype code="EnergizerOrder" extends="Order" autocreate="true" -->
+			<!-- Surendra : As discussed with Sriram and Kaushik changing item definition 
+				- renaming from energizer order to abstract order and movine few attribute 
+				to order level -->
+
+			<itemtype code="AbstractOrder" autocreate="false" generate="false">
+
+				<description>Energizer order with specific SAP address ID
+				</description>
+				OrderNumber - OOTB
+				Customer - Would be an energizer b2b customer
+				Currency for all prices will be refered from the OOTB order
+				level
+				currency
+				Freight charges - OOTB delivery cost
+				Taxes - OOTB
+				Sold to -
+				OOTB billing address - this uses EnergizerAddress Model
+				Ship to -
+				OOTB shipping address - this uses EnergizerAddress Model
+				Order Total
+				- OOTB
+				Order Currency - OOTB
+				Purchase order number - OOTB
+
+				<attributes>
+					<attribute qualifier="b2bUnit" type="EnergizerB2BUnit">
+						<description>Energizer B2B Unit  - This will be used for Listing all orders for a B2B unit</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="orderType" type="java.lang.String">
+						<description>export/ domestic</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="shippingPointId" type="java.lang.String">
+						<description>ID of the distribution center</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="requestedDeliveryDate" type="java.util.Date">
+						<description>As requested by the customer against the shown estimated delivery time</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="orderVolume" type="MetricUnit">
+						<description>total order volume </description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="orderWeight" type="MetricUnit">
+						<description>total order weight </description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="containerVolumeUtilization" type="java.lang.Double">
+						<description> order volume utilization - percentage</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="containerWeightUtilization" type="java.lang.Double">
+						<description>total weight utilization - percentage </description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="leadTime" type="java.lang.Integer">
+						<persistence type="property" />
+						<modifiers read="true" write="true" optional="true" />
+					</attribute>
+					
+					<attribute qualifier="containerHeight" type="java.lang.String">
+						<description>Container Height of the Packing</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="containerPackingType" type="java.lang.String">
+						<description>Container Packing Option selected</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="totalPalletCount" type="java.lang.Integer">
+						<description>Total Pallet</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="virtualPalletCount" type="java.lang.Integer">
+						<description>Virtual Pallet</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="partialPalletCount" type="java.lang.Integer">
+						<description>Partial pallet</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="palStackData" type="palStackMap">
+						<description>Container Optimization PAL Stack data</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="orderComments" type="localized:java.lang.String">
+						<description>This is the order comment the customer enters in checkout page</description>
+						<persistence type="property">
+	                        <columntype database="oracle">
+	                            <value>CLOB</value>
+	                        </columntype>
+	                        <columntype database="sap">
+	                            <value>NCLOB</value>
+	                        </columntype>
+	                        <columntype database="mysql">
+	                            <value>TEXT</value>
+	                        </columntype>
+	                        <columntype>
+	                            <value>HYBRIS.LONG_STRING</value>
+	                        </columntype>
+                    	</persistence>
+					</attribute>
+					<attribute qualifier="agreeEdgewellUnitPriceForAllProducts" type="java.lang.Boolean">
+						<description>Agree Edgewell Unit Price For All The Cart Entries. Default is FALSE.</description>
+						<modifiers/>
+						<persistence type="property" />
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					</attribute>
+					<!--  Added for Delivery Notes File Upload - START -->
+					<attribute qualifier="deliveryNoteFiles" type="MediaContainer">
+						<description>A list of files with delivery notes for the order.</description>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="cartCode" type="java.lang.String">
+						<description>Cart ID number of the order that was created</description>
+						<persistence type="property" />
+						<modifiers/>
+					</attribute>
+					<!--  Added for Delivery Notes File Upload - END -->
+					<!-- Added Code Changes for WeSell Implementation - START -->
+					<attribute qualifier="salesRepUid" type="java.lang.String">
+						<persistence type="property" />
+						<modifiers/>
+					</attribute>
+					<attribute  qualifier="salesRepEmailID" type="java.lang.String">
+						<persistence type="property" />
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="salesRepName" type="java.lang.String">
+						<persistence type="property" />
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="placedBySalesRep" type="java.lang.boolean" >
+						<persistence type="property" />
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="selectedEmpUid" type="java.lang.String">
+						<persistence type="property" />
+						<modifiers/>
+					</attribute>
+					<attribute  qualifier="selectedEmpEmailID" type="java.lang.String">
+						<persistence type="property" />
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="selectedEmpName" type="java.lang.String">
+						<persistence type="property" />
+						<modifiers/>
+					</attribute>
+					<!-- Added Code Changes for WeSell Implementation - END -->
+					</attributes>
+				
+			</itemtype>
+
+			<itemtype code="Order" autocreate="false" generate="false">
+				<attributes>
+					<attribute qualifier="erpOrderNumber" type="java.lang.String">
+						<description>SAP Order number returned from BAPI</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="invoiceNumber" type="java.lang.String">
+						<description>ERP specific Invoice number</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="erpOrderCreator" type="java.lang.String">
+						<description>user name of the erp who created the offline order the null value will also indicated that it is an online order</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="shipmentTrackingURL" type="java.lang.String">
+						<description>shipment tracking URL </description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="adjustedTotalPrice" type="java.math.BigDecimal">
+						<description>updated total price from ERP </description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="adjustedShippingCharge" type="java.math.BigDecimal">
+						<description>updated shipping charges from ERP </description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="adjustedTaxCharges" type="java.math.BigDecimal">
+						<description>updated tax charges from ERP </description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="containerId" type="java.lang.String">
+						<description>Container ID </description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="sealNumber" type="java.lang.String">
+						<description>this is reference to documents in SAP</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+
+					<attribute qualifier="vesselNumber" type="java.lang.String">
+						<description>this is reference to documents in SAP</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+
+					<attribute qualifier="invoicePDF" type="java.lang.String">
+						<description>this is reference to documents in SAP</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+
+					<!-- <attribute qualifier="archiveID" type="java.lang.String"> <description>this 
+						is reference to documents in SAP</description> <modifiers /> <persistence 
+						type="property" /> </attribute> -->
+					<attribute qualifier="isPendingApprovalEmailSent" type="java.lang.Boolean">
+						<description>to avoind sending email second time</description>
+						<modifiers />
+						<persistence type="property" />
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					</attribute>
+					<attribute qualifier="orderApprover" type="EnergizerB2BCustomer">
+						<description>required for sending approval failed notification </description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="documentID" type="java.lang.String">
+						<description>this is reference to documents in SAP</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="contrEP" type="java.lang.String">
+						<description>this is reference to documents in SAP</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="documentClass" type="java.lang.String">
+						<description>this is reference to documents in SAP</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="rejectionComment" type="java.lang.String">
+						<description>this is reference to store rejection comment</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="readyForReprocessing" type="java.lang.boolean">
+						<description>Whether this order is ready for reprocessing</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="reprocessed" type="java.lang.boolean">
+						<description>Whether this order is reprocessed or not</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+			<!-- Surendra : As discussed Sriram and Kaushik changing item definition 
+				- renaming from energizer order entry to order entry -->
+			<!-- <itemtype code="OrderEntry" autocreate="false" generate="false"> -->
+			<itemtype code="AbstractOrderEntry" autocreate="false"
+				generate="false">
+				<description>Energizer order entry with specific SAP address ID
+				</description>
+				<!-- OrderEntry id - OOTB -->
+				<!-- Entry number - OOTB -->
+				<!-- Product - OOTB -->
+				<!-- ordered qty - OOTB -->
+				<!-- rejected order entry - OOTB -->
+				<!-- ordering unit -UOM - OOTB -->
+				<!-- order entry status - OOTB -->
+				<!-- if the ordered qty is empty then it is new line item -->
+				<attributes>
+					<attribute qualifier="adjustedQty" type="java.lang.Integer">
+						<description>Energizer Shipped Qty will be updated by SAP</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="adjustedItemPrice" type="java.math.BigDecimal">
+						<description>Energizer Shipped Qty will be updated by SAP</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="adjustedLinePrice" type="java.math.BigDecimal">
+						<description>Total price of OrderEntry will be updated by SAP</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<!-- Romil : As discussed with SAP team adding item definition for rejectionReason 
+						and itemTotalShipment to AbstractOrderEntry -->
+					<attribute qualifier="rejectionReason" type="java.lang.String">
+						<description>Rejection Reason</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<!-- Siddu: As discussed with SAP team and Sriram -->
+					<attribute qualifier="rejectedStatus" type="java.lang.String">
+						<description>Rejected Status</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+
+					<attribute qualifier="itemTotalShipment" type="java.lang.Double">
+						<description>Item Total Shipment</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="isNewEntry" type="java.lang.String">
+						<description>Item Total Shipment</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					
+					<attribute qualifier="customerMaterialId" type="java.lang.String">
+						<description>Customer Material Id</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="expectedUnitPrice" type="java.lang.String">
+						<description>Customer Expected Unit Price </description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="agreeEdgewellPrice" type="java.lang.Boolean">
+						<description>Agree Edgewell Price.Default is FALSE.</description>
+						<modifiers/>
+						<persistence type="property" />
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					</attribute>
+					<attribute qualifier="eachUnitPrice" type="java.math.BigDecimal">
+						<description>The each unit price of the product</description>
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="isPBG" type="java.lang.Boolean">
+						<description>If 'true', then it is a PBG Product and Non-PBG otherwise.</description>
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="isWeSellProduct" type="java.lang.Boolean">
+						<description>If 'true', then it is a WeSell Product and Non-WeSell otherwise.</description>
+						<modifiers/>
+						<persistence type="property" />						
+					</attribute>
+					<!-- Added item for WeSell Implementation - START -->
+					<attribute qualifier="inventoryAvailable" type="java.lang.Long">
+						<description>Product available stock</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="discountAmount" type="java.lang.Double">
+						<description>Entry level discount</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="discountPercent" type="java.lang.Double">
+						<description>Entry level discount %</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<!-- Added item for WeSell Implementation - END -->
+				</attributes>
+				
+			</itemtype>
+
+			<itemtype code="EnergizerCategory" extends="Category"
+				autocreate="true" generate="true"
+				jaloclass="com.energizer.core.jalo.EnergizerCategory">
+
+				<description>Customizing Category model to accomodate the type of category
+				</description>
+				<deployment table="en_enct" typecode="10208" />
+				<attributes>
+					<attribute qualifier="categoryType" type="java.lang.String">
+						<description>This is the type of the category</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="EnergizerCronJob" extends="CronJob"
+				autocreate="true" generate="true">
+				
+				<deployment table="EnergizerCronJob" typecode="10210" />
+				<attributes>
+					<attribute qualifier="type" type="java.lang.String">
+						<description>This is the type  of the processor and the corresponding folder in shared location</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="displayName" type="java.lang.String">
+						<description>This is to display the actual name or qualified name to end user in the email.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="technicalEmailAddress" type="StringList">
+						<description>This is to send a error message to technical user.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="businessEmailAddress" type="StringList">
+						<description>This is to send a error message to business user.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<!-- Added for EMEA cronjob import to dynamically getting the values -->
+					<attribute qualifier="catalogName" type="java.lang.String">
+						<description>This is to catalogNameSource.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="catalogVersion" type="java.lang.String">
+						<description>This is to catalogVersionSource.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="path" type="java.lang.String">
+						<description>This is to catalogVersionSource.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="fromDate" type="java.util.Date">
+						<description>This is start date.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="toDate" type="java.util.Date">
+						<description>This is End date.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="dataFeedJob" type="java.lang.Boolean">
+						<description>This is data feed job</description>
+						<modifiers />
+						<persistence type="property" />
+						<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+					</attribute>
+					
+					<!-- EMEA End -->
+					<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->
+					<attribute qualifier="userType" type="java.lang.String">
+						<description>This user type is to define whether it is customer/employee.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->
+					<attribute qualifier="region" type="java.lang.String">
+						<description> Region to define whether it is LATAM/WESELL/EMEA job</description>
+						<modifiers optional="false"/>
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="EnergizerCMSLinkComponent" extends="CMSLinkComponent"
+				autocreate="true" generate="true"
+				jaloclass="com.energizer.core.jalo.EnergizerCMSLinkComponent">
+				<deployment table="en_cmslink" typecode="10211" />
+				<attributes>
+					<attribute qualifier="localURL" type="localized:java.lang.String">
+						<description>localized url</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+		</typegroup>
+		
+		<typegroup name="Processes">
+
+			<itemtype code="UnlockAccountProcess" extends="StoreFrontCustomerProcess"
+				autocreate="true" generate="true"
+				jaloclass="de.hybris.platform.commerceservices.jalo.process.UnlockAccountProcess">
+				<description>Represents process that is used for unlocking the customer account.</description>
+				<attributes>
+					<attribute qualifier="token" type="java.lang.String">
+						<persistence type="property" />
+						<description>Attribute contains token that is used in this process.</description>
+					</attribute>
+				</attributes>
+			</itemtype>
+		</typegroup>
+		
+		<!-- Added item for WeSell Implementation - START -->
+		<typegroup name="EnergizerB2BEmployee">
+			<itemtype code="EnergizerB2BEmployee" extends="Employee" autocreate="true" generate="true" jaloclass="com.energizer.core.jalo.EnergizerB2BEmployee">
+			<attributes>
+				<attribute qualifier="isSalesRep" type="java.lang.Boolean">
+					<modifiers/>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="active" type="java.lang.Boolean">
+					<modifiers/>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="salesRepCode" type="java.lang.String">
+					<modifiers read="true" write="true" search="true"/>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="email" type="java.lang.String">
+					<modifiers read="true" write="true" search="true"/>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="contactNumber" type="java.lang.String">
+					<modifiers read="true" write="true" search="true"/>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="priority" type="java.lang.String">
+					<modifiers read="true" write="true" search="true"/>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="workingForList" type="workingForList" >
+					<description>The list of other Sales Rep(s) for whom the current Sales Rep is working for as a backup.</description>
+					<persistence type="property" />
+					<modifiers/>
+				</attribute>
+				<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->
+				<attribute type="java.lang.String" qualifier="token">
+						<modifiers optional="true" />
+						<persistence type="property" >
+							<columntype>
+								<value>varchar(1000)</value>
+							</columntype>						
+						</persistence>
+						<description>Attribute is used during b2b employee forgotten password to ensure that the link can be used
+							only once.
+						</description>
+					</attribute>
+					<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->
+				<attribute qualifier="registrationEmailFlag" type="java.lang.Boolean">
+					<description>When flag true, email has been sent otherwise false.</description>
+					<modifiers />
+					<persistence type="property" />
+				</attribute>
+				<attribute type="java.lang.String" qualifier="previousPasswords">
+					<description>latest 5 passwords will be stored with delimeter seperated</description>
+					<persistence type="property" />
+					</attribute>
+					<attribute type="java.util.Date" qualifier="passwordModifiedTime">
+					<description>password updated time</description>
+					<persistence type="property" />
+					</attribute>
+					<attribute type="java.lang.Boolean" qualifier="isPasswordQuestionSet">
+					<modifiers />
+					<persistence type="property" />
+					<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					</attribute>
+					<attribute autocreate="true" qualifier="title" type="Title">
+						<modifiers read="true" write="true" search="true"
+							optional="true" />
+						<persistence type="property" />
+						<description>It holds information about customer title (i.e. Mr, Dr, etc.)</description>
+					</attribute>
+					<attribute qualifier="firstName" type="java.lang.String">
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+					
+					<attribute qualifier="lastName" type="java.lang.String">
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+				<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->
+					<attribute qualifier="salesOrganisation" type="java.lang.String">
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="currency" type="java.lang.String">
+						<modifiers/>
+						<persistence type="property" />
+					</attribute>
+			</attributes>
+			</itemtype>
+		</typegroup>
+		<typegroup name="Processes">
+			<itemtype code="EmployeeForgottenPasswordProcess" extends="StoreFrontCustomerProcess"
+				autocreate="true" generate="true"
+				jaloclass="de.hybris.platform.commerceservices.jalo.process.EmployeeForgottenPasswordProces">
+				<description>Represents process that is used for retrieving forgotten password of an b2b employee.</description>
+				<attributes>
+					<attribute qualifier="token" type="java.lang.String">
+						<persistence type="property" />
+						<description>Attribute contains token that is used in this process.</description>
+					</attribute>
+					<attribute qualifier="employee" type="EnergizerB2BEmployee">
+						<persistence type="property" />
+						<description>Attribute contains token that is used in this process.</description>
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="EmployeeUnlockAccountProcess" extends="StoreFrontCustomerProcess"
+				autocreate="true" generate="true"
+				jaloclass="de.hybris.platform.commerceservices.jalo.process.EmployeeUnlockAccountProcess">
+				<description>Represents process that is used for retrieving employee account of an b2b employee.</description>
+				<attributes>
+					<attribute qualifier="token" type="java.lang.String">
+						<persistence type="property" />
+						<description>Attribute contains token that is used in this process.</description>
+					</attribute>
+					<attribute qualifier="employee" type="EnergizerB2BEmployee">
+						<persistence type="property" />
+						<description>Attribute contains employee details that is used in this process.</description>
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="EmployeeRegistrationProcess" extends="StoreFrontCustomerProcess"
+				autocreate="true" generate="true"
+				jaloclass="de.hybris.platform.commerceservices.jalo.process.EmployeeRegistrationProcess">
+				<description>Represents process that is used to register employee account of an b2b employee.</description>
+				<attributes>
+					<attribute qualifier="employee" type="EnergizerB2BEmployee">
+						<persistence type="property" />
+						<description>Attribute contains employee details that is used in this process.</description>
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="PriceRow" autocreate="false" generate="false">
+    	  	 <description>Represents the adding priceUOM to the PriceROW Model</description>
+				<attributes>
+					<attribute qualifier="priceUOM" type="java.lang.String">
+						<description>price UOM</description>
+					     <modifiers />
+						<persistence type="property" />
+				   </attribute>
+			   </attributes>
+		   </itemtype>
+			
+		</typegroup>
+		<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->
+	<!-- Added item for WeSell Implementation - END -->
+	</itemtypes>
+
+</items>

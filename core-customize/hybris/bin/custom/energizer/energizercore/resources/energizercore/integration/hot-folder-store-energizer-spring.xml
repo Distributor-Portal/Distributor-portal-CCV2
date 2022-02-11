@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2014 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:file="http://www.springframework.org/schema/integration/file"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="baseDirectoryEnergizer" class="java.lang.String">
+		<constructor-arg value="#{baseDirectory}/${tenantId}/energizerb2bcustomer" />
+	</bean>
+	<!-- 1) Scan for files -->
+	<file:inbound-channel-adapter id="batchFilesEnergizer"
+		directory="#{baseDirectoryEnergizer}" filename-regex="^(.*)-(\d+)\.csv"
+		comparator="fileOrderComparator">
+		<int:poller fixed-rate="1000" />
+	</file:inbound-channel-adapter>
+
+	<!-- 2) move the file to processing and setup header -->
+	<file:outbound-gateway request-channel="batchFilesEnergizer"
+		reply-channel="batchFilesEnergizerProc" directory="#{baseDirectoryEnergizer}/processing"
+		delete-source-files="true" />
+	<int:service-activator input-channel="batchFilesEnergizerProc"
+		output-channel="batchFilesHeaderInit" ref="EnergizerHeaderSetupTask"
+		method="execute" />
+
+	<bean id="EnergizerHeaderSetupTask"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderSetupTask">
+		<property name="catalog" value="energizerProductCatalog" />
+		<property name="net" value="false" />
+		<property name="storeBaseDirectory" ref="baseDirectoryEnergizer" />
+	</bean>
+	<!-- Transformer converters mappings -->
+
+	<bean id="batchB2BUnitContainerConverterMapping"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+		p:mapping="EnergizerB2BCustomer" p:converter-ref="batchB2BUnitContainerConverter" />
+
+	<bean id="batchB2BUnitContainerConverter"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>
+				INSERT_UPDATE
+				EnergizerB2BCustomer;uid[unique=true];customerID;active;defaultB2BUnit(uid);email;name;groups(uid)
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;{+0};{1};{2};{3};{4};{5};{6}</value>
+		</property>
+		<property name="rowFilter">
+			<bean
+				class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexRowFilter">
+				<property name="expression" value="!row[1]" />
+			</bean>
+		</property>
+		<property name="type" value="EnergizerB2BCustomer" />
+	</bean>
+</beans>

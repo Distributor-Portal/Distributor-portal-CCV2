@@ -1,0 +1,103 @@
+# ImpEx for Importing CMS Content
+# English Localisation
+
+# Macros / Replacement Parameter definitions
+$contentCatalog=houseHoldContentCatalog
+$storeName=houseHold
+
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$picture=media(code, $contentCV);
+$siteResource=jar:com.energizer.initialdata.setup.InitialDataSystemSetup&/energizerinitialdata/import/store/$storeName
+
+# Language
+$lang=en
+
+
+# CMS Image Components
+UPDATE CMSImageComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+
+# CMS Link Components
+UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];linkName[lang=$lang]
+;;HomepageNavLink;Energizer
+;;Energizer_Batteries_Link;Energizer Batteries
+;;Energizer_Max_Link;Energizer Max
+;;Advanced_Lithium_Link;Advanced Lithium
+;;Ultimate_Lithium_Link;Ultimate Lithium
+;;Eco_Advanced_Link;Eco Advanced
+;;Eveready_Batteries_Link;Eveready Batteries
+;;Extra_Duration_Link;Extra Duration Super Heavy Duty
+;;Eveready_Gold_Link;Eveready Gold
+;;Heavy_Duty_Link;Heavy Duty
+;;General_Purpose_Link;General Purpose
+;;Eveready_Silver_Link;Eveready Silver
+;;Lighting_Products_Link;Lighting Products
+;;Nightlights_Link;Nightlights;Nightlights_Link
+;;Handsfree_Lights_Link;Handsfree Lights;Handsfree_Lights_Link
+;;Kids_Lights_Link;Kids Lights;Kids_Lights_Link
+;;Handheld_Lights_Link;Handheld Lights;Handheld_Lights_Link
+;;Area_Lights_Link;Area Lights;Area_Lights_Link
+;;Spot_Lights_Link;Spot Lights;Spot_Lights_Link
+;;Rechargeable_Link;Rechargeable
+;;Chargers_Link;Chargers
+;;Batteries_Link;Batteries
+;;Specialty_Batteries_Link;Specialty Batteries
+;;Electronic_Batteries_Link;Electronic Batteries
+;;Photo_Batteries_Link;Photo Batteries
+;;Watch_Batteries_Link;Watch Batteries
+;;Hearing_Aid_Batteries_Link;Hearing Aid Batteries
+;;UserLoginLink;Login
+;;MyAccountLink;My Account
+;;MyCompanyLink;My Company
+;;LogoutLink;Logout
+;;StoreFinderLink;Store Locator
+;;QuickOrderPageLink;Quick Order
+;;ExcelOrderPageLink;Excel Order
+;;AboutUSLink;About US
+#;;CopyRightLink;©2015 Energizer
+#;;TrademarkLink;Trademark
+;;TermsAndConditionsLink;Terms And Conditions
+;;PrivacyPolicyLink;Privacy Policy
+;;ContactUSLink;Contact US
+;;LegalLink;Legal
+;;FAQLink;FAQS
+
+# Lightbox Banner for Mini Cart
+UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText;&imageRef
+
+UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+
+# CMS Mini Cart Component
+UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;title[lang=$lang]
+
+# CMS Tab Paragraph Components
+UPDATE CMSTabParagraphComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang];content[lang=$lang]
+
+# CMS Footer Component
+UPDATE FooterComponent;$contentCV[unique=true];uid[unique=true];notice[lang=$lang]
+
+# CMS Paragraph Components
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+
+# CMS Product References Components
+UPDATE ProductReferencesComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# CMS PurchasedCategorySuggestion Components
+UPDATE PurchasedCategorySuggestionComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# Category Pages
+UPDATE CategoryPage;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# CMS Navigation Nodes
+UPDATE CMSNavigationNode;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+#;;Playtex_Nav_Node;Playtex
+#;;Carefree_Nav_Node;Carefree
+#;;Stayfree_Nav_Node;Stayfree
+
+
+# CMS Banner Components
+UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText;&imageRef
+
+UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+
+UPDATE BannerComponent;$contentCV[unique=true];uid[unique=true];headline[lang=$lang];$picture[lang=$lang];content[lang=$lang]
+

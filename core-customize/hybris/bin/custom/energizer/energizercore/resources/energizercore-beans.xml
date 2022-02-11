@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2014 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="beans.xsd">
+
+    <!-- <bean class="com.energizer.core.product.data.SolrFirstVariantCategoryEntryData">
+        <property name="categoryName" type="String"/>
+        <property name="variantCode" type="String"/>
+    </bean> -->
+
+    <bean class="de.hybris.platform.commercefacades.product.data.ProductData">
+       <!--  <property name="firstCategoryNameList" type="java.util.List&lt;com.energizer.core.product.data.SolrFirstVariantCategoryEntryData&gt;"/> -->
+       <property name="firstVariantUrl" type="String"/>   
+    </bean>
+    
+    <bean class="com.energizer.core.data.EnergizerPasswordQuestionsData">
+		<property name="code" type="String"/>
+		<property name="name" type="String"/>
+	</bean>
+    
+    <bean class="com.energizer.business.BusinessRuleError">
+        <property name="type" type="String"/>
+        <property name="message" type="String"/>
+    </bean>
+    
+    <bean class="com.energizer.quickorder.QuickOrderData">
+    	<property name="shippingPointId" type="String"/>
+    	<property name="currentShippingPointId" type="String"/>
+        <property name="lineItems" type="java.util.List&lt;de.hybris.platform.commercefacades.order.data.OrderEntryData&gt;"/>
+    </bean>
+       
+    <bean class="com.energizer.core.data.PhoneNumberData">
+     	<property name="format" type="com.energizer.core.enums.PhoneNumberFormat"/> 
+		<property name="number" type="Integer"/>
+		<property name="country" type="de.hybris.platform.commercefacades.user.data.CountryData"/>
+		<property name="normalizedNumber" type="String"/>
+     </bean>  
+    
+     <bean class="com.energizer.core.data.EnergizerB2BUnitData" extends="de.hybris.platform.b2bacceleratorfacades.order.data.B2BUnitData"  >
+     	<property name="salesOrganisation" type="String"/>
+     	<property name="distributionChannel" type="String"/>
+     	<property name="customerAccountName" type="String"/>
+     	<property name="orderBlock" type="boolean"/>
+     	<property name="currencyPreference" type="de.hybris.platform.commercefacades.storesession.data.CurrencyData"/>
+     	<property name="minimumOrderValue" type="java.math.BigDecimal"/>
+     	<property name="maxUserLimit" type="String"/>
+     	<property name="salesPersonEmailId" type="String"/>
+     	<property name="languagePreference" type="String"/>
+     	<property name="division" type="String"/>    
+     	<property name="contactNumber" type="com.energizer.core.data.PhoneNumberData"/>  
+     	<property name="erpOrderingType" type="String"/>
+     	<property name="customerBalance" type="java.lang.String"/>
+     	<property name="creditAvailable" type="java.lang.String"/>
+     	<property name="creditLimit" type="java.lang.String"/>
+     	<property name="salesArea" type="java.lang.String"/>
+     </bean>
+     
+      <bean class="com.energizer.core.data.MetricUnitData">
+     	<property name="measurement" type="Double"/>
+		<property name="measuringUnits" type="String"/>
+     </bean> 
+  
+    <bean class="de.hybris.platform.commercefacades.order.data.AbstractOrderData">
+     	<property name="b2bUnit" type="com.energizer.core.data.EnergizerB2BUnitData"/>
+     	<property name="orderType" type="String"/>
+     	<property name="shippingPointId" type="String"/>
+     	<property name="requestedDeliveryDate" type="java.util.Date"/>
+		<property name="orderVolume" type="com.energizer.core.data.MetricUnitData"/>
+		<property name="orderWeight" type="com.energizer.core.data.MetricUnitData"/>
+		<property name="containerVolumeUtilization" type="Double"/>
+		<property name="containerWeightUtilization" type="Double"/>
+		<property name="leadTime" type="Integer"/>
+		<property name="orderComments" type="java.lang.String" />
+		<property name="agreeEdgewellUnitPriceForAllProducts" type="java.lang.boolean" />
+		<property name="requestedDeliveryDateDisplay" type="java.lang.String"/>
+		<property name="salesRepCurrencyIsoCode" type="java.lang.String"/>
+		<property name="salesRepUid" type="java.lang.String" />
+		<property name="salesRepName" type="java.lang.String" />
+		<property name="salesRepEmailID" type="java.lang.String" />
+		<property name="selectedEmpUid" type="java.lang.String"/>
+		<property name="selectedEmpName" type="java.lang.String"/>
+		<property name="selectedEmpEmailID" type="java.lang.String"/>
+		<property name="placedBySalesRep" type="java.lang.boolean" />
+    </bean>    
+   
+      <bean class="de.hybris.platform.commercefacades.order.data.OrderData">
+     	<property name="erpOrderNumber" type="String"/>
+     	<property name="invoiceNumber" type="String"/>
+     	<property name="invoicePDF" type="String"/>
+     	<property name="erpOrderCreator" type="String"/>
+     	<property name="shipmentTrackingURL" type="String"/>
+		<property name="adjustedTotalPrice" type="de.hybris.platform.commercefacades.product.data.PriceData"/>
+		<property name="adjustedShippingCharge" type="de.hybris.platform.commercefacades.product.data.PriceData"/>
+		<property name="adjustedTaxCharges" type="de.hybris.platform.commercefacades.product.data.PriceData"/>
+		<property name="orderApprover" type="de.hybris.platform.commercefacades.user.data.CustomerData"/>
+		<property name="containerId" type="String"/>
+		<property name="sealNumber" type="String"/>
+		<property name="vesselNumber" type="String"/>
+		<property name="archiveID" type="String"/>
+		<!--  <property name="archiveID" type="String"/>-->
+		<property name="documentID" type="String"/>
+		<property name="contrEP" type="String"/>
+		<property name="documentClass" type="String"/>
+		<property name="isOrderBlock" type="boolean"/>
+		<property name="rejectionComments" type="String"></property>
+		<property name="containerHeight" type="String"/>
+		<property name="containerPackingType" type="String"/>	
+		<property name="totalPalletCount" type="Integer"/>
+		<property name="virtualPalletCount" type="Integer"/>
+		<property name="partialPalletCount" type="Integer"/>
+		<property name="palStackData" type="java.util.Map&lt;Integer,java.util.List&lt;String&gt;>"/>
+		<property name="deliveryNoteFiles" type="java.util.Collection&lt;com.energizer.core.data.EnergizerDeliveryNoteData>"/>
+		<property name="cartCode" type="String" /> 
+		<!-- <property name="salesRepName" type="java.lang.String" />
+		<property name="salesRepEmailID" type="java.lang.String" /> -->
+		<!-- <property name="placedBySalesRep" type="java.lang.boolean" /> -->
+    </bean>    
+    
+     <bean class="de.hybris.platform.commercefacades.order.data.OrderEntryData"  >
+     	<property name="adjustedQty" type="Integer"/>
+		<property name="adjustedLinePrice" type="de.hybris.platform.commercefacades.product.data.PriceData"/>
+		<property name="rejectedStatus" type="java.lang.String"/>
+		<property name="adjustedItemPrice" type="de.hybris.platform.commercefacades.product.data.PriceData"/>
+		<property name="isNewEntry" type="java.lang.String"/>
+		<property name="customerMaterialId" type="java.lang.String"/>
+     </bean>
+     
+      <bean class="com.energizer.core.product.data.EnergizerFileUploadData">
+        <property name="materialId" type="java.lang.String"/>
+        <property name="customerMaterialId" type="java.lang.String"/>
+         <property name="quantity" type="java.lang.Long"/>
+        <property name="uom" type="java.lang.String"/>
+         <property name="shippingPoint" type="java.lang.String"/>
+         <property name="shippingPointLocation" type="java.lang.String"/>
+        <property name="hasError" type="boolean"/>
+        <property name="message" type="java.lang.String"/>
+         <property name="orderingUnit" type="java.lang.Long"/>      
+    </bean>
+    
+    <bean class="de.hybris.platform.commercefacades.user.data.AddressData" >
+     	<property name="erpAddressId" type="String"/>
+     	<property name="salesPersonEmailId" type="String"/>
+     	<property name="displayName" type="String"/>
+     	<property name="active" type="boolean"/>
+     	<property name="soldToAddressId" type="java.lang.String" />
+	</bean>
+    
+    <bean class="com.energizer.core.datafeed.EnergizerCSVFeedError" >
+     	<property name="lineNumber" type="Long"/>
+     	<property name="columnName" type="java.util.List&lt;String&gt;"/>
+     	<property name="columnNumber" type="java.util.List&lt;Integer&gt;"/>
+     	<property name="message" type="String"/>
+     	<property name="userType" type="String"/>
+     	<property name="errorCode" type="String"/>
+     	<property name="errorRecords" type="java.util.List&lt;String&gt;"/>
+     	<property name="errorMessage" type="String"/>
+     	<property name="technicalErrors" type="java.util.List&lt;EnergizerCSVFeedError&gt;"/>
+     	<property name="businessErrors" type="java.util.List&lt;EnergizerCSVFeedError&gt;"/>
+    </bean>
+    
+    <bean class="com.energizer.core.data.EnergizerDeliveryNoteData">
+    	<property name="fileName" type="String" />
+    	<property name="url" type="String" />
+    	<property name="mimeType" type="String" />
+    	<property name="fileSize" type="Long" />
+    	<property name="mediaCode" type="String" />
+    </bean>
+    
+    <bean class="com.energizer.core.data.CMIRCSVData">
+    	<property name="erpMaterialID" type="String" />
+    	<property name="customerMaterialID" type="String" />
+    	<property name="wesellDefaultUOM" type="String" />
+    	<property name="language" type="String" />
+    	<property name="customerMaterialDescription" type="String" />
+    	<property name="materialListprice" type="String" />
+    	<property name="materialListpricecurrency" type="String" />
+    	<property name="customerListPrice" type="String" />
+    	<property name="customerListpricecurrency" type="String" />
+    	<property name="shipmentPointNumber" type="String" />
+    	<property name="energizerAccountID" type="String" />
+    	<property name="custPriceUOM" type="String" />
+    	<property name="minimumOrderingQuantity" type="String" />
+    	<property name="listPriceUOM" type="String" />
+    </bean>
+    
+</beans>

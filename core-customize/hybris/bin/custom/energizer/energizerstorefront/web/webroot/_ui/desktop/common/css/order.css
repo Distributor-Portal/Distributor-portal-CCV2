@@ -1,0 +1,254 @@
+/*
+## Order
+********************************************************************/
+
+
+
+.orderBoxes{
+	margin:20px 0;
+}
+
+.orderBox{
+	float:left;
+	margin:0 20px 0 0;
+	border:1px dotted #a5a5a5;
+	padding:0 20px 20px;
+	width:180px;
+	height:190px;
+}
+
+
+
+
+.orderBox.payment{
+	width:424px;
+}
+
+.orderBox.address{
+	/* margin:0; */
+}
+
+.orderBox.estimatedDeliveryDate{
+	margin-right: 0px !important;
+}
+.orderBox.payment .left{
+	width:50%;
+}
+
+
+
+
+.headline{
+	border-bottom: 1px dotted #A5A5A5;
+	font-size: 1em;
+	font-weight: bold;
+	height: 30px;
+	line-height: 30px;
+	text-transform: uppercase;
+	margin:0 0 15px;
+}
+
+
+
+
+
+
+
+
+
+
+.orderList{
+	
+	border:1px dotted #a5a5a5;
+	padding:0 20px 20px;
+	margin:0 0 20px 0;
+
+}
+
+
+.orderList .headline{
+	border-bottom: 1px dotted #A5A5A5;
+	font-size: 1em;
+	font-weight: bold;
+	height: 30px;
+	line-height: 30px;
+	text-transform: uppercase;
+	margin:0 0 20px;
+}
+
+
+
+.orderList .orderListTable{
+	width:100%;
+}
+
+.orderList .orderListTable thead th {
+	border-bottom:1px dotted #a5a5a5;
+	height:30px;
+	line-height:30px;
+	text-transform:uppercase;
+	font-weight:bold;
+	font-size:1em;
+	padding-right: 10px;
+}
+
+.orderList .orderListTable thead th:last-child {
+	padding-right: 0;
+}
+
+.orderList .orderListTable .item td{
+	vertical-align:top;
+	border-bottom:1px dotted #a5a5a5;
+	padding:20px 0 0 0;
+}
+
+.orderList .orderListTable .item td.thumb{
+	border-bottom:0;
+	padding-right:20px;
+	width: 96px;
+}
+
+.orderList .orderListTable tbody td {
+	vertical-align:top;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+
+.orderList .orderListTable tbody td:last-child {
+	padding-right: 0;
+}
+
+.orderList .orderListTable tbody td p {
+	margin-bottom: 5px;
+}
+
+.orderList .orderListTable tbody td a {
+	text-decoration: underline;
+}
+
+.orderList table.deliveryCartItems thead th {
+    text-align: center;
+}
+
+.orderList table.deliveryCartItems thead th:first-child {
+    text-align: left;
+}
+
+.orderBox_top{
+    border: 1px dotted #A5A5A5;
+    float: left;
+    height: auto;
+    margin: 0 0 20px 0;
+    padding: 0 20px 20px;	
+}
+
+/*
+## Terms and Condition
+********************************************************************/
+
+.textpage-termsAndConditions{
+	padding: 15px 20px;
+}
+
+
+
+/* new css */
+
+.orderList .orderListTable .item td{}
+.orderList .orderListTable thead th{text-align:center;font-size:0.75em;padding-right:15px;line-height:15px;color:#000;}
+.orderList .orderListTable tbody tr td{text-align:center;padding-right:15px;}
+.orderList .orderListTable tbody tr.item_order_cls td{font-size:.75em;}
+
+.orderList .orderListTable tbody td:last-child{padding-left:5px;}
+.orderList .orderListTable tbody tr td:first-child{text-align:left;}
+.spacing_cls{padding-left:25px;}
+.reduce_space_cls{margin:0em !important;padding:0em !important;}
+.accountContentPane .headline{padding-left:25px;}
+.orderList .orderListTable .item td{border-bottom:0px;}
+.accountContentPane{background:none;}
+.fixthis_budget_cls{width:326px !important;}
+.fixthis_budgettwo_cls{width:280px !important;}
+.orderList .orderListTable thead th{font-size:0.7em !important;}
+
+/* quickOrder */
+.orderList .orderListTblFix thead th{border:0px solid;}
+.orderList .orderListTblFix tbody tr td{text-align:center !important;}
+.orderList .orderListTblFix tbody tr td.header4_cls input{width:30px!important;}
+.orderList .orderListTblFix tbody td:last-child{text-align:center !important;padding-left:30px;}
+
+.textHighlight {
+	font-weight: bold;
+    color: #06c;
+}
+
+.orderList .orderListTable tbody tr.item_order_cls td.details .itemName{
+	word-wrap: break-word;
+    width: 30px;
+	
+}
+
+.show_err_cls td{font-weight:bold !important;color:red !important;}
+
+.orderFix-cls{
+	position:relative;
+    width:345px;
+    float: right;
+    clear: both;
+}
+
+.orderList .orderListTable tbody td p{text-align:left;}
+
+table.orderListApprovTbl-cls{width:100%;}
+table.orderListApprovTbl-cls td:last-child p{width:130px;word-wrap:break-word;}
+.obShippinFixCls{
+	position:relative;
+	left:41px;
+}
+/*.orderList .orderListTable tbody td p {
+	  text-align: center;
+}*/
+
+.orderList .orderListTable tbody td a {
+    text-decoration: underline;
+    border: 0px solid;
+}
+.orderList .orderListTable tbody td a.orderImageFix {
+    text-decoration: none;
+    border: 0px solid;
+}
+
+.displayDeliveryNote {
+	position: relative;
+	float: left;
+	width: 22%;
+	height: 2em;
+	display: inline-block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	padding-right: 20px;
+}
+
+/*.displayDeliveryNote span a:hover {
+	text-decoration: underline;
+}*/
+
+.displayDeliveryNoteInner {
+	position: relative;
+	float: left;
+	width: 80%;
+	height: 2em;
+	display: inline-block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	padding-right: 20px;
+	color: #0b4f04 ;
+	cursor: pointer;
+}
+
+.displayDeliveryNoteInner:hover {
+	text-decoration: underline;
+}
+
+}

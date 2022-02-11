@@ -1,0 +1,103 @@
+body{background:#fff;color:#777;font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;font-size:12px}
+#header .headerContent .nav > li{color:#333; font-size:12px; font-weight:bold;}
+#header .headerContent .nav > li > a:hover{text-decoration:underline; color:#000;}
+#header .headerContent.secondRow{margin:21px 0 21px;}
+#nav_main{margin-bottom:25px;}
+#nav_main li.La > a{font-size:14px; font-weight:bold;}
+#nav_main li.La > a:hover{color:#436EEE;}
+.breadcrumb{margin-bottom:35px;}
+.breadcrumb ul li, .breadcrumb ul li a{font-weight:bold;}
+.breadcrumb ul li, .breadcrumb ul li a:hover{color:#000;}
+.breadcrumb ul li, .breadcrumb ul li a.last:hover{color:#ed5f69;}
+/*a.button, button{background:#ccc; color:#555;}
+a.button, button:hover{color:#ed5f69;font-weight:bold;} */
+.facet_block li{/* margin:20px 0;  height:26px; */}  
+#excelupload table th{height:50px; width:150px; color:#436EEE; font-weight:bold;vertical-align:middle;text-align:center;}
+#excelupload table td{height:30px; width:24%;text-align:center;} 
+#excelupload table {
+    border-collapse: separate;
+    border-spacing: 0px 0px;
+	background:#f6f6f6;
+	color:#00008B;
+	padding:15px;
+} 
+/*#excelupload table tr:nth-child(even) {background: #CCC; width:100%;}*/
+#excelupload .positive{padding:50px 0 0 150px; width:200px; float:right;}
+#excelupload .positive button{position:relative;float:right;}
+#excelupload  table  th:last-child {width:auto;}
+
+/* QuickOrderPage */
+
+/*.accountContentPane{background:#f6f6f6;}*/
+.new_item_quick_order_form table td{height:25px;}
+.new_item_quick_order_form table td input{height:30px; margin-right:25px;}
+.new_item_quick_order_form{position:relative;margin:10px 0 20px;float:left;}
+.new_item_quick_order_form .button,table.orderListTable input[type="submit"],.new_item_quick_order_form  input[type="submit"],#excelupload .positive button{height:30px;
+	/*-moz-box-shadow: 0px 1px 0px 0px #fff6af;
+	-webkit-box-shadow: 0px 1px 0px 0px #fff6af;
+	box-shadow: 0px 1px 0px 0px #fff6af;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffec64), color-stop(1, #ffab23));
+	background:-moz-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+	background:-webkit-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+	background:-o-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+	background:-ms-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+	background:linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffec64', endColorstr='#ffab23',GradientType=0);
+	background-color:#ffec64;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:1px;
+	border:1px solid #ffaa22;
+	display:inline-block;
+	cursor:pointer;
+	color:#333333;
+	font-family:arial;
+	font-size:11px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffee66;
+	height:30px;*/
+}
+.new_item_quick_order_form .button:hover,table.orderListTable input[type="submit"]:hover ,.new_item_quick_order_form  input[type="submit"]:hover,#excelupload .positive button:hover{
+	/* background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffab23), color-stop(1, #ffec64));
+	background:-moz-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+	background:-webkit-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+	background:-o-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+	background:-ms-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+	background:linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffab23', endColorstr='#ffec64',GradientType=0);
+	background-color:#ffab23; */
+}
+.new_item_quick_order_form .button:active {
+	position:relative;
+	top:1px;
+}
+
+table.orderListTable th{color:#436eee;}
+.new_item_quick_order_form input,.new_item_quick_order_form form{float:left; margin-right:15px;}
+
+.facet_block li {
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+.new_item_quick_order_form .button, table.orderListTable input[type="submit"], .new_item_quick_order_form input[type="submit"], #excelupload .positive button {
+	  
+	  background-color: #169e08;
+	  color: white;
+	  text-transform: uppercase;
+}
+.show_prd_cls td{
+	font-weight:bold !important;
+    color:blue !important;
+}
+
+/* Footer Nav Changes - START */
+.footerNav .facet_block li {
+	/* margin: 20px 0; */
+	/* padding-top: 10px; */
+	height: 26px;
+	padding-top: 5 px;
+}
+
+/* Footer Nav Changes - END */

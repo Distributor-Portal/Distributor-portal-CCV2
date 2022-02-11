@@ -1,0 +1,221 @@
+{
+    "commerceSuiteVersion": "2005",
+    "enableImageProcessingService": true,
+    "extensions": [
+        "cloudmediaconversion",  
+        "mediaconversionbackoffice",
+        "energizerstorefront",
+        "energizerfulfilmentprocess",
+        "energizercore",
+        "energizerfacades",
+        "energizertest",
+        "energizerinitialdata",
+        "energizerbackoffice"
+    ],
+    "useConfig": {
+        "properties": [
+            {
+                "location": "hybris/config/environments/local-dev.properties",
+                "persona": "development"
+            },
+            {
+                "location": "hybris/config/environments/local-stage.properties",
+                "persona": "staging"
+            },
+            {
+                "location": "hybris/config/environments/local-Prod.Properties",
+                "persona": "production"
+            }
+        ],
+        "extensions": {
+            "location": "hybris/config/localextensions.xml",
+            "exclude": [
+                "azurecloudhotfolder",
+                "cloudcommons",
+                "cloudhotfolder"
+            ]
+        }
+    },
+    "properties": [
+        {
+            "key": "lang.packs",
+            "value": "en,es"
+        }
+    ],
+    "storefrontAddons": [
+        
+        {
+            "addon": "addonsupport",
+            "storefront": "energizerstorefront",
+            "template": "yacceleratorstorefront"
+        },
+        {
+            "addon": "yaddon",
+            "storefront": "energizerstorefront",
+            "template": "yacceleratorstorefront"
+        }
+    ],
+    "aspects": [
+        {
+            "name": "backoffice",
+            "properties": [],
+            "webapps": [
+                {
+                    "name": "hac",
+                    "contextPath": "/hac"
+                },
+                {
+                    "name": "mediaweb",
+                    "contextPath": "/medias"
+                },
+                {
+                    "name": "backoffice",
+                    "contextPath": "/backoffice"
+                }
+            ]
+        },
+        {
+            "name": "accstorefront",
+            "properties": [
+                {
+                    "key": "spring.session.enabled",
+                    "value": "true"
+                },
+                {
+                    "key": "spring.session.energizerstorefront.save",
+                    "value": "async"
+                },
+                {
+                    "key": "spring.session.energizerstorefront.cookie.name",
+                    "value": "JSESSIONID"
+                },
+                {
+                    "key": "spring.session.energizerstorefront.cookie.path",
+                    "value": "/"
+                },
+                {
+                    "key": "storefrontContextRoot",
+                    "value": ""
+                }
+            ],
+            "webapps": [
+                {
+                    "name": "hac",
+                    "contextPath": "/hac"
+                },
+                {
+                    "name": "mediaweb",
+                    "contextPath": "/medias"
+                },
+                {
+                    "name": "energizerstorefront",
+                    "contextPath": ""
+                },
+                {
+                    "name": "acceleratorservices",
+                    "contextPath": "/acceleratorservices"
+                }
+            ]
+        },
+        {
+            "name": "backgroundProcessing",
+            "properties": [
+                {
+                    "key": "cluster.node.groups",
+                    "value": "integration,yHotfolderCandidate"
+                }
+            ],
+            "webapps": [
+                {
+                    "name": "hac",
+                    "contextPath": "/hac"
+                },
+                {
+                    "name": "mediaweb",
+                    "contextPath": "/medias"
+                }
+            ]
+        },
+        {
+            "name": "api",
+            "properties": [
+                {
+                    "key": "xss.filter.header.X-Frame-Options",
+                    "value": ""
+                },
+                {
+                    "key": "ccv2.platform.tomcat.serverxml.maxThreads",
+                    "value": "1200"
+                },
+                {
+                    "key": "storefrontContextRoot",
+                    "value": "/energizerstorefront"
+                }
+            ],
+            "webapps": [
+                {
+                    "name": "hac",
+                    "contextPath": "/hac"
+                },
+                {
+                    "name": "commercewebservices",
+                    "contextPath": "/occ"
+                },
+                {
+                    "name": "energizerstorefront",
+                    "contextPath": "/energizerstorefront"
+                },
+                {
+                    "name": "smartedit",
+                    "contextPath": "/smartedit"
+                },
+                {
+                    "name": "cmssmartedit",
+                    "contextPath": "/cmssmartedit"
+                },
+                {
+                    "name": "smarteditwebservices",
+                    "contextPath": "/smarteditwebservices"
+                },
+                {
+                    "name": "cmssmarteditwebservices",
+                    "contextPath": "/cmssmarteditwebservices"
+                },
+                {
+                    "name": "acceleratorservices",
+                    "contextPath": "/acceleratorservices"
+                },
+                {
+                    "name": "oauth2",
+                    "contextPath": "/authorizationserver"
+                },
+                {
+                    "name": "cmswebservices",
+                    "contextPath": "/cmswebservices"
+                },
+                {
+                    "name": "permissionswebservices",
+                    "contextPath": "/permissionswebservices"
+                },
+                {
+                    "name": "previewwebservices",
+                    "contextPath": "/previewwebservices"
+                },
+                {
+                    "name": "mediaweb",
+                    "contextPath": "/medias"
+                }
+            ]
+        }
+    ],
+    "tests": {
+        "extensions": [],
+        "annotations": [
+            "UnitTests",
+            "IntegrationTests"
+        ],
+        "packages": [
+            "com.edgewell.*"
+        ]
+    }
+}

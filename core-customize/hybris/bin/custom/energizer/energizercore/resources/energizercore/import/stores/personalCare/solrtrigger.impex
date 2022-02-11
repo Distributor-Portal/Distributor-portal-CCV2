@@ -1,0 +1,21 @@
+#
+# Import the Solr CronJob Trigger configuration for the personalCare store
+#
+
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];second;minute;hour;day;month;year;relative;active;maxAcceptableDelay
+
+#FINAL RECOMMENDED SCHEDULE AS ON 09 DEC 2020 (ALL CRONJOBS IN THEIR ORDER OF EXECUTION - RESOLVE CRONJOBS CONFLICTS)
+# Run the full-personalCareIndex-cronJob at 3:05 AM every day
+#;full-personalCareIndex-cronJob;0;45;6;-1;-1;-1;false;true;-1
+
+
+#;update-personalCareIndex-cronJob;0;15;12;-1;-1;-1;true;true;-1 
+ 
+
+
+#Run the update job using cronExpression 
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];cronExpression
+# Run the full-personalCareIndex-cronJob at 6:45 AM every day
+;full-personalCareIndex-cronJob;0 45 6 ? * *
+# Run the update-personalCareIndex-cronJob at 12:15 PM every day
+;update-personalCareIndex-cronJob;0 15 12 ? * *

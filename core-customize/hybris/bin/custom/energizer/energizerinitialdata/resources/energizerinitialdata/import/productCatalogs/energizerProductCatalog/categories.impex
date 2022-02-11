@@ -1,0 +1,42 @@
+# ImpEx for Importing Categories
+
+# Macros / Replacement Parameter definitions
+$productCatalog=energizerProductCatalog
+
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$supercategories=source(code, $catalogVersion)[unique=true]
+$categories=target(code, $catalogVersion)[unique=true]
+
+# Insert Categories
+#INSERT_UPDATE EnergizerCategory;code[unique=true];allowedPrincipals(uid)[default='customergroup'];$catalogVersion;categoryType
+#;Energizer;;;
+#;SEG1001;;;SEGMENT
+#;SEG1002;;;SEGMENT
+#;SEG1003;;;SEGMENT
+#;SEG1004;;;SEGMENT
+#;SEG1001FAM1001;;;FAMILY
+#;SEG1001FAM1002;;;FAMILY
+#;SEG1002FAM1001;;;FAMILY
+#;SEG1002FAM1002;;;FAMILY
+#;SEG1003FAM1001;;;FAMILY
+#;SEG1003FAM1002;;;FAMILY
+#;SEG1004FAM1001;;;FAMILY
+#;SEG1004FAM1002;;;FAMILY
+
+
+
+# Insert Category Structure
+#INSERT_UPDATE CategoryCategoryRelation;$categories;$supercategories
+#;SEG1001;Energizer
+#;SEG1002;Energizer
+#;SEG1003;Energizer
+#;SEG1004;Energizer
+#;SEG1001FAM1001;SEG1001
+#;SEG1001FAM1002;SEG1001
+#;SEG1002FAM1001;SEG1002
+#;SEG1002FAM1002;SEG1002
+#;SEG1003FAM1001;SEG1003
+#;SEG1003FAM1002;SEG1003
+#;SEG1004FAM1001;SEG1004
+#;SEG1004FAM1002;SEG1004
+

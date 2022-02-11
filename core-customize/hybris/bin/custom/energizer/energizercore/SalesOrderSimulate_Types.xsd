@@ -1,0 +1,499 @@
+<?xml version="1.0"?>
+<schema xmlns:ns3="http://Microsoft.LobServices.Sap/2007/03/Types/Rfc/" elementFormDefault="qualified" targetNamespace="http://Microsoft.LobServices.Sap/2007/03/Types/Rfc/" version="1.0" xmlns="http://www.w3.org/2001/XMLSchema">
+  <annotation>
+    <appinfo>
+      <fileNameHint xmlns="http://schemas.microsoft.com/servicemodel/adapters/metadata/xsd">Types</fileNameHint>
+    </appinfo>
+  </annotation>
+  <complexType name="ZSD_ISOHEAD_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="DOC_NUMBER" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="10" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="DOC_TYPE" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="4" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="SALES_ORG" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="4" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="DISTR_CHAN" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="2" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="DIVISION" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="2" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="PURCH_NO" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="20" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="PURCH_NO_S" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="35" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="REQ_DATE_H" nillable="true">
+        <simpleType>
+          <restriction base="dateTime">
+            <pattern value="(\d\d\d\d-\d\d-\d\d)T(00:00:00)(.*)" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="CURRENCY" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="5" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="NET_VALUE" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="([\-]{0,1})(([0-9]{0,20}\.[0-9]{0,9})|([0-9]{1,20}))" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="TAX_TOTAL" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="([\-]{0,1})(([0-9]{0,20}\.[0-9]{0,9})|([0-9]{1,20}))" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="STATUS" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="1" />
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+  <element name="ZSD_ISOHEAD" nillable="true" type="ns3:ZSD_ISOHEAD_7888da" />
+  <complexType name="BAPIRET2_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="TYPE" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="1" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="ID" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="20" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="NUMBER" nillable="true">
+        <simpleType>
+          <restriction base="int">
+            <totalDigits value="3" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="MESSAGE" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="220" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="LOG_NO" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="20" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="LOG_MSG_NO" nillable="true">
+        <simpleType>
+          <restriction base="int">
+            <totalDigits value="6" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="MESSAGE_V1" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="50" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="MESSAGE_V2" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="50" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="MESSAGE_V3" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="50" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="MESSAGE_V4" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="50" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="PARAMETER" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="32" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="ROW" nillable="true" type="int" />
+      <element minOccurs="0" maxOccurs="1" name="FIELD" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="30" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="SYSTEM" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="10" />
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+  <element name="BAPIRET2" nillable="true" type="ns3:BAPIRET2_7888da" />
+  <complexType name="ArrayOfBAPIRET2_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="unbounded" name="BAPIRET2" type="ns3:BAPIRET2_7888da" />
+    </sequence>
+  </complexType>
+  <element name="ArrayOfBAPIRET2" nillable="true" type="ns3:ArrayOfBAPIRET2_7888da" />
+  <complexType name="BAPIINCOMP_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="DOC_NUMBER" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="10" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="ITM_NUMBER" nillable="true">
+        <simpleType>
+          <restriction base="int">
+            <totalDigits value="6" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="SCHED_LINE" nillable="true">
+        <simpleType>
+          <restriction base="int">
+            <totalDigits value="4" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="PARTN_ROLE" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="2" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="TABLE_NAME" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="30" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="FIELD_NAME" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="30" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="FIELD_TEXT" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="40" />
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+  <element name="BAPIINCOMP" nillable="true" type="ns3:BAPIINCOMP_7888da" />
+  <complexType name="ArrayOfBAPIINCOMP_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="unbounded" name="BAPIINCOMP" type="ns3:BAPIINCOMP_7888da" />
+    </sequence>
+  </complexType>
+  <element name="ArrayOfBAPIINCOMP" nillable="true" type="ns3:ArrayOfBAPIINCOMP_7888da" />
+  <complexType name="ZSD_TSOITEM_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="ITM_NUMBER" nillable="true">
+        <simpleType>
+          <restriction base="int">
+            <totalDigits value="6" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="MATERIAL" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="40" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="TARGET_QTY" nillable="true">
+        <simpleType>
+          <restriction base="long">
+            <totalDigits value="13" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="TARGET_QU" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="3" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="PLANT" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="4" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="NET_VALUE" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="([\-]{0,1})(([0-9]{0,20}\.[0-9]{0,9})|([0-9]{1,20}))" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="CUST_PRICE" nillable="true">
+        <simpleType>
+          <restriction base="decimal">
+            <totalDigits value="11" />
+            <fractionDigits value="2" />
+            <pattern value="([\-]{0,1})(([0-9]{0,9}\.[0-9]{0,2})|([0-9]{1,9}))" />
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+  <element name="ZSD_TSOITEM" nillable="true" type="ns3:ZSD_TSOITEM_7888da" />
+  <complexType name="ArrayOfZSD_TSOITEM_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="unbounded" name="ZSD_TSOITEM" type="ns3:ZSD_TSOITEM_7888da" />
+    </sequence>
+  </complexType>
+  <element name="ArrayOfZSD_TSOITEM" nillable="true" type="ns3:ArrayOfZSD_TSOITEM_7888da" />
+  <complexType name="ZSD_TSOPART_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="PARTN_ROLE" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="2" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="PARTN_NUMB" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="10" />
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+  <element name="ZSD_TSOPART" nillable="true" type="ns3:ZSD_TSOPART_7888da" />
+  <complexType name="ArrayOfZSD_TSOPART_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="unbounded" name="ZSD_TSOPART" type="ns3:ZSD_TSOPART_7888da" />
+    </sequence>
+  </complexType>
+  <element name="ArrayOfZSD_TSOPART" nillable="true" type="ns3:ArrayOfZSD_TSOPART_7888da" />
+  <complexType name="BAPISDTEXT_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="DOC_NUMBER" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="10" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="ITM_NUMBER" nillable="true">
+        <simpleType>
+          <restriction base="int">
+            <totalDigits value="6" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="TEXT_ID" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="4" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="LANGU" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="1" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="LANGU_ISO" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="2" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="FORMAT_COL" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="2" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="TEXT_LINE" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="132" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="FUNCTION" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="3" />
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+  <element name="BAPISDTEXT" nillable="true" type="ns3:BAPISDTEXT_7888da" />
+  <complexType name="ArrayOfBAPISDTEXT_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="unbounded" name="BAPISDTEXT" type="ns3:BAPISDTEXT_7888da" />
+    </sequence>
+  </complexType>
+  <element name="ArrayOfBAPISDTEXT" nillable="true" type="ns3:ArrayOfBAPISDTEXT_7888da" />
+  <complexType name="ZSD_TSOCONDITIONS_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="ITM_NUMBER" nillable="true">
+        <simpleType>
+          <restriction base="int">
+            <totalDigits value="6" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="MATERIAL" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="40" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="COND_TYPE" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="4" />
+          </restriction>
+        </simpleType>
+      </element>
+      <!--<element minOccurs="0" maxOccurs="1" name="COND_VALUE" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="([\-]{0,1})(([0-9]{0,20}\.[0-9]{0,9})|([0-9]{1,20}))" />
+          </restriction>
+        </simpleType>
+      </element> -->
+      <element minOccurs="0" maxOccurs="1" name="CURRENCY" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="5" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="CONDVALUE" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="([\-]{0,1})(([0-9]{0,20}\.[0-9]{0,9})|([0-9]{1,20}))" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="COND_UNIT" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="3" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="CONBASEVAL" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="([\-]{0,1})(([0-9]{0,20}\.[0-9]{0,9})|([0-9]{1,20}))" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="NUMCONVERT" nillable="true">
+        <simpleType>
+          <restriction base="decimal">
+            <totalDigits value="5" />
+            <fractionDigits value="0" />
+            <pattern value="([\-]{0,1})(([0-9]{1,5}))" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="DENOMINATO" nillable="true">
+        <simpleType>
+          <restriction base="decimal">
+            <totalDigits value="5" />
+            <fractionDigits value="0" />
+            <pattern value="([\-]{0,1})(([0-9]{1,5}))" />
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+  <element name="ZSD_TSOCONDITIONS" nillable="true" type="ns3:ZSD_TSOCONDITIONS_7888da" />
+  <complexType name="ArrayOfZSD_TSOCONDITIONS_7888da">
+    <sequence>
+      <element minOccurs="0" maxOccurs="unbounded" name="ZSD_TSOCONDITIONS" type="ns3:ZSD_TSOCONDITIONS_7888da" />
+    </sequence>
+  </complexType>
+  <element name="ArrayOfZSD_TSOCONDITIONS" nillable="true" type="ns3:ArrayOfZSD_TSOCONDITIONS_7888da" />
+</schema>

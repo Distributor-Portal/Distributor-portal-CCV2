@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2014 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:security="http://www.springframework.org/schema/security"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	
+	
+	<security:http pattern="/_ui/**" security="none"/>
+	
+	
+	<security:http disable-url-rewriting="true" use-expressions="false" pattern="/checkout/**">
+	
+	<security:headers>
+            <security:frame-options disabled="true"/>
+    </security:headers>
+    
+    <security:csrf disabled="true"/>
+
+		<security:session-management session-authentication-strategy-ref="fixation" />
+		
+		<!-- SSL / AUTHENTICATED pages -->
+		<security:intercept-url pattern="/checkout/j_spring_security_check" requires-channel="https"/>
+		<security:intercept-url pattern="/checkout*" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/checkout/**" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		
+		<security:intercept-url pattern="/**" requires-channel="${storefront.security.default.required.channel}"/>
+
+		<security:form-login
+				login-processing-url="/checkout/j_spring_security_check"
+				login-page="/login/checkout"
+				authentication-failure-handler-ref="loginCheckoutAuthenticationFailureHandler"
+				authentication-success-handler-ref="loginCheckoutGuidAuthenticationSuccessHandler"
+				username-parameter="j_username" 
+				password-parameter="j_password"/>
+
+		<security:logout logout-url="/logout" success-handler-ref="logoutSuccessHandler"/>
+
+		<security:port-mappings>
+			<security:port-mapping http="#{configurationService.configuration.getProperty('tomcat.http.port')}"
+								   https="#{configurationService.configuration.getProperty('tomcat.ssl.port')}"/>
+			<security:port-mapping http="80" https="443"/>
+			<!--security:port-mapping http="#{configurationService.configuration.getProperty('proxy.http.port')}"
+				https="#{configurationService.configuration.getProperty('proxy.ssl.port')}" /-->
+		</security:port-mappings>
+
+		<security:request-cache ref="httpSessionRequestCache"/>
+		
+		<security:access-denied-handler ref="b2bAccessDeniedHandler"/>
+		
+
+	</security:http>
+
+	<!-- Ignores url(s) that match paths specified in the set -->
+	<bean id="excludeUrlRequestMatcher"
+		  class="com.energizer.storefront.security.ExcludeUrlRequestMatcher">
+		<property name="excludeUrlSet" ref="excludeUrlSet"/>
+		<property name="pathMatcher" ref="defaultPathMatcher"/>
+	</bean>
+
+	<!-- The set of url(s) to exclude from the 'Default security config'-->
+	<bean id="excludeUrlSet" class="java.util.HashSet"/>
+
+	<!-- Path matcher to use, AntPathMatcher is the default -->
+	<alias name="antPathMatcher" alias="defaultPathMatcher"/>
+	<bean id="antPathMatcher" class="org.springframework.util.AntPathMatcher"/>
+
+	<!-- Default security config -->
+	<security:http disable-url-rewriting="true" use-expressions="false" request-matcher-ref="excludeUrlRequestMatcher">
+	
+	<security:headers>
+            <security:frame-options disabled="true"/>
+     </security:headers>
+     
+     <security:csrf disabled="true"/>
+
+		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS"/>
+
+		<security:session-management session-authentication-strategy-ref="fixation" />
+
+		<!-- RememberMe -->
+		<!-- security:remember-me key="energizerstorefront" services-ref="rememberMeServices"/ -->
+
+		<!-- SSL / AUTHENTICATED pages -->
+		<!-- Access to excel order, quick order, cart page, need to be restricted to customer group only -->
+		<security:intercept-url pattern="/my-account" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_B2BAPPROVERGROUP,ROLE_B2BVIEWERGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/profile" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_B2BAPPROVERGROUP,ROLE_B2BVIEWERGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/update-password" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_B2BAPPROVERGROUP,ROLE_B2BVIEWERGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/update-profile" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_B2BAPPROVERGROUP,ROLE_B2BVIEWERGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/orders" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_B2BAPPROVERGROUP,ROLE_B2BVIEWERGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/order/*" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_B2BAPPROVERGROUP,ROLE_B2BVIEWERGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/order/**" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_B2BAPPROVERGROUP,ROLE_B2BVIEWERGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/approval-dashboard" access="ROLE_B2BADMINGROUP,ROLE_B2BAPPROVERGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/approval-dashboard/*" access="ROLE_B2BADMINGROUP,ROLE_B2BAPPROVERGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/orderApprovalDetails/*" access="ROLE_B2BADMINGROUP,ROLE_B2BAPPROVERGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-cart/**" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/quickorder/*" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/excelfileupload/*" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my_account/catalogDownload/**" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_B2BVIEWERGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/quickorder/**" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-account/excelfileupload/**" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>		
+		<security:intercept-url pattern="/cart" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/cart*" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/cart/**" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-cart" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-cart/*" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-cart/**" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my_account/orderHistoryDownload/**" access="ROLE_B2BCUSTOMERGROUP,ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+
+
+
+		<!-- SSL / AUTHENTICATED pages Organization management pages-->
+		<security:intercept-url pattern="/my-company*" access="ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		<security:intercept-url pattern="/my-company/**" access="ROLE_B2BADMINGROUP,ROLE_EMPLOYEEGROUP" requires-channel="https"/>
+		
+		<!-- SSL / ANONYMOUS pages Login pages need to be SSL, but occur before authentication -->
+		<security:intercept-url pattern="/login" requires-channel="https"/>
+		<security:intercept-url pattern="/login/**" requires-channel="https"/>
+		<security:intercept-url pattern="/j_spring_security_check" requires-channel="https"/>
+		<security:intercept-url pattern="/logout" requires-channel="https"/>
+
+		<!-- MiniCart and CartPopup can occur on either secure or insecure pages -->
+		<security:intercept-url pattern="/cart/rollover/*" requires-channel="any"/>
+		<security:intercept-url pattern="/cart/miniCart/*" requires-channel="any"/>
+
+		<security:intercept-url pattern="/search/autocompleteSecure/**" requires-channel="https"/>
+
+		<!-- Only allow logged in customers to see the ordering form page -->
+		<security:intercept-url pattern="/**/p/**/orderForm" access="ROLE_B2BCUSTOMERGROUP"/>
+
+		<!-- OPEN / ANONYMOUS pages Run all other (public) pages openly. Note that while credentials are secure, the session id can be sniffed.
+			If this is a security concern, then this line should be re-considered -->
+		<security:intercept-url pattern="/**" requires-channel="any" method="POST"/>
+		<!-- Allow posts on either secure or insecure -->
+		<security:intercept-url pattern="/**" requires-channel="${storefront.security.default.required.channel}"/>
+		<!-- Everything else should be insecure -->
+
+		<security:form-login
+				login-page="/login"
+				authentication-failure-handler-ref="loginAuthenticationFailureHandler"
+				authentication-success-handler-ref="loginGuidAuthenticationSuccessHandler"
+				username-parameter="j_username"
+				password-parameter="j_password" login-processing-url="/j_spring_security_check"/>
+
+
+		<security:logout logout-url="/logout" success-handler-ref="logoutSuccessHandler"/>
+
+		<security:port-mappings>
+			<security:port-mapping http="#{configurationService.configuration.getProperty('tomcat.http.port')}"
+								   https="#{configurationService.configuration.getProperty('tomcat.ssl.port')}"/>
+			<security:port-mapping http="80" https="443"/>
+			<!--security:port-mapping http="#{configurationService.configuration.getProperty('proxy.http.port')}"
+				https="#{configurationService.configuration.getProperty('proxy.ssl.port')}" /-->
+		</security:port-mappings>
+
+		<security:request-cache ref="httpSessionRequestCache"/>
+
+		<security:access-denied-handler ref="b2bAccessDeniedHandler"/>
+
+	</security:http>
+
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider ref="acceleratorAuthenticationProvider"/>
+	</security:authentication-manager>
+
+	<bean id="b2bAccessDeniedHandler"
+		  class="com.energizer.storefront.security.DefaultAccessDeniedHandler"/>
+	
+	<!-- Start - Added post 1905 upgrade -->	  
+	<bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+	<!-- End - Added post 1905 upgrade -->
+	<bean id="acceleratorAuthenticationProvider"
+		  class="com.energizer.storefront.security.AcceleratorAuthenticationProvider">
+		<property name="bruteForceAttackCounter" ref="bruteForceAttackCounter"/>
+		<property name="cartService" ref="cartService"/>
+		<property name="userService" ref="userService"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="preAuthenticationChecks" ref="rejectUserPreAuthenticationChecks"/>
+		<property name="userDetailsService" ref="originalUidUserDetailsService"/>
+		<property name="adminGroup" value="ROLE_ADMINGROUP"/>
+		<property name="b2bUserGroupProvider" ref="b2bUserGroupProvider"/>
+		<aop:scoped-proxy/>
+	</bean>
+
+	<bean id="rejectUserPreAuthenticationChecks"
+		  class="de.hybris.platform.spring.security.RejectUserPreAuthenticationChecks">
+		<property name="allowedUserTypes">
+			<list>
+				<value>B2BCustomer</value>
+				<value>Employee</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="coreUserDetailsService" class="de.hybris.platform.spring.security.CoreUserDetailsService"/>
+
+	<bean id="guidCookieStrategy"
+		  class="com.energizer.storefront.security.impl.DefaultGUIDCookieStrategy"
+			>
+		<property name="cookieGenerator" ref="guidCookieGenerator"/>
+	</bean>
+
+
+	<alias name="defaultGuidCookieGenerator" alias="guidCookieGenerator"/>
+	<bean id="defaultGuidCookieGenerator"
+		  class="com.energizer.storefront.security.cookie.EnhancedCookieGenerator">
+		<property name="cookieSecure" value="true"/>
+		<property name="cookieName" value="acceleratorSecureGUID"/>
+		<property name="httpOnly" value="true"/>
+	</bean>
+
+	<bean id="autoLoginStrategy"
+		  class="com.energizer.storefront.security.impl.DefaultAutoLoginStrategy">
+		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="customerFacade" ref="customerFacade"/>
+		<property name="guidCookieStrategy" ref="guidCookieStrategy"/>
+		<property name="rememberMeServices" ref="rememberMeServices"/>
+	</bean>
+
+	<bean id="httpSessionRequestCache"
+		  class="com.energizer.storefront.security.impl.WebHttpSessionRequestCache">
+		<property name="sessionService" ref="sessionService"/>
+	</bean>
+
+	<bean id="redirectStrategy" class="org.springframework.security.web.DefaultRedirectStrategy"/>
+
+
+	<!-- Login Success Handlers -->
+
+	<bean id="loginGuidAuthenticationSuccessHandler"
+		  class="com.energizer.storefront.security.GUIDAuthenticationSuccessHandler">
+		<property name="authenticationSuccessHandler" ref="loginAuthenticationSuccessHandler"/>
+		<property name="guidCookieStrategy" ref="guidCookieStrategy"/>
+		<aop:scoped-proxy/>
+	</bean>
+
+	<alias name="defaultLoginAuthenticationSuccessHandler" alias="loginAuthenticationSuccessHandler"/>
+	<bean id="defaultLoginAuthenticationSuccessHandler"
+		  class="com.energizer.storefront.security.StorefrontAuthenticationSuccessHandler">
+		<property name="customerFacade" ref="customerFacade"/>
+		<property name="defaultTargetUrl" value="/"/>
+		<property name="useReferer" value="false"/>
+		<property name="requestCache" ref="httpSessionRequestCache"/>
+		<property name="uiExperienceService" ref="uiExperienceService"/>
+		<property name="sessionService" ref="sessionService"/>
+		<property name="cartFacade" ref="cartFacade"/>
+		<property name="forceDefaultTargetForUiExperienceLevel">
+			<map key-type="de.hybris.platform.commerceservices.enums.UiExperienceLevel"
+				 value-type="java.lang.Boolean">
+				<entry key="DESKTOP" value="false"/>
+				<entry key="MOBILE" value="false"/>
+			</map>
+		</property>
+		<property name="bruteForceAttackCounter" ref="bruteForceAttackCounter"/>
+	</bean>
+
+	<bean id="loginCheckoutGuidAuthenticationSuccessHandler"
+		  class="com.energizer.storefront.security.GUIDAuthenticationSuccessHandler">
+		<property name="authenticationSuccessHandler" ref="loginCheckoutAuthenticationSuccessHandler"/>
+		<property name="guidCookieStrategy" ref="guidCookieStrategy"/>
+		<aop:scoped-proxy/>
+	</bean>
+
+	<bean id="loginCheckoutAuthenticationSuccessHandler"
+		  class="com.energizer.storefront.security.StorefrontAuthenticationSuccessHandler">
+		<property name="customerFacade" ref="customerFacade"/>
+		<property name="defaultTargetUrl" value="/checkout"/>
+		<property name="uiExperienceService" ref="uiExperienceService"/>
+		<property name="sessionService" ref="sessionService"/>
+		<property name="cartFacade" ref="cartFacade"/>
+		<property name="forceDefaultTargetForUiExperienceLevel">
+			<map key-type="de.hybris.platform.commerceservices.enums.UiExperienceLevel"
+				 value-type="java.lang.Boolean">
+				<entry key="DESKTOP" value="true"/>
+				<entry key="MOBILE" value="true"/>
+			</map>
+		</property>
+		<property name="bruteForceAttackCounter" ref="bruteForceAttackCounter"/>
+	</bean>
+
+
+	<!-- Login Failure Handlers -->
+	<bean id="bruteForceAttackCounter"
+		  class="com.energizer.storefront.security.impl.DefaultBruteForceAttackCounter">
+		<constructor-arg name="maxFailedLogins" value="5"/>
+		<constructor-arg name="cacheExpiration" value="60"/>
+		<constructor-arg name="cacheSizeLimit" value="1000"/>
+	</bean>
+
+	<!-- Login Failure Handlers -->
+
+	<bean id="loginAuthenticationFailureHandler"
+		  class="com.energizer.storefront.security.LoginAuthenticationFailureHandler">
+		<property name="bruteForceAttackCounter" ref="bruteForceAttackCounter"/>
+		<property name="sessionService" ref="sessionService"/>
+		<property name="userService" ref="userService"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="defaultFailureUrl" value="/login?error=true"/>
+		<aop:scoped-proxy/>
+	</bean>
+
+	<bean id="loginCheckoutAuthenticationFailureHandler"
+		  class="com.energizer.storefront.security.LoginAuthenticationFailureHandler">
+		<property name="bruteForceAttackCounter" ref="bruteForceAttackCounter"/>
+		<property name="defaultFailureUrl" value="/login/checkout?error=true"/>
+		<aop:scoped-proxy/>
+	</bean>
+
+
+	<!-- Logout Success Handler -->
+
+	<bean id="logoutSuccessHandler"
+		  class="com.energizer.storefront.security.StorefrontLogoutSuccessHandler">
+		<property name="defaultTargetUrl" value="/?logout=true"/>
+		<property name="guidCookieStrategy" ref="guidCookieStrategy"/>
+		<property name="useReferer" value="true"/>
+		<property name="restrictedPages">
+			<list>
+				<value>/my-account</value>
+				<value>/checkout</value>
+			</list>
+		</property>
+		<aop:scoped-proxy/>
+	</bean>
+
+	<!-- Remember Me -->
+
+	<bean id="rememberMeProcessingFilter"
+		  class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+		<constructor-arg name="rememberMeServices" ref="rememberMeServices"/>
+		<constructor-arg name="authenticationManager" ref="authenticationManager"/>
+	</bean>
+
+	<bean id="rememberMeServices"
+		  class="com.energizer.storefront.security.AcceleratorRememberMeServices">
+		<property name="userDetailsService" ref="originalUidUserDetailsService"/>
+		<property name="key" value="energizerstorefront"/>
+		<property name="cookieName" value="energizerstorefrontRememberMe"/>
+		<property name="alwaysRemember" value="false"/>
+		<property name="userService" ref="userService"/>
+		<property name="useSecureCookie" value="false"/>
+		<property name="customerFacade" ref="customerFacade"/>
+		<property name="urlEncoderService" ref="urlEncoderService"/>
+		<property name="storeSessionFacade" ref="storeSessionFacade"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+		<property name="secureTokenService" ref="secureTokenService"/>
+		<aop:scoped-proxy/>
+	</bean>
+
+	<bean id="rememberMeAuthenticationProvider"
+		  class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<constructor-arg name="key" value="energizerstorefront"/>
+		<aop:scoped-proxy/>
+	</bean>
+
+	<!-- Define all possible roles -->
+	<bean id="b2bUserGroupProvider"
+		  class="com.energizer.storefront.security.impl.DefaultB2BUserGroupProvider">
+		<property name="userService" ref="userService"/>
+		<property name="b2BCustomerService" ref="defaultB2BCustomerService"/>
+		<property name="authorizedGroups">
+			<set value-type="java.lang.String">
+				<value>b2bcustomergroup</value>
+				<value>b2bmanagergroup</value>
+				<value>b2bapprovergroup</value>
+				<value>b2badmingroup</value>
+				<value>b2bviewergroup</value>
+			</set>
+		</property>
+		<property name="authorizedGroupsToCheckOut">
+			<set value-type="java.lang.String">
+				<value>b2bcustomergroup</value>
+				<value>b2badmingroup</value>
+			</set>
+		</property>
+	</bean>
+
+</beans>

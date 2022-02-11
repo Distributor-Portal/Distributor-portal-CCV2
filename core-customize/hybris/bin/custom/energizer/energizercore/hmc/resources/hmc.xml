@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2014 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+<configuration xmlns="hybris.de/schemas/hmc/generic"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="hybris.de/schemas/hmc/generic hmc.xsd">
+
+
+	<explorertree>
+		<group name="EnergizerGroup" description="group.energizer.description">
+			<typeref type="EnergizerB2BUnit" description="energizer.b2bunit.description" />
+			<typeref type="EnergizerProduct" description="energizer.product.description" />
+			<typeref type="EnergizerCMIR" description="energizer.cmir.description" />
+			<typeref type="EnergizerProductConversionFactor" description="energizer.productconversionfactor.description" />
+			<typeref type="EnergizerSalesAreaUOM" description="energizer.salesareauom.description" />
+			<typeref type="EnergizerB2BUnitLeadTime" description="energizer.b2bunitleadtime.description" />
+			<typeref type="EnergizerB2BCustomer" description="energizer.b2bcustomer.description" />
+			<!-- Added Type for WeSell Implementation - START -->
+			<typeref type="EnergizerB2BEmployee" description="energizer.b2bemployee.description"/>
+			<!-- Added Type for WeSell Implementation - END -->
+			<typeref type="EnergizerPriceRow" description="energizer.pricerow.description" />
+			<typeref type="EnergizerAddress" description="energizer.address.description" />
+			<typeref type="MetricUnit" description="energizer.metricunit.description" />
+			<typeref type="EnergizerShippingPoint" description="energizer.shippingpoint.description" />
+		</group>
+		
+	</explorertree>
+
+	<type name="Order" mode="append">
+		<organizer>
+			<search mode="append">
+				<condition attribute="versionID" operator="is null" />
+			</search>
+		</organizer>
+	</type>
+
+</configuration>
