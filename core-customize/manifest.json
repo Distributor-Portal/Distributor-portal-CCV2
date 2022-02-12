@@ -120,10 +120,6 @@
                     "contextPath": "/acceleratorservices"
                 },
 				{
-				  "name": "acceleratorservices",
-				  "contextPath": "/acceleratorservices"
-				},
-				{
 				  "name": "smartedit",
 				  "contextPath": "/smartedit"
 				}	
