@@ -3,8 +3,7 @@
     "enableImageProcessingService": true,
     "extensions": [
         "cloudmediaconversion",
-		"addonsupport",		
-        "mediaconversionbackoffice",
+		"mediaconversionbackoffice",
         "energizerfulfilmentprocess",
         "energizercore",
         "energizerfacades",
