@@ -32,7 +32,7 @@
             }
         ],
         "extensions": {
-            "location": "hybris/config/localextensions.xml",
+            "location": "hybris/config/localextensions.xml"
             }
     },
     "properties": [
