@@ -1125,8 +1125,8 @@
 			parent="abstractCommerceCartStrategy">
 		<property name="commerceUpdateCartEntryHooks" ref="commerceUpdateCartEntryMethodHooks"/>
 		<property name="configurationService" ref="configurationService"/>
-		<!--  <property name="forceInStockMaxQuantity" value="9999999" />  -->
-		<property name="forceInStockMaxQuantity" value="${max.order.quantity}" />
+		<property name="forceInStockMaxQuantity" value="9999999" />  
+		<!--  <property name="forceInStockMaxQuantity" value="${max.order.quantity}" /> -->
 		<property name="entryMergeStrategy" ref="entryMergeStrategy"/>
 	</bean>
 	
@@ -1136,8 +1136,8 @@
 			parent="abstractCommerceAddToCartStrategy">
 		<property name="commerceAddToCartMethodHooks" ref="commerceAddToCartMethodHooks"/>
 		<property name="configurationService" ref="configurationService"/>
-		 <!-- <property name="forceInStockMaxQuantity" value="9999999" />  -->
-		 <property name="forceInStockMaxQuantity" value="${max.order.quantity}" />
+		 <property name="forceInStockMaxQuantity" value="9999999" />  
+		<!--  <property name="forceInStockMaxQuantity" value="${max.order.quantity}" /> -->
 		 <!-- <property name="configuratorSettingsService" ref="configuratorSettingsService"/> -->
 		 <property name="entryMergeStrategy" ref="entryMergeStrategy"/>
 	</bean>
