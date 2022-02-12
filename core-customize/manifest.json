@@ -120,10 +120,6 @@
                     "contextPath": "/acceleratorservices"
                 },
 				{
-				  "name": "energizerstorefront",
-				  "contextPath": ""
-				},
-				{
 				  "name": "acceleratorservices",
 				  "contextPath": "/acceleratorservices"
 				},
