@@ -3,7 +3,8 @@
     "enableImageProcessingService": true,
     "extensions": [
         "cloudmediaconversion",
-		"mediaconversionbackoffice",
+		"addonsupport",		
+        "mediaconversionbackoffice",
         "energizerfulfilmentprocess",
         "energizercore",
         "energizerfacades",
@@ -34,18 +35,8 @@
             "value": "en,es"
         }
     ],
-    "storefrontAddons": [
+    "storefrontAddons": [        
         
-        {
-            "addon": "addonsupport",
-            "storefront": "energizerstorefront",
-            "template": "yacceleratorstorefront"
-        },
-        {
-            "addon": "yaddon",
-            "storefront": "energizerstorefront",
-            "template": "yacceleratorstorefront"
-        }
     ],
     "aspects": [
         {
