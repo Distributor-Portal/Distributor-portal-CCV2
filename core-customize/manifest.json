@@ -18,6 +18,9 @@
             "location": "hybris/config/solr"
         },
         "properties": [
+			{
+			"location": "hybris/config/environments/local-common.properties"
+			},
             {
                 "location": "hybris/config/environments/local-dev.properties",
                 "persona": "development"
@@ -60,7 +63,7 @@
                 {
                     "name": "backoffice",
                     "contextPath": "/backoffice"
-                }
+                }			
             ]
         },
         {
@@ -115,7 +118,19 @@
                 {
                     "name": "acceleratorservices",
                     "contextPath": "/acceleratorservices"
-                }
+                },
+				{
+				  "name": "energizerstorefront",
+				  "contextPath": ""
+				},
+				{
+				  "name": "acceleratorservices",
+				  "contextPath": "/acceleratorservices"
+				},
+				{
+				  "name": "smartedit",
+				  "contextPath": "/smartedit"
+				}	
             ]
         },
         {
@@ -138,10 +153,6 @@
                 {
                     "key": "xss.filter.header.X-Frame-Options",
                     "value": ""
-                },
-                {
-                    "key": "storefrontContextRoot",
-                    "value": "/energizerstorefront"
                 },
 				{
 				  "key": "spring.session.enabled",
