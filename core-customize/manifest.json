@@ -15,7 +15,7 @@
     ],
     "useConfig": {
 	 "solr": {
-            "location": "/solr"
+            "location": "hybris/config/solr"
         },
         "properties": [
             {
