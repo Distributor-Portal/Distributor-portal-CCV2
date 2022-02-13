@@ -15,10 +15,7 @@
         "energizerbackoffice"
     ],
     "useConfig": {
-	 "solr": {
-            "location": "hybris/config/solr"
-        },
-        "properties": [
+	        "properties": [
 			{
 			"location": "hybris/config/environments/local-common.properties"
 			},
