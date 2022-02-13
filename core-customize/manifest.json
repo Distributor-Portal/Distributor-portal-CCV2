@@ -2,6 +2,7 @@
     "commerceSuiteVersion": "2005",
     "enableImageProcessingService": true,
     "extensions": [
+		"azurecloud",
         "cloudmediaconversion",
 		"addonsupport",		
         "mediaconversionbackoffice",
@@ -88,19 +89,7 @@
                 {
                     "key": "storefrontContextRoot",
                     "value": ""
-                },
-				{
-				  "key": "xss.filter.header.X-Frame-Options",
-				  "value": ""
-				},
-				{
-				  "key": "xyformsservices.webroot.override",
-				  "value": "true"
-				},
-				{
-				  "key": "xyformsservices.webroot.path",
-				  "value": ""
-				}
+                }
             ],
             "webapps": [
                 {
