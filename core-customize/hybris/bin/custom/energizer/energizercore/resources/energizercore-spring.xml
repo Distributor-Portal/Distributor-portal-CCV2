@@ -8,6 +8,8 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- Spring Integration -->
+	<import resource="classpath:/energizercore/integration/hot-folder-energizer-common-spring.xml"/>
+	
 	<!-- SystemSetup for the energizercore -->
 	<bean id="b2bAcceleratorCoreSystemSetup" class="com.energizer.core.setup.CoreSystemSetup" parent="abstractCoreSystemSetup">
 		<property name="setupSyncJobService" ref="b2bSetupSyncJobService" />
