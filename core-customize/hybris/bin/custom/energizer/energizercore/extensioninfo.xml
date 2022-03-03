@@ -20,7 +20,8 @@
 		<requires-extension name="b2bacceleratorservices"/>
 		<requires-extension name="b2bacceleratorfacades"/>
 		<requires-extension name="energizerfulfilmentprocess"/>
-		<!-- <requires-extension name="hmc"/> -->
+		 <requires-extension name="azurecloud"/>
+         <requires-extension name="azurecloudhotfolder"/>
 		<!--  <requires-extension name="mobileservices"/>-->
 
 		<coremodule generated="true" manager="com.energizer.core.jalo.EnergizerCoreManager" packageroot="com.energizer.core"/>

@@ -113,7 +113,7 @@ REMOVE EnergizerCronJob;code[unique=true];
 ;energizerShipmentWESELLCSVProcessor;
 
 #Creation of LATAM specific cronjobs
-INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sessionLanguage(isoCode);type;displayName;emailAddress;technicalEmailAddress;businessEmailAddress;sendEmail[default=false];sessionCurrency(isoCode)[default=$usdCurrency];catalogName[default=$productCatalog];catalogVersion[default=Online];path[default=$sharedFolderPath\LATAM];region[default=$latamRegion]
+INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sessionLanguage(isoCode);type;displayName;emailAddress;technicalEmailAddress;businessEmailAddress;sendEmail[default=false];sessionCurrency(isoCode)[default=$usdCurrency];catalogName[default=$productCatalog];catalogVersion[default=Online];path[default=$sharedFolderPath/LATAM];region[default=$latamRegion]
 ;energizerCustomerCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerCustomer;Customer Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
 ;energizerSalesUOMCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeSalesArea;Sales UOM Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
 ;energizerB2BUserCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeB2BUser;B2B User Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
@@ -139,7 +139,7 @@ INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sess
 ;energizerPriceRowCleanUpCronJob;energizerPriceRowCleanUpJob;en;;Price Row Clean Up Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
 
 #Creation of EMEA specific cronjobs
-INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sessionLanguage(isoCode);type;displayName;emailAddress;technicalEmailAddress;businessEmailAddress;sendEmail[default=false];sessionCurrency(isoCode)[default=$eurCurrency];catalogName[default=$productCatalogEMEA];catalogVersion[default=Online];path[default=$sharedFolderPath\EMEA];region[default=$emeaRegion]
+INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sessionLanguage(isoCode);type;displayName;emailAddress;technicalEmailAddress;businessEmailAddress;sendEmail[default=false];sessionCurrency(isoCode)[default=$eurCurrency];catalogName[default=$productCatalogEMEA];catalogVersion[default=Online];path[default=$sharedFolderPath/EMEA];region[default=$emeaRegion]
 ;energizerCustomerEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerCustomer;Customer Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
 ;energizerSalesUOMEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeSalesArea;Sales UOM Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
 ;energizerB2BUserEMEACSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeB2BUser;B2B User Job;$emailAddress;$technicalEmailAddressEMEA;$businessEmailAddressEMEA;;;
@@ -163,7 +163,7 @@ INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sess
 #EMEA End-----
 
 #Creation of WESELL specific cronjobs
-INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sessionLanguage(isoCode);type;displayName;emailAddress;technicalEmailAddress;businessEmailAddress;sendEmail[default=false];sessionCurrency(isoCode)[default=$usdCurrency];catalogName[default=$productCatalog];catalogVersion[default=Online];path[default=$sharedFolderPath\WESELL];region[default=$wesellRegion]
+INSERT_UPDATE EnergizerCronJob;code[unique=true];job(code)[forceWrite=true];sessionLanguage(isoCode);type;displayName;emailAddress;technicalEmailAddress;businessEmailAddress;sendEmail[default=false];sessionCurrency(isoCode)[default=$usdCurrency];catalogName[default=$productCatalog];catalogVersion[default=Online];path[default=$sharedFolderPath/WESELL];region[default=$wesellRegion]
 ;energizerCustomerWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeEnergizerCustomer;Customer Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
 ;energizerSalesUOMWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeSalesArea;Sales UOM Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
 ;energizerB2BUserWESELLCSVProcessor;energizerCSVFeedCronJob;en;$interfaceTypeB2BUser;B2B User Job;$emailAddress;$technicalEmailAddressLATAM;$businessEmailAddressLATAM;;;
