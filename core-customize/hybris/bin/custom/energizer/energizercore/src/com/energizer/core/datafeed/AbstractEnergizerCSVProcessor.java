@@ -320,14 +320,6 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 		final String storageConnectionString = "DefaultEndpointsProtocol=https;" + "AccountName=p7wae5gn35jcjcyaefo3gwc;"
 				+ "AccountKey=PsXlnaTuGi9Vwq3g+n/yV6dqQeBk1d7nTbNm6XYIx3qjkAnuma5RYamdEyD0QN99DniPopetLdiXm5jkJqeVVQ==";
 
-		//final CloudBlobContainer account =
-		//energizerWindowsAzureBlobStorageStrategy.getContainer(storageConnectionString);
-
-
-
-		//.getContainer(Config.getParameter("azure.hotfolder.storage.account.connection-string"));
-
-
 
 		CloudStorageAccount edgewellStorageAccount;
 		CloudBlobClient edgewellBlobClient = null;
@@ -354,56 +346,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 			System.out.println(
 					"CloudBlobDirectory Loading files from-New---path--> " + blobDirectory.getStorageUri().getPrimaryUri().getPath());
 
-			//final String strPath = blobDirectory.getStorageUri().getPrimaryUri().getPath();
-			//final File p1 = Paths.get(strPath);
 
-			//final File csvFiles = new File(this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess);
-
-
-
-			/*
-			 * for (final ListBlobItem blobDir : blobDirectory.listBlobs()) {
-			 * System.out.println("=== reading directory :::::::::: " + " :: " + blobDir.getStorageUri());
-			 * System.out.println(">>>> gt Path :: " +
-			 * edgewellContainer.getBlockBlobReference(blobDir.getStorageUri().getPrimaryUri().getRawPath())); }
-			 */
-
-
-
-
-			/*
-			 * final CloudBlockBlob blob2 = edgewellContainer.getBlockBlobReference(
-			 * "CSVFeedFolder/WESELL/energizerB2BEmployeeCSVProcessor/toProcess/SALESREP_8358_20200422233033.csv");
-			 * System.out.println("==== Printing content :: \n" + blob2.downloadText());
-			 */
-
-
-			/*
-			 * System.out.println("toProcessDirectoryPath--> " + toProcessDirectoryPath);
-			 *
-			 * final CloudBlobDirectory blobDirectory = edgewellContainer.getDirectoryReference(toProcessDirectoryPath);
-			 *
-			 * System.out.println("CloudBlobDirectory Loading files from--> " + blobDirectory);
-			 *
-			 *
-			 * final CloudBlockBlob blob2 = edgewellContainer.getBlockBlobReference(
-			 * "CSVFeedFolder/WESELL/energizerB2BEmployeeCSVProcessor/toProcess/SALESREP_8358_20200422233033.csv");
-			 * //CloudBlockBlob blob2 = container.getBlockBlobReference("SALESREP_8359_20200422233038.csv");
-			 *
-			 *
-			 * // writing file to error directory final String toProcessDirectoryPath1 = this.getCronjob().getPath() +
-			 * fileSeperator + type + fileSeperator + toProcess + fileSeperator;
-			 *
-			 * System.out.println("toProcessDirectoryPath1--> " + toProcessDirectoryPath1);
-			 *
-			 * final String toErrorDirectoryPath1 = this.getCronjob().getPath() + fileSeperator + type + fileSeperator +
-			 * ProcessedWithNoErrors + fileSeperator;
-			 *
-			 * System.out.println("toErrorDirectoryPath1--> " + toErrorDirectoryPath1);
-			 *
-			 * final CloudBlockBlob blobRead = edgewellContainer.getBlockBlobReference(toProcessDirectoryPath1); final
-			 * CloudBlockBlob blobWrite = edgewellContainer.getBlockBlobReference(toErrorDirectoryPath1);
-			 */
 
 
 			final File csvFiles = new File(blobDirectory.getStorageUri().getPrimaryUri().getPath());
@@ -420,7 +363,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 					typeFilesList.add(typeFile);
 				}
 			}
-			return typeFilesList;
+
 
 
 		}
@@ -437,7 +380,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 
 
 
-
+		return typeFilesList;
 
 
 	}

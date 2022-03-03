@@ -17,6 +17,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,9 +29,11 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
 import com.energizer.core.constants.EnergizerCoreConstants;
 import com.energizer.core.datafeed.processor.product.EnergizerProduct2CategoryRelationCSVProcessor;
 import com.energizer.core.model.EnergizerCronJobModel;
+import com.microsoft.azure.storage.StorageException;
 
 
 /**
@@ -55,6 +58,9 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 	EmailService emailService;
 
 	private CronJobService cronJobService;
+
+	@Resource
+	private EnergizerWindowsAzureBlobStorageStrategy energizerWindowsAzureBlobStorageStrategy;
 
 	/**
 	 * @return the cronJobService
@@ -97,6 +103,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 		PerformResult performResult = null;
 		final List<String> emailAddress = new ArrayList<String>();
 		final String type = cronjob.getType();
+
 		if (type == null)
 		{
 			LOG.info("There is no Type defined for the job " + cronjob.getCode());
@@ -109,51 +116,74 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 		/* Added for EMEA cronjob import */
 		energizerCSVProcessor.setCronjob(cronjob);
 		/* EMEA End */
-		final List<File> files = energizerCSVProcessor.getFilesForFeedType(type);
-		if (null == files || files.size() == 0)
-		{
-			LOG.info("Found " + files.size() + " CSV files to process.");
-		}
-		else
-		{
-			LOG.info("Found " + files.size() + " CSV files to process. The files are listed below.");
-		}
 
-		final int wesellCSVFilesCount = Integer
-				.parseInt(configurationService.getConfiguration().getString("wesell.cmir.csv.files.count"));
+		List<File> files = null;
 
-		int count = 0;
-		if (null != files && !files.isEmpty() && files.size() > 0)
+		System.out.println("files-new--chages-> ");
+
+		try
 		{
-			for (final File file : files)
+			files = energizerCSVProcessor.getFilesForFeedType(type);
+
+
+			if (null == files || files.size() == 0)
 			{
-				count++;
-				if ((file.length() / 1024) >= 1024)
+				LOG.info("Found " + files.size() + " CSV files to process.");
+			}
+			else
+			{
+				LOG.info("Found " + files.size() + " CSV files to process. The files are listed below.");
+			}
+
+			final int wesellCSVFilesCount = Integer
+					.parseInt(configurationService.getConfiguration().getString("wesell.cmir.csv.files.count"));
+
+			int count = 0;
+			if (null != files && !files.isEmpty() && files.size() > 0)
+			{
+				for (final File file : files)
 				{
-					LOG.info(count + ". File name  == '" + file.getName() + "' and it's size is == '" + getFileSizeKiloBytes(file)
-							+ "' or '" + getFileSizeMegaBytes(file) + "'");
-				}
-				else
-				{
-					LOG.info(
-							count + ". File name == '" + file.getName() + "' and it's size is == '" + getFileSizeKiloBytes(file) + "'");
+					count++;
+					if ((file.length() / 1024) >= 1024)
+					{
+						LOG.info(count + ". File name  == '" + file.getName() + "' and it's size is == '" + getFileSizeKiloBytes(file)
+								+ "' or '" + getFileSizeMegaBytes(file) + "'");
+					}
+					else
+					{
+						LOG.info(count + ". File name == '" + file.getName() + "' and it's size is == '" + getFileSizeKiloBytes(file)
+								+ "'");
+					}
 				}
 			}
+
+			// If the file is not found to process, then the cronjob result is returned as such.
+			if (null == files || files.size() == 0)
+			{
+				LOG.info(
+						"************************* NO FILES FOUND, NOTHING TO PROCESS FOR THIS CRONJOB  ****************************");
+				return new PerformResult(CronJobResult.FILE_NOT_FOUND, CronJobStatus.FINISHED);
+			}
+			else if (null != files && files.size() > 0
+					&& (cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL) && files.size() > wesellCSVFilesCount))
+			{
+				LOG.info("Total files : " + files.size());
+				LOG.info("MORE THAN '" + wesellCSVFilesCount + "' FILES FOUND TO PROCESS FOR WESELL, SO IGNORING THIS CRONJOB ...");
+				return new PerformResult(CronJobResult.FAILURE, CronJobStatus.FINISHED);
+			}
+
+		}
+		catch (final StorageException e1)
+		{
+			// YTODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		catch (final IOException e1)
+		{
+			// YTODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
-		// If the file is not found to process, then the cronjob result is returned as such.
-		if (null == files || files.size() == 0)
-		{
-			LOG.info("************************* NO FILES FOUND, NOTHING TO PROCESS FOR THIS CRONJOB  ****************************");
-			return new PerformResult(CronJobResult.FILE_NOT_FOUND, CronJobStatus.FINISHED);
-		}
-		else if (null != files && files.size() > 0
-				&& (cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL) && files.size() > wesellCSVFilesCount))
-		{
-			LOG.info("Total files : " + files.size());
-			LOG.info("MORE THAN '" + wesellCSVFilesCount + "' FILES FOUND TO PROCESS FOR WESELL, SO IGNORING THIS CRONJOB ...");
-			return new PerformResult(CronJobResult.FAILURE, CronJobStatus.FINISHED);
-		}
 
 		Boolean exceptionOccured = false;
 		if (null != cronjob.getEmailAddress())
