@@ -88,6 +88,9 @@
 	<bean id="image30ValueProvider" parent="abstractImageValueProvider">
 		<property name="mediaFormat" value="96Wx96H" />
 	</bean>
+	
+	<bean id="energizerWindowsAzureBlobStorageStrategy" class="com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy" parent="windowsAzureBlobStorageStrategy">
+	</bean>
 
 	<bean id="productUrlValueProvider" class="de.hybris.platform.commerceservices.search.solrfacetsearch.provider.impl.ProductUrlValueProvider"
 		parent="abstractPropertyFieldValueProvider">
