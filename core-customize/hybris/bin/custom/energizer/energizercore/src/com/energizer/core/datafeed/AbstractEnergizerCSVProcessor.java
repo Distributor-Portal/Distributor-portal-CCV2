@@ -348,14 +348,20 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 
 			for (final ListBlobItem blobDir : blobDirectory.listBlobs())
 			{
-				System.out.println("=== reading directory :::::::::: " + " :: " + blobDir.getStorageUri().getPrimaryUri().getPath());
-				System.out.println(
-						">>>>  gt Path ::  " + container.getBlockBlobReference(blobDir.getStorageUri().getPrimaryUri().getRawPath()));
+
+				final String subDirectory = blobDir.getStorageUri().getPrimaryUri().getPath();
+				final String finalDirectory = subDirectory.substring(8);
+
+
+				System.out.println("subDirectory--->" + subDirectory);
+				System.out.println("finalDirectory--->" + finalDirectory);
+
+				final CloudBlockBlob blob2 = container.getBlockBlobReference(finalDirectory);
+				System.out.println(blob2.getSnapshotQualifiedUri() + "==== Printing content :: \n" + blob2.downloadText());
+
 			}
 
-			final CloudBlockBlob blob2 = container.getBlockBlobReference(
-					"CSVFeedFolder/WESELL/energizerB2BEmployeeCSVProcessor/toProcess/SALESREP_8358_20200422233033.csv");
-			System.out.println(blob2.getSnapshotQualifiedUri() + "==== Printing content :: \n" + blob2.downloadText());
+
 
 
 		}
