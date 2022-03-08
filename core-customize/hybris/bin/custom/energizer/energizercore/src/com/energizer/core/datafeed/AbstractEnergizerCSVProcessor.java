@@ -369,12 +369,6 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 
 			blobDirectory = container.getDirectoryReference(toProcessDirectoryPath);
 
-			/*
-			 * for (final ListBlobItem blobDir : blobDirectory.listBlobs()) { final String subDirectory =
-			 * blobDir.getStorageUri().getPrimaryUri().getPath(); final String finalDirectory = subDirectory.substring(8);
-			 *
-			 * final CloudBlockBlob blob2 = container.getBlockBlobReference(finalDirectory); }
-			 */
 			return blobDirectory;
 
 		}

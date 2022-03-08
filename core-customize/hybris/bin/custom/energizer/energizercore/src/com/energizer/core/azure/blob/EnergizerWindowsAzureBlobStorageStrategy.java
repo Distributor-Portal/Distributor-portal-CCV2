@@ -24,7 +24,8 @@ import com.microsoft.azure.storage.blob.CloudBlobContainer;
 public class EnergizerWindowsAzureBlobStorageStrategy extends WindowsAzureBlobStorageStrategy
 {
 	Logger LOG = Logger.getLogger(EnergizerWindowsAzureBlobStorageStrategy.class);
-	public static final String connectionString = Config.getParameter("azure.hotfolder.storage.account.connection-string");
+	public static final String connectionString = Config.getParameter("azure.blob.storage.account.connection-string");
+	public static final String containerName = Config.getParameter("azure.blob.storage.container.name");
 
 	/**
 	 * @return
@@ -34,7 +35,8 @@ public class EnergizerWindowsAzureBlobStorageStrategy extends WindowsAzureBlobSt
 		CloudBlobContainer container = null;
 		try
 		{
-			container = getBlobClient().getContainerReference("hybris");
+			container = getBlobClient().getContainerReference(containerName);
+
 		}
 		catch (URISyntaxException | StorageException e)
 		{
@@ -51,15 +53,12 @@ public class EnergizerWindowsAzureBlobStorageStrategy extends WindowsAzureBlobSt
 	 */
 	public CloudBlobClient getBlobClient()
 	{
-		final String storageConnectionString = "DefaultEndpointsProtocol=https;" + "AccountName=p7wae5gn35jcjcyaefo3gwc;"
-				+ "AccountKey=PsXlnaTuGi9Vwq3g+n/yV6dqQeBk1d7nTbNm6XYIx3qjkAnuma5RYamdEyD0QN99DniPopetLdiXm5jkJqeVVQ==";
-
 		CloudStorageAccount storageAccount;
 		CloudBlobClient blobClient = null;
 
 		try
 		{
-			storageAccount = CloudStorageAccount.parse(storageConnectionString);
+			storageAccount = CloudStorageAccount.parse(connectionString);
 			blobClient = storageAccount.createCloudBlobClient();
 		}
 		catch (InvalidKeyException | URISyntaxException e)

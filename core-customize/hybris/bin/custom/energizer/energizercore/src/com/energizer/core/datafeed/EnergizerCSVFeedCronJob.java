@@ -14,6 +14,7 @@ import de.hybris.platform.servicelayer.cronjob.CronJobService;
 import de.hybris.platform.servicelayer.cronjob.PerformResult;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
@@ -152,7 +154,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 			{
 				final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
 				final String fullFilePath = subfullFilePath.substring(8);
-
+				final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
 				//blob2.downloadText()
 
 				final Long fileProcessingStartTime = System.currentTimeMillis();
@@ -163,11 +165,11 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 				//csvRecords = energizerCSVProcessor.parse(file);
 				csvRecords = energizerCSVProcessor.parse(fullFilePath);
 
-				LOG.info("************** PROCESSING START FOR THIS FILE  '" + fullFilePath + "' ***************");
+				LOG.info("************** PROCESSING START FOR THIS FILE  '" + fileName + "' ***************");
 				LOG.info("Before processing this file : " + fileProcessingStartTime + " milliseconds !!");
 				errors = energizerCSVProcessor.process(csvRecords, cronjob.getCatalogName(), cronjob);
 				exceptionOccured = (errors.size() != 0) ? true : false;
-				//energizerCSVProcessor.setMasterDataStream(new DataInputStream(new FileInputStream(file)));
+				//	energizerCSVProcessor.setMasterDataStream(new DataInputStream(new FileInputStream(fileName)));
 				final List<EmailAttachmentModel> emailAttachmentList = new ArrayList<EmailAttachmentModel>();
 				/*
 				 * final EmailAttachmentModel attachmentModel = emailService.createEmailAttachment(
@@ -260,6 +262,11 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 			e1.printStackTrace();
 		}
 		catch (final URISyntaxException e)
+		{
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (final FileNotFoundException e)
 		{
 			// YTODO Auto-generated catch block
 			e.printStackTrace();
