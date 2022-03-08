@@ -4,16 +4,17 @@
 package com.energizer.core.azure.blob;
 
 import de.hybris.platform.azure.media.storage.WindowsAzureBlobStorageStrategy;
-import de.hybris.platform.media.exceptions.ExternalStorageServiceException;
 import de.hybris.platform.util.Config;
+
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
 
 import org.apache.log4j.Logger;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlobDirectory;
-import com.microsoft.azure.storage.blob.ListBlobItem;
 
 
 /**
@@ -25,72 +26,50 @@ public class EnergizerWindowsAzureBlobStorageStrategy extends WindowsAzureBlobSt
 	Logger LOG = Logger.getLogger(EnergizerWindowsAzureBlobStorageStrategy.class);
 	public static final String connectionString = Config.getParameter("azure.hotfolder.storage.account.connection-string");
 
-	public CloudBlobContainer getContainer(final String connectionString)
+	/**
+	 * @return
+	 */
+	public CloudBlobContainer getBlobContainer()
 	{
+		CloudBlobContainer container = null;
+		try
+		{
+			container = getBlobClient().getContainerReference("hybris");
+		}
+		catch (URISyntaxException | StorageException e)
+		{
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return container;
+	}
 
-
+	/**
+	 * TODO: Move this method to separate file while refratoring
+	 *
+	 * @return
+	 */
+	public CloudBlobClient getBlobClient()
+	{
 		final String storageConnectionString = "DefaultEndpointsProtocol=https;" + "AccountName=p7wae5gn35jcjcyaefo3gwc;"
 				+ "AccountKey=PsXlnaTuGi9Vwq3g+n/yV6dqQeBk1d7nTbNm6XYIx3qjkAnuma5RYamdEyD0QN99DniPopetLdiXm5jkJqeVVQ==";
 
-
-		final CloudStorageAccount storageAccount;
-		CloudBlobClient edgewellBlobClient = null;
-		CloudBlobContainer container = null;
+		CloudStorageAccount storageAccount;
+		CloudBlobClient blobClient = null;
 
 		try
 		{
 			storageAccount = CloudStorageAccount.parse(storageConnectionString);
-
-			LOG.info("before ---> account");
-
-			LOG.info("before ---> account" + Config.getParameter("azure.hotfolder.storage.account.connection-string"));
-
-			edgewellBlobClient = storageAccount.createCloudBlobClient();
-
-			container = edgewellBlobClient.getContainerReference("hybris");
-			container.createIfNotExists();
-			LOG.info("after ---> account");
-
-			System.out.println("Creating container: " + container.getName());
-
-
-			final String toProcessDirectoryPath = "CSVFeedFolder/WESELL/energizerB2BEmployeeCSVProcessor/toProcess";
-			final CloudBlobDirectory blobDirectory = container.getDirectoryReference(toProcessDirectoryPath);
-
-
-
-			for (final ListBlobItem blobDir1 : blobDirectory.getDirectoryReference(toProcessDirectoryPath).listBlobs())
-			{
-				// not working
-				System.out.println("getDirectoryReference :::::::::: " + " :: " + blobDir1.getStorageUri() + "" + blobDir1.getUri());
-			}
-
-
-
-			return container;
-
-
-
-
+			blobClient = storageAccount.createCloudBlobClient();
 		}
-
-		catch (final Exception var3)
+		catch (InvalidKeyException | URISyntaxException e)
 		{
-			throw new ExternalStorageServiceException(var3.getMessage(), var3);
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
+		return blobClient;
 
 
 	}
-
-
-
-
-
-
-
-
-
-
 
 }

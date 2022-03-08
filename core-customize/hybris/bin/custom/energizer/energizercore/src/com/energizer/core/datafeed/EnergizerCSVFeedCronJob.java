@@ -34,6 +34,7 @@ import com.energizer.core.constants.EnergizerCoreConstants;
 import com.energizer.core.datafeed.processor.product.EnergizerProduct2CategoryRelationCSVProcessor;
 import com.energizer.core.model.EnergizerCronJobModel;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
 
 
 /**
@@ -123,6 +124,11 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 
 		try
 		{
+			// get container and iterate blob list
+
+			final CloudBlobContainer cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			//final String toProcessDirectoryPath = this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess;cloudBlobContainer.getDirectoryReference(type);
+
 			files = energizerCSVProcessor.getFilesForFeedType(type);
 
 
@@ -198,7 +204,9 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 			Iterable<CSVRecord> csvRecords;
 			try
 			{
-				csvRecords = energizerCSVProcessor.parse(file);
+				//csvRecords = energizerCSVProcessor.parse(file);
+				csvRecords = energizerCSVProcessor.parse(type);
+
 				LOG.info("************** PROCESSING START FOR THIS FILE  '" + file.getName() + "' ***************");
 				LOG.info("Before processing this file : " + fileProcessingStartTime + " milliseconds !!");
 				errors = energizerCSVProcessor.process(csvRecords, cronjob.getCatalogName(), cronjob);

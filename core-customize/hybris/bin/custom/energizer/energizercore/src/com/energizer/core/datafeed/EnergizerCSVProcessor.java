@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.commons.csv.CSVRecord;
 
 import com.energizer.core.model.EnergizerCronJobModel;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
 
 
 /**
@@ -56,6 +57,19 @@ public interface EnergizerCSVProcessor
 	public String[] getHeadersForFeed(final String key);
 
 	public Boolean hasMandatoryFields(final CSVRecord record, final String[] mandatoryFields);
+
+	/**
+	 * @param type
+	 * @return
+	 */
+	Iterable<CSVRecord> parse(String type);
+
+	/**
+	 * @return
+	 */
+	CloudBlobContainer getBlobContainer();
+
+
 
 
 
