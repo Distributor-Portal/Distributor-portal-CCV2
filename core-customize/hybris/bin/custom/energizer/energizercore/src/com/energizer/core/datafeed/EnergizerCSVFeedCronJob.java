@@ -13,10 +13,14 @@ import de.hybris.platform.servicelayer.cronjob.AbstractJobPerformable;
 import de.hybris.platform.servicelayer.cronjob.CronJobService;
 import de.hybris.platform.servicelayer.cronjob.PerformResult;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -31,6 +35,7 @@ import com.energizer.core.model.EnergizerCronJobModel;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlobDirectory;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.blob.ListBlobItem;
 
 
@@ -123,7 +128,8 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 		{
 			// get container and iterate blob list
 
-			final CloudBlobContainer cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			CloudBlobContainer cloudBlobContainer = null;
+			cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
 			//final String toProcessDirectoryPath = this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess;cloudBlobContainer.getDirectoryReference(type);
 
 
@@ -151,6 +157,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 
 			for (final ListBlobItem blobItem : blobDirectory.listBlobs())
 			{
+
 				final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
 				final String fullFilePath = subfullFilePath.substring(8);
 				final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
@@ -161,6 +168,10 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 				Iterable<CSVRecord> csvRecords;
 
 
+				CloudBlockBlob blob2;
+
+				blob2 = cloudBlobContainer.getBlockBlobReference(fullFilePath);
+
 				//csvRecords = energizerCSVProcessor.parse(file);
 				csvRecords = energizerCSVProcessor.parse(fullFilePath);
 
@@ -169,14 +180,21 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 				errors = energizerCSVProcessor.process(csvRecords, cronjob.getCatalogName(), cronjob);
 				exceptionOccured = (errors.size() != 0) ? true : false;
 				//	energizerCSVProcessor.setMasterDataStream(new DataInputStream(new FileInputStream(fileName)));
+
+
+				energizerCSVProcessor
+						.setMasterDataStream(new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes())));
+
 				final List<EmailAttachmentModel> emailAttachmentList = new ArrayList<EmailAttachmentModel>();
-				/*
-				 * final EmailAttachmentModel attachmentModel = emailService.createEmailAttachment(
-				 * energizerCSVProcessor.getMasterDataStream(), StringUtils.replace(file.getName().toLowerCase(), ".csv",
-				 * "_" + new Date().getTime() + "." + de.hybris.platform.impex.constants.ImpExConstants.File.EXTENSION_CSV)
-				 * .toLowerCase(), de.hybris.platform.impex.constants.ImpExConstants.File.MIME_TYPE_CSV);
-				 * emailAttachmentList.add(attachmentModel);
-				 */
+				final EmailAttachmentModel attachmentModel = emailService.createEmailAttachment(
+						energizerCSVProcessor.getMasterDataStream(),
+						StringUtils.replace(fileName.toLowerCase(), ".csv",
+								"_" + new Date().getTime() + "." + de.hybris.platform.impex.constants.ImpExConstants.File.EXTENSION_CSV)
+								.toLowerCase(),
+						de.hybris.platform.impex.constants.ImpExConstants.File.MIME_TYPE_CSV);
+
+				emailAttachmentList.add(attachmentModel);
+
 				if (cronjob.getTechnicalEmailAddress().isEmpty())
 				{
 					cronjob.setTechnicalEmailAddress(emailAddress);
@@ -203,11 +221,12 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 				energizerCSVProcessor.setBusRecordError(0);
 				energizerCSVProcessor.setTechRecordError(0);
 				emailAttachmentList.clear();
+
 				if ((techfeedErrors != null && techfeedErrors.size() > 0) || (busfeedErrors != null && busfeedErrors.size() > 0))
 				{
 					if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
 					{
-						//energizerCSVProcessor.cleanup(type, file, cronjob, true);
+						//energizerCSVProcessor.cleanup(type, blob2.downloadText(), cronjob, true);
 					}
 					energizerCSVProcessor.flush();
 				}
@@ -233,26 +252,27 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 
 					return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
 				}
+
+				if (exceptionOccured)
+				{
+					performResult = new PerformResult(CronJobResult.ERROR, CronJobStatus.FINISHED);
+				}
+				else
+				{
+					performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
+				}
+				energizerCSVProcessor.flush();
+
+				final Long fileProcessingEndTime = System.currentTimeMillis();
+				LOG.info("After processing this file : " + fileProcessingEndTime + " milliseconds !!");
+
+				LOG.info("Cronjob file processing time taken in milliseconds == " + (fileProcessingEndTime - fileProcessingStartTime)
+						+ " , seconds == " + (fileProcessingEndTime - fileProcessingStartTime) / 1000);
+
+				LOG.info("************** PROCESSING END FOR THIS FILE  '" + fileName + "' ***************");
+
 			}
 
-
-			if (exceptionOccured)
-			{
-				performResult = new PerformResult(CronJobResult.ERROR, CronJobStatus.FINISHED);
-			}
-			else
-			{
-				performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
-			}
-			energizerCSVProcessor.flush();
-
-			final Long fileProcessingEndTime = System.currentTimeMillis();
-			//LOG.info("After processing this file : " + fileProcessingEndTime + " milliseconds !!");
-
-			//LOG.info("Cronjob file processing time taken in milliseconds == " + (fileProcessingEndTime - fileProcessingStartTime)
-			//	+ " , seconds == " + (fileProcessingEndTime - fileProcessingStartTime) / 1000);
-
-			//LOG.info("************** PROCESSING END FOR THIS FILE  '" + file.getName() + "' ***************");
 		}
 
 		catch (final StorageException e1)
@@ -261,6 +281,11 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 			e1.printStackTrace();
 		}
 		catch (final URISyntaxException e)
+		{
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (final IOException e)
 		{
 			// YTODO Auto-generated catch block
 			e.printStackTrace();
