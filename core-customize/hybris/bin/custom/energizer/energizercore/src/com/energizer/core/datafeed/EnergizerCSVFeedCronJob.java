@@ -14,7 +14,6 @@ import de.hybris.platform.servicelayer.cronjob.CronJobService;
 import de.hybris.platform.servicelayer.cronjob.PerformResult;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -262,11 +261,6 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 			e1.printStackTrace();
 		}
 		catch (final URISyntaxException e)
-		{
-			// YTODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (final FileNotFoundException e)
 		{
 			// YTODO Auto-generated catch block
 			e.printStackTrace();
