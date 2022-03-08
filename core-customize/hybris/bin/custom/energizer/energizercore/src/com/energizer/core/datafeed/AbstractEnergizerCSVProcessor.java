@@ -51,7 +51,6 @@ import com.energizer.core.constants.EnergizerCoreConstants;
 import com.energizer.core.model.EnergizerCronJobModel;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlob;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlobDirectory;
@@ -251,7 +250,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 	}
 
 	@Override
-	public Iterable<CSVRecord> parse(final String type)
+	public Iterable<CSVRecord> parse(final String blobUri)
 	{
 
 		Stream<String> lines = null;
@@ -267,8 +266,9 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 
 			CloudBlockBlob blob2;
 
-			blob2 = container.getBlockBlobReference(
-					"CSVFeedFolder/LATAM/energizerCustomerCSVProcessor/toProcess/CUSTOMER20200609132715_2020-06-09T182810.csv");
+			blob2 = container.getBlockBlobReference(blobUri);
+			//"CSVFeedFolder/LATAM/energizerCustomerCSVProcessor/toProcess/CUSTOMER20200609132715_2020-06-09T182810.csv");
+
 			final Reader readerBlob = new StringReader(blob2.downloadText());
 			final BufferedReader bufferedReader = new BufferedReader(readerBlob);
 			lines = bufferedReader.lines();
@@ -355,9 +355,43 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 		}
 	}
 
+	public CloudBlobDirectory getBlobDirectoryForFeedType(final String type)
+	{
+
+		CloudBlobDirectory blobDirectory = null;
+
+		try
+		{
+			final CloudBlobContainer container = getBlobContainer();
+			final String toProcessDirectoryPath = this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess;
+
+			System.out.println("toProcessDirectoryPath --->" + toProcessDirectoryPath);
+
+			blobDirectory = container.getDirectoryReference(toProcessDirectoryPath);
+
+			/*
+			 * for (final ListBlobItem blobDir : blobDirectory.listBlobs()) { final String subDirectory =
+			 * blobDir.getStorageUri().getPrimaryUri().getPath(); final String finalDirectory = subDirectory.substring(8);
+			 *
+			 * final CloudBlockBlob blob2 = container.getBlockBlobReference(finalDirectory); }
+			 */
+			return blobDirectory;
+
+		}
+		catch (final URISyntaxException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return blobDirectory;
+	}
+
+
+
 	public List<File> getFilesForFeedType(final String type) throws StorageException, IOException
 	{
-		//readCsvBlobFilesFromContainer();
+
 		File csvFiles = null;
 		final List<File> typeFilesList = new ArrayList<File>();
 		try
@@ -421,6 +455,8 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 	}
 
 
+
+
 	/**
 	 * @return
 	 */
@@ -468,81 +504,6 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 
 	}
 
-	@SuppressWarnings("null")
-	public void readCsvBlobFilesFromContainer()
-	{
-
-
-		final CloudStorageAccount storageAccount;
-
-		final CloudBlobClient edgewellBlobClient = null;
-		CloudBlobContainer container = null;
-		final String storageConnectionString = "DefaultEndpointsProtocol=https;" + "AccountName=p7wae5gn35jcjcyaefo3gwc;"
-				+ "AccountKey=PsXlnaTuGi9Vwq3g+n/yV6dqQeBk1d7nTbNm6XYIx3qjkAnuma5RYamdEyD0QN99DniPopetLdiXm5jkJqeVVQ==";
-
-		try
-		{
-			// checking the new startegy class
-			final CloudBlobContainer containerTest = energizerWindowsAzureBlobStorageStrategy.getContainer(storageConnectionString);
-			System.out.println("===== Container from strategy :: " + containerTest.getName());
-
-			container = getBlobContainer();
-			//container.createIfNotExists();
-			//final String toProcessDirectoryPath = "CSVFeedFolder/WESELL/energizerB2BEmployeeCSVProcessor/toProcess/";
-			final String toProcessDirectoryPath = "CSVFeedFolder/LATAM/energizerCustomerCSVProcessor/toProcess";
-			final CloudBlobDirectory blobDirectory = container.getDirectoryReference(toProcessDirectoryPath);
-
-			for (final ListBlobItem blobDir : blobDirectory.listBlobs())
-			{
-				System.out.println("=== reading directory :::::::::: " + " :: " + blobDir.getStorageUri().getPrimaryUri().getPath());
-				System.out.println(
-						">>>>  gt Path ::  " + container.getBlockBlobReference(blobDir.getStorageUri().getPrimaryUri().getRawPath()));
-			}
-
-			final CloudBlockBlob blob2 = container.getBlockBlobReference(
-					"CSVFeedFolder/WESELL/energizerB2BEmployeeCSVProcessor/toProcess/SALESREP_8358_20200422233033.csv");
-			System.out.println(blob2.getSnapshotQualifiedUri() + "==== Printing content :: \n" + blob2.downloadText());
-
-			// writing file to error directory
-			final String readFromProcessDirectoryPat1 = "CSVFeedFolder/LATAM/energizerProductCSVProcessor/toProcess/";
-			final String processedWithNoErrorsDirectoryPath = "CSVFeedFolder/LATAM/energizerProductCSVProcessor/ProcessedWithNoErrors/";
-			final String errorDirectoryPath = "CSVFeedFolder/LATAM/energizerProductCSVProcessor/ErrorFiles/";
-
-			final CloudBlockBlob blobToProcess = container.getBlockBlobReference(readFromProcessDirectoryPat1);
-			final CloudBlob blobWriteToSucess = container
-					.getBlockBlobReference(processedWithNoErrorsDirectoryPath + "SALESREP_8358_20200422233033_SUCCESS.csv");
-			final CloudBlob blobWriteToError = container
-					.getBlockBlobReference(errorDirectoryPath + "SALESREP_8358_20200422233033_ERROR.csv");
-
-			final CloudBlockBlob sourceBlob = container.getBlockBlobReference(
-					"CSVFeedFolder/WESELL/energizerB2BEmployeeCSVProcessor/toProcess/SALESREP_8358_20200422233033.csv");
-			blobWriteToSucess.startCopy(sourceBlob.getSnapshotQualifiedUri());
-			//blobWriteToSucess.startCopy(sourceBlob.getSnapshotQualifiedUri(), null, null, null, null);
-			blobWriteToError.startCopy(sourceBlob.getSnapshotQualifiedUri(), null, null, null, null);
-
-			//CloudBlob cloudBlob = blob2.createSnapshot();
-			System.out.println("copied the blob sucessfull................." + blobWriteToError.getName());
-
-			//deleting the files is working
-			//blobWriteToSucess.deleteIfExists();
-			System.out.println("END...");
-		}
-		catch (final URISyntaxException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (final StorageException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (final Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	public String[] getHeadersForFeed(final String key)
 	{

@@ -13,28 +13,24 @@ import de.hybris.platform.servicelayer.cronjob.AbstractJobPerformable;
 import de.hybris.platform.servicelayer.cronjob.CronJobService;
 import de.hybris.platform.servicelayer.cronjob.PerformResult;
 
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
-import com.energizer.core.constants.EnergizerCoreConstants;
 import com.energizer.core.datafeed.processor.product.EnergizerProduct2CategoryRelationCSVProcessor;
 import com.energizer.core.model.EnergizerCronJobModel;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlobDirectory;
+import com.microsoft.azure.storage.blob.ListBlobItem;
 
 
 /**
@@ -118,7 +114,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 		energizerCSVProcessor.setCronjob(cronjob);
 		/* EMEA End */
 
-		List<File> files = null;
+		final List<File> files = null;
 
 		System.out.println("files-new--chages-> ");
 
@@ -129,97 +125,57 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 			final CloudBlobContainer cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
 			//final String toProcessDirectoryPath = this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess;cloudBlobContainer.getDirectoryReference(type);
 
-			files = energizerCSVProcessor.getFilesForFeedType(type);
 
 
-			if (null == files || files.size() == 0)
+			final CloudBlobDirectory blobDirectory = energizerCSVProcessor.getBlobDirectoryForFeedType(type);
+
+			//files = energizerCSVProcessor.getFilesForFeedType(type);
+
+			/*
+			 * if (null == files || files.size() == 0) { LOG.info(
+			 * "************************* NO FILES FOUND, NOTHING TO PROCESS FOR THIS CRONJOB  ****************************"
+			 * ); return new PerformResult(CronJobResult.FILE_NOT_FOUND, CronJobStatus.FINISHED); } else if (null != files
+			 * && files.size() > 0 && (cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL) && files.size()
+			 * > wesellCSVFilesCount)) { LOG.info("Total files : " + files.size()); //LOG.info("MORE THAN '" +
+			 * wesellCSVFilesCount + "' FILES FOUND TO PROCESS FOR WESELL, SO IGNORING THIS CRONJOB ..."); return new
+			 * PerformResult(CronJobResult.FAILURE, CronJobStatus.FINISHED); }
+			 */
+
+			Boolean exceptionOccured = false;
+			if (null != cronjob.getEmailAddress())
 			{
-				LOG.info("Found " + files.size() + " CSV files to process.");
+				emailAddress.add(cronjob.getEmailAddress());
 			}
-			else
+			energizerCSVProcessor.flush(); /* This is to flush the buffer of existing errorList and message as well */
+
+			for (final ListBlobItem blobItem : blobDirectory.listBlobs())
 			{
-				LOG.info("Found " + files.size() + " CSV files to process. The files are listed below.");
-			}
+				final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
+				final String fullFilePath = subfullFilePath.substring(8);
 
-			final int wesellCSVFilesCount = Integer
-					.parseInt(configurationService.getConfiguration().getString("wesell.cmir.csv.files.count"));
+				//blob2.downloadText()
 
-			int count = 0;
-			if (null != files && !files.isEmpty() && files.size() > 0)
-			{
-				for (final File file : files)
-				{
-					count++;
-					if ((file.length() / 1024) >= 1024)
-					{
-						LOG.info(count + ". File name  == '" + file.getName() + "' and it's size is == '" + getFileSizeKiloBytes(file)
-								+ "' or '" + getFileSizeMegaBytes(file) + "'");
-					}
-					else
-					{
-						LOG.info(count + ". File name == '" + file.getName() + "' and it's size is == '" + getFileSizeKiloBytes(file)
-								+ "'");
-					}
-				}
-			}
+				final Long fileProcessingStartTime = System.currentTimeMillis();
 
-			// If the file is not found to process, then the cronjob result is returned as such.
-			if (null == files || files.size() == 0)
-			{
-				LOG.info(
-						"************************* NO FILES FOUND, NOTHING TO PROCESS FOR THIS CRONJOB  ****************************");
-				return new PerformResult(CronJobResult.FILE_NOT_FOUND, CronJobStatus.FINISHED);
-			}
-			else if (null != files && files.size() > 0
-					&& (cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL) && files.size() > wesellCSVFilesCount))
-			{
-				LOG.info("Total files : " + files.size());
-				LOG.info("MORE THAN '" + wesellCSVFilesCount + "' FILES FOUND TO PROCESS FOR WESELL, SO IGNORING THIS CRONJOB ...");
-				return new PerformResult(CronJobResult.FAILURE, CronJobStatus.FINISHED);
-			}
-
-		}
-		catch (final StorageException e1)
-		{
-			// YTODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (final IOException e1)
-		{
-			// YTODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+				Iterable<CSVRecord> csvRecords;
 
 
-		Boolean exceptionOccured = false;
-		if (null != cronjob.getEmailAddress())
-		{
-			emailAddress.add(cronjob.getEmailAddress());
-		}
-		energizerCSVProcessor.flush(); /* This is to flush the buffer of existing errorList and message as well */
-		for (final File file : files)
-		{
-			final Long fileProcessingStartTime = System.currentTimeMillis();
-
-			Iterable<CSVRecord> csvRecords;
-			try
-			{
 				//csvRecords = energizerCSVProcessor.parse(file);
-				csvRecords = energizerCSVProcessor.parse(type);
+				csvRecords = energizerCSVProcessor.parse(fullFilePath);
 
-				LOG.info("************** PROCESSING START FOR THIS FILE  '" + file.getName() + "' ***************");
+				LOG.info("************** PROCESSING START FOR THIS FILE  '" + fullFilePath + "' ***************");
 				LOG.info("Before processing this file : " + fileProcessingStartTime + " milliseconds !!");
 				errors = energizerCSVProcessor.process(csvRecords, cronjob.getCatalogName(), cronjob);
 				exceptionOccured = (errors.size() != 0) ? true : false;
-				energizerCSVProcessor.setMasterDataStream(new DataInputStream(new FileInputStream(file)));
+				//energizerCSVProcessor.setMasterDataStream(new DataInputStream(new FileInputStream(file)));
 				final List<EmailAttachmentModel> emailAttachmentList = new ArrayList<EmailAttachmentModel>();
-				final EmailAttachmentModel attachmentModel = emailService.createEmailAttachment(
-						energizerCSVProcessor.getMasterDataStream(),
-						StringUtils.replace(file.getName().toLowerCase(), ".csv",
-								"_" + new Date().getTime() + "." + de.hybris.platform.impex.constants.ImpExConstants.File.EXTENSION_CSV)
-								.toLowerCase(),
-						de.hybris.platform.impex.constants.ImpExConstants.File.MIME_TYPE_CSV);
-				emailAttachmentList.add(attachmentModel);
+				/*
+				 * final EmailAttachmentModel attachmentModel = emailService.createEmailAttachment(
+				 * energizerCSVProcessor.getMasterDataStream(), StringUtils.replace(file.getName().toLowerCase(), ".csv",
+				 * "_" + new Date().getTime() + "." + de.hybris.platform.impex.constants.ImpExConstants.File.EXTENSION_CSV)
+				 * .toLowerCase(), de.hybris.platform.impex.constants.ImpExConstants.File.MIME_TYPE_CSV);
+				 * emailAttachmentList.add(attachmentModel);
+				 */
 				if (cronjob.getTechnicalEmailAddress().isEmpty())
 				{
 					cronjob.setTechnicalEmailAddress(emailAddress);
@@ -250,7 +206,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 				{
 					if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
 					{
-						energizerCSVProcessor.cleanup(type, file, cronjob, true);
+						//energizerCSVProcessor.cleanup(type, file, cronjob, true);
 					}
 					energizerCSVProcessor.flush();
 				}
@@ -258,7 +214,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 				{
 					if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
 					{
-						energizerCSVProcessor.cleanup(type, file, cronjob, false);
+						//energizerCSVProcessor.cleanup(type, file, cronjob, false);
 					}
 					energizerCSVProcessor.flush();
 				}
@@ -277,15 +233,8 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
 				}
 			}
-			catch (final FileNotFoundException e)
-			{
-				LOG.error("File Not found", e);
-				energizerCSVProcessor.flush();
-				//exceptionOccured = true;
-				// If the file is not found to process, then the cronjob result is returned as such.
-				LOG.info("NO FILES FOUND TO PROCESS, IGNORING THIS CRONJOB ...");
-				return new PerformResult(CronJobResult.FILE_NOT_FOUND, CronJobStatus.FINISHED);
-			}
+
+
 			if (exceptionOccured)
 			{
 				performResult = new PerformResult(CronJobResult.ERROR, CronJobStatus.FINISHED);
@@ -297,12 +246,23 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 			energizerCSVProcessor.flush();
 
 			final Long fileProcessingEndTime = System.currentTimeMillis();
-			LOG.info("After processing this file : " + fileProcessingEndTime + " milliseconds !!");
+			//LOG.info("After processing this file : " + fileProcessingEndTime + " milliseconds !!");
 
-			LOG.info("Cronjob file processing time taken in milliseconds == " + (fileProcessingEndTime - fileProcessingStartTime)
-					+ " , seconds == " + (fileProcessingEndTime - fileProcessingStartTime) / 1000);
+			//LOG.info("Cronjob file processing time taken in milliseconds == " + (fileProcessingEndTime - fileProcessingStartTime)
+			//	+ " , seconds == " + (fileProcessingEndTime - fileProcessingStartTime) / 1000);
 
-			LOG.info("************** PROCESSING END FOR THIS FILE  '" + file.getName() + "' ***************");
+			//LOG.info("************** PROCESSING END FOR THIS FILE  '" + file.getName() + "' ***************");
+		}
+
+		catch (final StorageException e1)
+		{
+			// YTODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		catch (final URISyntaxException e)
+		{
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		final Long jobEndTime = System.currentTimeMillis();
