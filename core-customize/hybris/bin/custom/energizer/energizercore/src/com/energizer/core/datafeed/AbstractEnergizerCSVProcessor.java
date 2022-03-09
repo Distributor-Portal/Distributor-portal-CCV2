@@ -382,6 +382,56 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 	}
 
 
+	public void Blobcleanup(final String fileName, final EnergizerCronJobModel cronjob, final boolean hasErrors,
+			final String fullFilePath, final CloudBlockBlob sourceBlob, final CloudBlobContainer cloudBlobContainer)
+	{
+
+		// writing file to error directory
+		final String readFromProcessDirectoryPath = fullFilePath;
+
+		final String processedWithNoErrorsDirectoryPath = StringUtils.substringBefore(fullFilePath, "toProcess")
+				+ ProcessedWithNoErrors + fileSeperator + fileName;
+
+		final String errorDirectoryPath = StringUtils.substringBefore(fullFilePath, "toProcess") + ErrorFiles + fileSeperator
+				+ fileName;
+
+		try
+		{
+			reader.close();
+		}
+		catch (final IOException e1)
+		{
+			e1.printStackTrace();
+		}
+		if (hasErrors)
+		{
+			//			logErrors(cronjob, errors);
+			//			errors.clear();
+			try
+			{
+				final CloudBlockBlob blobToProcess = cloudBlobContainer.getBlockBlobReference(readFromProcessDirectoryPath);
+				final CloudBlockBlob blobWriteToError = cloudBlobContainer.getBlockBlobReference(errorDirectoryPath);
+				blobWriteToError.startCopy(sourceBlob.getSnapshotQualifiedUri());
+			}
+			catch (final Exception e1)
+			{
+				LOG.error(e1.getMessage());
+			}
+		}
+		else
+		{
+			try
+			{
+				final CloudBlockBlob blobToProcess = cloudBlobContainer.getBlockBlobReference(readFromProcessDirectoryPath);
+				final CloudBlockBlob blobWriteToSucess = cloudBlobContainer.getBlockBlobReference(processedWithNoErrorsDirectoryPath);
+				blobWriteToSucess.startCopy(sourceBlob.getSnapshotQualifiedUri());
+			}
+			catch (final Exception e1)
+			{
+				LOG.error(e1.getMessage());
+			}
+		}
+	}
 
 	public List<File> getFilesForFeedType(final String type) throws StorageException, IOException
 	{

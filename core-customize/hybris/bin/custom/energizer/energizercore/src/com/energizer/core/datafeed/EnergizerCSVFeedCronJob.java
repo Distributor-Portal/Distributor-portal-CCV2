@@ -122,31 +122,15 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 
 		final List<File> files = null;
 
-		System.out.println("files-new--chages-> ");
-
 		try
 		{
 			// get container and iterate blob list
 
 			CloudBlobContainer cloudBlobContainer = null;
 			cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
-			//final String toProcessDirectoryPath = this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess;cloudBlobContainer.getDirectoryReference(type);
-
-
 
 			final CloudBlobDirectory blobDirectory = energizerCSVProcessor.getBlobDirectoryForFeedType(type);
 
-			//files = energizerCSVProcessor.getFilesForFeedType(type);
-
-			/*
-			 * if (null == files || files.size() == 0) { LOG.info(
-			 * "************************* NO FILES FOUND, NOTHING TO PROCESS FOR THIS CRONJOB  ****************************"
-			 * ); return new PerformResult(CronJobResult.FILE_NOT_FOUND, CronJobStatus.FINISHED); } else if (null != files
-			 * && files.size() > 0 && (cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL) && files.size()
-			 * > wesellCSVFilesCount)) { LOG.info("Total files : " + files.size()); //LOG.info("MORE THAN '" +
-			 * wesellCSVFilesCount + "' FILES FOUND TO PROCESS FOR WESELL, SO IGNORING THIS CRONJOB ..."); return new
-			 * PerformResult(CronJobResult.FAILURE, CronJobStatus.FINISHED); }
-			 */
 
 			Boolean exceptionOccured = false;
 			if (null != cronjob.getEmailAddress())
@@ -171,6 +155,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 				CloudBlockBlob blob2;
 
 				blob2 = cloudBlobContainer.getBlockBlobReference(fullFilePath);
+
 
 				//csvRecords = energizerCSVProcessor.parse(file);
 				csvRecords = energizerCSVProcessor.parse(fullFilePath);
@@ -227,6 +212,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
 					{
 						//energizerCSVProcessor.cleanup(type, blob2.downloadText(), cronjob, true);
+						energizerCSVProcessor.Blobcleanup(fileName, cronjob, true, fullFilePath, blob2, cloudBlobContainer);
 					}
 					energizerCSVProcessor.flush();
 				}
@@ -235,6 +221,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
 					{
 						//energizerCSVProcessor.cleanup(type, file, cronjob, false);
+						energizerCSVProcessor.Blobcleanup(fileName, cronjob, false, fullFilePath, blob2, cloudBlobContainer);
 					}
 					energizerCSVProcessor.flush();
 				}
