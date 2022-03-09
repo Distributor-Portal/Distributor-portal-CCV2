@@ -16,7 +16,6 @@ import de.hybris.platform.servicelayer.i18n.I18NService;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.util.Config;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,12 +28,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -49,13 +46,10 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
 import com.energizer.core.constants.EnergizerCoreConstants;
 import com.energizer.core.model.EnergizerCronJobModel;
-import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlobDirectory;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.ListBlobItem;
 
 
 /**
@@ -249,39 +243,28 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 		}
 	}
 
-	@Override
 	public Iterable<CSVRecord> parse(final String blobUri)
 	{
-
-		Stream<String> lines = null;
 
 		final CSVFormat csvFormat = CSVFormat.EXCEL.withDelimiter(DELIMETER).withIgnoreSurroundingSpaces();
 
 		Iterable<CSVRecord> blobRecordS = null;
-		final Iterable<CSVRecord> recordsForLog = null;
 
 		try
 		{
-			final CloudBlobContainer container = getBlobContainer();
-
 			CloudBlockBlob blob2;
 
-			blob2 = container.getBlockBlobReference(blobUri);
-			//"CSVFeedFolder/LATAM/energizerCustomerCSVProcessor/toProcess/CUSTOMER20200609132715_2020-06-09T182810.csv");
+			blob2 = energizerWindowsAzureBlobStorageStrategy.getBlobContainer().getBlockBlobReference(blobUri);
+			if (StringUtils.isNotEmpty(blob2.downloadText()))
+			{
+				final Reader readerBlob = new StringReader(blob2.downloadText());
+				blobRecordS = csvFormat.withHeader().parse(readerBlob);
+			}
 
-			final Reader readerBlob = new StringReader(blob2.downloadText());
-			final BufferedReader bufferedReader = new BufferedReader(readerBlob);
-			lines = bufferedReader.lines();
-			blobRecordS = csvFormat.withHeader().parse(readerBlob);
-			//for (final CSVRecord csvRecord : blobRecordS)
-			//{
-			//	System.out.println(csvRecord);
-			//}
 		}
 		catch (URISyntaxException | StorageException | IOException e)
 		{
-			// YTODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error(e.getMessage());
 		}
 		return blobRecordS;
 	}
@@ -362,13 +345,9 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 
 		try
 		{
-			final CloudBlobContainer container = getBlobContainer();
+			final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
 			final String toProcessDirectoryPath = this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess;
-
-			System.out.println("toProcessDirectoryPath --->" + toProcessDirectoryPath);
-
 			blobDirectory = container.getDirectoryReference(toProcessDirectoryPath);
-
 			return blobDirectory;
 
 		}
@@ -387,29 +366,17 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 	{
 
 		// writing file to error directory
-		final String readFromProcessDirectoryPath = fullFilePath;
-
 		final String processedWithNoErrorsDirectoryPath = StringUtils.substringBefore(fullFilePath, "toProcess")
 				+ ProcessedWithNoErrors + fileSeperator + fileName;
 
 		final String errorDirectoryPath = StringUtils.substringBefore(fullFilePath, "toProcess") + ErrorFiles + fileSeperator
 				+ fileName;
 
-		try
-		{
-			reader.close();
-		}
-		catch (final IOException e1)
-		{
-			e1.printStackTrace();
-		}
+
 		if (hasErrors)
 		{
-			//			logErrors(cronjob, errors);
-			//			errors.clear();
 			try
 			{
-				final CloudBlockBlob blobToProcess = cloudBlobContainer.getBlockBlobReference(readFromProcessDirectoryPath);
 				final CloudBlockBlob blobWriteToError = cloudBlobContainer.getBlockBlobReference(errorDirectoryPath);
 				blobWriteToError.startCopy(sourceBlob.getSnapshotQualifiedUri());
 			}
@@ -422,7 +389,6 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 		{
 			try
 			{
-				final CloudBlockBlob blobToProcess = cloudBlobContainer.getBlockBlobReference(readFromProcessDirectoryPath);
 				final CloudBlockBlob blobWriteToSucess = cloudBlobContainer.getBlockBlobReference(processedWithNoErrorsDirectoryPath);
 				blobWriteToSucess.startCopy(sourceBlob.getSnapshotQualifiedUri());
 			}
@@ -431,58 +397,15 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 				LOG.error(e1.getMessage());
 			}
 		}
+		//Need to delete from toProcess folder
+		//final CloudBlockBlob blobToProcess = cloudBlobContainer.getBlockBlobReference(readFromProcessDirectoryPath);
 	}
 
-	public List<File> getFilesForFeedType(final String type) throws StorageException, IOException
+	public List<File> getFilesForFeedType(final String type)
 	{
-
-		File csvFiles = null;
 		final List<File> typeFilesList = new ArrayList<File>();
-		try
-		{
-			final CloudBlobContainer container = getBlobContainer();
-			final String toProcessDirectoryPath = this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess;
-
-			System.out.println("toProcessDirectoryPath --->" + toProcessDirectoryPath);
-
-			final CloudBlobDirectory blobDirectory = container.getDirectoryReference(toProcessDirectoryPath);
-
-			for (final ListBlobItem blobDir : blobDirectory.listBlobs())
-			{
-				final String subDirectory = blobDir.getStorageUri().getPrimaryUri().getPath();
-				final String finalDirectory = subDirectory.substring(8);
-
-				System.out.println("subDirectory--->" + subDirectory);
-				System.out.println("finalDirectory--->" + finalDirectory);
-
-				final CloudBlockBlob blob2 = container.getBlockBlobReference(finalDirectory);
-				System.out.println(blob2.getSnapshotQualifiedUri() + "==== Printing content :: \n" + blob2.downloadText());
-				csvFiles = new File(blob2.downloadText());
-				typeFilesList.add(csvFiles);
-			}
-
-		}
-		catch (final URISyntaxException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (final StorageException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (final Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		//final File csvFiles = new File(this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess);
-
-
+		final File csvFiles = new File(this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess);
 		LOG.info("Loading files from :" + csvFiles);
-
 		if (csvFiles.isDirectory())
 		{
 			final File[] file = csvFiles.listFiles();
@@ -493,61 +416,8 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 				typeFilesList.add(typeFile);
 			}
 		}
-
 		return typeFilesList;
-
 	}
-
-
-
-
-	/**
-	 * @return
-	 */
-	@Override
-	public CloudBlobContainer getBlobContainer()
-	{
-		CloudBlobContainer container = null;
-		try
-		{
-			container = getBlobClient().getContainerReference("hybris");
-		}
-		catch (URISyntaxException | StorageException e)
-		{
-			// YTODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return container;
-	}
-
-	/**
-	 * TODO: Move this method to separate file while refratoring
-	 *
-	 * @return
-	 */
-	public CloudBlobClient getBlobClient()
-	{
-		final String storageConnectionString = "DefaultEndpointsProtocol=https;" + "AccountName=p7wae5gn35jcjcyaefo3gwc;"
-				+ "AccountKey=PsXlnaTuGi9Vwq3g+n/yV6dqQeBk1d7nTbNm6XYIx3qjkAnuma5RYamdEyD0QN99DniPopetLdiXm5jkJqeVVQ==";
-
-		CloudStorageAccount storageAccount;
-		CloudBlobClient blobClient = null;
-
-		try
-		{
-			storageAccount = CloudStorageAccount.parse(storageConnectionString);
-			blobClient = storageAccount.createCloudBlobClient();
-		}
-		catch (InvalidKeyException | URISyntaxException e)
-		{
-			// YTODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return blobClient;
-
-
-	}
-
 
 	public String[] getHeadersForFeed(final String key)
 	{

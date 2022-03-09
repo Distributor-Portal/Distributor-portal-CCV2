@@ -120,8 +120,6 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 		energizerCSVProcessor.setCronjob(cronjob);
 		/* EMEA End */
 
-		final List<File> files = null;
-
 		try
 		{
 			// get container and iterate blob list
@@ -139,6 +137,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 			}
 			energizerCSVProcessor.flush(); /* This is to flush the buffer of existing errorList and message as well */
 
+
 			for (final ListBlobItem blobItem : blobDirectory.listBlobs())
 			{
 
@@ -150,12 +149,9 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 				final Long fileProcessingStartTime = System.currentTimeMillis();
 
 				Iterable<CSVRecord> csvRecords;
-
-
 				CloudBlockBlob blob2;
 
 				blob2 = cloudBlobContainer.getBlockBlobReference(fullFilePath);
-
 
 				//csvRecords = energizerCSVProcessor.parse(file);
 				csvRecords = energizerCSVProcessor.parse(fullFilePath);

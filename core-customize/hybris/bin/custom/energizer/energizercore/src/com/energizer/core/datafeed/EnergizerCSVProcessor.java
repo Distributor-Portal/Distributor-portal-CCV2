@@ -12,7 +12,6 @@ import java.util.List;
 import org.apache.commons.csv.CSVRecord;
 
 import com.energizer.core.model.EnergizerCronJobModel;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
 
 
 /**
@@ -47,8 +46,8 @@ public interface EnergizerCSVProcessor
 
 	/**
 	 * @param toEmail
-	 * @param type
-	 * @param errorSize
+	 * @param cronjob
+	 * @param errors
 	 */
 	public void mailErrors(final EnergizerCronJobModel cronjob, final List<EnergizerCSVFeedError> errors,
 			final List<String> toEmail, final List<EmailAttachmentModel> emailAttachmentList);
@@ -57,20 +56,5 @@ public interface EnergizerCSVProcessor
 	public String[] getHeadersForFeed(final String key);
 
 	public Boolean hasMandatoryFields(final CSVRecord record, final String[] mandatoryFields);
-
-	/**
-	 * @param type
-	 * @return
-	 */
-	Iterable<CSVRecord> parse(String type);
-
-	/**
-	 * @return
-	 */
-	CloudBlobContainer getBlobContainer();
-
-
-
-
 
 }
