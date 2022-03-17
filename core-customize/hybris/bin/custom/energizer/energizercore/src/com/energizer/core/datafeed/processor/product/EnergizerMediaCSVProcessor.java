@@ -20,12 +20,15 @@ import de.hybris.platform.servicelayer.media.MediaService;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import de.hybris.platform.servicelayer.session.SessionService;
-import de.hybris.platform.util.Config;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,11 +44,18 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
 import com.energizer.core.constants.EnergizerCoreConstants;
+import com.energizer.core.datafeed.AbstractEnergizerCSVProcessor;
 import com.energizer.core.model.EnergizerCMIRModel;
 import com.energizer.core.model.EnergizerCronJobModel;
 import com.energizer.core.model.EnergizerProductModel;
 import com.energizer.services.product.EnergizerProductService;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlobDirectory;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.microsoft.azure.storage.blob.ListBlobItem;
 
 
 /**
@@ -75,11 +85,13 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 	private ConfigurationService configurationService;
 	@Resource
 	CatalogVersionService catalogVersionService;
-
 	@Resource
 	protected FlexibleSearchService flexibleSearchService;
-
 	private CronJobService cronJobService;
+	@Resource
+	AbstractEnergizerCSVProcessor energizerMediaProcessor;
+	@Resource
+	private EnergizerWindowsAzureBlobStorageStrategy energizerWindowsAzureBlobStorageStrategy;
 
 	/**
 	 * @return the cronJobService
@@ -122,163 +134,132 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 	{
 		EnergizerProductModel existEnergizerProd = null;
 
-		int imagesMovedToProcessedFolder = 0;
-		int imagesMovedToErrorFilesFolder = 0;
+		final int imagesMovedToProcessedFolder = 0;
+		final int imagesMovedToErrorFilesFolder = 0;
+
 		try
 		{
 
 			final CatalogVersionModel catalogVersion = getCatalogVersion(cronjob);
 
+			Map<String, String> csvValuesMap1 = null;
 
-			String thumbnailPath = Config.getParameter("energizer.thumbnailPath");
+			CloudBlobContainer cloudBlobContainer = null;
+			cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
 
-			String displayImagePath = Config.getParameter("energizer.displayImagePath");
+			final CloudBlobDirectory blobDirectoryForPersonalCareThumbNailPath = energizerMediaProcessor
+					.getBlobDirectoryPersonalCareThumbNailPath();
 
-			if (cronjob.getCatalogName().contains("EMEA"))
+			for (final ListBlobItem blobItemPCNP : blobDirectoryForPersonalCareThumbNailPath.listBlobs())
 			{
-				thumbnailPath = Config.getParameter("energizer.thumbnailPath.EMEA");
 
-				displayImagePath = Config.getParameter("energizer.displayImagePath.EMEA");
+				final String subfullFilePath = blobItemPCNP.getStorageUri().getPrimaryUri().getPath();
+				final String fullFilePath = subfullFilePath.substring(8);
+				final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
+				CloudBlockBlob blob2;
+				blob2 = cloudBlobContainer.getBlockBlobReference(fullFilePath);
 
-			}
-			final File[] files = new File(thumbnailPath).listFiles();
+				csvValuesMap1 = new HashMap<>();
 
-			Map<String, String> csvValuesMap = null;
+				LOG.info("files Name--->  ::: " + fileName);
 
-			if (files != null)
-			{
-				csvValuesMap = new HashMap<>();
+				final String ext = FilenameUtils.getExtension(fileName);
 
-				int imagesProceesed = 0;
-
-				for (int i = 0; i < files.length; i++)
+				if (null != fileName && fileName.contains("_"))
 				{
-					if (files[i].isFile())
+					int imagesProceesed1 = 0;
+					boolean mediaSaved1 = false;
+
+
+					final String imgRefId = fileName.toString().substring(0, fileName.indexOf("_"));
+
+					LOG.info("imgRefId  ::: " + imgRefId);
+
+					final List<EnergizerCMIRModel> erpId = energizerProductService.getERPMaterialIdForImageReferenceId(imgRefId);
+
+					LOG.info("erpId.size()  ::: " + erpId.size());
+
+					final int size = erpId.size();
+
+					if (size > 0)
 					{
-						boolean mediaSaved = false;
-
-						LOG.info("files[" + i + "].getName()  ::: " + files[i].getName());
-
-						final String ext = FilenameUtils.getExtension(files[i].getName());
-
-						if (null != files[i].getName() && files[i].getName().contains("_"))
+						for (int j = 0; j < size; j++)
 						{
-							final String imgRefId = files[i].getName().toString().substring(0, files[i].getName().indexOf("_"));
+							LOG.info("ERP ID ::: " + erpId.get(j).getErpMaterialId());
 
-							LOG.info("imgRefId  ::: " + imgRefId);
+							csvValuesMap1.put(EnergizerCoreConstants.ERPMATERIAL_ID, erpId.get(j).getErpMaterialId());
 
-							final List<EnergizerCMIRModel> erpId = energizerProductService.getERPMaterialIdForImageReferenceId(imgRefId);
+							csvValuesMap1.put(EnergizerCoreConstants.THUMBNAIIL_PATH, fullFilePath);
 
-							LOG.info("erpId.size()  ::: " + erpId.size());
+							LOG.info("Thumbnail " + " ::: " + fullFilePath);
 
-							final int size = erpId.size();
+							LOG.info("Processing product : " + (csvValuesMap1).get(EnergizerCoreConstants.ERPMATERIAL_ID));
 
-							if (size > 0)
+							try
 							{
-								for (int j = 0; j < size; j++)
+								existEnergizerProd = (EnergizerProductModel) productService.getProductForCode(catalogVersion,
+										(csvValuesMap1).get(EnergizerCoreConstants.ERPMATERIAL_ID));
+
+							}
+							catch (final Exception e)
+							{
+								LOG.info("Product : " + (csvValuesMap1).get(EnergizerCoreConstants.ERPMATERIAL_ID) + " DOES NOT EXIST");
+								continue;
+							}
+							if (null != existEnergizerProd)
+							{
+								try
 								{
-									LOG.info("ERP ID ::: " + erpId.get(j).getErpMaterialId());
-
-									csvValuesMap.put(EnergizerCoreConstants.ERPMATERIAL_ID, erpId.get(j).getErpMaterialId());
-
-									csvValuesMap.put(EnergizerCoreConstants.THUMBNAIIL_PATH, thumbnailPath + "\\"
-											+ files[i].getName().substring(0, files[i].getName().indexOf("_")) + "_2" + "." + ext);
-
-									LOG.info("Thumbnail " + i + " ::: " + thumbnailPath + "\\"
-											+ files[i].getName().substring(0, files[i].getName().indexOf("_")) + "_2" + "." + ext);
-
-									csvValuesMap.put(EnergizerCoreConstants.DISPLAY_IMAGE_PATH, displayImagePath + "\\"
-											+ files[i].getName().substring(0, files[i].getName().indexOf("_")) + "_1" + "." + ext);
-
-									LOG.info("Display Image  " + i + " ::: " + displayImagePath + "\\"
-											+ files[i].getName().substring(0, files[i].getName().indexOf("_")) + "_1" + "." + ext);
-
-									LOG.info("Processing product : " + (csvValuesMap).get(EnergizerCoreConstants.ERPMATERIAL_ID));
-
-									try
-									{
-										existEnergizerProd = (EnergizerProductModel) productService.getProductForCode(catalogVersion,
-												(csvValuesMap).get(EnergizerCoreConstants.ERPMATERIAL_ID));
-
-									}
-									catch (final Exception e)
-									{
-										LOG.info(
-												"Product : " + (csvValuesMap).get(EnergizerCoreConstants.ERPMATERIAL_ID) + " DOES NOT EXIST");
-										continue;
-									}
-									if (null != existEnergizerProd)
-									{
-										try
-										{
-											addUpdateProductMediaDetails(existEnergizerProd, catalogVersion, csvValuesMap);
-										}
-										catch (final Exception e)
-										{
-											LOG.info("Image File does not exist for product " + existEnergizerProd.getCode());
-											continue;
-										}
-									}
-									mediaSaved = true;
-
+									addUpdateProductMediaDetailsFromBlobStorage(existEnergizerProd, catalogVersion, csvValuesMap1,
+											cloudBlobContainer);
 								}
-
-								LOG.info("****************** ProductMediaModel updated successfully for image ref Id : " + imgRefId
-										+ "****************** ");
-								// how many image files are processed so far
-								imagesProceesed = imagesProceesed + 1;
-
-								// move the processed image files to either 'ProcessedWithNoErrors' or 'ErrorFiles' folders.
-								final String fileMovementStatus = cleanUp(files[i].getName(), mediaSaved, thumbnailPath, displayImagePath,
-										ext);
-
-								if (fileMovementStatus.equalsIgnoreCase("processed"))
+								catch (final Exception e)
 								{
-									imagesMovedToProcessedFolder = imagesMovedToProcessedFolder + 1;
-								}
-								else if (fileMovementStatus.equalsIgnoreCase("error"))
-								{
-									imagesMovedToErrorFilesFolder = imagesMovedToErrorFilesFolder + 1;
+									LOG.info("Image File does not exist for product " + existEnergizerProd.getCode());
+									continue;
 								}
 							}
-							else
-							{
-								LOG.info("No ERP Material Id For Image Reference Id '" + imgRefId + "' found !! ");
-							}
-							LOG.info("Total images processed  : " + imagesProceesed);
+							mediaSaved1 = true;
+
 						}
-						else
-						{
-							LOG.info("The image file name " + files[i].getName()
-									+ " doesn't have proper naming convention with an underscore :: ");
-						}
+
+						LOG.info("****************** ProductMediaModel updated successfully for image ref Id : " + imgRefId
+								+ "****************** ");
+						// how many image files are processed so far
+						imagesProceesed1 = imagesProceesed1 + 1;
+
+
 					}
+
 					else
 					{
-						LOG.info("Not a valid image file !! ");
+						LOG.info("No ERP Material Id For Image Reference Id '" + imgRefId + "' found !! ");
 					}
+					LOG.info("Total images processed  : " + imagesProceesed1);
 
-					//If the cronjob abort is requested, then perform clean up and return the PerformResult
-					this.modelService.refresh(cronjob);
-					if (clearAbortRequestedIfNeeded(cronjob))
-					{
-						LOG.info(cronjob.getRegion() + " : CRONJOB IS ABORTED WHILE PERFORMING ...");
-						//abort the job
-						cronJobService.requestAbortCronJob(cronjob);
-						return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
-					}
 				}
 			}
-			else
-			{
-				LOG.info("No image files present at the specified image folder location " + thumbnailPath + " !! ");
-			}
 		}
+
+
+		catch (final StorageException e1)
+		{
+			// YTODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		catch (final URISyntaxException e)
+		{
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		catch (final Exception e)
 		{
 			LOG.error("Error in adding or updating  ProductMediaModel ::: " + e.getMessage());
 			e.printStackTrace();
 		}
+
+
 
 		LOG.info("Total images moved to processed folder  : " + imagesMovedToProcessedFolder);
 		LOG.info("Total images moved to error files folder : " + imagesMovedToErrorFilesFolder);
@@ -315,7 +296,6 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 		modelService.saveAll();
 	}
 
-
 	/**
 	 *
 	 * @param fileLoc
@@ -330,6 +310,112 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 			final CatalogVersionModel catalogVersion, final String productMaterialId) throws FileNotFoundException
 	{
 		final InputStream mediaInputStream = new FileInputStream(new File(fileLoc));
+
+		// Creating or Updating  Media
+		MediaModel mediaModel = null;
+		try
+		{
+			mediaModel = mediaService.getMedia(catalogVersion, mediaModelCode);
+		}
+		catch (final Exception e)
+		{
+			LOG.error(" Media does not exist for Product Media " + mediaModelCode + " || " + e);
+		}
+
+		if (null == mediaModel)
+		{
+			mediaModel = modelService.create(MediaModel.class);
+			final MediaFormatModel format = mediaService.getFormat(mediaQualifier);
+			mediaModel.setCode(mediaModelCode);
+			mediaModel.setMediaFormat(format);
+			mediaModel.setCatalogVersion(catalogVersion);
+		}
+		modelService.save(mediaModel);
+		mediaService.setStreamForMedia(mediaModel, mediaInputStream);
+
+		// Creating or Updating  mediaContainer and add media
+		MediaContainerModel mediaContainer = null;
+		final String mediaContainerQualifier = productMaterialId.concat("_mediaContainer");
+		try
+		{
+			mediaContainer = mediaContainerService.getMediaContainerForQualifier(mediaContainerQualifier);
+		}
+		catch (final Exception e)
+		{
+			LOG.error(mediaContainerQualifier + " mediaContainer not exist" + e);
+		}
+
+		if (mediaContainer == null)
+		{
+			mediaContainer = modelService.create(MediaContainerModel.class);
+			mediaContainer.setQualifier(mediaContainerQualifier);
+			mediaContainer.setCatalogVersion(catalogVersion);
+			modelService.save(mediaContainer);
+		}
+		mediaContainerService.addMediaToContainer(mediaContainer, Collections.singletonList(mediaModel));
+
+		LOG.info(mediaModelCode + " mediaModel Saved Successfully *************");
+
+		return mediaModel;
+
+	}
+
+
+	private void addUpdateProductMediaDetailsFromBlobStorage(final EnergizerProductModel energizerProd,
+			final CatalogVersionModel catalogVersion, final Map<String, String> csvValuesMap,
+			final CloudBlobContainer cloudBlobContainer) throws FileNotFoundException, URISyntaxException
+	{
+		final String productMaterialId = csvValuesMap.get(EnergizerCoreConstants.ERPMATERIAL_ID).toString().trim();
+		final String thumbnailPath = csvValuesMap.get(EnergizerCoreConstants.THUMBNAIIL_PATH).toString().trim();
+		//final String displayImagePath = csvValuesMap.get(EnergizerCoreConstants.DISPLAY_IMAGE_PATH).toString().trim();
+
+		energizerProd.setCode(productMaterialId);
+		energizerProd.setCatalogVersion(catalogVersion);
+		energizerProd.setApprovalStatus(ArticleApprovalStatus.APPROVED);
+
+		final MediaModel mediaThumbnail = createUploadProductMedia(thumbnailPath, productMaterialId.concat(aTHUMB),
+				PRD_THUMB_QUALIFIER, catalogVersion, productMaterialId, cloudBlobContainer, thumbnailPath);
+		//final MediaModel mediaPicture = createUploadProductMedia(displayImagePath, productMaterialId.concat(aPICS),
+		//PRD_IMG_QUALIFIER, catalogVersion, productMaterialId, cloudBlobContainer, thumbnailPath);
+
+		energizerProd.setThumbnail(mediaThumbnail);
+		//energizerProd.setPicture(mediaPicture);
+		LOG.info("Flag Value ::: " + modelService.isModified(energizerProd));
+		LOG.info("Is New ::: " + modelService.isNew(energizerProd));
+		modelService.saveAll();
+	}
+
+	private MediaModel createUploadProductMedia(final String fileLoc, final String mediaModelCode, final String mediaQualifier,
+			final CatalogVersionModel catalogVersion, final String productMaterialId, final CloudBlobContainer cloudBlobContainer,
+			final String thumbnailPath) throws FileNotFoundException, URISyntaxException
+	{
+
+
+		CloudBlockBlob blob2;
+		InputStream mediaInputStream = null;
+		try
+		{
+			blob2 = cloudBlobContainer.getBlockBlobReference(thumbnailPath.toString());
+			//mediaInputStream = new FileInputStream(new File(blob2.getStorageUri().getPrimaryUri().getPath()));
+			mediaInputStream = new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes()));
+		}
+		catch (final FileNotFoundException e1)
+		{
+			// YTODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		catch (final StorageException e1)
+		{
+			// YTODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		catch (final IOException e1)
+		{
+			// YTODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		LOG.info("fileLoc---> ::: " + fileLoc);
+		//final InputStream mediaInputStream = blob2.downloadText();
 
 		// Creating or Updating  Media
 		MediaModel mediaModel = null;

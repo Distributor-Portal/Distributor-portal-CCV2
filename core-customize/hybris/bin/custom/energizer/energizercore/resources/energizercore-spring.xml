@@ -384,6 +384,9 @@
 
 	<bean id="checkCreditCardOrderAction" class="com.energizer.core.actions.CheckCreditCardOrderAction" parent="abstractSimpleB2BApproveOrderDecisionAction">
 	</bean>
+	
+	<bean id="energizerMediaProcessor" class="com.energizer.core.datafeed.AbstractEnergizerCSVProcessor">
+	</bean>
 
 	<bean id="b2bSetupSyncJobService" class="com.energizer.core.setup.impl.B2BDefaultSetupSyncJobService" parent="defaultSetupSyncJobService">
 		<property name="cronJobService" ref="cronJobService" />

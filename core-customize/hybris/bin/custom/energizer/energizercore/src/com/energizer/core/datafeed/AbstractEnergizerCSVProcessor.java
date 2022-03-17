@@ -113,7 +113,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 
 	/* Class level variable added for EMEA cronjob development */
 	private EnergizerCronJobModel cronjob;
-
+	public static final String personalcarethumbnailpath = Config.getParameter("energizer.thumbnailPath");
 
 
 	@Override
@@ -359,6 +359,30 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 
 		return blobDirectory;
 	}
+
+
+	public CloudBlobDirectory getBlobDirectoryPersonalCareThumbNailPath()
+	{
+
+		CloudBlobDirectory blobDirectory = null;
+
+		try
+		{
+			final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			blobDirectory = container.getDirectoryReference(personalcarethumbnailpath);
+			return blobDirectory;
+
+		}
+		catch (final URISyntaxException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return blobDirectory;
+	}
+
+
 
 
 	public void Blobcleanup(final String fileName, final EnergizerCronJobModel cronjob, final boolean hasErrors,
