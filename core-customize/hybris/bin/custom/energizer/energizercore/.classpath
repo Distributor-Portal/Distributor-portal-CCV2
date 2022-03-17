@@ -20,5 +20,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/commercefacades"/>
 	<classpathentry kind="src" path="/b2bacceleratorfacades"/>
 	<classpathentry kind="src" path="/acceleratorservices"/>
+	<classpathentry kind="src" path="/azurecloud"/>
+	<classpathentry exported="true" kind="lib" path="/azurecloud/lib/azure-storage-8.1.0.jar" sourcepath="C:/Users/NA2020~1/AppData/Local/Temp/.org.sf.feeling.decompiler1645962828836/source/azure-storage-8.1.0-sources-1646226004455.jar"/>
 	<classpathentry kind="output" path="eclipsebin/notused"/>
 </classpath>

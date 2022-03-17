@@ -15,6 +15,7 @@ import de.hybris.platform.servicelayer.search.SearchResult;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +33,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
+import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
 import com.energizer.core.model.EnergizerB2BUnitModel;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlobDirectory;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.microsoft.azure.storage.blob.CloudPageBlob;
 
 
 /**
@@ -42,6 +49,13 @@ import com.energizer.core.model.EnergizerB2BUnitModel;
 public class EnergizerCustomerUsersListJob extends AbstractJobPerformable<CronJobModel>
 {
 
+	private static final Logger LOG = Logger.getLogger(EnergizerCustomerUsersListJob.class);
+	@Resource(name = "configurationService")
+	private ConfigurationService configurationService;
+
+	@Resource(name = "energizerWindowsAzureBlobStorageStrategy")
+	private EnergizerWindowsAzureBlobStorageStrategy energizerWindowsAzureBlobStorageStrategy;
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -49,12 +63,29 @@ public class EnergizerCustomerUsersListJob extends AbstractJobPerformable<CronJo
 	 * CronJobModel )
 	 */
 
-	private static final Logger LOG = Logger.getLogger(EnergizerCustomerUsersListJob.class);
+
+	private void createAndUploadCustomerUserListFile(final CloudBlobContainer container)
+	{
+		CloudBlobDirectory blobDirectory;
+		final String tezt = "Hello world new";
+		try
+		{
+			blobDirectory = container.getDirectoryReference("userlists");
+			final CloudBlockBlob cloudBlockBlob = blobDirectory.getBlockBlobReference("CustomerUsersList.xls");
+			//				final OutputStream out = new FileOutputStream("teest.csv");
+			//out.write(tezt.getBytes());
+			cloudBlockBlob.uploadText(tezt);
+
+			System.out.println("<<<<<<<<<<<<<<<   printing the user list blob ...." + cloudBlockBlob.getUri());
+		}
+		catch (URISyntaxException | StorageException | IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 
-	@Resource(name = "configurationService")
-	private ConfigurationService configurationService;
-
+	}
 
 	@Override
 	public PerformResult perform(final CronJobModel cronjob)
@@ -66,7 +97,27 @@ public class EnergizerCustomerUsersListJob extends AbstractJobPerformable<CronJo
 		final SearchResult<EnergizerB2BUnitModel> result = flexibleSearchService.search(flexiSearchQuery);
 		final List<EnergizerB2BUnitModel> energizerB2BUnitModels = result.getResult();
 
-		final String path = configurationService.getConfiguration().getString("customerUserListPath") + "\\CustomerUsersList.xls";
+		//final String path = configurationService.getConfiguration().getString("customerUserListPath") + "\\CustomerUsersList.xls";
+		String path = configurationService.getConfiguration().getString("customerUserListPath.blob.directory")
+				+ "/CustomerUsersList.xls";
+
+		LOG.info("==== path generated from blob  ::: " + path);
+		final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+		try
+		{
+			final CloudBlobDirectory blobDirectory = container.getDirectoryReference(path);
+			final CloudPageBlob cloudPageBlob = container.getPageBlobReference(path);
+			path = cloudPageBlob.getStorageUri().toString();
+			final CloudBlockBlob cloudBlockBlob = blobDirectory.getBlockBlobReference("CustomerUsersList.xls");
+			//				final OutputStream out = new FileOutputStream("teest.csv");
+			//out.write(tezt.getBytes());
+			cloudBlockBlob.uploadText("the is from edgewell");
+		}
+		catch (URISyntaxException | StorageException | IOException e1)
+		{
+			LOG.error("Blob Folder not found");
+			return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
+		}
 
 		try
 		{
