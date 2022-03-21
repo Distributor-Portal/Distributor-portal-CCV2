@@ -20,6 +20,7 @@ import de.hybris.platform.servicelayer.media.MediaService;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import de.hybris.platform.servicelayer.session.SessionService;
+import de.hybris.platform.util.Config;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -29,10 +30,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -127,22 +124,36 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 	public static final String toProcess = "toProcess";
 	public static final String ProcessedWithNoErrors = "ProcessedWithNoErrors";
 	public static final String ErrorFiles = "ErrorFiles";
-	public static final String fileSeperator = "\\";
+	public static final String fileSeperator = "/";
 
 	@Override
 	public PerformResult perform(final EnergizerCronJobModel cronjob)
 	{
 		EnergizerProductModel existEnergizerProd = null;
 
-		final int imagesMovedToProcessedFolder = 0;
-		final int imagesMovedToErrorFilesFolder = 0;
+		int imagesMovedToProcessedFolder = 0;
+		int imagesMovedToErrorFilesFolder = 0;
 
 		try
 		{
 
+			String thumbnailPath = Config.getParameter("energizer.thumbnailPath");
+
+			String displayImagePath = Config.getParameter("energizer.displayImagePath");
+
+			if (cronjob.getCatalogName().contains("EMEA"))
+			{
+				thumbnailPath = Config.getParameter("energizer.thumbnailPath.EMEA");
+
+				displayImagePath = Config.getParameter("energizer.displayImagePath.EMEA");
+
+			}
+
+
+
 			final CatalogVersionModel catalogVersion = getCatalogVersion(cronjob);
 
-			Map<String, String> csvValuesMap1 = null;
+			Map<String, String> csvValuesMap = null;
 
 			CloudBlobContainer cloudBlobContainer = null;
 			cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
@@ -159,16 +170,14 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 				CloudBlockBlob blob2;
 				blob2 = cloudBlobContainer.getBlockBlobReference(fullFilePath);
 
-				csvValuesMap1 = new HashMap<>();
-
-				LOG.info("files Name--->  ::: " + fileName);
+				csvValuesMap = new HashMap<>();
 
 				final String ext = FilenameUtils.getExtension(fileName);
 
 				if (null != fileName && fileName.contains("_"))
 				{
-					int imagesProceesed1 = 0;
-					boolean mediaSaved1 = false;
+					int imagesProceesed = 0;
+					boolean mediaSaved = false;
 
 
 					final String imgRefId = fileName.toString().substring(0, fileName.indexOf("_"));
@@ -187,30 +196,36 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 						{
 							LOG.info("ERP ID ::: " + erpId.get(j).getErpMaterialId());
 
-							csvValuesMap1.put(EnergizerCoreConstants.ERPMATERIAL_ID, erpId.get(j).getErpMaterialId());
+							csvValuesMap.put(EnergizerCoreConstants.ERPMATERIAL_ID, erpId.get(j).getErpMaterialId());
 
-							csvValuesMap1.put(EnergizerCoreConstants.THUMBNAIIL_PATH, fullFilePath);
+							csvValuesMap.put(EnergizerCoreConstants.THUMBNAIIL_PATH, fullFilePath);
 
 							LOG.info("Thumbnail " + " ::: " + fullFilePath);
 
-							LOG.info("Processing product : " + (csvValuesMap1).get(EnergizerCoreConstants.ERPMATERIAL_ID));
+							csvValuesMap.put(EnergizerCoreConstants.DISPLAY_IMAGE_PATH,
+									displayImagePath + "/" + fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext);
+
+							LOG.info("Display Image  " + " ::: " + displayImagePath + "/" + fileName.substring(0, fileName.indexOf("_"))
+									+ "_1" + "." + ext);
+
+							LOG.info("Processing product : " + (csvValuesMap).get(EnergizerCoreConstants.ERPMATERIAL_ID));
 
 							try
 							{
 								existEnergizerProd = (EnergizerProductModel) productService.getProductForCode(catalogVersion,
-										(csvValuesMap1).get(EnergizerCoreConstants.ERPMATERIAL_ID));
+										(csvValuesMap).get(EnergizerCoreConstants.ERPMATERIAL_ID));
 
 							}
 							catch (final Exception e)
 							{
-								LOG.info("Product : " + (csvValuesMap1).get(EnergizerCoreConstants.ERPMATERIAL_ID) + " DOES NOT EXIST");
+								LOG.info("Product : " + (csvValuesMap).get(EnergizerCoreConstants.ERPMATERIAL_ID) + " DOES NOT EXIST");
 								continue;
 							}
 							if (null != existEnergizerProd)
 							{
 								try
 								{
-									addUpdateProductMediaDetailsFromBlobStorage(existEnergizerProd, catalogVersion, csvValuesMap1,
+									addUpdateProductMediaDetailsFromBlobStorage(existEnergizerProd, catalogVersion, csvValuesMap,
 											cloudBlobContainer);
 								}
 								catch (final Exception e)
@@ -219,14 +234,28 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 									continue;
 								}
 							}
-							mediaSaved1 = true;
+							mediaSaved = true;
 
 						}
 
 						LOG.info("****************** ProductMediaModel updated successfully for image ref Id : " + imgRefId
 								+ "****************** ");
 						// how many image files are processed so far
-						imagesProceesed1 = imagesProceesed1 + 1;
+						imagesProceesed = imagesProceesed + 1;
+
+
+						// move the processed image files to either 'ProcessedWithNoErrors' or 'ErrorFiles' folders.
+						final String fileMovementStatus = cleanUp(fileName, mediaSaved, thumbnailPath, displayImagePath, ext,
+								cloudBlobContainer);
+
+						if (fileMovementStatus.equalsIgnoreCase("processed"))
+						{
+							imagesMovedToProcessedFolder = imagesMovedToProcessedFolder + 1;
+						}
+						else if (fileMovementStatus.equalsIgnoreCase("error"))
+						{
+							imagesMovedToErrorFilesFolder = imagesMovedToErrorFilesFolder + 1;
+						}
 
 
 					}
@@ -235,7 +264,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 					{
 						LOG.info("No ERP Material Id For Image Reference Id '" + imgRefId + "' found !! ");
 					}
-					LOG.info("Total images processed  : " + imagesProceesed1);
+					LOG.info("Total images processed  : " + imagesProceesed);
 
 				}
 			}
@@ -367,27 +396,27 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 	{
 		final String productMaterialId = csvValuesMap.get(EnergizerCoreConstants.ERPMATERIAL_ID).toString().trim();
 		final String thumbnailPath = csvValuesMap.get(EnergizerCoreConstants.THUMBNAIIL_PATH).toString().trim();
-		//final String displayImagePath = csvValuesMap.get(EnergizerCoreConstants.DISPLAY_IMAGE_PATH).toString().trim();
+		final String displayImagePath = csvValuesMap.get(EnergizerCoreConstants.DISPLAY_IMAGE_PATH).toString().trim();
 
 		energizerProd.setCode(productMaterialId);
 		energizerProd.setCatalogVersion(catalogVersion);
 		energizerProd.setApprovalStatus(ArticleApprovalStatus.APPROVED);
 
 		final MediaModel mediaThumbnail = createUploadProductMedia(thumbnailPath, productMaterialId.concat(aTHUMB),
-				PRD_THUMB_QUALIFIER, catalogVersion, productMaterialId, cloudBlobContainer, thumbnailPath);
-		//final MediaModel mediaPicture = createUploadProductMedia(displayImagePath, productMaterialId.concat(aPICS),
-		//PRD_IMG_QUALIFIER, catalogVersion, productMaterialId, cloudBlobContainer, thumbnailPath);
+				PRD_THUMB_QUALIFIER, catalogVersion, productMaterialId, cloudBlobContainer);
+		final MediaModel mediaPicture = createUploadProductMedia(displayImagePath, productMaterialId.concat(aPICS),
+				PRD_IMG_QUALIFIER, catalogVersion, productMaterialId, cloudBlobContainer);
 
 		energizerProd.setThumbnail(mediaThumbnail);
-		//energizerProd.setPicture(mediaPicture);
+		energizerProd.setPicture(mediaPicture);
 		LOG.info("Flag Value ::: " + modelService.isModified(energizerProd));
 		LOG.info("Is New ::: " + modelService.isNew(energizerProd));
 		modelService.saveAll();
 	}
 
 	private MediaModel createUploadProductMedia(final String fileLoc, final String mediaModelCode, final String mediaQualifier,
-			final CatalogVersionModel catalogVersion, final String productMaterialId, final CloudBlobContainer cloudBlobContainer,
-			final String thumbnailPath) throws FileNotFoundException, URISyntaxException
+			final CatalogVersionModel catalogVersion, final String productMaterialId, final CloudBlobContainer cloudBlobContainer)
+			throws FileNotFoundException, URISyntaxException
 	{
 
 
@@ -395,8 +424,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 		InputStream mediaInputStream = null;
 		try
 		{
-			blob2 = cloudBlobContainer.getBlockBlobReference(thumbnailPath.toString());
-			//mediaInputStream = new FileInputStream(new File(blob2.getStorageUri().getPrimaryUri().getPath()));
+			blob2 = cloudBlobContainer.getBlockBlobReference(fileLoc.toString());
 			mediaInputStream = new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes()));
 		}
 		catch (final FileNotFoundException e1)
@@ -414,8 +442,6 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 			// YTODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		LOG.info("fileLoc---> ::: " + fileLoc);
-		//final InputStream mediaInputStream = blob2.downloadText();
 
 		// Creating or Updating  Media
 		MediaModel mediaModel = null;
@@ -490,27 +516,39 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 	}
 
 	private String cleanUp(final String fileName, final boolean mediaSaved, final String thumbnailPath,
-			final String displayImagePath, final String ext)
+			final String displayImagePath, final String ext, final CloudBlobContainer cloudBlobContainer)
 	{
 		if (mediaSaved)
 		{
 			try
 			{
+				// Thumbnail
 
-				final Path thumbnailSourcePath = Paths
-						.get(thumbnailPath + "\\" + fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext);
+				final String thumbnailSourcePathS = thumbnailPath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
+						+ "_2" + "." + ext;
+				final String thumbnailTargetPathS = thumbnailPath + fileSeperator + ProcessedWithNoErrors + fileSeperator
+						+ fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext;
 
-				final Path displayImgSourcePath = Paths
-						.get(displayImagePath + "\\" + fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext);
+				final CloudBlockBlob thumbnailSourceBlobS = cloudBlobContainer.getBlockBlobReference(thumbnailSourcePathS);
 
-				final Path thumbnailTargetPath = Paths.get(thumbnailSourcePath.getParent().getParent() + fileSeperator
-						+ ProcessedWithNoErrors + fileSeperator + fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext);
+				final CloudBlockBlob thumbnailTargetBlobS = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathS);
 
-				final Path displayImgTargetPath = Paths.get(displayImgSourcePath.getParent().getParent() + fileSeperator
-						+ ProcessedWithNoErrors + fileSeperator + fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext);
+				thumbnailTargetBlobS.startCopy(thumbnailSourceBlobS.getSnapshotQualifiedUri());
 
-				Files.move(thumbnailSourcePath, thumbnailTargetPath, StandardCopyOption.REPLACE_EXISTING);
-				Files.move(displayImgSourcePath, displayImgTargetPath, StandardCopyOption.REPLACE_EXISTING);
+				//DisplayImg
+				final String displayImgSourcePathS = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
+						+ "_1" + "." + ext;
+
+				final String displayImgTargetPathS = displayImagePath + fileSeperator + ProcessedWithNoErrors + fileSeperator
+						+ fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext;
+
+
+				final CloudBlockBlob displayImgSourceBlobS = cloudBlobContainer.getBlockBlobReference(displayImgSourcePathS);
+
+				final CloudBlockBlob displayImgTargetBlobS = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathS);
+
+				displayImgTargetBlobS.startCopy(displayImgSourceBlobS.getSnapshotQualifiedUri());
+
 
 				return "processed";
 			}
@@ -524,21 +562,32 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 		{
 			try
 			{
+				// ThumbnailE
 
-				final Path thumbnailSourcePath = Paths
-						.get(thumbnailPath + "\\" + fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext);
+				final String thumbnailSourcePathE = thumbnailPath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
+						+ "_2" + "." + ext;
+				final String thumbnailTargetPathE = thumbnailPath + fileSeperator + ErrorFiles + fileSeperator
+						+ fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext;
 
-				final Path displayImgSourcePath = Paths
-						.get(displayImagePath + "\\" + fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext);
+				final CloudBlockBlob thumbnailSourceBlobE = cloudBlobContainer.getBlockBlobReference(thumbnailSourcePathE);
 
-				final Path thumbnailTragetPath = Paths.get(thumbnailSourcePath.getParent().getParent() + fileSeperator + ErrorFiles
-						+ fileSeperator + fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext);
+				final CloudBlockBlob thumbnailTargetBlobE = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathE);
 
-				final Path displayImgTargetPath = Paths.get(displayImgSourcePath.getParent().getParent() + fileSeperator + ErrorFiles
-						+ fileSeperator + fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext);
+				thumbnailTargetBlobE.startCopy(thumbnailSourceBlobE.getSnapshotQualifiedUri());
 
-				Files.move(thumbnailSourcePath, thumbnailTragetPath, StandardCopyOption.REPLACE_EXISTING);
-				Files.move(displayImgSourcePath, displayImgTargetPath, StandardCopyOption.REPLACE_EXISTING);
+				//DisplayImgE
+				final String displayImgSourcePathE = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
+						+ "_1" + "." + ext;
+
+				final String displayImgTargetPathE = displayImagePath + fileSeperator + ErrorFiles + fileSeperator
+						+ fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext;
+
+
+				final CloudBlockBlob displayImgSourceBlobE = cloudBlobContainer.getBlockBlobReference(displayImgSourcePathE);
+
+				final CloudBlockBlob displayImgTargetBlobE = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathE);
+
+				displayImgTargetBlobE.startCopy(displayImgSourceBlobE.getSnapshotQualifiedUri());
 
 				return "error";
 			}
