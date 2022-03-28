@@ -1,5 +1,6 @@
 {
     "commerceSuiteVersion": "2005",
+	"solrVersion": "8.9",
     "enableImageProcessingService": true,
     "extensions": [
 	    "azurecloud",
@@ -38,7 +39,10 @@
         ],
         "extensions": {
             "location": "hybris/config/localextensions.xml"
-            }
+            },
+		"solr": {
+                "location": "cloudConfig/solrConfig"
+               }
     },
     "properties": [
         {
