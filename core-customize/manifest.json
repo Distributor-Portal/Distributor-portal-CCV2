@@ -39,7 +39,10 @@
         ],
         "extensions": {
             "location": "hybris/config/localextensions.xml"
-            }
+            },
+		"solr": {
+                "location": "cloudConfig/solrConfig/solr"
+               }
     },
     "properties": [
         {
