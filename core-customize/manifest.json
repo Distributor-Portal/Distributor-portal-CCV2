@@ -95,6 +95,7 @@
                     "key": "storefrontContextRoot",
                     "value": ""
                 }
+				
             ],
             "webapps": [
                 {
@@ -205,6 +206,20 @@
             ]
         }
     ],
+	
+	"properties": [
+	            {
+                    "key": "simulateURL",
+                    "value": "http://100.77.12.129:51000/RESTAdapter/SalesOrderSimulate"
+                },
+				{
+                    "key": "orderSubmitURL",
+                    "value": "http://100.77.12.129:51000/RESTAdapter/SalesOrderCreate"
+                }
+	
+],
+	
+	
     "tests": {
         "extensions": [],
         "annotations": [
