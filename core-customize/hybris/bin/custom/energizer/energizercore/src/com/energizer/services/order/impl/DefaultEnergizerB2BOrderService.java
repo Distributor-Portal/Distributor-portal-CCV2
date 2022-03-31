@@ -1490,12 +1490,12 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 
 			if (option.equalsIgnoreCase("simulate"))
 			{
-				LOG.info("SIMULATE_URL_PO : " + SIMULATE_URL);
+				LOG.info("SIMULATE_URL_PO_v1 : " + SIMULATE_URL);
 				return getResponse(restTemplate, SIMULATE_URL, formEntity);
 			}
 			else
 			{
-				LOG.info("ORDER_SUBMIT_URL : " + ORDER_SUBMIT_URL);
+				LOG.info("ORDER_SUBMIT_URL_PO_v1 : " + ORDER_SUBMIT_URL);
 				return getResponse(restTemplate, ORDER_SUBMIT_URL, formEntity);
 			}
 		}
