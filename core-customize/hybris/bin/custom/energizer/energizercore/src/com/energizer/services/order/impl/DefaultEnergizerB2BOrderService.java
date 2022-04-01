@@ -31,6 +31,7 @@ import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.servicelayer.user.UserService;
 import de.hybris.platform.site.BaseSiteService;
+import de.hybris.platform.util.Config;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -229,7 +230,8 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 	private static final String SITE_PERSONALCARE_EMEA = "site.personalCareEMEA";
 	private static final String ORDER_SIMULATE_CONTEXT_PATH = "com.energizer.core.jaxb.xsd.objects";
 	private static final String ORDER_CREATE_CONTEXT_PATH = "com.energizer.core.createorder.jaxb.xsd.objects";
-
+	public static final String SIMULATE_URL = Config.getParameter("simulateURL");
+	public static final String ORDER_SUBMIT_URL = Config.getParameter("orderSubmitURL");
 
 	/*
 	 * (non-Javadoc)
@@ -1485,17 +1487,19 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 			final int simulateTimeOutSeconds = Integer.parseInt(simulateTimeOutinSeconds);
 			((SimpleClientHttpRequestFactory) restTemplate.getRequestFactory()).setReadTimeout(1000 * simulateTimeOutSeconds);
 
-			final String SIMULATE_URL = configurationService.getConfiguration().getString("simulateURL");
-			final String ORDER_SUBMIT_URL = configurationService.getConfiguration().getString("orderSubmitURL");
+			final String SIMULATE_URL_old = configurationService.getConfiguration().getString("simulateURL");
+			final String ORDER_SUBMIT_URL_old = configurationService.getConfiguration().getString("orderSubmitURL");
 
 			if (option.equalsIgnoreCase("simulate"))
 			{
-				LOG.info("SIMULATE_URL_PO_v1 : " + SIMULATE_URL);
+				LOG.info("SIMULATE_URL : " + SIMULATE_URL);
+				LOG.info("SIMULATE_URL_old : " + SIMULATE_URL_old);
 				return getResponse(restTemplate, SIMULATE_URL, formEntity);
 			}
 			else
 			{
-				LOG.info("ORDER_SUBMIT_URL_PO_v1 : " + ORDER_SUBMIT_URL);
+				LOG.info("ORDER_SUBMIT_URL : " + ORDER_SUBMIT_URL);
+				LOG.info("SIMULATE_URL_old : " + SIMULATE_URL_old);
 				return getResponse(restTemplate, ORDER_SUBMIT_URL, formEntity);
 			}
 		}
