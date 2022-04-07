@@ -161,7 +161,7 @@
                 },
                 {
                     "name": "energizerstorefront",
-                    "contextPath": "/energizerstorefront"
+                    "contextPath": ""
                 },
                 {
                     "name": "smartedit",
