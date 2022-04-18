@@ -1190,6 +1190,8 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 		}
 		else
 		{
+			energizerB2BCheckoutFlowFacade.removeSessionCart();
+			cartFacade.removeSessionCart();
 			return REDIRECT_PREFIX + "/checkout/orderConfirmation/" + orderData.getCode();
 
 		}
