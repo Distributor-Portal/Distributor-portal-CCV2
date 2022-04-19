@@ -43,6 +43,9 @@
 					<c:set var="hide" value="no" />
 				</c:otherwise>
 			</c:choose> 
+			
+	contentPageId -->${contentPageId}
+    hide -->${hide}
 
 <div id="header" class="clearfix">
 	<cms:pageSlot position="TopHeaderSlot" var="component">
