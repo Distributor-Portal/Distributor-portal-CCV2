@@ -26,23 +26,18 @@
 
 <c:set var="hide" value="no" />
 
- <c:choose>
-	<c:when test="${contentPageId eq 'login'}">
-					<c:set var="hide" value="yes" />
-				</c:when>
-				<c:otherwise>
-					<c:set var="hide" value="no" />
-				</c:otherwise>
-			</c:choose>          
+<c:if test="${contentPageId eq 'login'}" >
+<c:set var="hide" value="yes" />
+</c:if>
 
-<c:choose>
-	<c:when test="${contentPageId eq null}">
-					<c:set var="hide" value="yes" />
-				</c:when>
-				<c:otherwise>
-					<c:set var="hide" value="no" />
-				</c:otherwise>
-			</c:choose> 
+<c:if test="${contentPageId eq null}" >
+<c:set var="hide" value="yes" />
+</c:if>
+
+<c:if test="${contentPageId ne null and contentPageId ne 'login'}" >
+<c:set var="hide" value="no" />
+</c:if>
+
 			
 	contentPageId -->${contentPageId}
     hide -->${hide}
