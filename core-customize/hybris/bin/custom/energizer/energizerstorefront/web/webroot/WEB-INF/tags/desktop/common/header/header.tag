@@ -35,7 +35,7 @@
 				<cms:component component="${links}"/>
 			</cms:pageSlot>
 
- <c:if test="${contentPageId ne 'login'}" >
+ <c:if test="${(contentPageId ne 'login') or (contentPageId ne 'unlockAccount') or (contentPageId ne 'updatePassword')}" >
 			<cms:pageSlot position="MiniCart" var="cart" limit="1">
 				<cms:component component="${cart}" element="li" class="miniCart" />
 			</cms:pageSlot>
