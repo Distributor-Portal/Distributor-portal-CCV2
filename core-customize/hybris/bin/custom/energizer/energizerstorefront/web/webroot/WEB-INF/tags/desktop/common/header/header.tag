@@ -27,7 +27,7 @@
 <c:set var="hide" value="no" />
 
  <c:choose>
-	<c:when test="$contentPageId eq 'login'}">
+	<c:when test="${contentPageId eq 'login'}">
 					<c:set var="hide" value="yes" />
 				</c:when>
 				<c:otherwise>
@@ -36,7 +36,7 @@
 			</c:choose>          
 
 <c:choose>
-	<c:when test="$contentPageId eq null}">
+	<c:when test="${contentPageId eq null}">
 					<c:set var="hide" value="yes" />
 				</c:when>
 				<c:otherwise>
