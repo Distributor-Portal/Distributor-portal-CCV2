@@ -38,10 +38,6 @@
 <c:set var="hide" value="no" />
 </c:if>
 
-			
-	contentPageId -->${contentPageId}
-    hide -->${hide}
-
 <div id="header" class="clearfix">
 	<cms:pageSlot position="TopHeaderSlot" var="component">
 		<cms:component component="${component}"/>
