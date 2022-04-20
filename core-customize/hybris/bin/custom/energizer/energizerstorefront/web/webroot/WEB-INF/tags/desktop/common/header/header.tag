@@ -24,20 +24,6 @@
 <input type="hidden" id="showTaxForSalesRep" value="${showTaxForSalesRep}">
 <%-- <c:set var="isSalesRepLoggedIn" value="${isSalesRepUserLogin}"/> --%>
 
-<c:set var="hide" value="no" />
-
-<c:if test="${contentPageId eq 'login'}" >
-<c:set var="hide" value="yes" />
-</c:if>
-
-<c:if test="${contentPageId eq null}" >
-<c:set var="hide" value="yes" />
-</c:if>
-
-<c:if test="${contentPageId ne null and contentPageId ne 'login'}" >
-<c:set var="hide" value="no" />
-</c:if>
-
 <div id="header" class="clearfix">
 	<cms:pageSlot position="TopHeaderSlot" var="component">
 		<cms:component component="${component}"/>
@@ -49,7 +35,7 @@
 				<cms:component component="${links}"/>
 			</cms:pageSlot>
 
- <c:if test="${hide ne 'yes'}" >
+ <c:if test="${contentPageId ne 'login'}" >
 			<cms:pageSlot position="MiniCart" var="cart" limit="1">
 				<cms:component component="${cart}" element="li" class="miniCart" />
 			</cms:pageSlot>
