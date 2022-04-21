@@ -403,6 +403,8 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 			{
 				final CloudBlockBlob blobWriteToError = cloudBlobContainer.getBlockBlobReference(errorDirectoryPath);
 				blobWriteToError.startCopy(sourceBlob.getSnapshotQualifiedUri());
+				//Delete file
+				sourceBlob.delete();
 			}
 			catch (final Exception e1)
 			{
@@ -415,6 +417,8 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 			{
 				final CloudBlockBlob blobWriteToSucess = cloudBlobContainer.getBlockBlobReference(processedWithNoErrorsDirectoryPath);
 				blobWriteToSucess.startCopy(sourceBlob.getSnapshotQualifiedUri());
+				//Delete file
+				sourceBlob.delete();
 			}
 			catch (final Exception e1)
 			{

@@ -12,6 +12,7 @@ import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.servicelayer.cronjob.AbstractJobPerformable;
 import de.hybris.platform.servicelayer.cronjob.CronJobService;
 import de.hybris.platform.servicelayer.cronjob.PerformResult;
+import de.hybris.platform.util.Config;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -56,6 +57,8 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 	private static final Logger LOG = Logger.getLogger(EnergizerCSVFeedCronJob.class);
 
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
+
+	public static final String dummyFileName = Config.getParameter("azure.blob.storage.dummy.file.name");
 
 	@Resource
 	EmailService emailService;
@@ -146,116 +149,131 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 				final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
 				//blob2.downloadText()
 
-				final Long fileProcessingStartTime = System.currentTimeMillis();
-
-				Iterable<CSVRecord> csvRecords;
-				CloudBlockBlob blob2;
-
-				blob2 = cloudBlobContainer.getBlockBlobReference(fullFilePath);
-
-				//csvRecords = energizerCSVProcessor.parse(file);
-				csvRecords = energizerCSVProcessor.parse(fullFilePath);
-
-				LOG.info("************** PROCESSING START FOR THIS FILE  '" + fileName + "' ***************");
-				LOG.info("Before processing this file : " + fileProcessingStartTime + " milliseconds !!");
-				errors = energizerCSVProcessor.process(csvRecords, cronjob.getCatalogName(), cronjob);
-				exceptionOccured = (errors.size() != 0) ? true : false;
-				//	energizerCSVProcessor.setMasterDataStream(new DataInputStream(new FileInputStream(fileName)));
-
-
-				energizerCSVProcessor
-						.setMasterDataStream(new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes())));
-
-				final List<EmailAttachmentModel> emailAttachmentList = new ArrayList<EmailAttachmentModel>();
-				final EmailAttachmentModel attachmentModel = emailService.createEmailAttachment(
-						energizerCSVProcessor.getMasterDataStream(),
-						StringUtils.replace(fileName.toLowerCase(), ".csv",
-								"_" + new Date().getTime() + "." + de.hybris.platform.impex.constants.ImpExConstants.File.EXTENSION_CSV)
-								.toLowerCase(),
-						de.hybris.platform.impex.constants.ImpExConstants.File.MIME_TYPE_CSV);
-
-				emailAttachmentList.add(attachmentModel);
-
-				if (cronjob.getTechnicalEmailAddress().isEmpty())
+				if (dummyFileName.equalsIgnoreCase(fileName))
 				{
-					cronjob.setTechnicalEmailAddress(emailAddress);
-				}
-				if (cronjob.getBusinessEmailAddress().isEmpty())
-				{
-					cronjob.setBusinessEmailAddress(emailAddress);
-				}
-				techfeedErrors = energizerCSVProcessor.getTechnicalFeedErrors();
-				if (!techfeedErrors.isEmpty())
-				{
-					energizerCSVProcessor.setRecordFailed(energizerCSVProcessor.getTechRecordError());
-					energizerCSVProcessor.mailErrors(cronjob, techfeedErrors, cronjob.getTechnicalEmailAddress(), emailAttachmentList);
-				}
-				busfeedErrors = energizerCSVProcessor.getBusinessFeedErrors();
-				if (!busfeedErrors.isEmpty())
-				{
-					energizerCSVProcessor.setRecordFailed(energizerCSVProcessor.getBusRecordError());
-					energizerCSVProcessor.mailErrors(cronjob, busfeedErrors, cronjob.getBusinessEmailAddress(), emailAttachmentList);
-				}
-				energizerCSVProcessor.setTotalRecords(0);
-				energizerCSVProcessor.setRecordFailed(0);
-				energizerCSVProcessor.setRecordSucceeded(0);
-				energizerCSVProcessor.setBusRecordError(0);
-				energizerCSVProcessor.setTechRecordError(0);
-				emailAttachmentList.clear();
+					//nothing to do
 
-				if ((techfeedErrors != null && techfeedErrors.size() > 0) || (busfeedErrors != null && busfeedErrors.size() > 0))
-				{
-					if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
-					{
-						//energizerCSVProcessor.cleanup(type, blob2.downloadText(), cronjob, true);
-						energizerCSVProcessor.Blobcleanup(fileName, cronjob, true, fullFilePath, blob2, cloudBlobContainer);
-					}
-					energizerCSVProcessor.flush();
+					LOG.info("************** Nothing to processing, there is dummy file  '" + fileName + "' ***************");
+					//performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
 				}
 				else
 				{
-					if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
+					final Long fileProcessingStartTime = System.currentTimeMillis();
+
+					Iterable<CSVRecord> csvRecords;
+					CloudBlockBlob blob2;
+
+					blob2 = cloudBlobContainer.getBlockBlobReference(fullFilePath);
+
+					//csvRecords = energizerCSVProcessor.parse(file);
+					csvRecords = energizerCSVProcessor.parse(fullFilePath);
+
+					LOG.info("************** PROCESSING START FOR THIS FILE  '" + fileName + "' ***************");
+					LOG.info("Before processing this file : " + fileProcessingStartTime + " milliseconds !!");
+					errors = energizerCSVProcessor.process(csvRecords, cronjob.getCatalogName(), cronjob);
+					exceptionOccured = (errors.size() != 0) ? true : false;
+					//	energizerCSVProcessor.setMasterDataStream(new DataInputStream(new FileInputStream(fileName)));
+
+
+					energizerCSVProcessor
+							.setMasterDataStream(new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes())));
+
+					final List<EmailAttachmentModel> emailAttachmentList = new ArrayList<EmailAttachmentModel>();
+					final EmailAttachmentModel attachmentModel = emailService
+							.createEmailAttachment(energizerCSVProcessor.getMasterDataStream(),
+									StringUtils
+											.replace(fileName.toLowerCase(), ".csv",
+													"_" + new Date().getTime() + "."
+															+ de.hybris.platform.impex.constants.ImpExConstants.File.EXTENSION_CSV)
+											.toLowerCase(),
+									de.hybris.platform.impex.constants.ImpExConstants.File.MIME_TYPE_CSV);
+
+					emailAttachmentList.add(attachmentModel);
+
+					if (cronjob.getTechnicalEmailAddress().isEmpty())
 					{
-						//energizerCSVProcessor.cleanup(type, file, cronjob, false);
-						energizerCSVProcessor.Blobcleanup(fileName, cronjob, false, fullFilePath, blob2, cloudBlobContainer);
+						cronjob.setTechnicalEmailAddress(emailAddress);
+					}
+					if (cronjob.getBusinessEmailAddress().isEmpty())
+					{
+						cronjob.setBusinessEmailAddress(emailAddress);
+					}
+					techfeedErrors = energizerCSVProcessor.getTechnicalFeedErrors();
+					if (!techfeedErrors.isEmpty())
+					{
+						energizerCSVProcessor.setRecordFailed(energizerCSVProcessor.getTechRecordError());
+						energizerCSVProcessor.mailErrors(cronjob, techfeedErrors, cronjob.getTechnicalEmailAddress(),
+								emailAttachmentList);
+					}
+					busfeedErrors = energizerCSVProcessor.getBusinessFeedErrors();
+					if (!busfeedErrors.isEmpty())
+					{
+						energizerCSVProcessor.setRecordFailed(energizerCSVProcessor.getBusRecordError());
+						energizerCSVProcessor.mailErrors(cronjob, busfeedErrors, cronjob.getBusinessEmailAddress(),
+								emailAttachmentList);
+					}
+					energizerCSVProcessor.setTotalRecords(0);
+					energizerCSVProcessor.setRecordFailed(0);
+					energizerCSVProcessor.setRecordSucceeded(0);
+					energizerCSVProcessor.setBusRecordError(0);
+					energizerCSVProcessor.setTechRecordError(0);
+					emailAttachmentList.clear();
+
+					if ((techfeedErrors != null && techfeedErrors.size() > 0) || (busfeedErrors != null && busfeedErrors.size() > 0))
+					{
+						if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
+						{
+							//energizerCSVProcessor.cleanup(type, blob2.downloadText(), cronjob, true);
+							energizerCSVProcessor.Blobcleanup(fileName, cronjob, true, fullFilePath, blob2, cloudBlobContainer);
+						}
+						energizerCSVProcessor.flush();
+					}
+					else
+					{
+						if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
+						{
+							//energizerCSVProcessor.cleanup(type, file, cronjob, false);
+							energizerCSVProcessor.Blobcleanup(fileName, cronjob, false, fullFilePath, blob2, cloudBlobContainer);
+						}
+						energizerCSVProcessor.flush();
+					}
+
+					// If the cronjob abort is requested, then perform clean up and return the PerformResult
+					this.modelService.refresh(cronjob);
+					if (clearAbortRequestedIfNeeded(cronjob))
+					{
+						LOG.info(cronjob.getRegion() + " : CRONJOB IS ABORTED WHILE PERFORMING ...");
+
+						/* This is to flush the buffer of existing errorList and message as well */
+						energizerCSVProcessor.flush();
+						//abort the job
+						cronJobService.requestAbortCronJob(cronjob);
+
+						return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
+					}
+
+					if (exceptionOccured)
+					{
+						performResult = new PerformResult(CronJobResult.ERROR, CronJobStatus.FINISHED);
+					}
+					else
+					{
+						performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
 					}
 					energizerCSVProcessor.flush();
+
+					final Long fileProcessingEndTime = System.currentTimeMillis();
+					LOG.info("After processing this file : " + fileProcessingEndTime + " milliseconds !!");
+
+					LOG.info(
+							"Cronjob file processing time taken in milliseconds == " + (fileProcessingEndTime - fileProcessingStartTime)
+									+ " , seconds == " + (fileProcessingEndTime - fileProcessingStartTime) / 1000);
+
+					LOG.info("************** PROCESSING END FOR THIS FILE  '" + fileName + "' ***************");
+
 				}
-
-				// If the cronjob abort is requested, then perform clean up and return the PerformResult
-				this.modelService.refresh(cronjob);
-				if (clearAbortRequestedIfNeeded(cronjob))
-				{
-					LOG.info(cronjob.getRegion() + " : CRONJOB IS ABORTED WHILE PERFORMING ...");
-
-					/* This is to flush the buffer of existing errorList and message as well */
-					energizerCSVProcessor.flush();
-					//abort the job
-					cronJobService.requestAbortCronJob(cronjob);
-
-					return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
-				}
-
-				if (exceptionOccured)
-				{
-					performResult = new PerformResult(CronJobResult.ERROR, CronJobStatus.FINISHED);
-				}
-				else
-				{
-					performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
-				}
-				energizerCSVProcessor.flush();
-
-				final Long fileProcessingEndTime = System.currentTimeMillis();
-				LOG.info("After processing this file : " + fileProcessingEndTime + " milliseconds !!");
-
-				LOG.info("Cronjob file processing time taken in milliseconds == " + (fileProcessingEndTime - fileProcessingStartTime)
-						+ " , seconds == " + (fileProcessingEndTime - fileProcessingStartTime) / 1000);
-
-				LOG.info("************** PROCESSING END FOR THIS FILE  '" + fileName + "' ***************");
 
 			}
-
 		}
 
 		catch (final StorageException e1)
