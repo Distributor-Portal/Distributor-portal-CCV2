@@ -168,8 +168,8 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 	@Resource(name = "defaultB2BCostCenterFacade")
 	private DefaultB2BCostCenterFacade defaultB2BCostCenterFacade;
 
-	@Resource
-	private CartService cartService;
+	@Resource(name = "cartService")
+	CartService cartService;
 
 	@Resource(name = "defaultEnergizerDeliveryNoteFacade")
 	private DefaultEnergizerDeliveryNoteFacade deliveryNoteFacade;
@@ -1190,8 +1190,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 		}
 		else
 		{
-			energizerB2BCheckoutFlowFacade.removeSessionCart();
-			cartFacade.removeSessionCart();
+			cartService.removeSessionCart();
 			return REDIRECT_PREFIX + "/checkout/orderConfirmation/" + orderData.getCode();
 
 		}
@@ -1836,4 +1835,6 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 		}
 		return energizerAddresses;
 	}
+
+
 }
