@@ -945,6 +945,7 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 				beforePlaceOrder(cartModel);
 				cartModel.getTotalPrice();
 				final OrderModel orderModel = placeOrder(cartModel);
+
 				//LOG.info("OrderCommentsfromcartModel-->" + cartModel.getOrderComments());
 				/*
 				 * LOG.info("OrderCommentsfromcartModel-->" + cartModel.getOrderComments());
@@ -990,7 +991,6 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 				{
 					LOG.info("Order placed by Sales Rep !!! ");
 					orderModel.setTotalTax(cartModel.getTotalTax());
-
 
 				}
 				else
