@@ -70,7 +70,7 @@
 </td>
 <td headers="header15" class="rejected">
 	<c:if test="${not empty entry.customerMaterialId}">
-	    <ycommerce:testId code="orderDetails_CMIRId_label">${entry.customerMaterialId}</ycommerce:testId>
+	    <ycommerce:testId code="orderDetails_CMIRId_label">  Normal order Entry Details ${entry.product.customerMaterialId}</ycommerce:testId>
      </c:if>
 </td>
 

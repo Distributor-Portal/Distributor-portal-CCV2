@@ -64,7 +64,7 @@
 	<ycommerce:testId code="orderDetails_MaterialId_label">${entry.product.code}</ycommerce:testId>
 </td>
 <td headers="header15" class="rejected">
-	<ycommerce:testId code="orderDetails_CMIRId_label">${entry.product.customerMaterialId}</ycommerce:testId>
+<ycommerce:testId code="orderDetails_CMIRId_label">File Path : /energizerstorefront/web/webroot/WEB-INF/tags/desktop/orderConfirmation/orderEntryDetail.tag${entry.product.customerMaterialId}</ycommerce:testId>
 </td>
 
 <c:if test="${siteUid eq 'personalCare' and not isSalesRepUserLogin}">
