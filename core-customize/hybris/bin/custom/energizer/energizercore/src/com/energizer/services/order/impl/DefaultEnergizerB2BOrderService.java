@@ -1915,7 +1915,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				}
 				LOG.info("Order Comments from Response ::: " + orderComments);
 			}
-			//orderData.setOrderComments(orderComments);
+			orderData.setOrderComments(orderComments);
 			if (null != currency)
 			{
 				orderData.setSalesRepCurrencyIsoCode(currency);
@@ -2105,7 +2105,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				}
 				LOG.info("Order Comments from Response ::: " + orderComments);
 			}
-			//orderModel.setOrderComments(orderComments);
+			orderModel.setOrderComments(orderComments);
 			orderModel.setStatus(OrderStatus.PENDING);
 			modelService.save(orderModel);
 		}
