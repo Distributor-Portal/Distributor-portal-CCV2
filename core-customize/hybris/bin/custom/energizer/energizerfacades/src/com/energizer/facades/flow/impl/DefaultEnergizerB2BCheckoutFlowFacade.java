@@ -946,6 +946,14 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 				cartModel.getTotalPrice();
 				final OrderModel orderModel = placeOrder(cartModel);
 
+				LOG.info("OrderCommentsfromcartModel-->" + cartModel.getOrderComments());
+				orderModel.setOrderComments(cartModel.getOrderComments());
+				modelService.save(orderModel);
+				LOG.info("OrderCommentsfromorderModel-->" + orderModel.getOrderComments());
+
+				LOG.info("OrderplacedbySalesRep-->" + orderModel.getPlacedBySalesRep());
+				LOG.info("OrderTax-->" + cartModel.getTotalTax());
+
 				afterPlaceOrder(cartModel, orderModel);
 
 				// Convert the order to an order data
@@ -974,7 +982,7 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 
 				orderModel.setTotalPrice(cartModel.getTotalPrice());
 				orderModel.setSubtotal(cartModel.getSubtotal());
-				orderModel.setOrderComments(cartModel.getOrderComments());
+				//orderModel.setOrderComments(cartModel.getOrderComments());
 				orderModel.setPlacedBySalesRep(cartModel.getPlacedBySalesRep());
 				//Added Code changes for WeSell Implementation - START
 				if (null != orderModel.getPlacedBySalesRep() && orderModel.getPlacedBySalesRep().booleanValue())
