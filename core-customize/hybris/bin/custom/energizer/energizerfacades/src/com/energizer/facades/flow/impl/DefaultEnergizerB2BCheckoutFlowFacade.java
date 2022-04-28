@@ -984,7 +984,7 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 
 				orderModel.setTotalPrice(cartModel.getTotalPrice());
 				orderModel.setSubtotal(cartModel.getSubtotal());
-				orderModel.setOrderComments(cartModel.getOrderComments());
+				//orderModel.setOrderComments(cartModel.getOrderComments());
 				orderModel.setPlacedBySalesRep(cartModel.getPlacedBySalesRep());
 				//Added Code changes for WeSell Implementation - START
 				if (null != orderModel.getPlacedBySalesRep() && orderModel.getPlacedBySalesRep().booleanValue())
@@ -1001,7 +1001,7 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 				orderModel.setAgreeEdgewellUnitPriceForAllProducts(cartModel.getAgreeEdgewellUnitPriceForAllProducts());
 				orderModel.setContainerVolumeUtilization(cartModel.getContainerVolumeUtilization());
 				orderModel.setContainerWeightUtilization(cartModel.getContainerWeightUtilization());
-				LOG.info("Order Comments set in order Model ::: " + orderModel.getOrderComments());
+				//LOG.info("Order Comments set in order Model ::: " + orderModel.getOrderComments());
 
 				//Added code changes for Delivery notes feature for LATAM
 				orderModel.setDeliveryNoteFiles(cartModel.getDeliveryNoteFiles());
@@ -1036,7 +1036,8 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 				}
 				// Added for  order model unit!=b2bUnit issue fix - END
 
-
+				orderModel.setOrderComments((String) sessionService.getAttribute("orderComments"));
+				LOG.info("Order Comments set in order Model ::: " + orderModel.getOrderComments());
 				modelService.save(orderModel);
 				getModelService().refresh(orderModel);
 				// Remove cart

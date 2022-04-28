@@ -168,8 +168,8 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 	@Resource(name = "defaultB2BCostCenterFacade")
 	private DefaultB2BCostCenterFacade defaultB2BCostCenterFacade;
 
-	@Resource(name = "cartService")
-	CartService cartService;
+	@Resource
+	private CartService cartService;
 
 	@Resource(name = "defaultEnergizerDeliveryNoteFacade")
 	private DefaultEnergizerDeliveryNoteFacade deliveryNoteFacade;
@@ -1242,6 +1242,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 			final String orderComments = placeOrderForm.getOrderComments();
 			LOG.info("orderComments ::: " + orderComments);
 			cartData.setOrderComments(orderComments);
+			sessionService.setAttribute("orderComments", orderComments);
 			// Setting Order Comments to cartData - END
 
 			if (!isSalesRepUserLogin())
