@@ -94,7 +94,6 @@ public class DefaultEnergizerProductDAO implements EnergizerProductDAO
 	@Override
 	public List<EnergizerCMIRModel> getEnergizerCMIRList(final String erpMaterialId, final String b2bUnitId)
 	{
-		LOG.info("getEnergizerCMIRList in fetching CMIR list for product : " + erpMaterialId + ", b2bUnitId : " + b2bUnitId);
 
 		FlexibleSearchQuery query1 = null;
 		try
