@@ -945,7 +945,7 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 				beforePlaceOrder(cartModel);
 				cartModel.getTotalPrice();
 				final OrderModel orderModel = placeOrder(cartModel);
-				LOG.info("OrderCommentsfromcartModel-->" + cartModel.getOrderComments());
+				//LOG.info("OrderCommentsfromcartModel-->" + cartModel.getOrderComments());
 				/*
 				 * LOG.info("OrderCommentsfromcartModel-->" + cartModel.getOrderComments());
 				 * orderModel.setOrderComments(cartModel.getOrderComments()); //modelService.save(orderModel);
