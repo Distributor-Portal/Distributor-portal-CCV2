@@ -948,7 +948,7 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 
 				LOG.info("OrderCommentsfromcartModel-->" + cartModel.getOrderComments());
 				orderModel.setOrderComments(cartModel.getOrderComments());
-				modelService.save(orderModel);
+				//modelService.save(orderModel);
 				LOG.info("OrderCommentsfromorderModel-->" + orderModel.getOrderComments());
 
 				LOG.info("OrderplacedbySalesRep-->" + orderModel.getPlacedBySalesRep());
