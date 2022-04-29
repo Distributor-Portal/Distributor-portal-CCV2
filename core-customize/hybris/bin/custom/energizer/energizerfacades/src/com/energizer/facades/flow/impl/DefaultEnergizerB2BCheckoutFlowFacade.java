@@ -415,6 +415,7 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 		//model.setSubtotal(totalPrice - discount - totalTax);
 		model.setTotalDiscounts(discount);
 		model.setTotalTax(totalTax);
+		sessionService.setAttribute("totalTax", totalTax);
 		model.setOrderComments(cartData.getOrderComments());
 		model.setAgreeEdgewellUnitPriceForAllProducts(cartData.isAgreeEdgewellUnitPriceForAllProducts());
 		LOG.info("Order Comments set in cart Model ::: " + model.getOrderComments());
@@ -946,16 +947,6 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 				cartModel.getTotalPrice();
 				final OrderModel orderModel = placeOrder(cartModel);
 
-				//LOG.info("OrderCommentsfromcartModel-->" + cartModel.getOrderComments());
-				/*
-				 * LOG.info("OrderCommentsfromcartModel-->" + cartModel.getOrderComments());
-				 * orderModel.setOrderComments(cartModel.getOrderComments()); //modelService.save(orderModel);
-				 * LOG.info("OrderCommentsfromorderModel-->" + orderModel.getOrderComments());
-				 *
-				 * LOG.info("OrderplacedbySalesRep-->" + orderModel.getPlacedBySalesRep()); LOG.info("OrderTax-->" +
-				 * cartModel.getTotalTax());
-				 */
-
 				afterPlaceOrder(cartModel, orderModel);
 
 				// Convert the order to an order data
@@ -986,12 +977,13 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 				orderModel.setSubtotal(cartModel.getSubtotal());
 				//orderModel.setOrderComments(cartModel.getOrderComments());
 				orderModel.setPlacedBySalesRep(cartModel.getPlacedBySalesRep());
+
 				//Added Code changes for WeSell Implementation - START
 				if (null != orderModel.getPlacedBySalesRep() && orderModel.getPlacedBySalesRep().booleanValue())
 				{
 					LOG.info("Order placed by Sales Rep !!! ");
-					orderModel.setTotalTax(cartModel.getTotalTax());
-
+					orderModel.setTotalTax((Double) sessionService.getAttribute("totalTax"));
+					LOG.info("totalTax--> " + sessionService.getAttribute("totalTax"));
 				}
 				else
 				{
@@ -1038,6 +1030,7 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 
 				orderModel.setOrderComments((String) sessionService.getAttribute("orderComments"));
 				LOG.info("Order Comments set in order Model ::: " + orderModel.getOrderComments());
+
 				modelService.save(orderModel);
 				getModelService().refresh(orderModel);
 				// Remove cart
