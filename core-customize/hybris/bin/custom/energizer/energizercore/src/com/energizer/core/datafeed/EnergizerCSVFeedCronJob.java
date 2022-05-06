@@ -154,7 +154,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					//nothing to do
 
 					LOG.info("************** Nothing to processing, there is dummy file  '" + fileName + "' ***************");
-					performResult = new PerformResult(CronJobResult.FILE_NOT_FOUND, CronJobStatus.FINISHED);
+					performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
 				}
 				else
 				{
