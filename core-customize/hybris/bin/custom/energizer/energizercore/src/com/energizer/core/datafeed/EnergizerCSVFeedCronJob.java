@@ -300,7 +300,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 
 					else
 					{
-						performResult = new PerformResult(CronJobResult.FILE_NOT_FOUND, CronJobStatus.FINISHED);
+						performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
 
 					}
 
