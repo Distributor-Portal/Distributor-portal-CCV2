@@ -140,6 +140,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 			}
 			energizerCSVProcessor.flush(); /* This is to flush the buffer of existing errorList and message as well */
 
+			String resultType = "";
 
 			for (final ListBlobItem blobItem : blobDirectory.listBlobs())
 			{
@@ -147,16 +148,10 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 				final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
 				final String fullFilePath = subfullFilePath.substring(8);
 				final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
-				//blob2.downloadText()
 
-				if (dummyFileName.equalsIgnoreCase(fileName))
-				{
-					//nothing to do
 
-					LOG.info("************** Nothing to processing, there is dummy file  '" + fileName + "' ***************");
-					performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
-				}
-				else
+
+				if (!(dummyFileName.equalsIgnoreCase(fileName)))
 				{
 					final Long fileProcessingStartTime = System.currentTimeMillis();
 
@@ -165,15 +160,13 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 
 					blob2 = cloudBlobContainer.getBlockBlobReference(fullFilePath);
 
-					//csvRecords = energizerCSVProcessor.parse(file);
+
 					csvRecords = energizerCSVProcessor.parse(fullFilePath);
 
 					LOG.info("************** PROCESSING START FOR THIS FILE  '" + fileName + "' ***************");
 					LOG.info("Before processing this file : " + fileProcessingStartTime + " milliseconds !!");
 					errors = energizerCSVProcessor.process(csvRecords, cronjob.getCatalogName(), cronjob);
 					exceptionOccured = (errors.size() != 0) ? true : false;
-					//	energizerCSVProcessor.setMasterDataStream(new DataInputStream(new FileInputStream(fileName)));
-
 
 					energizerCSVProcessor
 							.setMasterDataStream(new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes())));
@@ -223,7 +216,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					{
 						if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
 						{
-							//energizerCSVProcessor.cleanup(type, blob2.downloadText(), cronjob, true);
+
 							energizerCSVProcessor.Blobcleanup(fileName, cronjob, true, fullFilePath, blob2, cloudBlobContainer);
 						}
 						energizerCSVProcessor.flush();
@@ -232,7 +225,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					{
 						if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
 						{
-							//energizerCSVProcessor.cleanup(type, file, cronjob, false);
+
 							energizerCSVProcessor.Blobcleanup(fileName, cronjob, false, fullFilePath, blob2, cloudBlobContainer);
 						}
 						energizerCSVProcessor.flush();
@@ -246,19 +239,25 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 
 						/* This is to flush the buffer of existing errorList and message as well */
 						energizerCSVProcessor.flush();
+
+						resultType = "aborted";
 						//abort the job
 						cronJobService.requestAbortCronJob(cronjob);
 
 						return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
+
 					}
+
 
 					if (exceptionOccured)
 					{
 						performResult = new PerformResult(CronJobResult.ERROR, CronJobStatus.FINISHED);
+						resultType = "error";
 					}
 					else
 					{
 						performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
+						resultType = "sucess";
 					}
 					energizerCSVProcessor.flush();
 
@@ -270,6 +269,41 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 									+ " , seconds == " + (fileProcessingEndTime - fileProcessingStartTime) / 1000);
 
 					LOG.info("************** PROCESSING END FOR THIS FILE  '" + fileName + "' ***************");
+
+				}
+				else
+				{
+
+					LOG.info("************** Nothing to processing, there is dummy file  '" + fileName + "' ***************");
+
+					LOG.info("************** Result Type  '" + resultType + "' ***************");
+
+					if (resultType.equalsIgnoreCase("error"))
+					{
+						performResult = new PerformResult(CronJobResult.ERROR, CronJobStatus.FINISHED);
+
+					}
+
+					else if (resultType.equalsIgnoreCase("sucess"))
+					{
+						performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
+
+					}
+
+
+					else if (resultType.equalsIgnoreCase("aborted"))
+					{
+						performResult = new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
+
+					}
+
+
+					else
+					{
+						performResult = new PerformResult(CronJobResult.FILE_NOT_FOUND, CronJobStatus.FINISHED);
+
+					}
+
 
 				}
 
