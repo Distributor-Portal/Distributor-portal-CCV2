@@ -60,6 +60,10 @@ public class InvoicePageController extends AbstractSearchPageController
 	public static final String INVOICE_FILE_EXTENSION = ".pdf";
 
 	public static final String CONTENT_TYPE = "text/html";
+
+	public static final String filePath = Config.getParameter("azure.blob.storage.container.name");
+
+
 	@Resource(name = "defaultInvoiceFacade")
 	private DefaultEnergizerInvoiceFacade defaultInvoiceFacade;
 
@@ -127,7 +131,7 @@ public class InvoicePageController extends AbstractSearchPageController
 		{
 			CloudBlobDirectory blobDirectory = null;
 			final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
-			final String filePath = Config.getParameter("invoice.filepath.EMEA");
+
 			System.out.println("filePath--->" + filePath);
 			try
 			{
