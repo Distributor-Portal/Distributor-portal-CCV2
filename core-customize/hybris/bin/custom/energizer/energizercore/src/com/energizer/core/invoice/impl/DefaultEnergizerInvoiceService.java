@@ -11,13 +11,20 @@ import de.hybris.platform.util.Config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
 import com.energizer.core.invoice.EnergizerInvoiceService;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlobDirectory;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.microsoft.azure.storage.blob.ListBlobItem;
 
 
 /**
@@ -33,12 +40,17 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 	public static final String INVOICE_FILE_PATH = "invoice.filepath";
 	private static final String INVOICE_FILE_PATH_EMEA = "invoice.filepath.EMEA";
 	public static final String INVOICE_FILE_EXTENSION = ".pdf";
+	public static final String personalcarethumbnailpath = Config.getParameter("energizer.thumbnailPath");
 
 	@Resource(name = "cmsSiteService")
 	private CMSSiteService cmsSiteService;
 
 	@Resource(name = "configurationService")
 	private ConfigurationService configurationService;
+
+	@Resource
+	private EnergizerWindowsAzureBlobStorageStrategy energizerWindowsAzureBlobStorageStrategy;
+
 
 
 	/*
@@ -67,9 +79,11 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 			{
 				filePath = Config.getParameter(INVOICE_FILE_PATH_EMEA);
 
-				final File file = getInvoiceFile(filePath, erpOrderNumber);
+				//final File file = getInvoiceFile(filePath, erpOrderNumber);
+				//retVal = IOUtils.toByteArray(new FileInputStream(file));
 
-				retVal = IOUtils.toByteArray(new FileInputStream(file));
+				retVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
+
 			}
 			else
 			{
@@ -112,6 +126,58 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 				}
 			}
 		}
+		return invoiceFile;
+	}
+
+	public byte[] getInvoiceFileFromBlob(final String directoryPath, final String erpOrderNo)
+	{
+		byte[] invoiceFile = null;
+
+		if (StringUtils.isNotEmpty(erpOrderNo))
+		{
+			CloudBlobDirectory blobDirectory = null;
+			final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			final String filePath = Config.getParameter(INVOICE_FILE_PATH_EMEA);
+
+			try
+			{
+				blobDirectory = container.getDirectoryReference(filePath);
+
+				for (final ListBlobItem blobItem : blobDirectory.listBlobs())
+				{
+					System.out.println("Method--> getInvoiceFileFromBlob--->Start");
+					final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
+					System.out.println("subfullFilePath-->" + subfullFilePath);
+					final String fullFilePath = subfullFilePath.substring(8);
+					System.out.println("fullFilePath-->" + fullFilePath);
+					final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
+					System.out.println("fileName-->" + fileName);
+					if (fileName.contains(erpOrderNo))
+					{
+						System.out.println("erpOrderNo-->" + erpOrderNo);
+						CloudBlockBlob blob2;
+						blob2 = container.getBlockBlobReference(directoryPath.toString());
+						invoiceFile = blob2.downloadText().getBytes();
+						break;
+
+					}
+					System.out.println("Method--> getInvoiceFileFromBlob--->End");
+
+				}
+			}
+			catch (StorageException | URISyntaxException e)
+			{
+				// YTODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (final IOException e)
+			{
+				// YTODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
 		return invoiceFile;
 	}
 
