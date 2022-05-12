@@ -40,7 +40,6 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 	public static final String INVOICE_FILE_PATH = "invoice.filepath";
 	private static final String INVOICE_FILE_PATH_EMEA = "invoice.filepath.EMEA";
 	public static final String INVOICE_FILE_EXTENSION = ".pdf";
-	public static final String personalcarethumbnailpath = Config.getParameter("energizer.thumbnailPath");
 
 	@Resource(name = "cmsSiteService")
 	private CMSSiteService cmsSiteService;
