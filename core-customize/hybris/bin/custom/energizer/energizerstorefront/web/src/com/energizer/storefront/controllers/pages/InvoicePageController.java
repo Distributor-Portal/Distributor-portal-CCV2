@@ -15,7 +15,6 @@ package com.energizer.storefront.controllers.pages;
 
 import de.hybris.platform.b2bacceleratorfacades.order.B2BOrderFacade;
 import de.hybris.platform.cms2.exceptions.CMSItemNotFoundException;
-import de.hybris.platform.commercefacades.order.data.OrderData;
 import de.hybris.platform.util.Config;
 
 import java.io.IOException;
@@ -81,12 +80,12 @@ public class InvoicePageController extends AbstractSearchPageController
 			throws CMSItemNotFoundException, IOException
 	{
 
-		//final byte pdfFile[] = defaultInvoiceFacade.getPDFInvoiceAsBytes(this.getCmsSiteService().getCurrentSite().getUid(),
-		//invoiceNumber.trim());
+		final byte pdfFile[] = defaultInvoiceFacade.getPDFInvoiceAsBytes(this.getCmsSiteService().getCurrentSite().getUid(),
+				invoiceNumber.trim());
 
 		//final byte pdfFile[] = defaultEnergizerInvoiceService.getPDFInvoiceAsBytes(invoiceNumber);
-		final OrderData orderData = orderFacade.getOrderDetailsForCode(invoiceNumber.trim());
-		final byte pdfFile[] = getInvoiceFileFromBlob(orderData.getErpOrderNumber());
+		//final OrderData orderData = orderFacade.getOrderDetailsForCode(invoiceNumber.trim());
+		//final byte pdfFile[] = getInvoiceFileFromBlob(orderData.getErpOrderNumber());
 
 		if (null != pdfFile)
 		{

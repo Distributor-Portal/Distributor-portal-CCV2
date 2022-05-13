@@ -8,6 +8,8 @@ import de.hybris.platform.commercefacades.order.data.OrderData;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.util.Config;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -81,8 +83,8 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 				//final File file = getInvoiceFile(filePath, erpOrderNumber);
 				//retVal = IOUtils.toByteArray(new FileInputStream(file));
 
-				retVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
-
+				final DataInputStream invoiceFileretValold = getInvoiceFileFromBlob(filePath, erpOrderNumber);
+				retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretValold));
 			}
 			else
 			{
@@ -128,9 +130,9 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 		return invoiceFile;
 	}
 
-	public byte[] getInvoiceFileFromBlob(final String directoryPath, final String erpOrderNo)
+	public DataInputStream getInvoiceFileFromBlob(final String directoryPath, final String erpOrderNo)
 	{
-		byte[] invoiceFile = null;
+		DataInputStream invoiceFile = null;
 
 		if (StringUtils.isNotEmpty(erpOrderNo))
 		{
@@ -156,7 +158,10 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 						System.out.println("erpOrderNo-->" + erpOrderNo);
 						CloudBlockBlob blob2;
 						blob2 = container.getBlockBlobReference(directoryPath.toString());
-						invoiceFile = blob2.downloadText().getBytes();
+						//invoiceFile = blob2.downloadText().getBytes();
+
+						invoiceFile = new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes()));
+
 						break;
 
 					}
