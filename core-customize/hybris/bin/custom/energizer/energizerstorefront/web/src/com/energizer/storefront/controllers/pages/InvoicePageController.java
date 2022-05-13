@@ -90,6 +90,7 @@ public class InvoicePageController extends AbstractSearchPageController
 
 		if (null != pdfFile)
 		{
+
 			if (inline == null)
 			{
 				response.addHeader("Content-Disposition", "attachment;filename=" + invoiceNumber + INVOICE_FILE_EXTENSION);
@@ -103,6 +104,7 @@ public class InvoicePageController extends AbstractSearchPageController
 			{
 				response.addHeader("Content-Disposition", "attachment;filename=" + invoiceNumber + INVOICE_FILE_EXTENSION);
 			}
+			System.out.println("sucess To Load Invoice PDF");
 			final OutputStream responseOutputStream = response.getOutputStream();
 			response.setContentType(INVOICE_FILE_MIME);
 			response.setContentLength(pdfFile.length);
@@ -148,8 +150,9 @@ public class InvoicePageController extends AbstractSearchPageController
 					System.out.println("fileName-->" + fileName);
 					if (fileName.contains(erpOrderNo))
 					{
+						System.out.println("undercontain");
 						System.out.println("erpOrderNo-->" + erpOrderNo);
-						final CloudBlockBlob blob2 = container.getBlockBlobReference(FILE_PATH.toString());
+						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
 						invoiceFile = blob2.downloadText().getBytes();
 
 						break;
