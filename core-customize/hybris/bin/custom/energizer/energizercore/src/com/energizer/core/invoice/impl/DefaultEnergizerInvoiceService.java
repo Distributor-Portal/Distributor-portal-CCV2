@@ -156,9 +156,8 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 					if (fileName.contains(erpOrderNo))
 					{
 						System.out.println("erpOrderNo-->" + erpOrderNo);
-						CloudBlockBlob blob2;
-						blob2 = container.getBlockBlobReference(directoryPath.toString());
-						//invoiceFile = blob2.downloadText().getBytes();
+
+						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
 
 						invoiceFile = new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes()));
 
