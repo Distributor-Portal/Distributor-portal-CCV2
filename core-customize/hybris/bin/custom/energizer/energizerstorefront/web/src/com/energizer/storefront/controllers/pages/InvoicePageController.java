@@ -61,7 +61,7 @@ public class InvoicePageController extends AbstractSearchPageController
 
 	public static final String CONTENT_TYPE = "text/html";
 
-	public static final String filePath = Config.getParameter("azure.blob.storage.container.name");
+	public static final String FILE_PATH = Config.getParameter("invoice.filepath.EMEA");
 
 
 	@Resource(name = "defaultInvoiceFacade")
@@ -132,10 +132,10 @@ public class InvoicePageController extends AbstractSearchPageController
 			CloudBlobDirectory blobDirectory = null;
 			final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
 
-			System.out.println("filePath--->" + filePath);
+			System.out.println("filePath--->" + FILE_PATH);
 			try
 			{
-				blobDirectory = container.getDirectoryReference(filePath);
+				blobDirectory = container.getDirectoryReference(FILE_PATH);
 
 				for (final ListBlobItem blobItem : blobDirectory.listBlobs())
 				{
@@ -149,8 +149,9 @@ public class InvoicePageController extends AbstractSearchPageController
 					if (fileName.contains(erpOrderNo))
 					{
 						System.out.println("erpOrderNo-->" + erpOrderNo);
-						final CloudBlockBlob blob2 = container.getBlockBlobReference(filePath.toString());
+						final CloudBlockBlob blob2 = container.getBlockBlobReference(FILE_PATH.toString());
 						invoiceFile = blob2.downloadText().getBytes();
+
 						break;
 
 					}
