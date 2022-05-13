@@ -13,6 +13,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 
 import javax.annotation.Resource;
@@ -83,8 +84,8 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 				//final File file = getInvoiceFile(filePath, erpOrderNumber);
 				//retVal = IOUtils.toByteArray(new FileInputStream(file));
 
-				final DataInputStream invoiceFileretValold = getInvoiceFileFromBlob(filePath, erpOrderNumber);
-				retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretValold));
+				final InputStream invoiceFileretVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
+				retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretVal));
 			}
 			else
 			{
@@ -130,9 +131,10 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 		return invoiceFile;
 	}
 
-	public DataInputStream getInvoiceFileFromBlob(final String directoryPath, final String erpOrderNo)
+	public InputStream getInvoiceFileFromBlob(final String directoryPath, final String erpOrderNo)
 	{
-		DataInputStream invoiceFile = null;
+
+		InputStream invoiceFile = null;
 
 		if (StringUtils.isNotEmpty(erpOrderNo))
 		{
