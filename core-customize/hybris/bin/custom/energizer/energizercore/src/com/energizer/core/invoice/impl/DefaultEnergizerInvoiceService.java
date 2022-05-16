@@ -86,14 +86,19 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 
 				final InputStream invoiceFileretVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
 				retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretVal));
+
+				System.out.println(
+						"IN getPDFFromFilePath  for EMEA  retVal.toString() " + retVal.length + " ---- > " + retVal.toString());
 			}
 			else
 			{
 				retVal = IOUtils.toByteArray(new FileInputStream(new File(filePath + erpOrderNumber + INVOICE_FILE_EXTENSION)));
+				System.out.println("IN getPDFFromFilePath  for LATAM  retVal.toString() ---- > " + retVal.toString());
 			}
 		}
 		catch (final IOException ex)
 		{
+			System.out.println("ERROR IN getPDFFromFilePath  \" + retVal.length + \" ---------->   " + ex.getStackTrace());
 			retVal = null;
 		}
 		return retVal;
@@ -162,6 +167,9 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
 
 						invoiceFile = new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes()));
+
+						System.out.println("blob2.downloadText().getBytes -->" + blob2.downloadText().getBytes());
+						System.out.println("invoiceFile.toString()  -->" + invoiceFile.toString());
 
 						break;
 
