@@ -9,6 +9,7 @@ import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.util.Config;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -167,8 +168,10 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
 
 						invoiceFile = new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes()));
-
+						final ByteArrayOutputStream byteArrayOutputStreem = new ByteArrayOutputStream();
+						blob2.download(byteArrayOutputStreem);
 						System.out.println("blob2.downloadText().getBytes -->" + blob2.downloadText().getBytes());
+						//System.out.println("blob2.downloadText().getBytes -->" + blob2.download(byteArrayOutputStreem));
 						System.out.println("invoiceFile.toString()  -->" + invoiceFile.toString());
 
 						break;
