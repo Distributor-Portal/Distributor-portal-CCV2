@@ -8,8 +8,6 @@ import de.hybris.platform.commercefacades.order.data.OrderData;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.util.Config;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -83,12 +81,12 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 				filePath = Config.getParameter(INVOICE_FILE_PATH_EMEA);
 
 				//final File file = getInvoiceFile(filePath, erpOrderNumber);
-				final File file = getInvoiceFileFrom(filePath, erpOrderNumber);
+				//final File file = getInvoiceFileFrom(filePath, erpOrderNumber);
 
-				retVal = IOUtils.toByteArray(new FileInputStream(file));
+				//	retVal = IOUtils.toByteArray(new FileInputStream(file));
 
-				//final InputStream invoiceFileretVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
-				//retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretVal));
+				final InputStream invoiceFileretVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
+				retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretVal));
 
 				System.out.println(
 						"IN getPDFFromFilePath  for EMEA  retVal.toString() " + retVal.length + " ---- > " + retVal.toString());
@@ -141,7 +139,7 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 
 	public File getInvoiceFileFrom(final String directoryPath, final String erpOrderNo)
 	{
-		File invoiceFile = null;
+		final File invoiceFile = null;
 		if (StringUtils.isNotEmpty(erpOrderNo))
 		{
 			//final File directory = new File(directoryPath);
@@ -172,7 +170,10 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 
 						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
 						//	File f = new File(blob2.downloadText());
-						invoiceFile = new File(blob2.downloadText());
+						//invoiceFile = new File(blob2.downloadText());
+						//invoiceFile = blob2.download(new FileOutputStream(fileName);
+
+
 
 						break;
 
@@ -182,11 +183,6 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 				}
 			}
 			catch (StorageException | URISyntaxException e)
-			{
-				// YTODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (final IOException e)
 			{
 				// YTODO Auto-generated catch block
 				e.printStackTrace();
@@ -228,9 +224,11 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 
 						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
 
-						invoiceFile = new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes()));
-						final ByteArrayOutputStream byteArrayOutputStreem = new ByteArrayOutputStream();
-						blob2.download(byteArrayOutputStreem);
+						invoiceFile = new DataInputStream(blob2.getSnapshotQualifiedUri().toURL().openStream());
+
+
+						//	final ByteArrayOutputStream byteArrayOutputStreem = new ByteArrayOutputStream();
+						//blob2.download(byteArrayOutputStreem);
 						System.out.println("blob2.downloadText().getBytes -->" + blob2.downloadText().getBytes());
 						//System.out.println("blob2.downloadText().getBytes -->" + blob2.download(byteArrayOutputStreem));
 						System.out.println("invoiceFile.toString()  -->" + invoiceFile.toString());
