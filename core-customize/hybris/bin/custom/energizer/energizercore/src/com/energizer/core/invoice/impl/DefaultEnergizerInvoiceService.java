@@ -83,10 +83,12 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 				filePath = Config.getParameter(INVOICE_FILE_PATH_EMEA);
 
 				//final File file = getInvoiceFile(filePath, erpOrderNumber);
-				//retVal = IOUtils.toByteArray(new FileInputStream(file));
+				final File file = getInvoiceFileFrom(filePath, erpOrderNumber);
 
-				final InputStream invoiceFileretVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
-				retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretVal));
+				retVal = IOUtils.toByteArray(new FileInputStream(file));
+
+				//final InputStream invoiceFileretVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
+				//retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretVal));
 
 				System.out.println(
 						"IN getPDFFromFilePath  for EMEA  retVal.toString() " + retVal.length + " ---- > " + retVal.toString());
@@ -133,6 +135,65 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 					break;
 				}
 			}
+		}
+		return invoiceFile;
+	}
+
+	public File getInvoiceFileFrom(final String directoryPath, final String erpOrderNo)
+	{
+		File invoiceFile = null;
+		if (StringUtils.isNotEmpty(erpOrderNo))
+		{
+			//final File directory = new File(directoryPath);
+			//get all the files from a directory
+			//final File[] fList = directory.listFiles();
+
+
+			CloudBlobDirectory blobDirectory = null;
+			final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			final String filePath = Config.getParameter(INVOICE_FILE_PATH_EMEA);
+
+			try
+			{
+				blobDirectory = container.getDirectoryReference(filePath);
+
+				for (final ListBlobItem blobItem : blobDirectory.listBlobs())
+				{
+					System.out.println("Method--> getInvoiceFileFromBlob--->Start");
+					final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
+					System.out.println("subfullFilePath-->" + subfullFilePath);
+					final String fullFilePath = subfullFilePath.substring(8);
+					System.out.println("fullFilePath-->" + fullFilePath);
+					final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
+					System.out.println("fileName-->" + fileName);
+					if (fileName.contains(erpOrderNo))
+					{
+						System.out.println("erpOrderNo-->" + erpOrderNo);
+
+						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
+						//	File f = new File(blob2.downloadText());
+						invoiceFile = new File(blob2.downloadText());
+
+						break;
+
+					}
+					System.out.println("Method--> getInvoiceFileFromBlob--->End");
+
+				}
+			}
+			catch (StorageException | URISyntaxException e)
+			{
+				// YTODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (final IOException e)
+			{
+				// YTODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+
 		}
 		return invoiceFile;
 	}
