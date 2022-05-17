@@ -80,11 +80,6 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 			{
 				filePath = Config.getParameter(INVOICE_FILE_PATH_EMEA);
 
-				//final File file = getInvoiceFile(filePath, erpOrderNumber);
-				//final File file = getInvoiceFileFrom(filePath, erpOrderNumber);
-
-				//	retVal = IOUtils.toByteArray(new FileInputStream(file));
-
 				final InputStream invoiceFileretVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
 				retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretVal));
 
@@ -137,63 +132,6 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 		return invoiceFile;
 	}
 
-	public File getInvoiceFileFrom(final String directoryPath, final String erpOrderNo)
-	{
-		final File invoiceFile = null;
-		if (StringUtils.isNotEmpty(erpOrderNo))
-		{
-			//final File directory = new File(directoryPath);
-			//get all the files from a directory
-			//final File[] fList = directory.listFiles();
-
-
-			CloudBlobDirectory blobDirectory = null;
-			final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
-			final String filePath = Config.getParameter(INVOICE_FILE_PATH_EMEA);
-
-			try
-			{
-				blobDirectory = container.getDirectoryReference(filePath);
-
-				for (final ListBlobItem blobItem : blobDirectory.listBlobs())
-				{
-					System.out.println("Method--> getInvoiceFileFromBlob--->Start");
-					final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
-					System.out.println("subfullFilePath-->" + subfullFilePath);
-					final String fullFilePath = subfullFilePath.substring(8);
-					System.out.println("fullFilePath-->" + fullFilePath);
-					final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
-					System.out.println("fileName-->" + fileName);
-					if (fileName.contains(erpOrderNo))
-					{
-						System.out.println("erpOrderNo-->" + erpOrderNo);
-
-						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
-						//	File f = new File(blob2.downloadText());
-						//invoiceFile = new File(blob2.downloadText());
-						//invoiceFile = blob2.download(new FileOutputStream(fileName);
-
-
-
-						break;
-
-					}
-					System.out.println("Method--> getInvoiceFileFromBlob--->End");
-
-				}
-			}
-			catch (StorageException | URISyntaxException e)
-			{
-				// YTODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-
-
-		}
-		return invoiceFile;
-	}
-
 	public InputStream getInvoiceFileFromBlob(final String directoryPath, final String erpOrderNo)
 	{
 
@@ -211,32 +149,19 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 
 				for (final ListBlobItem blobItem : blobDirectory.listBlobs())
 				{
-					System.out.println("Method--> getInvoiceFileFromBlob--->Start");
+
 					final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
-					System.out.println("subfullFilePath-->" + subfullFilePath);
+
 					final String fullFilePath = subfullFilePath.substring(8);
-					System.out.println("fullFilePath-->" + fullFilePath);
+
 					final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
-					System.out.println("fileName-->" + fileName);
+
 					if (fileName.contains(erpOrderNo))
 					{
-						System.out.println("erpOrderNo-->" + erpOrderNo);
-
 						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
-
 						invoiceFile = new DataInputStream(blob2.getSnapshotQualifiedUri().toURL().openStream());
-
-
-						//	final ByteArrayOutputStream byteArrayOutputStreem = new ByteArrayOutputStream();
-						//blob2.download(byteArrayOutputStreem);
-						System.out.println("blob2.downloadText().getBytes -->" + blob2.downloadText().getBytes());
-						//System.out.println("blob2.downloadText().getBytes -->" + blob2.download(byteArrayOutputStreem));
-						System.out.println("invoiceFile.toString()  -->" + invoiceFile.toString());
-
 						break;
-
 					}
-					System.out.println("Method--> getInvoiceFileFromBlob--->End");
 
 				}
 			}
