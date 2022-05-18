@@ -63,7 +63,7 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 	public byte[] getPDFInvoiceAsBytes(final OrderData orderData)
 	{
 		// YTODO Auto-generated method stub
-		System.out.println("EntergetPDFInvoiceAsBytes");
+		System.out.println("EntergetPDFInvoiceAsBytes2");
 		return getPDFFromFilePath(orderData.getErpOrderNumber());
 	}
 
