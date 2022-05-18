@@ -35,15 +35,19 @@ public class DefaultEnergizerInvoiceFacade implements EnergizerInvoiceFacade
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.energizer.facades.order.EnergizerInvoiceFacade#getPDFInvoiceAsBytes(java.lang.String)
 	 */
 	@Override
 	public byte[] getPDFInvoiceAsBytes(final String siteUid, final String orderNumber)
 	{
+		System.out.println("EntergetPDFInvoiceAsBytes");
+
 		final OrderData orderData = orderFacade.getOrderDetailsForCode(orderNumber);
 		try
 		{
+			System.out.println("EnterorderNumber");
+
 			final String PERSONALCARE_EMEA = getConfigValue("site.personalCareEMEA");
 
 			if (PERSONALCARE_EMEA.equalsIgnoreCase(siteUid))

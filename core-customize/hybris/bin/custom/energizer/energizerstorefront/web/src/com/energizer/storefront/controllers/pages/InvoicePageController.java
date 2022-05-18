@@ -20,13 +20,11 @@ import de.hybris.platform.util.Config;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.URISyntaxException;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,11 +35,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
 import com.energizer.facades.order.impl.DefaultEnergizerInvoiceFacade;
 import com.energizer.storefront.annotations.RequireHardLogIn;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlobDirectory;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.ListBlobItem;
 
 
 /**
@@ -79,13 +72,10 @@ public class InvoicePageController extends AbstractSearchPageController
 	final Boolean inline, final Model model, final HttpServletRequest request, final HttpServletResponse response)
 			throws CMSItemNotFoundException, IOException
 	{
+		System.out.println("EnterinvoicePdfDisplay");
 
 		final byte pdfFile[] = defaultInvoiceFacade.getPDFInvoiceAsBytes(this.getCmsSiteService().getCurrentSite().getUid(),
 				invoiceNumber.trim());
-
-		//final byte pdfFile[] = defaultEnergizerInvoiceService.getPDFInvoiceAsBytes(invoiceNumber);
-		//final OrderData orderData = orderFacade.getOrderDetailsForCode(invoiceNumber.trim());
-		//final byte pdfFile[] = getInvoiceFileFromBlob(orderData.getErpOrderNumber());
 
 		if (null != pdfFile)
 		{
@@ -103,7 +93,7 @@ public class InvoicePageController extends AbstractSearchPageController
 			{
 				response.addHeader("Content-Disposition", "attachment;filename=" + invoiceNumber + INVOICE_FILE_EXTENSION);
 			}
-			System.out.println("sucess To Load Invoice PDF");
+
 			final OutputStream responseOutputStream = response.getOutputStream();
 			response.setContentType(INVOICE_FILE_MIME);
 			response.setContentLength(pdfFile.length);
@@ -121,66 +111,6 @@ public class InvoicePageController extends AbstractSearchPageController
 			pw.println("</body></html>");
 		}
 
-
 	}
-
-	public byte[] getInvoiceFileFromBlob(final String erpOrderNo)
-	{
-		byte[] invoiceFile = null;
-		System.out.println("erpOrderNo--->" + erpOrderNo);
-		if (StringUtils.isNotEmpty(erpOrderNo))
-		{
-			CloudBlobDirectory blobDirectory = null;
-			final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
-
-			System.out.println("filePath--->" + FILE_PATH);
-			try
-			{
-				blobDirectory = container.getDirectoryReference(FILE_PATH);
-
-				for (final ListBlobItem blobItem : blobDirectory.listBlobs())
-				{
-					System.out.println("Method--> getInvoiceFileFromBlob--->Start");
-					final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
-					System.out.println("subfullFilePath-->" + subfullFilePath);
-					final String fullFilePath = subfullFilePath.substring(8);
-					System.out.println("fullFilePath-->" + fullFilePath);
-					final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
-					System.out.println("fileName-->" + fileName);
-					if (fileName.contains(erpOrderNo))
-					{
-						System.out.println("undercontain");
-						System.out.println("erpOrderNo-->" + erpOrderNo);
-						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
-						invoiceFile = blob2.downloadText().getBytes();
-
-						break;
-
-					}
-					System.out.println("Method--> getInvoiceFileFromBlob--->End");
-
-				}
-			}
-			catch (StorageException | URISyntaxException e)
-			{
-				// YTODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (final IOException e)
-			{
-				// YTODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-
-		return invoiceFile;
-	}
-
-
-
-
-
-
 
 }

@@ -63,12 +63,13 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 	public byte[] getPDFInvoiceAsBytes(final OrderData orderData)
 	{
 		// YTODO Auto-generated method stub
-
+		System.out.println("EntergetPDFInvoiceAsBytes");
 		return getPDFFromFilePath(orderData.getErpOrderNumber());
 	}
 
 	private byte[] getPDFFromFilePath(final String erpOrderNumber)
 	{
+		System.out.println("EntergetPDFFromFilePath");
 		byte retVal[] = null;
 		try
 		{
@@ -82,19 +83,14 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 
 				final InputStream invoiceFileretVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
 				retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretVal));
-
-				System.out.println(
-						"IN getPDFFromFilePath  for EMEA  retVal.toString() " + retVal.length + " ---- > " + retVal.toString());
 			}
 			else
 			{
 				retVal = IOUtils.toByteArray(new FileInputStream(new File(filePath + erpOrderNumber + INVOICE_FILE_EXTENSION)));
-				System.out.println("IN getPDFFromFilePath  for LATAM  retVal.toString() ---- > " + retVal.toString());
 			}
 		}
 		catch (final IOException ex)
 		{
-			System.out.println("ERROR IN getPDFFromFilePath  \" + retVal.length + \" ---------->   " + ex.getStackTrace());
 			retVal = null;
 		}
 		return retVal;
@@ -134,6 +130,7 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 
 	public InputStream getInvoiceFileFromBlob(final String directoryPath, final String erpOrderNo)
 	{
+		System.out.println("EntergetInvoiceFileFromBlob");
 
 		InputStream invoiceFile = null;
 
