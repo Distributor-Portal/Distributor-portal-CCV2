@@ -72,7 +72,6 @@ public class InvoicePageController extends AbstractSearchPageController
 	final Boolean inline, final Model model, final HttpServletRequest request, final HttpServletResponse response)
 			throws CMSItemNotFoundException, IOException
 	{
-		System.out.println("EnterinvoicePdfDisplay");
 
 		final byte pdfFile[] = defaultInvoiceFacade.getPDFInvoiceAsBytes(this.getCmsSiteService().getCurrentSite().getUid(),
 				invoiceNumber.trim());

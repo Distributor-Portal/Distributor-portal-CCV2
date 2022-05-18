@@ -41,17 +41,7 @@ public class DefaultEnergizerInvoiceFacade implements EnergizerInvoiceFacade
 	@Override
 	public byte[] getPDFInvoiceAsBytes(final String siteUid, final String orderNumber)
 	{
-		System.out.println("EntergetPDFInvoiceAsBytes");
-		System.out.println("orderNumber-->" + orderNumber);
 		final OrderData orderData = orderFacade.getOrderDetailsForCode(orderNumber);
-		if (orderData.getErpOrderNumber().isEmpty())
-		{
-			System.out.println("getErpOrderNumber-->empty");
-		}
-		else
-		{
-			System.out.println("getErpOrderNumber-->" + orderData.getErpOrderNumber());
-		}
 
 		try
 		{

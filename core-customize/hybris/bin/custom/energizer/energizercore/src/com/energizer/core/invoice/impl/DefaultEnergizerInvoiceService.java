@@ -63,13 +63,11 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 	public byte[] getPDFInvoiceAsBytes(final OrderData orderData)
 	{
 		// YTODO Auto-generated method stub
-		System.out.println("EntergetPDFInvoiceAsBytes2");
 		return getPDFFromFilePath(orderData.getErpOrderNumber());
 	}
 
 	private byte[] getPDFFromFilePath(final String erpOrderNumber)
 	{
-		System.out.println("EntergetPDFFromFilePath");
 		byte retVal[] = null;
 		try
 		{
@@ -130,7 +128,6 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 
 	public InputStream getInvoiceFileFromBlob(final String directoryPath, final String erpOrderNo)
 	{
-		System.out.println("EntergetInvoiceFileFromBlob");
 
 		InputStream invoiceFile = null;
 
