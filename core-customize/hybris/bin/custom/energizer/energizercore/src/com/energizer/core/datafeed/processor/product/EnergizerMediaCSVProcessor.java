@@ -149,8 +149,6 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 
 			}
 
-
-
 			final CatalogVersionModel catalogVersion = getCatalogVersion(cronjob);
 
 			Map<String, String> csvValuesMap = null;
@@ -159,7 +157,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 			cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
 
 			final CloudBlobDirectory blobDirectoryForPersonalCareThumbNailPath = energizerMediaProcessor
-					.getBlobDirectoryPersonalCareThumbNailPath();
+					.getBlobDirectoryPersonalCareThumbNailPath(thumbnailPath);
 
 			for (final ListBlobItem blobItemPCNP : blobDirectoryForPersonalCareThumbNailPath.listBlobs())
 			{
@@ -518,6 +516,10 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 	private String cleanUp(final String fileName, final boolean mediaSaved, final String thumbnailPath,
 			final String displayImagePath, final String ext, final CloudBlobContainer cloudBlobContainer)
 	{
+
+		final String thumbnailPathNew = StringUtils.substringBefore(thumbnailPath, "/toProcess");
+		final String displayImagePathNew = StringUtils.substringBefore(displayImagePath, "/toProcess");
+
 		if (mediaSaved)
 		{
 			try
@@ -526,7 +528,10 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 
 				final String thumbnailSourcePathS = thumbnailPath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
 						+ "_2" + "." + ext;
-				final String thumbnailTargetPathS = thumbnailPath + fileSeperator + ProcessedWithNoErrors + fileSeperator
+
+
+
+				final String thumbnailTargetPathS = thumbnailPathNew + fileSeperator + ProcessedWithNoErrors + fileSeperator
 						+ fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext;
 
 				final CloudBlockBlob thumbnailSourceBlobS = cloudBlobContainer.getBlockBlobReference(thumbnailSourcePathS);
@@ -534,12 +539,13 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 				final CloudBlockBlob thumbnailTargetBlobS = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathS);
 
 				thumbnailTargetBlobS.startCopy(thumbnailSourceBlobS.getSnapshotQualifiedUri());
+				thumbnailSourceBlobS.delete();
 
 				//DisplayImg
 				final String displayImgSourcePathS = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
 						+ "_1" + "." + ext;
 
-				final String displayImgTargetPathS = displayImagePath + fileSeperator + ProcessedWithNoErrors + fileSeperator
+				final String displayImgTargetPathS = displayImagePathNew + fileSeperator + ProcessedWithNoErrors + fileSeperator
 						+ fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext;
 
 
@@ -548,7 +554,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 				final CloudBlockBlob displayImgTargetBlobS = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathS);
 
 				displayImgTargetBlobS.startCopy(displayImgSourceBlobS.getSnapshotQualifiedUri());
-
+				displayImgSourceBlobS.delete();
 
 				return "processed";
 			}
@@ -566,7 +572,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 
 				final String thumbnailSourcePathE = thumbnailPath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
 						+ "_2" + "." + ext;
-				final String thumbnailTargetPathE = thumbnailPath + fileSeperator + ErrorFiles + fileSeperator
+				final String thumbnailTargetPathE = thumbnailPathNew + fileSeperator + ErrorFiles + fileSeperator
 						+ fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext;
 
 				final CloudBlockBlob thumbnailSourceBlobE = cloudBlobContainer.getBlockBlobReference(thumbnailSourcePathE);
@@ -574,12 +580,12 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 				final CloudBlockBlob thumbnailTargetBlobE = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathE);
 
 				thumbnailTargetBlobE.startCopy(thumbnailSourceBlobE.getSnapshotQualifiedUri());
-
+				thumbnailTargetBlobE.delete();
 				//DisplayImgE
 				final String displayImgSourcePathE = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
 						+ "_1" + "." + ext;
 
-				final String displayImgTargetPathE = displayImagePath + fileSeperator + ErrorFiles + fileSeperator
+				final String displayImgTargetPathE = displayImagePathNew + fileSeperator + ErrorFiles + fileSeperator
 						+ fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext;
 
 
@@ -588,7 +594,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 				final CloudBlockBlob displayImgTargetBlobE = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathE);
 
 				displayImgTargetBlobE.startCopy(displayImgSourceBlobE.getSnapshotQualifiedUri());
-
+				displayImgTargetBlobE.delete();
 				return "error";
 			}
 			catch (final Exception e)

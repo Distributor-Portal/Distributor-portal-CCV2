@@ -361,7 +361,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 	}
 
 
-	public CloudBlobDirectory getBlobDirectoryPersonalCareThumbNailPath()
+	public CloudBlobDirectory getBlobDirectoryPersonalCareThumbNailPath(final String thumbnailpath)
 	{
 
 		CloudBlobDirectory blobDirectory = null;
@@ -369,7 +369,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 		try
 		{
 			final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
-			blobDirectory = container.getDirectoryReference(personalcarethumbnailpath);
+			blobDirectory = container.getDirectoryReference(thumbnailpath);
 			return blobDirectory;
 
 		}
