@@ -22,7 +22,6 @@ import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.util.Config;
 
-import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -423,7 +422,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 		try
 		{
 			blob2 = cloudBlobContainer.getBlockBlobReference(fileLoc.toString());
-			mediaInputStream = new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes()));
+			mediaInputStream = new DataInputStream(blob2.getSnapshotQualifiedUri().toURL().openStream());
 		}
 		catch (final FileNotFoundException e1)
 		{
