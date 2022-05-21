@@ -35,11 +35,11 @@
 				<cms:component component="${links}"/>
 			</cms:pageSlot>
 
- <c:if test="${contentPageId ne 'login'}" >
+ 		<%--<c:if test="${contentPageId ne 'login'}" >--%>
 			<cms:pageSlot position="MiniCart" var="cart" limit="1">
 				<cms:component component="${cart}" element="li" class="miniCart" />
 			</cms:pageSlot>
-			</c:if>
+			<%--</c:if>--%>
 		</ul>
 	</div>
 	
