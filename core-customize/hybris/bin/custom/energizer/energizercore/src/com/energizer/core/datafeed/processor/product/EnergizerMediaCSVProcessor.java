@@ -233,10 +233,10 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 							}
 							mediaSaved = true;
 
+							LOG.info("****************** ProductMediaModel updated successfully for image ref Id : " + imgRefId
+									+ "****************** ");
 						}
 
-						LOG.info("****************** ProductMediaModel updated successfully for image ref Id : " + imgRefId
-								+ "****************** ");
 						// how many image files are processed so far
 						imagesProceesed = imagesProceesed + 1;
 
