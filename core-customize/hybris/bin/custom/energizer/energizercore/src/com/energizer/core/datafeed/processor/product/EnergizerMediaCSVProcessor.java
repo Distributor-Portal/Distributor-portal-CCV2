@@ -538,7 +538,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 				final CloudBlockBlob thumbnailTargetBlobS = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathS);
 
 				thumbnailTargetBlobS.startCopy(thumbnailSourceBlobS.getSnapshotQualifiedUri());
-				thumbnailSourceBlobS.delete();
+				//thumbnailSourceBlobS.delete();
 
 				//DisplayImg
 				final String displayImgSourcePathS = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
@@ -553,7 +553,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 				final CloudBlockBlob displayImgTargetBlobS = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathS);
 
 				displayImgTargetBlobS.startCopy(displayImgSourceBlobS.getSnapshotQualifiedUri());
-				displayImgSourceBlobS.delete();
+				//	displayImgSourceBlobS.delete();
 
 				return "processed";
 			}
