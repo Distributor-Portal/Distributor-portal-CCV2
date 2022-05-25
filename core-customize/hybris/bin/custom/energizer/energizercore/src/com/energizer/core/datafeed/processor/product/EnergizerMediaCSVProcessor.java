@@ -23,8 +23,6 @@ import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.util.Config;
 
 import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -292,101 +290,6 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 		return new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
 	}
 
-	/**
-	 *
-	 * @param energizerProd
-	 * @param catalogVersion
-	 * @param csvValuesMap
-	 * @throws FileNotFoundException
-	 */
-	private void addUpdateProductMediaDetails(final EnergizerProductModel energizerProd, final CatalogVersionModel catalogVersion,
-			final Map<String, String> csvValuesMap) throws FileNotFoundException
-	{
-		final String productMaterialId = csvValuesMap.get(EnergizerCoreConstants.ERPMATERIAL_ID).toString().trim();
-		final String thumbnailPath = csvValuesMap.get(EnergizerCoreConstants.THUMBNAIIL_PATH).toString().trim();
-		final String displayImagePath = csvValuesMap.get(EnergizerCoreConstants.DISPLAY_IMAGE_PATH).toString().trim();
-
-		energizerProd.setCode(productMaterialId);
-		energizerProd.setCatalogVersion(catalogVersion);
-		energizerProd.setApprovalStatus(ArticleApprovalStatus.APPROVED);
-
-		final MediaModel mediaThumbnail = createUploadProductMedia(thumbnailPath, productMaterialId.concat(aTHUMB),
-				PRD_THUMB_QUALIFIER, catalogVersion, productMaterialId);
-		final MediaModel mediaPicture = createUploadProductMedia(displayImagePath, productMaterialId.concat(aPICS),
-				PRD_IMG_QUALIFIER, catalogVersion, productMaterialId);
-
-		energizerProd.setThumbnail(mediaThumbnail);
-		energizerProd.setPicture(mediaPicture);
-		LOG.info("Flag Value ::: " + modelService.isModified(energizerProd));
-		LOG.info("Is New ::: " + modelService.isNew(energizerProd));
-		modelService.saveAll();
-	}
-
-	/**
-	 *
-	 * @param fileLoc
-	 * @param mediaModelCode
-	 * @param mediaQualifier
-	 * @param catalogVersion
-	 * @param productMaterialId
-	 * @return
-	 * @throws FileNotFoundException
-	 */
-	private MediaModel createUploadProductMedia(final String fileLoc, final String mediaModelCode, final String mediaQualifier,
-			final CatalogVersionModel catalogVersion, final String productMaterialId) throws FileNotFoundException
-	{
-		final InputStream mediaInputStream = new FileInputStream(new File(fileLoc));
-
-		// Creating or Updating  Media
-		MediaModel mediaModel = null;
-		try
-		{
-			mediaModel = mediaService.getMedia(catalogVersion, mediaModelCode);
-		}
-		catch (final Exception e)
-		{
-			LOG.error(" Media does not exist for Product Media " + mediaModelCode + " || " + e);
-		}
-
-		if (null == mediaModel)
-		{
-			mediaModel = modelService.create(MediaModel.class);
-			final MediaFormatModel format = mediaService.getFormat(mediaQualifier);
-			mediaModel.setCode(mediaModelCode);
-			mediaModel.setMediaFormat(format);
-			mediaModel.setCatalogVersion(catalogVersion);
-		}
-		modelService.save(mediaModel);
-		mediaService.setStreamForMedia(mediaModel, mediaInputStream);
-
-		// Creating or Updating  mediaContainer and add media
-		MediaContainerModel mediaContainer = null;
-		final String mediaContainerQualifier = productMaterialId.concat("_mediaContainer");
-		try
-		{
-			mediaContainer = mediaContainerService.getMediaContainerForQualifier(mediaContainerQualifier);
-		}
-		catch (final Exception e)
-		{
-			LOG.error(mediaContainerQualifier + " mediaContainer not exist" + e);
-		}
-
-		if (mediaContainer == null)
-		{
-			mediaContainer = modelService.create(MediaContainerModel.class);
-			mediaContainer.setQualifier(mediaContainerQualifier);
-			mediaContainer.setCatalogVersion(catalogVersion);
-			modelService.save(mediaContainer);
-		}
-		mediaContainerService.addMediaToContainer(mediaContainer, Collections.singletonList(mediaModel));
-
-		LOG.info(mediaModelCode + " mediaModel Saved Successfully *************");
-
-		return mediaModel;
-
-	}
-
-
 	private void addUpdateProductMediaDetailsFromBlobStorage(final EnergizerProductModel energizerProd,
 			final CatalogVersionModel catalogVersion, final Map<String, String> csvValuesMap,
 			final CloudBlobContainer cloudBlobContainer) throws FileNotFoundException, URISyntaxException
@@ -483,6 +386,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 		}
 		mediaContainerService.addMediaToContainer(mediaContainer, Collections.singletonList(mediaModel));
 
+		LOG.info("mediaModelCode-->" + mediaModelCode);
 		LOG.info(mediaModelCode + " mediaModel Saved Successfully *************");
 
 		return mediaModel;
@@ -553,7 +457,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 				final CloudBlockBlob displayImgTargetBlobS = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathS);
 
 				displayImgTargetBlobS.startCopy(displayImgSourceBlobS.getSnapshotQualifiedUri());
-				//	displayImgSourceBlobS.delete();
+				//displayImgSourceBlobS.delete();
 
 				return "processed";
 			}
@@ -579,7 +483,8 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 				final CloudBlockBlob thumbnailTargetBlobE = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathE);
 
 				thumbnailTargetBlobE.startCopy(thumbnailSourceBlobE.getSnapshotQualifiedUri());
-				thumbnailSourceBlobE.delete();
+				//thumbnailSourceBlobE.delete();
+
 				//DisplayImgE
 				final String displayImgSourcePathE = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
 						+ "_1" + "." + ext;
@@ -593,7 +498,8 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 				final CloudBlockBlob displayImgTargetBlobE = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathE);
 
 				displayImgTargetBlobE.startCopy(displayImgSourceBlobE.getSnapshotQualifiedUri());
-				displayImgSourceBlobE.delete();
+				//displayImgSourceBlobE.delete();
+
 				return "error";
 			}
 			catch (final Exception e)
