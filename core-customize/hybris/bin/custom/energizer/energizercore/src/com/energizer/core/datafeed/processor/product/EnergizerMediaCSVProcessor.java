@@ -324,7 +324,12 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 		InputStream mediaInputStream = null;
 		try
 		{
+
+			LOG.info("fileLoc ::: " + fileLoc);
+			LOG.info("fileLoc.toString() ::: " + fileLoc.toString());
+
 			blob2 = cloudBlobContainer.getBlockBlobReference(fileLoc.toString());
+
 			mediaInputStream = new DataInputStream(blob2.getSnapshotQualifiedUri().toURL().openStream());
 		}
 		catch (final FileNotFoundException e1)
