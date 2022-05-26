@@ -48,7 +48,37 @@
         {
             "key": "lang.packs",
             "value": "en,es"
-        }
+        },
+		{
+		  "key": "build.development.mode",
+		  "value": "true",
+		  "persona": "development"
+		},
+		{
+		  "key": "build.development.mode",
+		  "value": "false",
+		  "persona": "staging"
+		},
+		{
+		  "key": "build.development.mode",
+		  "value": "false",
+		  "persona": "production"
+		},
+		{
+		  "key": "installed.tenants",
+		  "value": "junit",
+		  "persona": "development"
+		},
+		{
+		  "key": "installed.tenants",
+		  "value": "",
+		  "persona": "staging"
+		},
+		{
+		  "key": "installed.tenants",
+		  "value": "",
+		  "persona": "production"
+		}
     ],
     "storefrontAddons": [        
         
@@ -69,6 +99,10 @@
                 {
                     "name": "backoffice",
                     "contextPath": "/backoffice"
+                },
+                {
+                    "key": "build.development.mode",
+                    "value": "false"
                 }			
             ]
         },
@@ -94,6 +128,14 @@
                 {
                     "key": "storefrontContextRoot",
                     "value": ""
+                },
+                {
+                    "key": "build.development.mode",
+                    "value": "false"
+                },
+                {
+                    "key": "storefront.wro4j.enabled",
+                    "value": "true"
                 }
 				
             ],
@@ -126,7 +168,11 @@
 				{
 					"key":"cluster.node.groups",
 					"value":"integration,yHotfolderCandidate"
-				}
+				},
+                {
+                    "key": "build.development.mode",
+                    "value": "false"
+                }
 			],
             "webapps": [
                 {
@@ -153,7 +199,11 @@
 				{
 				  "key": "storefrontContextRoot",
 				  "value": ""
-				}
+				},
+                {
+                    "key": "build.development.mode",
+                    "value": "false"
+                }
             ],
             "webapps": [
                 {
