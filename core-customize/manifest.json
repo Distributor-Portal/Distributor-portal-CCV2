@@ -99,12 +99,8 @@
                 {
                     "name": "backoffice",
                     "contextPath": "/backoffice"
-                },
-                {
-                    "key": "build.development.mode",
-                    "value": "false"
-                }			
-            ]
+                }
+			]
         },
         {
             "name": "accstorefront",
