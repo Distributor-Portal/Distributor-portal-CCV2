@@ -41,6 +41,9 @@ public class DefaultEnergizerInvoiceFacade implements EnergizerInvoiceFacade
 	@Override
 	public byte[] getPDFInvoiceAsBytes(final String siteUid, final String orderNumber)
 	{
+		System.out.println("Enter in getPDFInvoiceAsBytes method ");
+		System.out.println("orderNumber-->" + orderNumber);
+
 		final OrderData orderData = orderFacade.getOrderDetailsForCode(orderNumber);
 
 		try
@@ -50,6 +53,7 @@ public class DefaultEnergizerInvoiceFacade implements EnergizerInvoiceFacade
 
 			if (PERSONALCARE_EMEA.equalsIgnoreCase(siteUid))
 			{
+				System.out.println("Enter in personalCareEMEA");
 				return (defaultEnergizerInvoiceService.getPDFInvoiceAsBytes(orderData));
 			}
 			else

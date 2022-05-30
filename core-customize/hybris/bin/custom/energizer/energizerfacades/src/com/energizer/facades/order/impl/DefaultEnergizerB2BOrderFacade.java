@@ -43,7 +43,8 @@ public class DefaultEnergizerB2BOrderFacade extends DefaultOrderFacade implement
 	{
 		// YTODO Auto-generated method stub
 
-
+		System.out.println("Enter in getOrderDetailsForCode method ");
+		System.out.println("code-->" + code);
 
 		final OrderModel orderModel = b2bOrderService.getOrderForCode(code);
 		if (orderModel == null)

@@ -62,12 +62,15 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 	@Override
 	public byte[] getPDFInvoiceAsBytes(final OrderData orderData)
 	{
+		System.out.println("Enter in getPDFInvoiceAsBytes");
+		System.out.println("(orderData.getErpOrderNumber()-->" + orderData.getErpOrderNumber());
 		// YTODO Auto-generated method stub
 		return getPDFFromFilePath(orderData.getErpOrderNumber());
 	}
 
 	private byte[] getPDFFromFilePath(final String erpOrderNumber)
 	{
+		System.out.println("Enter in getPDFFromFilePath");
 		byte retVal[] = null;
 		try
 		{
@@ -79,12 +82,16 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 			{
 				filePath = Config.getParameter(INVOICE_FILE_PATH_EMEA);
 
+				System.out.println("filePath-->" + filePath);
+				System.out.println("filePath-->" + erpOrderNumber);
+
 				final InputStream invoiceFileretVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
 				retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretVal));
 			}
 			else
 			{
 				retVal = IOUtils.toByteArray(new FileInputStream(new File(filePath + erpOrderNumber + INVOICE_FILE_EXTENSION)));
+				System.out.println("enter in elsepart");
 			}
 		}
 		catch (final IOException ex)
