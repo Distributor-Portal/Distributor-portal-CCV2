@@ -47,6 +47,7 @@ import de.hybris.platform.servicelayer.dto.converter.Converter;
 import de.hybris.platform.servicelayer.exceptions.ModelRemovalException;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import de.hybris.platform.servicelayer.session.Session;
+import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.servicelayer.user.UserService;
 import de.hybris.platform.util.localization.Localization;
 import de.hybris.platform.workflow.enums.WorkflowActionType;
@@ -75,6 +76,7 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -273,6 +275,9 @@ public class AccountPageController extends AbstractSearchPageController
 	@Resource
 	private Converter<EnergizerB2BEmployeeModel, EnergizerB2BEmployeeData> energizerB2BEmployeeConverter;
 
+	@Autowired
+	private SessionService sessionService;
+
 	@ModelAttribute("comments")
 	public List<String> getApproverComments()
 	{
@@ -384,6 +389,11 @@ public class AccountPageController extends AbstractSearchPageController
 			model.addAttribute("orderData", orderDetails);
 			//model.addAttribute(new ReorderForm());
 			model.addAttribute("reorderForm", new ReorderForm());
+
+			sessionService.setAttribute("erpOrderNumber", orderDetails.getErpOrderNumber());
+
+
+
 			if (isSalesRepUserLogin())
 			{
 				model.addAttribute("symbol", orderDetails.getSalesRepCurrencyIsoCode());

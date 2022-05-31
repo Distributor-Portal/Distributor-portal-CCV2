@@ -6,6 +6,7 @@ package com.energizer.core.invoice.impl;
 import de.hybris.platform.cms2.servicelayer.services.CMSSiteService;
 import de.hybris.platform.commercefacades.order.data.OrderData;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
+import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.util.Config;
 
 import java.io.DataInputStream;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
 import com.energizer.core.invoice.EnergizerInvoiceService;
@@ -52,6 +54,9 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 	@Resource
 	private EnergizerWindowsAzureBlobStorageStrategy energizerWindowsAzureBlobStorageStrategy;
 
+	@Autowired
+	private SessionService sessionService;
+
 
 
 	/*
@@ -63,19 +68,11 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 	public byte[] getPDFInvoiceAsBytes(final OrderData orderData)
 	{
 		System.out.println("Enter in getPDFInvoiceAsBytes");
-
-		if (orderData.getErpOrderNumber().isEmpty())
-		{
-			System.out.println("(orderData.getErpOrderNumber-->empty");
-		}
-		else
-		{
-
-
-			System.out.println("(orderData.getErpOrderNumber-->" + orderData.getErpOrderNumber());
-		}
 		// YTODO Auto-generated method stub
-		return getPDFFromFilePath(orderData.getErpOrderNumber());
+		//return getPDFFromFilePath(orderData.getErpOrderNumber());
+		final String erpOrderNumber = sessionService.getAttribute("erpOrderNumber");
+		System.out.println("erpOrderNumber-->" + erpOrderNumber);
+		return getPDFFromFilePath(erpOrderNumber);
 	}
 
 	private byte[] getPDFFromFilePath(final String erpOrderNumber)
