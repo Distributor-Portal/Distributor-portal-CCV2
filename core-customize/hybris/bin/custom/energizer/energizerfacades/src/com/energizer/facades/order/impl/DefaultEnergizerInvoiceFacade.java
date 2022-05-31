@@ -50,6 +50,8 @@ public class DefaultEnergizerInvoiceFacade implements EnergizerInvoiceFacade
 		{
 
 			final String PERSONALCARE_EMEA = getConfigValue("site.personalCareEMEA");
+			System.out.println("PERSONALCARE_EMEA-->" + PERSONALCARE_EMEA);
+			System.out.println("siteUidTest-->" + siteUid);
 
 			if (PERSONALCARE_EMEA.equalsIgnoreCase(siteUid))
 			{

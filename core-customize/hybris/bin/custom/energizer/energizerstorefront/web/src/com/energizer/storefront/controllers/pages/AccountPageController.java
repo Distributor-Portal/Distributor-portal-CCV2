@@ -350,6 +350,18 @@ public class AccountPageController extends AbstractSearchPageController
 		{
 			//final OrderData orderDetails = orderFacade.getOrderDetailsForCode(orderCode);
 			final OrderData orderDetails = energizerOrderFacade.getOrderDetailsForCode(orderCode);
+
+			System.out.println("Enter in getorder method ");
+
+			if (orderDetails.getErpOrderNumber() != null)
+			{
+				sessionService.setAttribute("erpOrderNumber", orderDetails.getErpOrderNumber());
+			}
+			else
+			{
+				sessionService.setAttribute("erpOrderNumber", "0004227824");
+			}
+
 			//	orderFacade.getOrderHistoryForStatuses(statuses);
 			final List<OrderEntryData> entries = orderDetails.getEntries();
 			boolean flag = true;
@@ -389,10 +401,6 @@ public class AccountPageController extends AbstractSearchPageController
 			model.addAttribute("orderData", orderDetails);
 			//model.addAttribute(new ReorderForm());
 			model.addAttribute("reorderForm", new ReorderForm());
-
-			sessionService.setAttribute("erpOrderNumber", orderDetails.getErpOrderNumber());
-
-
 
 			if (isSalesRepUserLogin())
 			{
