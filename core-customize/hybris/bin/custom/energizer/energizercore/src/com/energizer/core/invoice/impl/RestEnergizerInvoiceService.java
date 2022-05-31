@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.energizer.core.invoice.impl;
 
@@ -35,9 +35,9 @@ import com.energizer.core.invoicepdf.jaxb.xsd.objects.ZBDSBUILDURLFORALResponse;
 
 /**
  * Fetch PDF from a file
- * 
+ *
  * @author kaushik.ganguly
- * 
+ *
  */
 public class RestEnergizerInvoiceService implements EnergizerInvoiceService
 {
@@ -54,7 +54,7 @@ public class RestEnergizerInvoiceService implements EnergizerInvoiceService
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.energizer.core.invoice.EnergizerInvoiceService#getPDFInvoiceAsBytes()
 	 */
 	@Override
@@ -186,6 +186,13 @@ public class RestEnergizerInvoiceService implements EnergizerInvoiceService
 			LOG.error(e.getMessage());
 		}
 		return parsedXML;
+	}
+
+	@Override
+	public byte[] getPDFInvoiceAsBytes(final String erpOrderNumber) throws Exception
+	{
+		// YTODO Auto-generated method stub
+		return null;
 	}
 
 }
