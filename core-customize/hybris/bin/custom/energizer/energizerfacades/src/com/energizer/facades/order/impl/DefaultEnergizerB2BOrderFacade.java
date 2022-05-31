@@ -44,13 +44,16 @@ public class DefaultEnergizerB2BOrderFacade extends DefaultOrderFacade implement
 		// YTODO Auto-generated method stub
 
 		System.out.println("Enter in getOrderDetailsForCode method ");
-		System.out.println("code-->" + code);
+		System.out.println("EdgewellOrdercode-->" + code);
 
 		final OrderModel orderModel = b2bOrderService.getOrderForCode(code);
 		if (orderModel == null)
 		{
+			System.out.println("EdgewellOrderModel is null");
+
 			throw new UnknownIdentifierException("Order with code " + code + " not found for current user in current BaseStore");
 		}
+		System.out.println("EdgewellOrderModel is not null");
 		return getOrderConverter().convert(orderModel);
 
 	}
