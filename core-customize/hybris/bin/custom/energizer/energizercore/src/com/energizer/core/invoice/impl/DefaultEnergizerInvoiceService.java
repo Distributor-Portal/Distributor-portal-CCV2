@@ -87,6 +87,8 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 			if (PERSONALCARE_EMEA.equalsIgnoreCase(cmsSiteService.getCurrentSite().getUid()))
 			{
 				filePath = Config.getParameter(INVOICE_FILE_PATH_EMEA);
+				System.out.println("filePath-1->" + filePath);
+				System.out.println("erpOrderNumber-1->" + erpOrderNumber);
 
 				final InputStream invoiceFileretVal = getInvoiceFileFromBlob(filePath, erpOrderNumber);
 				retVal = IOUtils.toByteArray(new DataInputStream(invoiceFileretVal));
@@ -155,13 +157,14 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 				{
 
 					final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
-
+					System.out.println("subfullFilePath-1->" + subfullFilePath);
 					final String fullFilePath = subfullFilePath.substring(8);
-
+					System.out.println("fullFilePath-1->" + fullFilePath);
 					final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
-
+					System.out.println("fileName-1->" + fileName);
 					if (fileName.contains(erpOrderNo))
 					{
+						System.out.println("erpOrderNo-1->" + erpOrderNo);
 						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
 						invoiceFile = new DataInputStream(blob2.getSnapshotQualifiedUri().toURL().openStream());
 						break;
