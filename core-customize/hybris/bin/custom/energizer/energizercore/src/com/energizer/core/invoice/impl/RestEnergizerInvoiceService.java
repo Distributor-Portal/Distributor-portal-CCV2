@@ -188,11 +188,5 @@ public class RestEnergizerInvoiceService implements EnergizerInvoiceService
 		return parsedXML;
 	}
 
-	@Override
-	public byte[] getPDFInvoiceAsBytes(final String erpOrderNumber) throws Exception
-	{
-		// YTODO Auto-generated method stub
-		return null;
-	}
 
 }

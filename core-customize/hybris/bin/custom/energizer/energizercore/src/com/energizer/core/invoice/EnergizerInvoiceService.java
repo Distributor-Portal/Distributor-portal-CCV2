@@ -14,6 +14,4 @@ public interface EnergizerInvoiceService
 {
 	public byte[] getPDFInvoiceAsBytes(OrderData orderData) throws Exception;
 
-	public byte[] getPDFInvoiceAsBytes(String erpOrderNumber) throws Exception;
-
 }

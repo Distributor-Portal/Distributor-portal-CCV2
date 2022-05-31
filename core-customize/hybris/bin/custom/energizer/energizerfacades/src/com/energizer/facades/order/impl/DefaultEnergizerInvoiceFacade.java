@@ -4,6 +4,7 @@
 package com.energizer.facades.order.impl;
 
 import de.hybris.platform.b2bacceleratorfacades.order.B2BOrderFacade;
+import de.hybris.platform.commercefacades.order.data.OrderData;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.servicelayer.session.SessionService;
 
@@ -46,28 +47,28 @@ public class DefaultEnergizerInvoiceFacade implements EnergizerInvoiceFacade
 	@Override
 	public byte[] getPDFInvoiceAsBytes(final String siteUid, final String orderNumber)
 	{
-		System.out.println("Enter in getPDFInvoiceAsBytes method-->1 ");
-		System.out.println("orderNumber-->" + orderNumber);
+		System.out.println("orderDatafromsession ");
 
 		//final OrderData orderData = orderFacade.getOrderDetailsForCode(orderNumber);
+		final OrderData orderData = sessionService.getAttribute("orderData");
 
 		try
 		{
-			final String erpOrderNumber = sessionService.getAttribute("erpOrderNumber");
-			System.out.println("erpOrderNumber-->" + erpOrderNumber);
 
 			final String PERSONALCARE_EMEA = getConfigValue("site.personalCareEMEA");
-			System.out.println("PERSONALCARE_EMEA-->" + PERSONALCARE_EMEA);
-			System.out.println("siteUidTest-->" + siteUid);
+
 
 			if (PERSONALCARE_EMEA.equalsIgnoreCase(siteUid))
 			{
-				System.out.println("Enter in personalCareEMEA");
-				return (defaultEnergizerInvoiceService.getPDFInvoiceAsBytes(erpOrderNumber));
+
+				return (defaultEnergizerInvoiceService.getPDFInvoiceAsBytes(orderData));
 			}
-			/*
-			 * else { return (invoiceService.getPDFInvoiceAsBytes(orderData)); }
-			 */
+
+			else
+			{
+				return (invoiceService.getPDFInvoiceAsBytes(orderData));
+			}
+
 		}
 		catch (final Exception e)
 		{
