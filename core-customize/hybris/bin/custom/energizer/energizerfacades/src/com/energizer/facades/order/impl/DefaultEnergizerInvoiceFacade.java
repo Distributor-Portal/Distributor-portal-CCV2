@@ -4,10 +4,12 @@
 package com.energizer.facades.order.impl;
 
 import de.hybris.platform.b2bacceleratorfacades.order.B2BOrderFacade;
-import de.hybris.platform.commercefacades.order.data.OrderData;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
+import de.hybris.platform.servicelayer.session.SessionService;
 
 import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.energizer.core.invoice.impl.DefaultEnergizerInvoiceService;
 import com.energizer.core.invoice.impl.RestEnergizerInvoiceService;
@@ -33,6 +35,9 @@ public class DefaultEnergizerInvoiceFacade implements EnergizerInvoiceFacade
 	@Resource(name = "configurationService")
 	private ConfigurationService configurationService;
 
+	@Autowired
+	private SessionService sessionService;
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -41,13 +46,15 @@ public class DefaultEnergizerInvoiceFacade implements EnergizerInvoiceFacade
 	@Override
 	public byte[] getPDFInvoiceAsBytes(final String siteUid, final String orderNumber)
 	{
-		System.out.println("Enter in getPDFInvoiceAsBytes method ");
+		System.out.println("Enter in getPDFInvoiceAsBytes method-->1 ");
 		System.out.println("orderNumber-->" + orderNumber);
 
-		final OrderData orderData = orderFacade.getOrderDetailsForCode(orderNumber);
+		//final OrderData orderData = orderFacade.getOrderDetailsForCode(orderNumber);
 
 		try
 		{
+			final String erpOrderNumber = sessionService.getAttribute("erpOrderNumber");
+			System.out.println("erpOrderNumber-->" + erpOrderNumber);
 
 			final String PERSONALCARE_EMEA = getConfigValue("site.personalCareEMEA");
 			System.out.println("PERSONALCARE_EMEA-->" + PERSONALCARE_EMEA);
@@ -56,12 +63,11 @@ public class DefaultEnergizerInvoiceFacade implements EnergizerInvoiceFacade
 			if (PERSONALCARE_EMEA.equalsIgnoreCase(siteUid))
 			{
 				System.out.println("Enter in personalCareEMEA");
-				return (defaultEnergizerInvoiceService.getPDFInvoiceAsBytes(orderData));
+				return (defaultEnergizerInvoiceService.getPDFInvoiceAsBytes(erpOrderNumber));
 			}
-			else
-			{
-				return (invoiceService.getPDFInvoiceAsBytes(orderData));
-			}
+			/*
+			 * else { return (invoiceService.getPDFInvoiceAsBytes(orderData)); }
+			 */
 		}
 		catch (final Exception e)
 		{

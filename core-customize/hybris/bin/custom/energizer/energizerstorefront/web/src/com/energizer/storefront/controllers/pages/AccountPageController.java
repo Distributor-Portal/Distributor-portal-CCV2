@@ -356,10 +356,12 @@ public class AccountPageController extends AbstractSearchPageController
 			if (orderDetails.getErpOrderNumber() != null)
 			{
 				sessionService.setAttribute("erpOrderNumber", orderDetails.getErpOrderNumber());
+				System.out.println("orderDetails.getErpOrderNumber " + orderDetails.getErpOrderNumber());
 			}
 			else
 			{
 				sessionService.setAttribute("erpOrderNumber", "0004227824");
+				System.out.println("manullyErpOrderNumber ");
 			}
 
 			//	orderFacade.getOrderHistoryForStatuses(statuses);
