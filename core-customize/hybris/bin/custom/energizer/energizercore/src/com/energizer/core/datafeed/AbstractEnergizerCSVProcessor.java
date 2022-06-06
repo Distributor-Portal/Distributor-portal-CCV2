@@ -14,6 +14,7 @@ import de.hybris.platform.cronjob.enums.CronJobStatus;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.servicelayer.i18n.I18NService;
 import de.hybris.platform.servicelayer.model.ModelService;
+import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.util.Config;
 
 import java.io.DataInputStream;
@@ -40,6 +41,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang.NumberUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
@@ -110,6 +112,8 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 	private String mailSubject;
 	@Resource(name = "baseMessageSource")
 	private ReloadableResourceBundleMessageSource messageSource;
+	@Autowired
+	private SessionService sessionService;
 
 	/* Class level variable added for EMEA cronjob development */
 	private EnergizerCronJobModel cronjob;
@@ -411,7 +415,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 				final CloudBlockBlob blobWriteToError = cloudBlobContainer.getBlockBlobReference(errorDirectoryPath);
 				blobWriteToError.startCopy(sourceBlob.getSnapshotQualifiedUri());
 				//Delete file
-				//sourceBlob.delete();
+				sourceBlob.delete();
 			}
 			catch (final Exception e1)
 			{
@@ -425,7 +429,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 				final CloudBlockBlob blobWriteToSucess = cloudBlobContainer.getBlockBlobReference(processedWithNoErrorsDirectoryPath);
 				blobWriteToSucess.startCopy(sourceBlob.getSnapshotQualifiedUri());
 				//Delete file
-				//sourceBlob.delete();
+				sourceBlob.delete();
 			}
 			catch (final Exception e1)
 			{
@@ -580,8 +584,6 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 			throw new Exception("Invalid Catalog Version ");
 		}
 
-		LOG.info("enter catalogVersion");
-
 		return catalogVersion;
 	}
 
@@ -596,9 +598,12 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 		}
 		else if (this.getCronjob().getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL))
 		{
-			if (null != getFileName() && null != getFileName().split("_"))
+			fileName = sessionService.getAttribute("fileName");
+
+			if (null != fileName && null != fileName.split("_"))
 			{
-				salesOrg = getFileName().split("_")[1];
+
+				salesOrg = fileName.split("_")[1];
 			}
 		}
 		return salesOrg;

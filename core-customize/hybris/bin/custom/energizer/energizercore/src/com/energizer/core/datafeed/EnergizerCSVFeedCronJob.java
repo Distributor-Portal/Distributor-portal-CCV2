@@ -153,6 +153,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 
 				if (!(dummyFileName.equalsIgnoreCase(fileName)))
 				{
+
 					final Long fileProcessingStartTime = System.currentTimeMillis();
 
 					Iterable<CSVRecord> csvRecords;
@@ -165,6 +166,8 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 
 					LOG.info("************** PROCESSING START FOR THIS FILE  '" + fileName + "' ***************");
 					LOG.info("Before processing this file : " + fileProcessingStartTime + " milliseconds !!");
+
+					sessionService.setAttribute("fileName", fileName);
 
 					errors = energizerCSVProcessor.process(csvRecords, cronjob.getCatalogName(), cronjob);
 					exceptionOccured = (errors.size() != 0) ? true : false;

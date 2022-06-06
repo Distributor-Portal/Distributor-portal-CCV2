@@ -98,7 +98,6 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 	public List<EnergizerCSVFeedError> process(final Iterable<CSVRecord> records, final String catalogName,
 			final EnergizerCronJobModel cronjob)
 	{
-		LOG.info(" enter in processmethod");
 
 		final Collection<PriceRowModel> priceRows;
 
@@ -123,10 +122,6 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 				siteId = SITE_PERSONALCARE;
 			}
 
-			LOG.info("defaultMOQ: " + defaultMOQ);
-
-			LOG.info("defaultUOM: " + defaultUOM);
-
 			//final String catalogName = this.getCronjob().getCatalogName();
 			final CatalogVersionModel catalogVersion = this.getCatalogVersion(cronjob);
 			//final CatalogVersionModel catalogVersion = catalogVersionService.getCatalogVersion(CATALOG_NAME, VERSION);
@@ -139,17 +134,12 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 
 			final Long csvDataSetPrepStartTime = System.currentTimeMillis();
 
-			LOG.info("csvDataSetPrepStartTime" + csvDataSetPrepStartTime);
-
 			for (final CSVRecord record : records)
 			{
 				//LOG.info(" CSV Record number: " + record.getRecordNumber() + ", CSV Record: " + record.toMap());
 
 				final Map<String, String> csvValuesMap = record.toMap();
 				cmirCSVData = new CMIRCSVData();
-
-				LOG.info(" CSV Record number: " + record.getRecordNumber() + ", CSVERPMATERIAL_ID: "
-						+ csvValuesMap.get(EnergizerCoreConstants.ERPMATERIAL_ID));
 
 				//if any field empty --- don't process record
 				//if cmir price empty --- trigger email, chk if list price is also empty....if empty --- trigger email, don't process record if both empty
@@ -192,7 +182,6 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 				if (!dataExists)
 				{
 					// Read from CSV File and add to the Set to remove duplicates.
-					LOG.info(" enter in !dataExists ");
 					cmirCSVData.setErpMaterialID(csvValuesMap.get(EnergizerCoreConstants.ERPMATERIAL_ID));
 					cmirCSVData.setCustomerMaterialID(csvValuesMap.get(EnergizerCoreConstants.CUSTOMER_MATERIAL_ID));
 					cmirCSVData.setWesellDefaultUOM(csvValuesMap.get(EnergizerCoreConstants.WESELL_DEFAULT_UOM));
@@ -227,6 +216,7 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 
 			// ################# START 1
 			List<EnergizerProductModel> productModelsList = new ArrayList<EnergizerProductModel>();
+
 			final Map<String, EnergizerProductModel> productModelsMap = new HashMap<String, EnergizerProductModel>();
 
 			if (!this.getCronjob().getRegion().equalsIgnoreCase(EnergizerCoreConstants.EMEA))
@@ -239,7 +229,6 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 			{
 				// Fetch all the product in the list irrespective of it being obsolete & non-obsolete
 				productModelsList = energizerProductService.getNonObsoleteProductsModelsForList(catalogVersion, productsSet);
-				LOG.info(" enter in !dataExists ");
 			}
 
 			for (final EnergizerProductModel productModel : productModelsList)
