@@ -165,6 +165,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 
 					LOG.info("************** PROCESSING START FOR THIS FILE  '" + fileName + "' ***************");
 					LOG.info("Before processing this file : " + fileProcessingStartTime + " milliseconds !!");
+
 					errors = energizerCSVProcessor.process(csvRecords, cronjob.getCatalogName(), cronjob);
 					exceptionOccured = (errors.size() != 0) ? true : false;
 

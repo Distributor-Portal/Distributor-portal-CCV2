@@ -246,6 +246,8 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 	public Iterable<CSVRecord> parse(final String blobUri)
 	{
 
+		LOG.info(" enter in parsemethod");
+
 		final CSVFormat csvFormat = CSVFormat.EXCEL.withDelimiter(DELIMETER).withIgnoreSurroundingSpaces();
 
 		Iterable<CSVRecord> blobRecordS = null;
@@ -257,15 +259,20 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 			blob2 = energizerWindowsAzureBlobStorageStrategy.getBlobContainer().getBlockBlobReference(blobUri);
 			if (StringUtils.isNotEmpty(blob2.downloadText()))
 			{
+				LOG.info(" enter in readerBlob");
+
 				final Reader readerBlob = new StringReader(blob2.downloadText());
+
 				blobRecordS = csvFormat.withHeader().parse(readerBlob);
 			}
 
 		}
 		catch (URISyntaxException | StorageException | IOException e)
 		{
+			LOG.info(" readerBlob error");
 			LOG.error(e.getMessage());
 		}
+		LOG.info("outfromparse");
 		return blobRecordS;
 	}
 
@@ -404,7 +411,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 				final CloudBlockBlob blobWriteToError = cloudBlobContainer.getBlockBlobReference(errorDirectoryPath);
 				blobWriteToError.startCopy(sourceBlob.getSnapshotQualifiedUri());
 				//Delete file
-				sourceBlob.delete();
+				//sourceBlob.delete();
 			}
 			catch (final Exception e1)
 			{
@@ -418,7 +425,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 				final CloudBlockBlob blobWriteToSucess = cloudBlobContainer.getBlockBlobReference(processedWithNoErrorsDirectoryPath);
 				blobWriteToSucess.startCopy(sourceBlob.getSnapshotQualifiedUri());
 				//Delete file
-				sourceBlob.delete();
+				//sourceBlob.delete();
 			}
 			catch (final Exception e1)
 			{
@@ -572,6 +579,9 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 		{
 			throw new Exception("Invalid Catalog Version ");
 		}
+
+		LOG.info("enter catalogVersion");
+
 		return catalogVersion;
 	}
 
