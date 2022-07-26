@@ -6,9 +6,11 @@ package com.energizer.services.b2bemployee.impl;
 import static de.hybris.platform.servicelayer.util.ServicesUtil.validateParameterNotNullStandardMessage;
 
 import de.hybris.platform.commerceservices.customer.DuplicateUidException;
+import de.hybris.platform.commerceservices.customer.PasswordMismatchException;
 import de.hybris.platform.commerceservices.customer.TokenInvalidatedException;
 import de.hybris.platform.commerceservices.customer.impl.DefaultCustomerAccountService;
 import de.hybris.platform.commerceservices.security.SecureToken;
+import de.hybris.platform.core.model.user.UserModel;
 import de.hybris.platform.servicelayer.event.EventService;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 
@@ -193,5 +195,24 @@ public class DefaultB2BEmployeeAccountService extends DefaultCustomerAccountServ
 		}
 	}
 	//	WeSell Implementation -  Added Code Changes to change password/update profile details in My-Account for Sales Rep login - by Venkat
+
+	@Override
+	public void changePassword(final UserModel userModel, final String oldPassword, final String newPassword)
+			throws PasswordMismatchException
+	{
+		validateParameterNotNullStandardMessage("customerModel", userModel);
+		if (!getUserService().isAnonymousUser(userModel))
+		{
+			if (getPasswordEncoderService().isValid(userModel, oldPassword))
+			{
+				getUserService().setPassword(userModel, newPassword, getPasswordEncoding());
+				getModelService().save(userModel);
+			}
+			else
+			{
+				throw new PasswordMismatchException(userModel.getUid());
+			}
+		}
+	}
 
 }

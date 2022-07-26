@@ -1069,7 +1069,7 @@
 		<property name="eventService" ref="eventService"/>
 		<property name="commonI18NService" ref="commonI18NService"/>
 		<property name="customerEmailResolutionService" ref="customerEmailResolutionService"/>
-		<property name="passwordEncoding" value="md5"/>
+		<property name="passwordEncoding" value="pbkdf2"/>
 		<property name="typeService" ref="typeService"/>
 		<property name="customerNameStrategy" ref="defaultCustomerNameStrategy"/>
 		<property name="timeService" ref="timeService"/>

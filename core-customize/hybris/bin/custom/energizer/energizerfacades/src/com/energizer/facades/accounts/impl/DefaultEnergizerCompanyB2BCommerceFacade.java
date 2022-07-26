@@ -551,7 +551,7 @@ public class DefaultEnergizerCompanyB2BCommerceFacade extends DefaultCustomerFac
 					getModelService().save(customerModel);
 					try
 					{
-						super.changePassword(currentPassword, newPassword);
+						changeUserPassword(currentPassword, newPassword);
 					}
 					catch (final PasswordMismatchException localException)
 					{
@@ -566,7 +566,7 @@ public class DefaultEnergizerCompanyB2BCommerceFacade extends DefaultCustomerFac
 					customerModel.setPreviousPasswords(customerModel.getPreviousPasswords() + delimiter + newEncodedPassword);
 					customerModel.setPasswordModifiedTime(new Date());
 					getModelService().save(customerModel);
-					super.changePassword(currentPassword, newPassword);
+					changeUserPassword(currentPassword, newPassword);
 					flag = true;
 					return flag;
 				}
@@ -577,7 +577,7 @@ public class DefaultEnergizerCompanyB2BCommerceFacade extends DefaultCustomerFac
 			customerModel.setPreviousPasswords(newEncodedPassword);
 			customerModel.setPasswordModifiedTime(new Date());
 			getModelService().save(customerModel);
-			super.changePassword(currentPassword, newPassword);
+			changeUserPassword(currentPassword, newPassword);
 			flag = true;
 			return flag;
 
@@ -679,7 +679,7 @@ public class DefaultEnergizerCompanyB2BCommerceFacade extends DefaultCustomerFac
 
 			salesRepEmployeeModel.setPasswordModifiedTime(new Date());
 			getModelService().save(salesRepEmployeeModel);
-			super.changePassword(currentPassword, newPassword);
+			changeEmployeePassword(currentPassword, newPassword);
 			flag = true;
 			return flag;
 		}
@@ -909,7 +909,7 @@ public class DefaultEnergizerCompanyB2BCommerceFacade extends DefaultCustomerFac
 
 		try
 		{
-			getCustomerAccountService().changePassword(salesRepEmployeeModel, oldPassword, newPassword);
+			defaultB2BEmployeeAccountService.changePassword(salesRepEmployeeModel, oldPassword, newPassword);
 		}
 		catch (final de.hybris.platform.commerceservices.customer.PasswordMismatchException e)
 		{
@@ -923,4 +923,27 @@ public class DefaultEnergizerCompanyB2BCommerceFacade extends DefaultCustomerFac
 		}
 	}
 	//	WeSell Implementation -  Added Code Changes to change password/update profile details in My-Account for Sales Rep login - by Venkat
+
+
+	public void changeUserPassword(final String oldPassword, final String newPassword) throws PasswordMismatchException
+	{
+		final UserModel currentUser = getCurrentUser();
+
+		try
+		{
+			defaultB2BEmployeeAccountService.changePassword(currentUser, oldPassword, newPassword);
+		}
+		catch (final de.hybris.platform.commerceservices.customer.PasswordMismatchException e)
+		{
+			LOG.info("Exception Occured since passwords doesn't match :::" + e);
+			throw new PasswordMismatchException(e);
+		}
+		catch (final Exception e)
+		{
+			LOG.info("Exception occured while changing password ::::" + e);
+			e.printStackTrace();
+		}
+	}
+
+
 }
