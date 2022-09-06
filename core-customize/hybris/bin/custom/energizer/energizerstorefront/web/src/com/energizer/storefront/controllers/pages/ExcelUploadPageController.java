@@ -310,9 +310,9 @@ public class ExcelUploadPageController extends AbstractSearchPageController
 										//uploadData.setMaterialId(materialId);
 
 										/*
-										 * Quantity default to '1' for LATAM(since it is not present in catalog sheet), actual quantity for
+										 * Quantity default to '1' for LATAM(), actual quantity for
 										 * EMEA & WESELL - START
-										 */
+
 										if (this.getSiteUid().equalsIgnoreCase(EnergizerCoreConstants.SITE_PERSONALCARE)
 												&& !isSalesRepUserLogin())
 										{
@@ -322,7 +322,10 @@ public class ExcelUploadPageController extends AbstractSearchPageController
 										{
 											uploadData.setQuantity(quantity);
 										}
-										/* Quantity default to '1' for LATAM, actual quantity for EMEA & WESELL - END */
+										 Quantity default to '1' for LATAM, actual quantity for EMEA & WESELL - END */
+
+										//Updated as requested By David to set the actual Quantity for all
+										uploadData.setQuantity(quantity);
 
 
 										final String salesOrgString = energizerProductService.getProductWithCode(uploadData.getMaterialId())
