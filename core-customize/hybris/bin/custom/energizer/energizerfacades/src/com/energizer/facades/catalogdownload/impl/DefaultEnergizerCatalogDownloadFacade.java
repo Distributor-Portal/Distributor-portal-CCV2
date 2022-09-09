@@ -397,7 +397,7 @@ public class DefaultEnergizerCatalogDownloadFacade implements EnergizerCatalogDo
 			{
 				if (!isSalesRepUser)
 				{
-					headerColumns = configurationService.getConfiguration().getString("excel.download.header.columns.personalCare.wesell");
+					headerColumns = configurationService.getConfiguration().getString("excel.download.header.columns.personalCare");
 				}
 				else
 				{

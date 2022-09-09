@@ -513,7 +513,7 @@ public class DefaultEnergizerProductDAO implements EnergizerProductDAO
 					//flexiQuery.addQueryParameter("productsList", productCodeList);
 					flexiQuery.addQueryParameter("salesOrg", '%' + salesOrg + '%');
 					LOG.info("Query for LATAM Non-Sales Rep ::: " + flexiQuery);
-					flexiQuery.setResultClassList(Arrays.asList(String.class, String.class, String.class, Integer.class, String.class,
+					flexiQuery.setResultClassList(Arrays.asList(String.class, String.class, String.class, Integer.class,Integer.class, String.class,
 							String.class, Double.class, Double.class, Double.class, Double.class, String.class, Double.class,
 							String.class, Double.class, String.class));
 				}
