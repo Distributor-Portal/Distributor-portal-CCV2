@@ -1,0 +1,105 @@
+{
+  "init": "Go",
+  "initmethod": "update",
+  "essential": "false",
+  "localizetypes": "false",
+  "core_sample": "false",
+  "commons_sample": "false",
+  "mediaweb_sample": "false",
+  "scripting_sample": "false",
+  "processing_sample": "false",
+  "impex_sample": "false",
+  "validation_sample": "false",
+  "catalog_sample": "false",
+  "advancedsavedquery_sample": "false",
+  "europe1_sample": "false",
+  "platformservices_sample": "false",
+  "hac_sample": "false",
+  "oauth2_sample": "false",
+  "workflow_sample": "false",
+  "comments_sample": "false",
+  "apiregistryservices_sample": "false",
+  "auditreportservices_sample": "false",
+  "azurecloud_sample": "false",
+  "backoffice_sample": "false",
+  "basecommerce_sample": "false",
+  "cms2_sample": "false",
+  "cms2lib_sample": "false",
+  "cmsbackoffice_sample": "false",
+  "customerreview_sample": "false",
+  "embeddedserver_sample": "false",
+  "mediaconversion_sample": "false",
+  "payment_sample": "false",
+  "platformbackoffice_sample": "false",
+  "apiregistrybackoffice_sample": "false",
+  "basecommercebackoffice_sample": "false",
+  "solrfacetsearch_sample": "false",
+  "solrfacetsearchbackoffice_sample": "false",
+  "solrserver_sample": "false",
+  "tomcatembeddedserver_sample": "false",
+  "voucher_sample": "false",
+  "promotions_sample": "false",
+  "commerceservices_sample": "false",
+  "b2bcommerce_sample": "false",
+  "b2bapprovalprocess_sample": "false",
+  "cloudcommons_sample": "false",
+  "commercefacades_sample": "false",
+  "b2bcommercefacades_sample": "false",
+  "b2bapprovalprocessfacades_sample": "false",
+  "cmsfacades_sample": "false",
+  "ordermanagementfacades_sample": "false",
+  "ticketsystem_sample": "false",
+  "acceleratorservices_sample": "false",
+  "acceleratorcms_sample": "false",
+  "acceleratorfacades_sample": "false",
+  "acceleratorstorefrontcommons_sample": "false",
+  "addonsupport_sample": "false",
+  "b2bacceleratorservices_sample": "false",
+  "b2bacceleratorfacades_sample": "false",
+  "cloudhotfolder_sample": "false",
+  "azurecloudhotfolder_sample": "false",
+  "energizerfulfilmentprocess_sample": "false",
+  "energizercore_sample": "false",
+  "energizerbackoffice_sample": "false",
+  "energizerfacades_sample": "false",
+  "energizerstorefront_sample": "false",
+  "energizerinitialdata_sample": "false",
+  "energizertest_sample": "false",
+  "voucherbackoffice_sample": "false",
+  "promotionsbackoffice_sample": "false",
+  "commerceservicesbackoffice_sample": "false",
+  "b2bcommercebackoffice_sample": "false",
+  "webservicescommons_sample": "false",
+  "commercewebservicescommons_sample": "false",
+  "wishlist_sample": "false",
+  "yaddon_sample": "false",
+  "ycommercewebservices_sample": "false",
+  "basecommerce_create geocoding cron job": [
+    "no"
+  ],
+  "mediaconversion_sampledata": [
+    "false"
+  ],
+  "energizercore_importSites": [
+    "no"
+  ],
+  "energizercore_syncProducts&ContentCatalogs": [
+    "no"
+  ],
+  "energizercore_accessRights": [
+    "no"
+  ],
+  "energizercore_activateSolrCronJobs": [
+    "no"
+  ],
+  "energizerinitialdata_importSampleData": [
+    "no"
+  ],
+  "energizerinitialdata_activateSolrCronJobs": [
+    "no"
+  ],
+  "energizertest_createTestData": [
+    "no"
+  ],
+  "filteredPatches": "false"
+}

@@ -78,6 +78,10 @@
 		  "key": "installed.tenants",
 		  "value": "",
 		  "persona": "production"
+		},
+		{
+		  "key": "configFile",
+		  "value": "hybris/config/environments/update-config.json",
 		}
     ],
     "storefrontAddons": [        
