@@ -81,7 +81,7 @@
 		},
 		{
 		  "key": "configFile",
-		  "value": "hybris/config/environments/update-config.json",
+		  "value": "hybris/config/environments/update-config.json"
 		}
     ],
     "storefrontAddons": [        
