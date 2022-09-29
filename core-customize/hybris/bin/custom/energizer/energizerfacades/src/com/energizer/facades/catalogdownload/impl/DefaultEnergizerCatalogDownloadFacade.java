@@ -141,12 +141,12 @@ public class DefaultEnergizerCatalogDownloadFacade implements EnergizerCatalogDo
 		final int count = 0;
 
 
-		try
+		try(final FileInputStream fis = new FileInputStream(fileName);
+			final DataInputStream myInput = new DataInputStream(fis) ;final HSSFWorkbook hwb = new HSSFWorkbook())
 		{
 
 			LOG.info("CSV Filepath: " + fileName);
-			final FileInputStream fis = new FileInputStream(fileName);
-			final DataInputStream myInput = new DataInputStream(fis);
+
 			int i = 0;
 			arList = new ArrayList();
 			while ((thisLine = myInput.readLine()) != null)
@@ -172,7 +172,6 @@ public class DefaultEnergizerCatalogDownloadFacade implements EnergizerCatalogDo
 			}
 
 
-			final HSSFWorkbook hwb = new HSSFWorkbook();
 			final HSSFSheet sheet = hwb.createSheet("new sheet");
 			for (int k = 0; k < arList.size(); k++)
 			{
@@ -426,10 +425,10 @@ public class DefaultEnergizerCatalogDownloadFacade implements EnergizerCatalogDo
 		{
 			final String[] columnArray = headerColumns.split(",");
 
-			try
+			try(final HSSFWorkbook hwb = new HSSFWorkbook())
 			{
 
-				final HSSFWorkbook hwb = new HSSFWorkbook();
+
 
 				final HSSFSheet sheet = hwb.createSheet("new sheet");
 

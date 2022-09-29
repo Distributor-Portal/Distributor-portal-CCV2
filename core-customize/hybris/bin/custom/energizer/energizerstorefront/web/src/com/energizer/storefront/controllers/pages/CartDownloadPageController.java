@@ -193,6 +193,10 @@ public class CartDownloadPageController extends AbstractSearchPageController
 		{
 			e.printStackTrace();
 			throw e;
+		}finally {
+			if(null != inputStream){
+				inputStream.close();
+			}
 		}
 
 		String mimeType = context.getMimeType(fullPath);
@@ -311,14 +315,14 @@ public class CartDownloadPageController extends AbstractSearchPageController
 		if (headerColumns != null && !headerColumns.isEmpty())
 		{
 			final String[] columnArray = headerColumns.split(",");
-
-			try
+			FileOutputStream fileOut = null;
+			try(final HSSFWorkbook hwb = new HSSFWorkbook())
 			{
 				//final CartData cartData = cartFacade.getSessionCart();
 				//final String cartId = cartData.getCode();
 
 
-				final HSSFWorkbook hwb = new HSSFWorkbook();
+
 
 				final HSSFSheet sheet = hwb.createSheet(sheetName);
 
@@ -490,7 +494,7 @@ public class CartDownloadPageController extends AbstractSearchPageController
 				final File dir = new File(System.getProperty("user.home") + "\\" + exportDownloadDir);
 
 				//final Path dirPath = Paths.get(dir.getAbsolutePath());
-				FileOutputStream fileOut = null;
+
 
 				if (isCartDownload)
 				{
@@ -500,7 +504,7 @@ public class CartDownloadPageController extends AbstractSearchPageController
 				}
 
 				hwb.write(fileOut);
-				fileOut.close();
+
 
 			}
 			catch (final Exception ex)
@@ -508,6 +512,10 @@ public class CartDownloadPageController extends AbstractSearchPageController
 				LOG.info("Exception occurred while writing cart Data to Excel::: " + ex);
 				ex.printStackTrace();
 				throw ex;
+			}finally {
+				if(null != fileOut){
+					fileOut.close();
+				}
 			}
 		}
 

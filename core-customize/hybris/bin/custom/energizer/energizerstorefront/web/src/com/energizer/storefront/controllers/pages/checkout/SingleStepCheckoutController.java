@@ -1578,6 +1578,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 					+ (null != file ? file.getOriginalFilename().toString() : null));
 			// Creating the directory to store delivery note file
 			final byte[] bytes = file.getBytes();
+			BufferedOutputStream stream = null;
 			try
 			{
 				final String rootPath = getConfigValue(EnergizerCoreConstants.MEDIA_ROOT_DIRECTORY) + File.separator
@@ -1592,9 +1593,9 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 				final File serverFile = new File(dir.getAbsolutePath() + File.separator + file.getOriginalFilename());
 				LOG.info("Server File Location = " + serverFile.getAbsolutePath());
 
-				final BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile, false));
+				stream = new BufferedOutputStream(new FileOutputStream(serverFile, false));
 				stream.write(bytes);
-				stream.close();
+
 
 				LOG.info("File saved to the media '" + EnergizerCoreConstants.SYS_MASTER
 						+ "' directory, but yet to create/update media model !");
@@ -1620,6 +1621,14 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 			{
 				LOG.info("Failed to upload " + file.getOriginalFilename() + " => " + e.getMessage());
 				return "UPLOAD FAILURE";
+			}finally {
+				if(null != stream){
+					try {
+						stream.close();
+					} catch (IOException e) {
+						LOG.error(e.getMessage());
+					}
+				}
 			}
 		}
 		else

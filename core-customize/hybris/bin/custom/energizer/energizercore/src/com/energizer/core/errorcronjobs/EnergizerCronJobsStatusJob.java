@@ -15,10 +15,7 @@ import de.hybris.platform.servicelayer.cronjob.PerformResult;
 import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
 import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -285,6 +282,11 @@ public class EnergizerCronJobsStatusJob extends AbstractJobPerformable<Energizer
 		final List<EmailAddressModel> toAddresses = new ArrayList<EmailAddressModel>();
 		final List<EmailAddressModel> ccAddresses = new ArrayList<EmailAddressModel>();
 		final List<EmailAddressModel> bccAddresses = new ArrayList<EmailAddressModel>();
+
+		DataInputStream latamInputStream = null;
+		DataInputStream emeaInputStream = null ;
+		DataInputStream weSellInputStream = null;
+
 		try
 		{
 			final String mailFrom = configurationService.getConfiguration().getString("order.stuck.mail.from");
@@ -297,13 +299,17 @@ public class EnergizerCronJobsStatusJob extends AbstractJobPerformable<Energizer
 
 			final List<EmailAttachmentModel> attachments = new ArrayList<EmailAttachmentModel>();
 
+			latamInputStream = new DataInputStream(new FileInputStream(dirLatam));
+			emeaInputStream = new DataInputStream(new FileInputStream(dirEmea));
+			weSellInputStream =new DataInputStream(new FileInputStream(dirWesell));
+
 			final EmailAttachmentModel EmailAttachmentModelLatam = emailService
-					.createEmailAttachment(new DataInputStream(new FileInputStream(dirLatam)), dirLatam.getName(), MIME_TYPE);
+					.createEmailAttachment(latamInputStream, dirLatam.getName(), MIME_TYPE);
 			final EmailAttachmentModel EmailAttachmentModelEmea = emailService
-					.createEmailAttachment(new DataInputStream(new FileInputStream(dirEmea)), dirEmea.getName(), MIME_TYPE);
+					.createEmailAttachment(emeaInputStream, dirEmea.getName(), MIME_TYPE);
 
 			final EmailAttachmentModel EmailAttachmentModelWesell = emailService
-					.createEmailAttachment(new DataInputStream(new FileInputStream(dirWesell)), dirWesell.getName(), MIME_TYPE);
+					.createEmailAttachment(weSellInputStream, dirWesell.getName(), MIME_TYPE);
 
 			attachments.add(EmailAttachmentModelLatam);
 			attachments.add(EmailAttachmentModelEmea);
@@ -356,6 +362,28 @@ public class EnergizerCronJobsStatusJob extends AbstractJobPerformable<Energizer
 		{
 			isMailSent = false;
 			LOG.info("Exception Caught while sending email" + ex);
+		}finally{
+			if(null != latamInputStream){
+				try {
+					latamInputStream.close();
+				} catch (IOException e) {
+					LOG.error(e.getMessage());
+				}
+			}
+			if(null != emeaInputStream){
+				try {
+					emeaInputStream.close();
+				} catch (IOException e) {
+					LOG.error(e.getMessage());
+				}
+			}
+			if(null != weSellInputStream){
+				try {
+					weSellInputStream.close();
+				} catch (IOException e) {
+					LOG.error(e.getMessage());
+				}
+			}
 		}
 
 		return isMailSent;

@@ -200,5 +200,10 @@ public class EnergizerCustomerUsersListJob extends AbstractJobPerformable<CronJo
 			// YTODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally {
+			if(null != workbook){
+				workbook.close();
+			}
+		}
 	}
 }

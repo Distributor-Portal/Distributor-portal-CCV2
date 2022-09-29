@@ -1873,6 +1873,7 @@ public class AccountPageController extends AbstractSearchPageController
 		{
 			// Creating the directory to store delivery note file
 			final byte[] bytes = file.getBytes();
+			BufferedOutputStream stream = null;
 			try
 			{
 				final String rootPath = getConfigValue(MEDIA_ROOT_DIRECTORY) + File.separator + SYS_MASTER + File.separator
@@ -1886,9 +1887,9 @@ public class AccountPageController extends AbstractSearchPageController
 				final File serverFile = new File(dir.getAbsolutePath() + File.separator + file.getOriginalFilename());
 				LOG.info("Server File Location = " + serverFile.getAbsolutePath());
 
-				final BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile, false));
+				stream = new BufferedOutputStream(new FileOutputStream(serverFile, false));
 				stream.write(bytes);
-				stream.close();
+
 
 				LOG.info("File saved to the media '" + SYS_MASTER + "' directory, but yet to create/update media model !");
 
@@ -1900,6 +1901,14 @@ public class AccountPageController extends AbstractSearchPageController
 			catch (final Exception e)
 			{
 				LOG.info("Failed to upload " + file.getOriginalFilename() + " => " + e.getMessage());
+			}finally {
+				if(null != stream){
+					try {
+						stream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 		else

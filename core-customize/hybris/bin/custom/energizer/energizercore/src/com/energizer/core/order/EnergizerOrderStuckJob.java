@@ -7,6 +7,7 @@ import de.hybris.platform.acceleratorservices.email.EmailService;
 import de.hybris.platform.acceleratorservices.model.email.EmailAddressModel;
 import de.hybris.platform.acceleratorservices.model.email.EmailAttachmentModel;
 import de.hybris.platform.acceleratorservices.model.email.EmailMessageModel;
+import de.hybris.platform.converters.impl.ModifyPopulatorListBeanPostProcessorTest;
 import de.hybris.platform.core.enums.OrderStatus;
 import de.hybris.platform.cronjob.enums.CronJobResult;
 import de.hybris.platform.cronjob.enums.CronJobStatus;
@@ -14,10 +15,7 @@ import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.servicelayer.cronjob.AbstractJobPerformable;
 import de.hybris.platform.servicelayer.cronjob.PerformResult;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -205,10 +203,10 @@ public class EnergizerOrderStuckJob extends AbstractJobPerformable<EnergizerCron
 		boolean isFileWritten = false;
 		FileOutputStream fileOut;
 		final String FILE_PATH = configurationService.getConfiguration().getString("catalogdownload.downloadPath");
-
+		final HSSFWorkbook workBook = new HSSFWorkbook();
 		try
 		{
-			final HSSFWorkbook workBook = new HSSFWorkbook();
+
 
 			final HSSFSheet sheet = workBook.createSheet("Order Stuck in Hybris");
 			int rownum = 0;
@@ -318,6 +316,14 @@ public class EnergizerOrderStuckJob extends AbstractJobPerformable<EnergizerCron
 		catch (final Exception ex)
 		{
 			LOG.info("Exception Caught while writing the data into Excel" + ex);
+		}finally {
+			if(null != workBook){
+				try {
+					workBook.close();
+				} catch (IOException e) {
+					LOG.error(e.getMessage());
+				}
+			}
 		}
 		return isFileWritten;
 	}
@@ -344,6 +350,7 @@ public class EnergizerOrderStuckJob extends AbstractJobPerformable<EnergizerCron
 		final List<EmailAddressModel> toAddresses = new ArrayList<EmailAddressModel>();
 		final List<EmailAddressModel> ccAddresses = new ArrayList<EmailAddressModel>();
 		final List<EmailAddressModel> bccAddresses = new ArrayList<EmailAddressModel>();
+		DataInputStream dataInputStream = null;
 		try
 		{
 			final String mailFrom = configurationService.getConfiguration().getString("order.stuck.mail.from");
@@ -355,9 +362,9 @@ public class EnergizerOrderStuckJob extends AbstractJobPerformable<EnergizerCron
 			final EmailAddressModel fromAddress = emailService.getOrCreateEmailAddressForEmail(mailFrom, mailFrom);
 
 			final List<EmailAttachmentModel> attachments = new ArrayList<EmailAttachmentModel>();
-
+			dataInputStream = new DataInputStream(new FileInputStream(file));
 			final EmailAttachmentModel EmailAttachmentModel = emailService
-					.createEmailAttachment(new DataInputStream(new FileInputStream(file)), file.getName(), MIME_TYPE);
+					.createEmailAttachment(dataInputStream, file.getName(), MIME_TYPE);
 
 			attachments.add(EmailAttachmentModel);
 
@@ -463,6 +470,14 @@ public class EnergizerOrderStuckJob extends AbstractJobPerformable<EnergizerCron
 		{
 			isMailSent = false;
 			LOG.info("Exception Caught while sending email" + ex);
+		}finally {
+			if(null != dataInputStream){
+				try {
+					dataInputStream.close();
+				} catch (IOException e) {
+					LOG.error(e.getMessage());
+				}
+			}
 		}
 
 		return isMailSent;

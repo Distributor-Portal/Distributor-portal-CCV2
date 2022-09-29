@@ -295,11 +295,19 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 			records = csvFormat.withHeader().parse(reader);
 			recordsForLog = csvFormat.withHeader().parse(readerForLog);
 			//logRecord(recordsForLog); - Commenting this to avoid large chuck of loggers in the console log file, we can already check the data in the CSV file itself.
-			readerForLog.close();
+
 		}
 		catch (final IOException e)
 		{
 			LOG.error(e.getMessage());
+		}finally {
+			if(readerForLog != null){
+				try {
+					readerForLog.close();
+				} catch (IOException e) {
+					LOG.error(e.getMessage());
+				}
+			}
 		}
 		return records;
 	}
