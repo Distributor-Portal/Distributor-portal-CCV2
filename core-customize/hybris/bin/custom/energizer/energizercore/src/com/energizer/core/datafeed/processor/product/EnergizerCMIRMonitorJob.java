@@ -1,8 +1,15 @@
 package com.energizer.core.datafeed.processor.product;
 
+import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlobDirectory;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.microsoft.azure.storage.blob.ListBlobItem;
 import de.hybris.platform.acceleratorservices.email.EmailService;
 import de.hybris.platform.acceleratorservices.model.email.EmailAddressModel;
 import de.hybris.platform.acceleratorservices.model.email.EmailMessageModel;
+import de.hybris.platform.core.Registry;
 import de.hybris.platform.cronjob.enums.CronJobResult;
 import de.hybris.platform.cronjob.enums.CronJobStatus;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
@@ -13,6 +20,7 @@ import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.util.Config;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,6 +60,9 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 	@Resource
 	private ConfigurationService configurationService;
 
+	@Resource
+	private EnergizerWindowsAzureBlobStorageStrategy energizerWindowsAzureBlobStorageStrategy;
+
 	@Value("{$sharedFolderPath}")
 	private String path;
 
@@ -90,6 +101,9 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 	private static final String PERSONALCAREEMEA_PRODUCTCATALOG = "personalCareEMEAProductCatalog";
 	private static final String PERSONALCARE_PRODUCTCATALOG = "personalCareProductCatalog";
 
+	public static final String dummyFileName = Config.getParameter("azure.blob.storage.dummy.file.name");
+
+
 
 	@Resource(name = "energizerCMIRCSVProcessor")
 	private AbstractEnergizerCSVProcessor csvUtils;
@@ -112,7 +126,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 		cmirFinalSet = new HashSet<EnergizerCMIRModel>();
 		Set<EnergizerCMIRModel> cmirSetFromDB = null;
 		cmirSetFromDB = new HashSet<EnergizerCMIRModel>();
-
+		LOG.info("33333333");
 		//Setting cronjob
 		csvUtils.setCronjob(cronjob);
 		String siteId = StringUtils.EMPTY;
@@ -123,7 +137,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 			// Added to fetch Site specific CMIRs from the hybris DB
 			final String SITE_PERSONALCARE = configurationService.getConfiguration().getString("site.personalCare");
 			final String SITE_PERSONALCAREEMEA = configurationService.getConfiguration().getString("site.personalCareEMEA");
-
+			LOG.info("444444");
 			if (cronjob.getCatalogName().equalsIgnoreCase(PERSONALCAREEMEA_PRODUCTCATALOG))
 			{
 				siteId = SITE_PERSONALCAREEMEA;
@@ -132,11 +146,12 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 			{
 				siteId = SITE_PERSONALCARE;
 			}
-
+			LOG.info("55555555");
 			cmirListFromDB = energizerProductService.getAllEnergizerCMIRListBySiteIdAndStatus(siteId, cronjob.getRegion(), true);
 			cmirListFromDB_buff = energizerProductService.getAllEnergizerCMIRListBySiteIdAndStatus(siteId, cronjob.getRegion(),
 					true);
 			cmirSetFromDB.addAll(cmirListFromDB);
+			LOG.info("666666");
 
 			if (cmirListFromDB != null && cmirListFromDB_buff != null)
 			{
@@ -152,19 +167,45 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 		{
 			LOG.error("Exception occured while loading data from db for this site '" + siteId + "' " + e.getMessage());
 		}
-
+		LOG.info("77777777");
+		final String type = cronjob.getType();
+		LOG.info("888888" + type);
+		if (type == null)
+		{
+			LOG.info("There is no Type defined for the job " + cronjob.getCode());
+			LOG.info(
+					"*********************************** NOTHING TO PROCESS FOR THIS CRONJOB  *****************************************");
+			return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
+		}
+		final AbstractEnergizerCSVProcessor energizerCSVProcessor = (AbstractEnergizerCSVProcessor) Registry.getApplicationContext()
+				.getBean(type);
+		LOG.info("9999999");
 		try
 		{
-			final List<File> files = csvUtils.getFilesForFeedType("energizerCMIRCSVProcessor");
-			LOG.info("LOADING FILES FROM CMIR folder FOR MONITORING" + files);
 
-			if (files == null || files.size() == 0)
+			LOG.info("100000000000000");
+
+			CloudBlobContainer cloudBlobContainer = null;
+			cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			/* Added for EMEA cronjob import */
+
+			final CloudBlobDirectory blobDirectory = energizerCSVProcessor.getBlobDirectoryForFeedType(cronjob.getType());
+
+			final Integer filesCount = filesCount(blobDirectory);
+
+			//final List<File> files = csvUtils.getFilesForFeedType("energizerCMIRCSVProcessor");
+			//LOG.info("LOADING FILES FROM CMIR folder FOR MONITORING" + files);
+			LOG.info("BLOB DIRECTORY");
+
+
+			if (blobDirectory.listBlobs() == null || filesCount == 0)
 			{
+
 				LOG.info("NO FILES FOUND, NOTHING TO PROCESS FOR THIS CRONJOB");
 				return new PerformResult(CronJobResult.FILE_NOT_FOUND, CronJobStatus.FINISHED);
 			}
-			else if (null != files && files.size() != 0 && cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL)
-					&& files.size() != wesellCSVFilesCount)
+			else if (null != blobDirectory.listBlobs()  && filesCount != 0 && cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL)
+					&& filesCount != wesellCSVFilesCount)
 			{
 				LOG.info("THERE ARE NOT EXACTLY '" + wesellCSVFilesCount + "' FILES FOUND FOR WESELL, SO IGNORING THIS CRONJOB");
 				return new PerformResult(CronJobResult.FAILURE, CronJobStatus.FINISHED);
@@ -194,24 +235,36 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 				{
 					Iterable<CSVRecord> csvRecords = null;
 					final Long cmirFinalSetStartTime = System.currentTimeMillis();
-					for (final File f : files)
+					for (final ListBlobItem blobItem : blobDirectory.listBlobs())
 					{
-						csvRecords = csvUtils.parse(f);
-						if (null != cmirListFromDB_buff && null != csvRecords)
-						{
-							final Long preparedSetStartTime = System.currentTimeMillis();
-							//final Set<EnergizerCMIRModel> preparedSet = checkUpdate(cmirListFromDB_buff, csvRecords, cronjob);
+						LOG.info("Inside FOR Each processing");
 
-							final Set<EnergizerCMIRModel> preparedSet = checkUpdate(cmirMapFromDB, csvRecords, cronjob);
-							if (null != preparedSet && preparedSet.size() > 0)
-							{
-								LOG.info("Matching records for file : '" + f.getName() + "' is : " + preparedSet.size());
-								cmirFinalSet.addAll(preparedSet);
-								preparedSet.clear();
-								final Long preparedSetEndTime = System.currentTimeMillis();
-								LOG.info("Matching comparison completed for file : " + f.getName() + ", total time taken : "
-										+ (preparedSetEndTime - preparedSetStartTime) + " milliseconds, "
-										+ (preparedSetEndTime - preparedSetStartTime) / 1000 + " seconds");
+						final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
+						final String fullFilePath = subfullFilePath.substring(8);
+						final String fileName = org.apache.commons.lang3.StringUtils.substringAfterLast(fullFilePath, "/");
+
+
+
+						if (!(dummyFileName.equalsIgnoreCase(fileName))) {
+							final Long fileProcessingStartTime = System.currentTimeMillis();
+							CloudBlockBlob blob2;
+							blob2 = cloudBlobContainer.getBlockBlobReference(fullFilePath);
+							csvRecords = energizerCSVProcessor.parse(fullFilePath);
+							//csvRecords = csvUtils.parse(f);
+							if (null != cmirListFromDB_buff && null != csvRecords) {
+								final Long preparedSetStartTime = System.currentTimeMillis();
+								//final Set<EnergizerCMIRModel> preparedSet = checkUpdate(cmirListFromDB_buff, csvRecords, cronjob);
+
+								final Set<EnergizerCMIRModel> preparedSet = checkUpdate(cmirMapFromDB, csvRecords, cronjob);
+								if (null != preparedSet && preparedSet.size() > 0) {
+									LOG.info("Matching records for file : '" + fileName + "' is : " + preparedSet.size());
+									cmirFinalSet.addAll(preparedSet);
+									preparedSet.clear();
+									final Long preparedSetEndTime = System.currentTimeMillis();
+									LOG.info("Matching comparison completed for file : " + fileName + ", total time taken : "
+											+ (preparedSetEndTime - preparedSetStartTime) + " milliseconds, "
+											+ (preparedSetEndTime - preparedSetStartTime) / 1000 + " seconds");
+								}
 							}
 						}
 						// If the cronjob abort is requested, then perform clean up and return the PerformResult
@@ -293,7 +346,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 						LOG.info("Total non-matching Price Rows in the DB setup inactive now : " + priceRowsSetInActive);
 						LOG.info("CMIR Monitor Job is COMPLETED for " + cronjob.getRegion() + " !!");
 
-						csvUtils.getReader().close();
+						//csvUtils.getReader().close();
 						sendMail(cmirSetFromDB.toString(), cronjob.getEmailAddress());
 
 						final Long cmirSetupInactiveEndTime = System.currentTimeMillis();
@@ -304,7 +357,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 					else
 					{
 						LOG.info("nothing to update");
-						csvUtils.getReader().close();
+						//csvUtils.getReader().close();
 					}
 				}
 				catch (final Exception e)
@@ -422,5 +475,16 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 		emailService.send(message);
 		LOG.info("mail send");
 		return;
+	}
+
+	public int filesCount( CloudBlobDirectory blobDirectory) throws URISyntaxException, StorageException {
+		LOG.info("Inside files count");
+
+		int counter = 0;
+		for (final ListBlobItem blobItem : blobDirectory.listBlobs()) {
+				counter++;
+		}
+		LOG.info("End files count");
+		return counter;
 	}
 }
