@@ -126,7 +126,6 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 		cmirFinalSet = new HashSet<EnergizerCMIRModel>();
 		Set<EnergizerCMIRModel> cmirSetFromDB = null;
 		cmirSetFromDB = new HashSet<EnergizerCMIRModel>();
-		LOG.info("33333333");
 		//Setting cronjob
 		csvUtils.setCronjob(cronjob);
 		String siteId = StringUtils.EMPTY;
@@ -137,7 +136,6 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 			// Added to fetch Site specific CMIRs from the hybris DB
 			final String SITE_PERSONALCARE = configurationService.getConfiguration().getString("site.personalCare");
 			final String SITE_PERSONALCAREEMEA = configurationService.getConfiguration().getString("site.personalCareEMEA");
-			LOG.info("444444");
 			if (cronjob.getCatalogName().equalsIgnoreCase(PERSONALCAREEMEA_PRODUCTCATALOG))
 			{
 				siteId = SITE_PERSONALCAREEMEA;
@@ -146,12 +144,10 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 			{
 				siteId = SITE_PERSONALCARE;
 			}
-			LOG.info("55555555");
 			cmirListFromDB = energizerProductService.getAllEnergizerCMIRListBySiteIdAndStatus(siteId, cronjob.getRegion(), true);
 			cmirListFromDB_buff = energizerProductService.getAllEnergizerCMIRListBySiteIdAndStatus(siteId, cronjob.getRegion(),
 					true);
 			cmirSetFromDB.addAll(cmirListFromDB);
-			LOG.info("666666");
 
 			if (cmirListFromDB != null && cmirListFromDB_buff != null)
 			{
@@ -167,9 +163,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 		{
 			LOG.error("Exception occured while loading data from db for this site '" + siteId + "' " + e.getMessage());
 		}
-		LOG.info("77777777");
 		final String type = cronjob.getType();
-		LOG.info("888888" + type);
 		if (type == null)
 		{
 			LOG.info("There is no Type defined for the job " + cronjob.getCode());
@@ -179,11 +173,9 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 		}
 		final AbstractEnergizerCSVProcessor energizerCSVProcessor = (AbstractEnergizerCSVProcessor) Registry.getApplicationContext()
 				.getBean(type);
-		LOG.info("9999999");
 		try
 		{
 
-			LOG.info("100000000000000");
 
 			CloudBlobContainer cloudBlobContainer = null;
 			cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
@@ -195,7 +187,6 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 
 			//final List<File> files = csvUtils.getFilesForFeedType("energizerCMIRCSVProcessor");
 			//LOG.info("LOADING FILES FROM CMIR folder FOR MONITORING" + files);
-			LOG.info("BLOB DIRECTORY");
 
 
 			if (blobDirectory.listBlobs() == null || filesCount == 0)
@@ -237,7 +228,6 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 					final Long cmirFinalSetStartTime = System.currentTimeMillis();
 					for (final ListBlobItem blobItem : blobDirectory.listBlobs())
 					{
-						LOG.info("Inside FOR Each processing");
 
 						final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
 						final String fullFilePath = subfullFilePath.substring(8);
