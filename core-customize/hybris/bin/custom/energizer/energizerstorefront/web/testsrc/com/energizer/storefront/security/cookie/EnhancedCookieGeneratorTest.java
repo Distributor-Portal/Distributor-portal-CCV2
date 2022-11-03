@@ -161,53 +161,34 @@ public class EnhancedCookieGeneratorTest
 		Mockito.verify(response, Mockito.times(0)).addHeader(Mockito.anyString(), Mockito.anyString());
 	}
 
-	private class CookieArgumentMatcher extends ArgumentMatcher<Cookie>
+	private class CookieArgumentMatcher implements ArgumentMatcher<Cookie>
 	{
 		private final Cookie expectedCookie;
 
-		CookieArgumentMatcher(final Cookie cookie)
-		{
+		CookieArgumentMatcher(final Cookie cookie) {
 			this.expectedCookie = cookie;
 		}
 
 		/*
 		 * (non-Javadoc)
-		 * 
-		 * @see org.mockito.ArgumentMatcher#matches(java.lang.Object)
+		 *
+		 * @see org.mockito.ArgumentMatcher#matches()
 		 */
 		@Override
-		public boolean matches(final Object argument)
-		{
-			if (argument instanceof Cookie)
-			{
-				final Cookie givenCookie = (Cookie) argument;
-				if (givenCookie.getSecure() == expectedCookie.getSecure())
-				{
-					if (givenCookie.getMaxAge() == expectedCookie.getMaxAge())
-					{
-						if (givenCookie.getName().equals(expectedCookie.getName()))
-						{
-							if (givenCookie.getPath() == expectedCookie.getPath()
-									|| givenCookie.getPath().equals(expectedCookie.getPath()))
-							{
-								if (givenCookie.getValue().equals(expectedCookie.getValue()))
-								{
-									if (givenCookie.getDomain() == expectedCookie.getDomain()
-											|| givenCookie.getDomain().equals(expectedCookie.getDomain()))
-									{
-										return true;
-									}
-								}
-
-							}
-						}
-					}
-				}
-				Assert.fail("Expected \n[" + ToStringBuilder.reflectionToString(expectedCookie) + "]\n but got \n["
-						+ ToStringBuilder.reflectionToString(argument) + "]");
+		public boolean matches(final Cookie givenCookie) {
+			if (givenCookie.getSecure() == expectedCookie.getSecure()
+					&& givenCookie.getMaxAge() == expectedCookie.getMaxAge()
+					&& givenCookie.getName().equals(expectedCookie.getName())
+					&& (givenCookie.getPath() == expectedCookie.getPath() || givenCookie.getPath().equals(expectedCookie.getPath()))
+					&& givenCookie.getValue().equals(expectedCookie.getValue())
+					&& (givenCookie.getDomain() == expectedCookie.getDomain() || givenCookie.getDomain().equals(expectedCookie.getDomain()))
+					&& givenCookie.isHttpOnly() == expectedCookie.isHttpOnly()) {
+				return true;
 			}
+			Assert.fail("Expected \n[" + ToStringBuilder.reflectionToString(expectedCookie) + "]\n but got \n["
+					+ ToStringBuilder.reflectionToString(givenCookie) + "]");
+
 			return false;
 		}
-
 	}
 }
