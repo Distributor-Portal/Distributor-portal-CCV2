@@ -250,6 +250,8 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 											+ (preparedSetEndTime - preparedSetStartTime) + " milliseconds, "
 											+ (preparedSetEndTime - preparedSetStartTime) / 1000 + " seconds");
 								}
+							}else {
+								LOG.info("No Matching records for file : '" + fileName );
 							}
 						}
 						// If the cronjob abort is requested, then perform clean up and return the PerformResult
@@ -310,17 +312,20 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 
 							final List<EnergizerPriceRowModel> energizerPriceRows = new ArrayList<>();
 
-							if(cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL)){
+							if(cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL) && cmirSetFromDB.size() > 0 ){
 								//To Avoid Flexible search exception on querying for WESELL
+								LOG.info("Inside WESELL Split Clause" + cmirSetFromDB.size());
 								List<Set<EnergizerCMIRModel>> splitSets = split(cmirSetFromDB, wesellSplitFilesCount);
 								for (final Set<EnergizerCMIRModel> splitSet : splitSets)
 								{
+									LOG.info("Querying Size " + splitSet.size());
 									List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
 											.getActiveEnergizerPriceRowForCMIRModelSet(splitSet);
 									energizerPriceRows.addAll(energizerPriceRow);
 									energizerPriceRow.clear();
 								}
 						    }else{
+								LOG.info("Querying Size " + cmirSetFromDB.size());
 								final List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
 										.getActiveEnergizerPriceRowForCMIRModelSet(cmirSetFromDB);
 								energizerPriceRows.addAll(energizerPriceRow);
@@ -363,7 +368,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 				}
 				catch (final Exception e)
 				{
-					LOG.error("EXC CAUSED BY : " + e.getMessage());
+					LOG.error("EXC CAUSED BY : " + e + e.getMessage() + e.getCause());
 					e.printStackTrace();
 					//csvUtils.getReader().close();
 				}
