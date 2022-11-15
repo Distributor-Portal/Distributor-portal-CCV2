@@ -249,6 +249,10 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 									LOG.info("Matching comparison completed for file : " + fileName + ", total time taken : "
 											+ (preparedSetEndTime - preparedSetStartTime) + " milliseconds, "
 											+ (preparedSetEndTime - preparedSetStartTime) / 1000 + " seconds");
+									LOG.info("Total records for files after " + fileName + " is : "
+											+ cmirFinalSet.size());
+								}else{
+									LOG.info("No Matching records for file : '" + fileName );
 								}
 							}else {
 								LOG.info("No Matching records for file : '" + fileName );
