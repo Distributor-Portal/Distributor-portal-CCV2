@@ -322,7 +322,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 									List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
 											.getActiveEnergizerPriceRowForCMIRModelSet(splitSet);
 									energizerPriceRows.addAll(energizerPriceRow);
-									energizerPriceRow.clear();
+									//energizerPriceRow.clear();
 								}
 						    }else{
 								LOG.info("Querying Size " + cmirSetFromDB.size());
