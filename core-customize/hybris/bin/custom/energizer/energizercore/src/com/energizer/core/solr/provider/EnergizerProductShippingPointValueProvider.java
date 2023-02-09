@@ -71,7 +71,6 @@ public class EnergizerProductShippingPointValueProvider extends AbstractProperty
 						final Collection<String> fieldNames = fieldNameProvider.getFieldNames(indexedProperty, null);
 
 						//LOG.info("fieldNames size :: " + fieldNames.size() + " , fieldNames :: " + fieldNames);
-
 						for (final String field : fieldNames)
 						{
 							fieldName = field;
@@ -83,7 +82,10 @@ public class EnergizerProductShippingPointValueProvider extends AbstractProperty
 
 							for (final EnergizerCMIRModel cmir : cmirList)
 							{
-								shippingPointNameSet.add(energizerProductService.getShippingPointName(cmir.getShippingPoint()));
+								String shippingPointname = energizerProductService.getShippingPointName(cmir.getShippingPoint());
+								String b2bunit = cmir.getB2bUnit().getUid();
+								String b2bunitSippingPoint = shippingPointname.concat(" AccountNo").concat(b2bunit);
+								shippingPointNameSet.add(b2bunitSippingPoint);
 							}
 
 							/*-for (final String shippingPointName : shippingPointNameSet)

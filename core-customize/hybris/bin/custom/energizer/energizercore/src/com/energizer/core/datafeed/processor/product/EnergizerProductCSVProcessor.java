@@ -96,11 +96,11 @@ public class EnergizerProductCSVProcessor extends AbstractEnergizerCSVProcessor
 				{
 					existEnergizerProd = (EnergizerProductModel) productService.getProductForCode(catalogVersion,
 							(csvValuesMap).get(EnergizerCoreConstants.ERPMATERIAL_ID).trim());
-				}
-				catch (final Exception e)
+				}catch (final Exception e)
 				{
 					LOG.error((csvValuesMap).get(EnergizerCoreConstants.ERPMATERIAL_ID) + " EnergizerProduct does  not exist  " + e);
 				}
+
 
 				if (null == existEnergizerProd)
 				{
