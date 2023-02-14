@@ -21,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -54,14 +55,19 @@ public class EnergizerSearchResponseFacetsPopulator<FACET_SEARCH_CONFIG_TYPE, IN
         if (facetValues != null && !facetValues.isEmpty())
         {
             final List<FacetValueData<SolrSearchQueryData>> allFacetValues = new ArrayList<>(facetValues.size());
-            for (final FacetValue facetValue : facetValues) {
+
+            Iterator<FacetValue> facetValueIteratator = facetValues.iterator();
+
+            while(facetValueIteratator.hasNext()){
+                FacetValue f = facetValueIteratator.next();
                 if (facet.getName().equalsIgnoreCase("shippingPoint")) {
                     String b2bunit = getB2BCustomerService().getCurrentB2BCustomer().getDefaultB2BUnit().getUid();
-                    if (!(facetValue.getName().contains(b2bunit))) {
-                        facetValues.remove(facetValue);
+                    if (!(f.getName().contains(b2bunit))) {
+                        facetValues.remove(f);
                     }
                 }
             }
+
 
             for (final FacetValue facetValue : facetValues)
             {

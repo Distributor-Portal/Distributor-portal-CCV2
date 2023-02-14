@@ -10,8 +10,8 @@ public class ShippingPointFacetDisplayNameProvider extends AbstractFacetValueDis
     @Override
     public String getDisplayName(final SearchQuery query, final IndexedProperty property, final String facetValue)
     {
-        if(facetValue.contains("b2bunit")){
-            return StringUtils.substringBefore(facetValue,"b2bunit");
+        if(facetValue.contains("AccountNo")){
+            return StringUtils.substringBefore(facetValue,"AccountNo");
         }else {
             return facetValue;
         }
