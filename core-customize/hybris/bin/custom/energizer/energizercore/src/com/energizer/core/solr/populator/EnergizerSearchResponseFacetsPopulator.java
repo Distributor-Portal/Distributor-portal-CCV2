@@ -1,5 +1,6 @@
 package com.energizer.core.solr.populator;
 
+import com.energizer.core.datafeed.processor.product.EnergizerCMIRMonitorJob;
 import de.hybris.platform.b2b.model.B2BCustomerModel;
 import de.hybris.platform.b2b.model.B2BUnitModel;
 import de.hybris.platform.b2b.services.B2BCustomerService;
@@ -17,12 +18,14 @@ import de.hybris.platform.solrfacetsearch.search.Facet;
 import de.hybris.platform.solrfacetsearch.search.FacetValue;
 import de.hybris.platform.solrfacetsearch.search.SearchQuery;
 import de.hybris.platform.solrfacetsearch.search.SearchResult;
+import org.apache.log4j.Logger;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 
 
 public class EnergizerSearchResponseFacetsPopulator<FACET_SEARCH_CONFIG_TYPE, INDEXED_TYPE_TYPE, INDEXED_PROPERTY_TYPE, INDEXED_TYPE_SORT_TYPE, ITEM> extends
@@ -37,6 +40,9 @@ public class EnergizerSearchResponseFacetsPopulator<FACET_SEARCH_CONFIG_TYPE, IN
     }
 
     private B2BCustomerService<B2BCustomerModel, B2BUnitModel> b2BCustomerService;
+
+    private static final Logger LOG = Logger.getLogger(EnergizerSearchResponseFacetsPopulator.class);
+
 
     @Override
     public void populate(
@@ -61,6 +67,7 @@ public class EnergizerSearchResponseFacetsPopulator<FACET_SEARCH_CONFIG_TYPE, IN
             while(facetValueIteratator.hasNext()){
                 FacetValue f = facetValueIteratator.next();
                 if (facet.getName().equalsIgnoreCase("shippingPoint")) {
+                    LOG.info("shipping facet values"+" " + f.getName() +" " + f.getCount());
                     String b2bunit = getB2BCustomerService().getCurrentB2BCustomer().getDefaultB2BUnit().getUid();
                     if (!(f.getName().contains(b2bunit))) {
                         facetValueIteratator.remove();
