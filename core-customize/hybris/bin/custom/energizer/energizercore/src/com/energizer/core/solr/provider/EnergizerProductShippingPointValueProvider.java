@@ -82,13 +82,13 @@ public class EnergizerProductShippingPointValueProvider extends AbstractProperty
 
 							for (final EnergizerCMIRModel cmir : cmirList)
 							{
-								String shippingPointname = energizerProductService.getShippingPointName(cmir.getShippingPoint());
+								String shippingPoint = cmir.getShippingPoint();
 								String b2bunit = null;
 								if(cmir.getB2bUnit()!=null) {
 									b2bunit = cmir.getB2bUnit().getUid();
 								}
-								if(b2bunit !=null && shippingPointname != null) {
-									String b2bunitSippingPoint = shippingPointname.concat(" AccountNo").concat(b2bunit);
+								if(b2bunit !=null && shippingPoint != null) {
+									String b2bunitSippingPoint = shippingPoint.concat(" AccountNo").concat(b2bunit);
 									shippingPointNameSet.add(b2bunitSippingPoint);
 								}
 							}
@@ -113,7 +113,7 @@ public class EnergizerProductShippingPointValueProvider extends AbstractProperty
 		}
 		catch (final Exception ex)
 		{
-			LOG.error("Exception Occured", ex);
+			LOG.error("Exception Occured " + ex.getMessage() + ex.getStackTrace(), ex);
 		}
 		finally
 		{
