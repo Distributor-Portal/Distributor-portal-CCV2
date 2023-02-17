@@ -4,6 +4,7 @@ import com.energizer.core.datafeed.processor.product.EnergizerCMIRMonitorJob;
 import de.hybris.platform.b2b.model.B2BCustomerModel;
 import de.hybris.platform.b2b.model.B2BUnitModel;
 import de.hybris.platform.b2b.services.B2BCustomerService;
+import de.hybris.platform.commercefacades.search.data.SearchQueryData;
 import de.hybris.platform.commerceservices.search.facetdata.FacetData;
 import de.hybris.platform.commerceservices.search.facetdata.FacetSearchPageData;
 import de.hybris.platform.commerceservices.search.facetdata.FacetValueData;
@@ -62,13 +63,16 @@ public class EnergizerSearchResponseFacetsPopulator<FACET_SEARCH_CONFIG_TYPE, IN
         {
             final List<FacetValueData<SolrSearchQueryData>> allFacetValues = new ArrayList<>(facetValues.size());
 
-            Iterator<FacetValue> facetValueIteratator = facetValues.iterator();
 
-            while(facetValueIteratator.hasNext()){
-                FacetValue f = facetValueIteratator.next();
-                if (facet.getName().equalsIgnoreCase("shippingPoint")) {
-                    LOG.info("shipping facet values"+" " + f.getName() +" " + f.getCount());
-                    String b2bunit = getB2BCustomerService().getCurrentB2BCustomer().getDefaultB2BUnit().getUid();
+            if (facet.getName().equalsIgnoreCase("shippingPoint")) {
+                Iterator<FacetValue> facetValueIteratator = facetValues.iterator();
+
+                String b2bunit = getB2BCustomerService().getCurrentB2BCustomer().getDefaultB2BUnit().getUid();
+                LOG.info("B2BUNIT of Customer" + b2bunit);
+
+                while (facetValueIteratator.hasNext()) {
+                    FacetValue f = facetValueIteratator.next();
+                    LOG.info("shipping facet values" + " " + f.getName() + " " + f.getCount());
                     if (!(f.getName().contains(b2bunit))) {
                         facetValueIteratator.remove();
                     }
