@@ -21,8 +21,8 @@ public class ShippingPointFacetDisplayNameProvider extends AbstractFacetValueDis
     @Override
     public String getDisplayName(final SearchQuery query, final IndexedProperty property, final String facetValue)
     {
-        if(facetValue.contains("_")){
-            String shippingPoint = StringUtils.substringBefore(facetValue,"_").trim();
+        if(facetValue.contains("AccountNo")){
+            String shippingPoint = StringUtils.substringBefore(facetValue,"AccountNo").trim();
             String shippingPointName = energizerProductService.getShippingPointName(shippingPoint);
             if(null != shippingPointName ){
                 return shippingPointName;

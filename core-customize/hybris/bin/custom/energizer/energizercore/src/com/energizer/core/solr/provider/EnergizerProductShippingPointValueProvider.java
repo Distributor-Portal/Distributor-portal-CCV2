@@ -88,7 +88,7 @@ public class EnergizerProductShippingPointValueProvider extends AbstractProperty
 									b2bunit = cmir.getB2bUnit().getUid();
 								}
 								if(b2bunit !=null && shippingPoint != null) {
-									String b2bunitSippingPoint = shippingPoint.concat("_").concat(b2bunit);
+									String b2bunitSippingPoint = shippingPoint.concat(" AccountNo").concat(b2bunit);
 									shippingPointNameSet.add(b2bunitSippingPoint);
 								}
 							}
