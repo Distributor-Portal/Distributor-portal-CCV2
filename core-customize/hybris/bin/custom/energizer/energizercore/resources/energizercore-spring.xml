@@ -1255,6 +1255,7 @@
 
 
 	<bean id="energizerShippingPointFacetDisplayNameProvider" class="com.energizer.core.solr.provider.ShippingPointFacetDisplayNameProvider">
+		<property name="energizerProductService" ref="energizerProductService" />
 	</bean>
 
 	<alias name="defaultEnergizerSearchResponseFacetsPopulator" alias="commerceSearchResponseFacetsPopulator" />

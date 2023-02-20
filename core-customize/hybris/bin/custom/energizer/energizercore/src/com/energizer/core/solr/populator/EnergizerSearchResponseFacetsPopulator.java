@@ -66,13 +66,9 @@ public class EnergizerSearchResponseFacetsPopulator<FACET_SEARCH_CONFIG_TYPE, IN
 
             if (facet.getName().equalsIgnoreCase("shippingPoint")) {
                 Iterator<FacetValue> facetValueIteratator = facetValues.iterator();
-
                 String b2bunit = getB2BCustomerService().getCurrentB2BCustomer().getDefaultB2BUnit().getUid();
-                LOG.info("B2BUNIT of Customer" + b2bunit);
-
                 while (facetValueIteratator.hasNext()) {
                     FacetValue f = facetValueIteratator.next();
-                    LOG.info("shipping facet values" + " " + f.getName() + " " + f.getCount());
                     if (!(f.getName().contains(b2bunit))) {
                         facetValueIteratator.remove();
                     }
