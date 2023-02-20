@@ -1252,4 +1252,15 @@
 	<bean id="energizerWesellVirtualID" class="com.energizer.core.wesell.virtualid.creation.impl.DefaultEnergizerWesellVirtualID"/>
 	
 	<!-- Added Bean for WeSell Implementation - END -->
+
+
+	<bean id="energizerShippingPointFacetDisplayNameProvider" class="com.energizer.core.solr.provider.ShippingPointFacetDisplayNameProvider">
+		<property name="energizerProductService" ref="energizerProductService" />
+	</bean>
+
+	<alias name="defaultEnergizerSearchResponseFacetsPopulator" alias="commerceSearchResponseFacetsPopulator" />
+	<bean id="defaultEnergizerSearchResponseFacetsPopulator"  class="com.energizer.core.solr.populator.EnergizerSearchResponseFacetsPopulator" parent="defaultCommerceSearchResponseFacetsPopulator" >
+		<property name="b2BCustomerService" ref="defaultB2BCustomerService"/>
+	</bean>
+
 </beans>

@@ -28,10 +28,7 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 
 public class SendOrderFraudCustomerNotificationEventTest
@@ -57,28 +54,9 @@ public class SendOrderFraudCustomerNotificationEventTest
 		final OrderModel order = new OrderModel();
 		process.setOrder(order);
 		action.executeAction(process);
-		Mockito.verify(eventService).publishEvent(Mockito.argThat(new BaseMatcher<FraudErrorEvent>()
-		{
+		final ArgumentMatcher<OrderFraudCustomerNotificationEvent> matcher = event -> event.getProcess().equals(process);
 
-			@Override
-			public boolean matches(final Object item)
-			{
-				if (item instanceof OrderFraudCustomerNotificationEvent)
-				{
-					final OrderFraudCustomerNotificationEvent event = (OrderFraudCustomerNotificationEvent) item;
-					if (event.getProcess().equals(process))
-					{
-						return true;
-					}
-				}
-				return false;
-			}
-
-			@Override
-			public void describeTo(final Description description)
-			{//nothing to do
-			}
-		}));
+		Mockito.verify(eventService).publishEvent(Mockito.argThat(matcher));
 
 		Mockito.verify(modelService).save(order);
 		Assert.assertEquals(OrderStatus.SUSPENDED, order.getStatus());

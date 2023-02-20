@@ -23,7 +23,13 @@ public class EnergizerOrderHistoryPopulator extends OrderHistoryPopulator
 	public void populate(final OrderModel source, final OrderHistoryData target)
 	{
 		super.populate(source, target);
-		target.setB2bOrderData(getOrderConverter().convert(source));
+		try {
+			target.setB2bOrderData(getOrderConverter().convert(source));
+		}catch (final Exception e)
+		{
+			target.setB2bOrderData(null);
+			e.printStackTrace();
+		}
 		target.setReferenceNumber(source.getErpOrderNumber());
 		target.setPurchaseOrderNumber(source.getPurchaseOrderNumber());
 		target.setErpOrderCreator(source.getErpOrderCreator());

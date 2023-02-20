@@ -23,10 +23,7 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 /**
 *
@@ -56,29 +53,9 @@ public class SendAuthorizationFailedNotificationTest
 		final OrderProcessModel process = new OrderProcessModel();
 		sendAuthorizationFailedNotification.executeAction(process);
 
-		Mockito.verify(eventService).publishEvent(Mockito.argThat(new BaseMatcher<FraudErrorEvent>()
-		{
+		final ArgumentMatcher<AuthorizationFailedEvent> matcher = event -> event.getProcess().equals(process);
 
-			@Override
-			public boolean matches(final Object item)
-			{
-				if (item instanceof AuthorizationFailedEvent)
-				{
-					final AuthorizationFailedEvent event = (AuthorizationFailedEvent) item;
-					if (event.getProcess().equals(process))
-					{
-						return true;
-					}
-				}
-				return false;
-			}
+		Mockito.verify(eventService).publishEvent(Mockito.argThat(matcher));
 
-			@Override
-			public void describeTo(final Description description)
-			{
-				//nothing to do
-
-			}
-		}));
 	}
 }
