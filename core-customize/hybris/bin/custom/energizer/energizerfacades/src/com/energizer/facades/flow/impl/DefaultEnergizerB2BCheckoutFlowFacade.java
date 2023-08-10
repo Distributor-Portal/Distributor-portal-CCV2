@@ -1028,7 +1028,12 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 				}
 				// Added for  order model unit!=b2bUnit issue fix - END
 
-				orderModel.setOrderComments((String) sessionService.getAttribute("orderComments"));
+				String orderComments = (String) sessionService.getAttribute("orderComments");zxccvvnm
+				if (StringUtils.isEmpty(orderComments)){
+					orderModel.setOrderComments(cartModel.getOrderComments());
+				}else {
+					orderModel.setOrderComments(orderComments);
+				}
 				LOG.info("Order Comments set in order Model ::: " + orderModel.getOrderComments());
 
 				modelService.save(orderModel);
