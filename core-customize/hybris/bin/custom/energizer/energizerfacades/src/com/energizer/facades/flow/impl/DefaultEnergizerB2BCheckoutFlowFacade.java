@@ -1035,7 +1035,6 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 					orderModel.setOrderComments(orderComments);
 				}
 				LOG.info("Order Comments set in order Model ::: " + orderModel.getOrderComments());
-
 				modelService.save(orderModel);
 				getModelService().refresh(orderModel);
 				// Remove cart
