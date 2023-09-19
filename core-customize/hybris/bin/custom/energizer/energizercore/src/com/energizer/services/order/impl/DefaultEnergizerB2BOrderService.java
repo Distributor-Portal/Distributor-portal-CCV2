@@ -483,6 +483,14 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				for (final OrderEntryData entry : orderData.getEntries())
 				{
 					final ProductData productData = entry.getProduct();
+
+					// division testting maneesh
+					if(productData.isIsPBG() && null != siteUid && siteUid.equalsIgnoreCase(PERSONALCARE)){
+
+						xmlHead.setDIVISION("40");
+
+					}
+
 					final String material = productData.getErpMaterialID();
 					final String prodCode = productData.getCode();
 					final String plant = productData.getShippingPoint();
