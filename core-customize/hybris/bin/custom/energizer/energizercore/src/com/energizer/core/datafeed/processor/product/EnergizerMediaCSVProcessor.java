@@ -234,9 +234,12 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 							LOG.info("****************** ProductMediaModel updated successfully for image ref Id : " + imgRefId
 									+ "****************** ");
 						}
+						LOG.info("exited the for LOOP");
 
 						// how many image files are processed so far
 						imagesProceesed = imagesProceesed + 1;
+
+						LOG.info("imagesProceesed"+imagesProceesed);
 
 
 						// move the processed image files to either 'ProcessedWithNoErrors' or 'ErrorFiles' folders.
@@ -421,98 +424,72 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 		return catalogVersion;
 	}
 
-	private String cleanUp(final String fileName, final boolean mediaSaved, final String thumbnailPath,
-			final String displayImagePath, final String ext, final CloudBlobContainer cloudBlobContainer)
-	{
+private String cleanUp(final String fileName, final boolean mediaSaved, final String thumbnailPath,
+                      final String displayImagePath, final String ext, final CloudBlobContainer cloudBlobContainer) {
 
-		final String thumbnailPathNew = StringUtils.substringBefore(thumbnailPath, "/toProcess");
-		final String displayImagePathNew = StringUtils.substringBefore(displayImagePath, "/toProcess");
+						LOG.info("In cleanup method ");
 
-		if (mediaSaved)
-		{
-			try
-			{
-				// Thumbnail
+    final String thumbnailPathNew = StringUtils.substringBefore(thumbnailPath, "/toProcess");
+    final String displayImagePathNew = StringUtils.substringBefore(displayImagePath, "/toProcess");
 
-				final String thumbnailSourcePathS = thumbnailPath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
-						+ "_2" + "." + ext;
+    try {
+        if (mediaSaved) {
+            // Thumbnail
+            final String thumbnailSourcePathS = thumbnailPath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
+                    + "_2" + "." + ext;
+            final String thumbnailTargetPathS = thumbnailPathNew + fileSeperator + ProcessedWithNoErrors + fileSeperator
+                    + fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext;
 
+            final CloudBlockBlob thumbnailSourceBlobS = cloudBlobContainer.getBlockBlobReference(thumbnailSourcePathS);
+            final CloudBlockBlob thumbnailTargetBlobS = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathS);
 
+            thumbnailTargetBlobS.startCopy(thumbnailSourceBlobS.getSnapshotQualifiedUri());
+            thumbnailSourceBlobS.delete();
 
-				final String thumbnailTargetPathS = thumbnailPathNew + fileSeperator + ProcessedWithNoErrors + fileSeperator
-						+ fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext;
+            // DisplayImg
+            final String displayImgSourcePathS = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
+                    + "_1" + "." + ext;
+            final String displayImgTargetPathS = displayImagePathNew + fileSeperator + ProcessedWithNoErrors + fileSeperator
+                    + fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext;
 
-				final CloudBlockBlob thumbnailSourceBlobS = cloudBlobContainer.getBlockBlobReference(thumbnailSourcePathS);
+            final CloudBlockBlob displayImgSourceBlobS = cloudBlobContainer.getBlockBlobReference(displayImgSourcePathS);
+            final CloudBlockBlob displayImgTargetBlobS = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathS);
 
-				final CloudBlockBlob thumbnailTargetBlobS = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathS);
+            displayImgTargetBlobS.startCopy(displayImgSourceBlobS.getSnapshotQualifiedUri());
+            displayImgSourceBlobS.delete();
 
-				thumbnailTargetBlobS.startCopy(thumbnailSourceBlobS.getSnapshotQualifiedUri());
-				thumbnailSourceBlobS.delete();
+            return "processed";
+        } else {
+            // ThumbnailE
+            final String thumbnailSourcePathE = thumbnailPath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
+                    + "_2" + "." + ext;
+            final String thumbnailTargetPathE = thumbnailPathNew + fileSeperator + ErrorFiles + fileSeperator
+                    + fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext;
 
-				//DisplayImg
-				final String displayImgSourcePathS = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
-						+ "_1" + "." + ext;
+            final CloudBlockBlob thumbnailSourceBlobE = cloudBlobContainer.getBlockBlobReference(thumbnailSourcePathE);
+            final CloudBlockBlob thumbnailTargetBlobE = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathE);
 
-				final String displayImgTargetPathS = displayImagePathNew + fileSeperator + ProcessedWithNoErrors + fileSeperator
-						+ fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext;
+            thumbnailTargetBlobE.startCopy(thumbnailSourceBlobE.getSnapshotQualifiedUri());
+            thumbnailSourceBlobE.delete();
 
+            // DisplayImgE
+            final String displayImgSourcePathE = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
+                    + "_1" + "." + ext;
+            final String displayImgTargetPathE = displayImagePathNew + fileSeperator + ErrorFiles + fileSeperator
+                    + fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext;
 
-				final CloudBlockBlob displayImgSourceBlobS = cloudBlobContainer.getBlockBlobReference(displayImgSourcePathS);
+            final CloudBlockBlob displayImgSourceBlobE = cloudBlobContainer.getBlockBlobReference(displayImgSourcePathE);
+            final CloudBlockBlob displayImgTargetBlobE = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathE);
 
-				final CloudBlockBlob displayImgTargetBlobS = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathS);
+            displayImgTargetBlobE.startCopy(displayImgSourceBlobE.getSnapshotQualifiedUri());
+            displayImgSourceBlobE.delete();
 
-				displayImgTargetBlobS.startCopy(displayImgSourceBlobS.getSnapshotQualifiedUri());
-				displayImgSourceBlobS.delete();
-
-				return "processed";
-			}
-			catch (final Exception e)
-			{
-				LOG.info("Error in processing images to processWithNoErrors folder");
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			try
-			{
-				// ThumbnailE
-
-				final String thumbnailSourcePathE = thumbnailPath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
-						+ "_2" + "." + ext;
-				final String thumbnailTargetPathE = thumbnailPathNew + fileSeperator + ErrorFiles + fileSeperator
-						+ fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext;
-
-				final CloudBlockBlob thumbnailSourceBlobE = cloudBlobContainer.getBlockBlobReference(thumbnailSourcePathE);
-
-				final CloudBlockBlob thumbnailTargetBlobE = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathE);
-
-				thumbnailTargetBlobE.startCopy(thumbnailSourceBlobE.getSnapshotQualifiedUri());
-				thumbnailSourceBlobE.delete();
-
-				//DisplayImgE
-				final String displayImgSourcePathE = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
-						+ "_1" + "." + ext;
-
-				final String displayImgTargetPathE = displayImagePathNew + fileSeperator + ErrorFiles + fileSeperator
-						+ fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext;
-
-
-				final CloudBlockBlob displayImgSourceBlobE = cloudBlobContainer.getBlockBlobReference(displayImgSourcePathE);
-
-				final CloudBlockBlob displayImgTargetBlobE = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathE);
-
-				displayImgTargetBlobE.startCopy(displayImgSourceBlobE.getSnapshotQualifiedUri());
-				displayImgSourceBlobE.delete();
-
-				return "error";
-			}
-			catch (final Exception e)
-			{
-				LOG.info("Error in processing images to Error folder");
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
+            return "error";
+        }
+    } catch (final Exception e) {
+        LOG.error("Error in processing images: " + e.getMessage());
+        e.printStackTrace();
+        return "error"; // Handle the error case by returning "error."
+    }
+}
 }
