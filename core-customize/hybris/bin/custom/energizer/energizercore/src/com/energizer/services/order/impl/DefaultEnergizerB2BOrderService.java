@@ -483,14 +483,9 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				for (final OrderEntryData entry : orderData.getEntries())
 				{
 					final ProductData productData = entry.getProduct();
-
-					// division testting maneesh
-					if(productData.isIsPBG() && null != siteUid && siteUid.equalsIgnoreCase(PERSONALCARE)){
-
-						xmlHead.setDIVISION("40");
-
-					}
-
+					if(productData.isIsPBG() && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
+                     xmlHead.setDIVISION("40");
+                    }
 					final String material = productData.getErpMaterialID();
 					final String prodCode = productData.getCode();
 					final String plant = productData.getShippingPoint();
@@ -606,7 +601,9 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 					itemObj.getZSDTSOITEM().add(orderEntry);
 				}
 			}
-
+            if (null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
+             xmlHead.setDIVISION("40");
+            }
 			final TSOPARTNER partnerObj = objectFactory.createDTB2BSALESORDERSIMULATEREQUESTTSOPARTNER();
 			ZSDTSOPART partner = null;
 
@@ -1067,6 +1064,9 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 			{
 				final EnergizerProductModel productData = (EnergizerProductModel) orderEntry.getProduct();
 				final String material = productData.getCode();
+				if(productData.getIsPBG() && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
+                xmlHead.setDIVISION("40");
+                }
 				final String code = productData.getCode();
 
 				//final String plant = productData.getProductCMIR().get(0).getShippingPoint();
@@ -1204,6 +1204,9 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				itemObj.getZSDTSOITEM().add(orderEntries);
 			}
 
+            if (null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
+             xmlHead.setDIVISION("40");
+            }
 			final com.energizer.core.createorder.jaxb.xsd.objects.DTB2BSALESORDERCREATEREQUEST.TSOPARTNER partnerObj = objectFactory
 					.createDTB2BSALESORDERCREATEREQUESTTSOPARTNER();
 			com.energizer.core.createorder.jaxb.xsd.objects.DTB2BSALESORDERCREATEREQUEST.TSOPARTNER.ZSDTSOPART partner = null;

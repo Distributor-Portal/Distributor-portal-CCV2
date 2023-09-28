@@ -310,6 +310,13 @@
           </restriction>
         </simpleType>
       </element>
+      <element minOccurs="0" maxOccurs="1" name="COND_UNIT" nillable="true">
+        <simpleType>
+          <restriction base="string">
+          <maxLength value="7" />
+          </restriction>
+        </simpleType>
+      </element>
     </sequence>
   </complexType>
   <element name="ZSD_TSOITEM" nillable="true" type="ns3:ZSD_TSOITEM_7888da" />
