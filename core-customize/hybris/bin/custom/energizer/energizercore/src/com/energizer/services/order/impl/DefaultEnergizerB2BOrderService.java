@@ -495,7 +495,9 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 					// SAP need item number to be sent in multiple of 10's
 					orderEntry.setITMNUMBER((entry.getEntryNumber() + 1) * 10);
 					orderEntry.setMATERIAL(prodCode);
-
+                    if(null != productData.getPriceUOM()) {
+                     orderEntry.setCondunit(productData.getPriceUOM());
+                    }
 					//LOG.info("expectedUnitPrice ::: " + expectedUnitPrice);
 
 					// Hide Expected unit price for EMEA - START

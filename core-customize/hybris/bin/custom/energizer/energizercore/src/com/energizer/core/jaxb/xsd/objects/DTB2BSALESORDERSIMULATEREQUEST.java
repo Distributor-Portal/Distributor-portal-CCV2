@@ -1778,7 +1778,16 @@ public class DTB2BSALESORDERSIMULATEREQUEST
 			protected String discountamt;
 			@XmlElement(name = "DISCOUNT_PERCENT")
 			protected String discountpercent;
+			@XmlElement(name = "COND_UNIT")
+			protected String condunit;
+			
+            public String getCondunit() {
+				return condunit;
+			}
 
+			public void setCondunit(String condunit) {
+				this.condunit = condunit;
+			}
 			/**
 			 * Gets the value of the itmnumber property.
 			 * 
