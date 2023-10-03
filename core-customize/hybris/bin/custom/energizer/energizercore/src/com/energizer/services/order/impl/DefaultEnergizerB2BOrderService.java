@@ -483,7 +483,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				for (final OrderEntryData entry : orderData.getEntries())
 				{
 					final ProductData productData = entry.getProduct();
-					if(productData.isIsPBG() && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
+					if(productData.isIsPBG() && b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000")&&null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
                      xmlHead.setDIVISION("40");
                     }
 					final String material = productData.getErpMaterialID();
@@ -496,7 +496,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 					orderEntry.setITMNUMBER((entry.getEntryNumber() + 1) * 10);
 					orderEntry.setMATERIAL(prodCode);
                     if(null != productData.getPriceUOM()) {
-                     orderEntry.setCondunit(productData.getPriceUOM());
+                     orderEntry.setCONDUNIT(productData.getPriceUOM());
                     }
 					//LOG.info("expectedUnitPrice ::: " + expectedUnitPrice);
 
@@ -603,7 +603,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 					itemObj.getZSDTSOITEM().add(orderEntry);
 				}
 			}
-            if (null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
+            if ( b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000")&&null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
              xmlHead.setDIVISION("40");
             }
 			final TSOPARTNER partnerObj = objectFactory.createDTB2BSALESORDERSIMULATEREQUESTTSOPARTNER();
@@ -1066,7 +1066,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 			{
 				final EnergizerProductModel productData = (EnergizerProductModel) orderEntry.getProduct();
 				final String material = productData.getCode();
-				if(productData.getIsPBG() && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
+				if(productData.getIsPBG() &&  b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000")&&null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
                 xmlHead.setDIVISION("40");
                 }
 				final String code = productData.getCode();
@@ -1206,7 +1206,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				itemObj.getZSDTSOITEM().add(orderEntries);
 			}
 
-            if (null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
+            if (b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000")&&null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
              xmlHead.setDIVISION("40");
             }
 			final com.energizer.core.createorder.jaxb.xsd.objects.DTB2BSALESORDERCREATEREQUEST.TSOPARTNER partnerObj = objectFactory
