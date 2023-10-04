@@ -482,10 +482,13 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 			{
 				for (final OrderEntryData entry : orderData.getEntries())
 				{
+					LOG.info("DIVISION"+b2bUnitData.getDivision());
 					final ProductData productData = entry.getProduct();
-					if(productData.isIsPBG() && b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000")&&null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
+					if(productData.isIsPBG() && b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
                      xmlHead.setDIVISION("40");
-                    }
+					 LOG.info("after If Condition DIVISION"+ b2bUnitData.getDivision());
+
+					}
 					final String material = productData.getErpMaterialID();
 					final String prodCode = productData.getCode();
 					final String plant = productData.getShippingPoint();
@@ -603,9 +606,11 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 					itemObj.getZSDTSOITEM().add(orderEntry);
 				}
 			}
-            if ( b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000")&&null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
+
+            if ( b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
              xmlHead.setDIVISION("40");
-            }
+				LOG.info("after If Condition DIVISION"+ b2bUnitData.getDivision());
+			}
 			final TSOPARTNER partnerObj = objectFactory.createDTB2BSALESORDERSIMULATEREQUESTTSOPARTNER();
 			ZSDTSOPART partner = null;
 
@@ -1066,8 +1071,11 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 			{
 				final EnergizerProductModel productData = (EnergizerProductModel) orderEntry.getProduct();
 				final String material = productData.getCode();
-				if(productData.getIsPBG() &&  b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000")&&null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
+				LOG.info("DIVISION"+b2bUnitData.getDivision());
+				if(productData.getIsPBG() &&  b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
                 xmlHead.setDIVISION("40");
+				LOG.info("after If Condition DIVISION"+ b2bUnitData.getDivision());
+
                 }
 				final String code = productData.getCode();
 
@@ -1108,6 +1116,9 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				// SAP need item number to be sent in multiple of 10's
 				orderEntries.setITMNUMBER((orderEntry.getEntryNumber() + 1) * 10);
 				orderEntries.setMATERIAL(code);
+				
+				
+
 
 				//final List<EnergizerCMIRModel> CMIRModelList = productData.getProductCMIR();
 				//String uom = "";
@@ -1206,9 +1217,11 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				itemObj.getZSDTSOITEM().add(orderEntries);
 			}
 
-            if (b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000")&&null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
+            if (b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
              xmlHead.setDIVISION("40");
-            }
+			 LOG.info("after If Condition DIVISION"+ b2bUnitData.getDivision());
+
+			}
 			final com.energizer.core.createorder.jaxb.xsd.objects.DTB2BSALESORDERCREATEREQUEST.TSOPARTNER partnerObj = objectFactory
 					.createDTB2BSALESORDERCREATEREQUESTTSOPARTNER();
 			com.energizer.core.createorder.jaxb.xsd.objects.DTB2BSALESORDERCREATEREQUEST.TSOPARTNER.ZSDTSOPART partner = null;
