@@ -484,9 +484,11 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				{
 					LOG.info("Division for NON PBG products "+ b2bUnitData.getDivision());
 					final ProductData productData = entry.getProduct();
+					LOG.info("IsPBG---" +productData.isIsPBG() +"SalesOrganisation  " + b2bUnitData.getSalesOrganisation() +"siteUid" + siteUid +"SalesArea()"+b2bUnitData.getSalesArea());
 					if(productData.isIsPBG() && b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
                      xmlHead.setDIVISION("40");
 					 LOG.info("Division for PBG products\n"+ b2bUnitData.getDivision());
+
 
 					}
 					final String material = productData.getErpMaterialID();
@@ -1073,6 +1075,9 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				final EnergizerProductModel productData = (EnergizerProductModel) orderEntry.getProduct();
 				final String material = productData.getCode();
 				LOG.info("DIVISION For NON PBG Products"+b2bUnitData.getDivision());
+
+				LOG.info("IsPBG---" +productData.getIsPBG() +"SalesOrganisation  " + b2bUnitData.getSalesOrganisation() +"siteUid" + siteUid +"SalesArea()"+b2bUnitData.getSalesArea());
+
 				if(productData.getIsPBG() &&  b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
                 xmlHead.setDIVISION("40");
 				LOG.info("Division for PBG products "+ b2bUnitData.getDivision());
