@@ -485,10 +485,11 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				{
 					LOG.info("Division for NON PBG products "+ b2bUnitData.getDivision());
 					final ProductData productData = entry.getProduct();
-					LOG.info("IsPBG---" +productData.isIsPBG() +"SalesOrganisation  " + b2bUnitData.getSalesOrganisation() +"siteUid" + siteUid +"SalesArea()"+b2bUnitData.getSalesArea());
+					LOG.info(" Is PBG---" +productData.isIsPBG() +"SalesOrganisation  " + b2bUnitData.getSalesOrganisation() +"siteUid" + siteUid +"SalesArea()"+b2bUnitData.getSalesArea());
+					LOG.info("IS PBG BOOLEAN "+BooleanUtils.isTrue(productData.isIsPBG()));
 					if(BooleanUtils.isTrue(productData.isIsPBG())  && b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
                      xmlHead.setDIVISION("40");
-					 LOG.info("Division for PBG products\n"+ b2bUnitData.getDivision());
+					 LOG.info("Division for PBG products - 40");
 
 
 					}
@@ -1077,11 +1078,11 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				final String material = productData.getCode();
 				LOG.info("DIVISION For NON PBG Products"+b2bUnitData.getDivision());
 
-				LOG.info("getIsPBG---" +productData.getIsPBG()+"SalesOrganisation  " + b2bUnitData.getSalesOrganisation() +"siteUid" + siteUid +"SalesArea()"+b2bUnitData.getSalesArea());
-
+				LOG.info("get Is PBG---" +productData.getIsPBG()+"SalesOrganisation  " + b2bUnitData.getSalesOrganisation() +"siteUid" + siteUid +"SalesArea()"+b2bUnitData.getSalesArea());
+                LOG.info("IS PBG BOOLEAN "+BooleanUtils.isTrue(productData.getIsPBG()));
 				if(BooleanUtils.isTrue(productData.getIsPBG())  &&  b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
                 xmlHead.setDIVISION("40");
-				LOG.info("Division for PBG iproducts "+ b2bUnitData.getDivision());
+				LOG.info("Division for PBG Product -- 40");
 
                 }
 				final String code = productData.getCode();
