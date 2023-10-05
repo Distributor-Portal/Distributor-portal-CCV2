@@ -23,6 +23,7 @@ import de.hybris.platform.core.model.c2l.CurrencyModel;
 import de.hybris.platform.core.model.order.AbstractOrderEntryModel;
 import de.hybris.platform.core.model.order.CartModel;
 import de.hybris.platform.core.model.order.OrderModel;
+import de.hybris.platform.europe1.model.PriceRowModel;
 import de.hybris.platform.order.CartService;
 import de.hybris.platform.product.ProductService;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
@@ -44,14 +45,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.mail.internet.AddressException;
@@ -1121,6 +1115,23 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				// SAP need item number to be sent in multiple of 10's
 				orderEntries.setITMNUMBER((orderEntry.getEntryNumber() + 1) * 10);
 				orderEntries.setMATERIAL(code);
+
+
+				if(null != productData.getEurope1Prices() ) {
+				final Collection<PriceRowModel> rowPrices = productData.getEurope1Prices();
+				boolean foundCmirPrice = false;
+				for (final Iterator<PriceRowModel> iterator = rowPrices.iterator(); iterator.hasNext();) {
+					final PriceRowModel priceRowModel = iterator.next();
+					if (priceRowModel instanceof EnergizerPriceRowModel) {
+						final EnergizerPriceRowModel energizerPriceRowModel = (EnergizerPriceRowModel) priceRowModel;
+						if (null != energizerPriceRowModel.getB2bUnit() && null != order.getB2bUnit()
+								&& energizerPriceRowModel.getB2bUnit().getUid().equalsIgnoreCase(order.getB2bUnit().getUid())
+								&& null != energizerPriceRowModel.getPriceUOM() && energizerPriceRowModel.getIsActive()) {
+							orderEntries.setCOND_UNIT(energizerPriceRowModel.getPriceUOM());
+						}
+					}
+				}
+				}
 				
 				
 

@@ -1771,12 +1771,18 @@ public class DTB2BSALESORDERCREATEREQUEST
 			protected String netvalue;
 			@XmlElement(name = "CUST_PRICE")
 			protected BigDecimal custprice;
+
+
+
+			@XmlElement(name = "COND_UNIT")
+			protected String condunit;
 			@XmlElement(name = "INVENTORY_AVAILABLE")
 			protected Long inventoryavailable;
 			@XmlElement(name = "DISCOUNT_AMT")
 			protected String discountamt;
 			@XmlElement(name = "DISCOUNT_PERCENT")
 			protected String discountpercent;
+
 
 			/**
 			 * Gets the value of the itmnumber property.
@@ -2008,7 +2014,15 @@ public class DTB2BSALESORDERCREATEREQUEST
 				this.discountpercent = value;
 			}
 
-		}
+            public void setCOND_UNIT(String condUnit) {
+                this.condunit= condUnit;
+            }
+
+
+            public String getCOND_UNIT() {
+                return condunit;
+            }
+        }
 
 	}
 
