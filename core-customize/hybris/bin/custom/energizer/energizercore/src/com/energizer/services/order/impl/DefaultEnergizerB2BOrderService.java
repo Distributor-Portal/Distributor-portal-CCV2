@@ -612,10 +612,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 			}
 			LOG.info("Division for NON PBG products "+ b2bUnitData.getDivision());
 
-            if ( b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
-             xmlHead.setDIVISION("40");
-				LOG.info("Division for PBG products "+ b2bUnitData.getDivision());
-			}
+
 			final TSOPARTNER partnerObj = objectFactory.createDTB2BSALESORDERSIMULATEREQUESTTSOPARTNER();
 			ZSDTSOPART partner = null;
 
@@ -1224,12 +1221,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 
 				itemObj.getZSDTSOITEM().add(orderEntries);
 			}
-			LOG.info("Division for NON PBG products"+ b2bUnitData.getDivision());
-			if (b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != b2bUnitData.getSalesArea() && null != b2bUnitData.getSalesOrganisation()  && b2bUnitData.getSalesOrganisation().equalsIgnoreCase("1000") && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM")){
-             xmlHead.setDIVISION("40");
-			 LOG.info("Division for PBG products"+ b2bUnitData.getDivision());
 
-			}
 			final com.energizer.core.createorder.jaxb.xsd.objects.DTB2BSALESORDERCREATEREQUEST.TSOPARTNER partnerObj = objectFactory
 					.createDTB2BSALESORDERCREATEREQUESTTSOPARTNER();
 			com.energizer.core.createorder.jaxb.xsd.objects.DTB2BSALESORDERCREATEREQUEST.TSOPARTNER.ZSDTSOPART partner = null;
