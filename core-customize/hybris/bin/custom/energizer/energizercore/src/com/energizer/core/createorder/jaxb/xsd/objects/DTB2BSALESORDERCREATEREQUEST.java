@@ -1752,7 +1752,7 @@ public class DTB2BSALESORDERCREATEREQUEST
 		 */
 		@XmlAccessorType(XmlAccessType.FIELD)
 		@XmlType(name = "", propOrder =
-		{ "itmnumber", "material", "targetqty", "targetqu", "plant", "netvalue", "custprice", "inventoryavailable", "discountamt",
+		{ "itmnumber", "material", "targetqty", "targetqu", "plant", "netvalue", "custprice", "condunit" ,"inventoryavailable", "discountamt",
 				"discountpercent" })
 		public static class ZSDTSOITEM
 		{
@@ -1772,10 +1772,9 @@ public class DTB2BSALESORDERCREATEREQUEST
 			@XmlElement(name = "CUST_PRICE")
 			protected BigDecimal custprice;
 
-
-
 			@XmlElement(name = "COND_UNIT")
 			protected String condunit;
+
 			@XmlElement(name = "INVENTORY_AVAILABLE")
 			protected Long inventoryavailable;
 			@XmlElement(name = "DISCOUNT_AMT")
