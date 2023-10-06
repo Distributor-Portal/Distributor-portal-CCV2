@@ -1123,7 +1123,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 
 				if (null != energizerCMIRModel) {
 					LOG.info(" energizerCMIRModel.getUom()" );
-					orderEntries.setCOND_UNIT(energizerCMIRModel.getUom());
+					orderEntries.setCOND_UNIT(energizerCMIRModel.getCustPriceUOM());
 				}
 
 				LOG.info("After setCOND_UNIT" );
