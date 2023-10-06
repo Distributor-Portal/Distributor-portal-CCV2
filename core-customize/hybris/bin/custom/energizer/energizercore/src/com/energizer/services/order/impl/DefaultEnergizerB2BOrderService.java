@@ -1081,6 +1081,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				//final String plant = productData.getProductCMIR().get(0).getShippingPoint();
 				final EnergizerCMIRModel energizerCMIRModel = energizerProductService.getEnergizerCMIR(material,
 						order.getB2bUnit().getUid());
+
 				LOG.info("After Fetching CMIR " + energizerCMIRModel);
 				final String plant = energizerCMIRModel.getShippingPoint();
 
@@ -1118,23 +1119,11 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				// SAP need item number to be sent in multiple of 10's
 				orderEntries.setITMNUMBER((orderEntry.getEntryNumber() + 1) * 10);
 				orderEntries.setMATERIAL(code);
-
-
-				if(null != productData.getEurope1Prices() ) {
-				final Collection<PriceRowModel> rowPrices = productData.getEurope1Prices();
-				boolean foundCmirPrice = false;
 				LOG.info("Before setCOND_UNIT" );
-				for (final Iterator<PriceRowModel> iterator = rowPrices.iterator(); iterator.hasNext();) {
-					final PriceRowModel priceRowModel = iterator.next();
-					if (priceRowModel instanceof EnergizerPriceRowModel) {
-						final EnergizerPriceRowModel energizerPriceRowModel = (EnergizerPriceRowModel) priceRowModel;
-						if (null != energizerPriceRowModel.getB2bUnit() && null != order.getB2bUnit()
-								&& energizerPriceRowModel.getB2bUnit().getUid().equalsIgnoreCase(order.getB2bUnit().getUid())
-								&& null != energizerPriceRowModel.getPriceUOM() && energizerPriceRowModel.getIsActive()) {
-							orderEntries.setCOND_UNIT(energizerPriceRowModel.getPriceUOM());
-						}
-					}
-				}
+
+				if (null != energizerCMIRModel) {
+					LOG.info(" energizerCMIRModel.getUom()" );
+					orderEntries.setCOND_UNIT(energizerCMIRModel.getUom());
 				}
 
 				LOG.info("After setCOND_UNIT" );
