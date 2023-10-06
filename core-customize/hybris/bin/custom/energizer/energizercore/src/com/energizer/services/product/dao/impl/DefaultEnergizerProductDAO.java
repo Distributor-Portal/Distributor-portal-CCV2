@@ -106,6 +106,7 @@ public class DefaultEnergizerProductDAO implements EnergizerProductDAO
 
 			final FlexibleSearchQuery query = new FlexibleSearchQuery(queryString);
 			query.addQueryParameter("b2bUnitId", b2bUnitId);
+			LOG.info("Fetching b2bunit Query " + query);
 
 			final List<EnergizerB2BUnitModel> b2bUnitModels = flexibleSearchService.<EnergizerB2BUnitModel> search(query)
 					.getResult();
@@ -126,6 +127,7 @@ public class DefaultEnergizerProductDAO implements EnergizerProductDAO
 
 				query1.addQueryParameter("erpMaterialId", erpMaterialId);
 				query1.addQueryParameter("energizerB2BUnitModel", energizerB2BUnitModel);
+				LOG.info("Fetching CMIR Query " + queryString1);
 			}
 			else
 			{

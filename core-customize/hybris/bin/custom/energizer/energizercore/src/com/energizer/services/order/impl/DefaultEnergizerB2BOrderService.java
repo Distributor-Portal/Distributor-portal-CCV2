@@ -1077,10 +1077,11 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 
                 }
 				final String code = productData.getCode();
-
+				LOG.info("Before Fetching CMIR " + code);
 				//final String plant = productData.getProductCMIR().get(0).getShippingPoint();
 				final EnergizerCMIRModel energizerCMIRModel = energizerProductService.getEnergizerCMIR(material,
 						order.getB2bUnit().getUid());
+				LOG.info("After Fetching CMIR " + energizerCMIRModel);
 				final String plant = energizerCMIRModel.getShippingPoint();
 
 				Long quantity = orderEntry.getQuantity();
@@ -1109,9 +1110,11 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 
 					//LOG.info("expectedUnitPrice new ::: " + expectedUnitPrice);
 				}
-
+				LOG.info("Before createDTB2BSALESORDERCREATEREQUESTTSOITEMZSDTSOITEM" );
 				final com.energizer.core.createorder.jaxb.xsd.objects.DTB2BSALESORDERCREATEREQUEST.TSOITEM.ZSDTSOITEM orderEntries = objectFactory
 						.createDTB2BSALESORDERCREATEREQUESTTSOITEMZSDTSOITEM();
+				LOG.info("After createDTB2BSALESORDERCREATEREQUESTTSOITEMZSDTSOITEM" );
+
 				// SAP need item number to be sent in multiple of 10's
 				orderEntries.setITMNUMBER((orderEntry.getEntryNumber() + 1) * 10);
 				orderEntries.setMATERIAL(code);
@@ -1120,6 +1123,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				if(null != productData.getEurope1Prices() ) {
 				final Collection<PriceRowModel> rowPrices = productData.getEurope1Prices();
 				boolean foundCmirPrice = false;
+				LOG.info("Before setCOND_UNIT" );
 				for (final Iterator<PriceRowModel> iterator = rowPrices.iterator(); iterator.hasNext();) {
 					final PriceRowModel priceRowModel = iterator.next();
 					if (priceRowModel instanceof EnergizerPriceRowModel) {
@@ -1132,8 +1136,8 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 					}
 				}
 				}
-				
-				
+
+				LOG.info("After setCOND_UNIT" );
 
 
 				//final List<EnergizerCMIRModel> CMIRModelList = productData.getProductCMIR();

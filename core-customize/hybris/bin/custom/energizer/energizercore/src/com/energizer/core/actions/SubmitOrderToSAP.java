@@ -85,6 +85,7 @@ public class SubmitOrderToSAP extends AbstractSimpleB2BApproveOrderDecisionActio
 			LOG.error(exception.getMessage(), exception);
 			this.handleError(order, exception);
 			//throw new RuntimeException(exception.getMessage(), exception);
+			LOG.info("After the handleErrorMethod" + order.getCode() );
 			order.setStatus(OrderStatus.PENDING);
 			return Transition.NOK;
 		}
@@ -94,9 +95,10 @@ public class SubmitOrderToSAP extends AbstractSimpleB2BApproveOrderDecisionActio
 	{
 		if (order != null)
 		{
+			LOG.info("Setting the OrderStatus" + order.getCode() );
 			this.setOrderStatus(order, OrderStatus.B2B_PROCESSING_ERROR);
 		}
-		LOG.error(exception.getMessage(), exception);
+		LOG.info(exception.getMessage(), exception);
 	}
 
 	/*
