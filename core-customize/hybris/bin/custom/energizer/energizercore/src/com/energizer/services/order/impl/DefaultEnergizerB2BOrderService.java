@@ -65,6 +65,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpEntity;
@@ -482,15 +483,16 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 			{
 				for (final OrderEntryData entry : orderData.getEntries())
 				{
+					LOG.info("Division for NON PBG products "+ b2bUnitData.getDivision());
 					final ProductData productData = entry.getProduct();
+					LOG.info(" Is PBG---" +productData.isIsPBG() +"SalesOrganisation  " + b2bUnitData.getSalesOrganisation() +"siteUid" + siteUid +"SalesArea()"+b2bUnitData.getSalesArea());
+					LOG.info("IS PBG BOOLEAN "+BooleanUtils.isTrue(productData.isIsPBG()));
+					if(BooleanUtils.isTrue(productData.isIsPBG())  && b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
+                     xmlHead.setDIVISION("40");
+					 LOG.info("Division for PBG products - 40");
 
-					// division testting maneesh
-					if(productData.isIsPBG() && null != siteUid && siteUid.equalsIgnoreCase(PERSONALCARE)){
-
-						xmlHead.setDIVISION("40");
 
 					}
-
 					final String material = productData.getErpMaterialID();
 					final String prodCode = productData.getCode();
 					final String plant = productData.getShippingPoint();
@@ -500,7 +502,9 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 					// SAP need item number to be sent in multiple of 10's
 					orderEntry.setITMNUMBER((entry.getEntryNumber() + 1) * 10);
 					orderEntry.setMATERIAL(prodCode);
-
+                    if(null != productData.getPriceUOM()) {
+                     orderEntry.setCONDUNIT(productData.getPriceUOM());
+                    }
 					//LOG.info("expectedUnitPrice ::: " + expectedUnitPrice);
 
 					// Hide Expected unit price for EMEA - START
@@ -606,6 +610,8 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 					itemObj.getZSDTSOITEM().add(orderEntry);
 				}
 			}
+			LOG.info("Division for NON PBG products "+ b2bUnitData.getDivision());
+
 
 			final TSOPARTNER partnerObj = objectFactory.createDTB2BSALESORDERSIMULATEREQUESTTSOPARTNER();
 			ZSDTSOPART partner = null;
@@ -1067,6 +1073,15 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 			{
 				final EnergizerProductModel productData = (EnergizerProductModel) orderEntry.getProduct();
 				final String material = productData.getCode();
+				LOG.info("DIVISION For NON PBG Products"+b2bUnitData.getDivision());
+
+				LOG.info("get Is PBG---" +productData.getIsPBG()+"SalesOrganisation  " + b2bUnitData.getSalesOrganisation() +"siteUid" + siteUid +"SalesArea()"+b2bUnitData.getSalesArea());
+                LOG.info("IS PBG BOOLEAN "+BooleanUtils.isTrue(productData.getIsPBG()));
+				if(BooleanUtils.isTrue(productData.getIsPBG())  &&  b2bUnitData.getSalesOrganisation() != null && b2bUnitData.getSalesOrganisation().equals("1000") && null != siteUid && null != b2bUnitData.getSalesArea() && siteUid.equalsIgnoreCase(PERSONALCARE) && b2bUnitData.getSalesArea().equalsIgnoreCase("LATAM") ){
+                xmlHead.setDIVISION("40");
+				LOG.info("Division for PBG Product -- 40");
+
+                }
 				final String code = productData.getCode();
 
 				//final String plant = productData.getProductCMIR().get(0).getShippingPoint();
@@ -1106,6 +1121,9 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				// SAP need item number to be sent in multiple of 10's
 				orderEntries.setITMNUMBER((orderEntry.getEntryNumber() + 1) * 10);
 				orderEntries.setMATERIAL(code);
+				
+				
+
 
 				//final List<EnergizerCMIRModel> CMIRModelList = productData.getProductCMIR();
 				//String uom = "";

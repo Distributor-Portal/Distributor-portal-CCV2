@@ -1753,7 +1753,7 @@ public class DTB2BSALESORDERSIMULATEREQUEST
 		 */
 		@XmlAccessorType(XmlAccessType.FIELD)
 		@XmlType(name = "", propOrder =
-		{ "itmnumber", "material", "targetqty", "targetqu", "plant", "netvalue", "custprice", "inventoryavailable", "discountamt",
+		{ "itmnumber", "material", "condunit", "targetqty", "targetqu", "plant", "netvalue", "custprice", "inventoryavailable", "discountamt",
 				"discountpercent" })
 		public static class ZSDTSOITEM
 		{
@@ -1762,6 +1762,8 @@ public class DTB2BSALESORDERSIMULATEREQUEST
 			protected Integer itmnumber;
 			@XmlElement(name = "MATERIAL")
 			protected String material;
+			@XmlElement(name = "COND_UNIT")
+			protected String condunit;
 			@XmlElement(name = "TARGET_QTY")
 			protected Long targetqty;
 			@XmlElement(name = "TARGET_QU")
@@ -1823,6 +1825,29 @@ public class DTB2BSALESORDERSIMULATEREQUEST
 			public void setMATERIAL(final String value)
 			{
 				this.material = value;
+			}
+
+			/**
+			 * Gets the value of the condunit property.
+			 * 
+			 * @return possible object is {@link String }
+			 * 
+			 */
+			public String getCONDUNIT()
+			{
+				return condunit;
+			}
+
+			/**
+			 * Sets the value of the condunit property.
+			 * 
+			 * @param value
+			 *                 allowed object is {@link String }
+			 * 
+			 */
+			public void setCONDUNIT(final String value)
+			{
+				this.condunit = value;
 			}
 
 			/**
