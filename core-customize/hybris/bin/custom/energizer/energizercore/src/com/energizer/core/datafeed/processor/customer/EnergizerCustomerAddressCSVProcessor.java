@@ -85,7 +85,7 @@ public class EnergizerCustomerAddressCSVProcessor extends AbstractEnergizerCSVPr
 	private static final String SP_REGION = "SPREGION";
 	private static final String STATUS = "Status";
 	private static final String CUSTOMER_ID = "CustomerID";
-	//private static String SHIPPING_POINT_NO = "ShippingPointNo";
+//	private static String SHIPPING_POINT_NO = "ShippingPointNo";
 	private static String SHIPPING_POINT_NO = "Plant";
 	//private static final String SOLD_TO_ADDRESS_ID = "SoldToAddressId";
 	private static final String SOLD_TO_ADDRESS_ID = "Ship2";
@@ -198,8 +198,7 @@ public class EnergizerCustomerAddressCSVProcessor extends AbstractEnergizerCSVPr
 						if (b2bUnitmodel != null)
 						{
 
-							if (catalogName.equalsIgnoreCase(configurationService.getConfiguration().getString("catalogName"))
-									&& null != csvValuesMap.get(SHIPPING_POINT_NO)
+							if ( null != csvValuesMap.get(SHIPPING_POINT_NO)
 									&& !StringUtils.isEmpty(csvValuesMap.get(SHIPPING_POINT_NO)))
 							{
 								setEnergizerUnitLeadTime(b2bUnitmodel, csvValuesMap.get(SHIPPING_POINT_NO).trim(), erpAddressId,
@@ -285,6 +284,9 @@ public class EnergizerCustomerAddressCSVProcessor extends AbstractEnergizerCSVPr
 							LOG.info(configurationService.getConfiguration().getString("catalogName") + "congiuration catalogname");
 							LOG.info(csvValuesMap.get(SHIPPING_POINT_NO)+ "csv value of SHIPPING_POINT_NO ");
 							LOG.info(csvValuesMap.get(SHIPPING_POINT_NO).trim() + " printing SHIPPING_POINT_NO n b2b!");
+
+							setEnergizerUnitLeadTime(b2bUnitmodel, csvValuesMap.get(SHIPPING_POINT_NO).trim(), erpAddressId,
+									succeedRecord);
 
 
 
