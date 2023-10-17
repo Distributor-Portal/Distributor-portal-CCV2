@@ -204,9 +204,13 @@ public class EnergizerCustomerAddressCSVProcessor extends AbstractEnergizerCSVPr
 							{
 								setEnergizerUnitLeadTime(b2bUnitmodel, csvValuesMap.get(SHIPPING_POINT_NO).trim(), erpAddressId,
 										succeedRecord);
+								LOG.info( catalogName + " catalogName");
+								LOG.info(csvValuesMap.get(SHIPPING_POINT_NO).trim() + " printing SHIPPING_POINT_NO !");
+
 							}
 							else
 							{
+								LOG.info( catalogName + " catalogName ");
 								LOG.info(SHIPPING_POINT_NO + " is null or empty !");
 							}
 
@@ -273,6 +277,7 @@ public class EnergizerCustomerAddressCSVProcessor extends AbstractEnergizerCSVPr
 						}
 						else
 						{
+							LOG.info(catalogName + "catalogName in B2b unit is present");
 							LOG.info(SHIPPING_POINT_NO + " is null or empty !");
 						}
 
