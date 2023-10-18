@@ -198,22 +198,25 @@ public class EnergizerCustomerAddressCSVProcessor extends AbstractEnergizerCSVPr
 						if (b2bUnitmodel != null)
 						{
 
-							if ( null != csvValuesMap.get(SHIPPING_POINT_NO)
+							if ( catalogName.equalsIgnoreCase(configurationService.getConfiguration().getString("catalogName")) &&
+									null != csvValuesMap.get(SHIPPING_POINT_NO)	&& !StringUtils.isEmpty(csvValuesMap.get(SHIPPING_POINT_NO)))
+							{
+								setEnergizerUnitLeadTime(b2bUnitmodel, csvValuesMap.get(SHIPPING_POINT_NO).trim(), erpAddressId,
+										succeedRecord);
+								LOG.info(catalogName + "   NO B2b unit ");
+
+							}
+							else if (catalogName.equalsIgnoreCase(configurationService.getConfiguration().getString("catalogNameEMEA"))
+									&& null != csvValuesMap.get(SHIPPING_POINT_NO)
 									&& !StringUtils.isEmpty(csvValuesMap.get(SHIPPING_POINT_NO)))
 							{
 								setEnergizerUnitLeadTime(b2bUnitmodel, csvValuesMap.get(SHIPPING_POINT_NO).trim(), erpAddressId,
 										succeedRecord);
-								LOG.info( catalogName + " catalogName");
-
-								LOG.info(configurationService.getConfiguration().getString("catalogName") + "congiuration catalogname");
-								LOG.info(csvValuesMap.get(SHIPPING_POINT_NO)+ "csv value of SHIPPING_POINT_NO  in no");
-
-								LOG.info(csvValuesMap.get(SHIPPING_POINT_NO).trim() + " printing SHIPPING_POINT_NO !");
+								LOG.info(catalogName + "   NO B2b unit ");
 
 							}
 							else
 							{
-								LOG.info( catalogName + " catalogName ");
 								LOG.info(SHIPPING_POINT_NO + " is null or empty !");
 							}
 
@@ -277,19 +280,18 @@ public class EnergizerCustomerAddressCSVProcessor extends AbstractEnergizerCSVPr
 						{
 							setEnergizerUnitLeadTime(b2bUnitmodel, csvValuesMap.get(SHIPPING_POINT_NO).trim(), erpAddressId,
 									succeedRecord);
+							LOG.info(catalogName + "   IN B2b unit ");
+						}
+						else if (catalogName.equalsIgnoreCase(configurationService.getConfiguration().getString("catalogNameEMEA"))
+								&& null != csvValuesMap.get(SHIPPING_POINT_NO)
+								&& !StringUtils.isEmpty(csvValuesMap.get(SHIPPING_POINT_NO)))
+						{
+							setEnergizerUnitLeadTime(b2bUnitmodel, csvValuesMap.get(SHIPPING_POINT_NO).trim(), erpAddressId,
+									succeedRecord);
+							LOG.info(catalogName + "   IN B2b unit ");
 						}
 						else
 						{
-							LOG.info(catalogName + "catalogName in B2b unit is present");
-							LOG.info(configurationService.getConfiguration().getString("catalogName") + "congiuration catalogname");
-							LOG.info(csvValuesMap.get(SHIPPING_POINT_NO)+ "csv value of SHIPPING_POINT_NO ");
-							LOG.info(csvValuesMap.get(SHIPPING_POINT_NO).trim() + " printing SHIPPING_POINT_NO n b2b!");
-
-							setEnergizerUnitLeadTime(b2bUnitmodel, csvValuesMap.get(SHIPPING_POINT_NO).trim(), erpAddressId,
-									succeedRecord);
-
-
-
 							LOG.info(SHIPPING_POINT_NO + " is null or empty !");
 						}
 
