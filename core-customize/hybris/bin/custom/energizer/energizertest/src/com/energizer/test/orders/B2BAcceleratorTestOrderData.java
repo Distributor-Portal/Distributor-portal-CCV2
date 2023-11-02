@@ -23,7 +23,7 @@ import de.hybris.platform.b2bacceleratorfacades.order.data.B2BOrderApprovalData;
 import de.hybris.platform.b2bacceleratorfacades.order.data.ScheduledCartData;
 import de.hybris.platform.b2bacceleratorfacades.order.data.TriggerData;
 import de.hybris.platform.b2bacceleratorservices.customer.B2BCustomerAccountService;
-import de.hybris.platform.b2bacceleratorservices.enums.CheckoutPaymentType;
+import de.hybris.platform.b2b.enums.CheckoutPaymentType;
 import de.hybris.platform.basecommerce.strategies.BaseStoreSelectorStrategy;
 import de.hybris.platform.cms2.model.site.CMSSiteModel;
 import de.hybris.platform.cms2.servicelayer.services.admin.CMSAdminSiteService;
