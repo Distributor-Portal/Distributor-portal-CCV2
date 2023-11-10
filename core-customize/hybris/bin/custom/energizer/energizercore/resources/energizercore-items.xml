@@ -268,7 +268,7 @@
 					</attribute>
 					<attribute qualifier="orderBlock" type="java.lang.Boolean">
 						<description>Order Block Flag</description>
-						<modifiers />
+						<modifiers optional="false" />
 						<persistence type="property" />
 					</attribute>
 					<attribute qualifier="currencyPreference" type="Currency">
@@ -353,7 +353,7 @@
 					<!-- Display Image field - OOTB -->
 					<attribute qualifier="obsolete" type="java.lang.Boolean">
 						<description>Obsolete status - if obsolete then disable add to cart button</description>
-						<modifiers />
+						<modifiers optional="false" />
 						<persistence type="property" />
 					</attribute>
 					<!-- <attribute qualifier="productWeight" type="MetricUnit"> <description>product 
@@ -442,7 +442,7 @@
 					</attribute>
 					<attribute qualifier="isPBG" type="java.lang.Boolean">
 						<description>If 'true', then it is a PBG Product and Non-PBG otherwise.</description>
-						<modifiers/>
+						<modifiers optional="false" />
 						<persistence type="property" />						
 					</attribute>
 					<attribute qualifier="obsoleteStatusMap" type="obsoleteStatusMap">
@@ -511,7 +511,7 @@
 					</attribute>
 					<attribute qualifier="isWeSellProduct" type="java.lang.Boolean" >
 						<description>Whether it is a WeSell product</description>
-						<modifiers/>
+						<modifiers optional="false" />
 						<persistence type="property" />
 					</attribute>
 					<attribute qualifier="custPriceUOM" type="java.lang.String" >
@@ -707,7 +707,7 @@
 					</attribute>
 					<attribute qualifier="registrationEmailFlag" type="java.lang.Boolean">
 						<description>When flag true, email has been send otherwize false.</description>
-						<modifiers />
+						<modifiers optional="false" />
 						<persistence type="property" />
 					</attribute>
 					<attribute type="java.lang.String" qualifier="previousPasswords">
@@ -806,6 +806,7 @@
 					</attribute>
 					<attribute qualifier="active" type="java.lang.Boolean">
 						<description>SAP specific Id</description>
+						<modifiers optional="false" />
 						<persistence type="property" />
 					</attribute>
 					<attribute qualifier="soldToAddressId" type="java.lang.String">
@@ -1190,12 +1191,12 @@
 					</attribute>
 					<attribute qualifier="isPBG" type="java.lang.Boolean">
 						<description>If 'true', then it is a PBG Product and Non-PBG otherwise.</description>
-						<modifiers/>
+						<modifiers optional="false" />
 						<persistence type="property" />
 					</attribute>
 					<attribute qualifier="isWeSellProduct" type="java.lang.Boolean">
 						<description>If 'true', then it is a WeSell Product and Non-WeSell otherwise.</description>
-						<modifiers/>
+						<modifiers optional="false" />
 						<persistence type="property" />						
 					</attribute>
 					<!-- Added item for WeSell Implementation - START -->
@@ -1302,7 +1303,7 @@
 					<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->
 					<attribute qualifier="region" type="java.lang.String">
 						<description> Region to define whether it is LATAM/WESELL/EMEA job</description>
-						<modifiers optional="false"/>
+						<modifiers optional="false" initial="true"/>
 						<persistence type="property" />
 					</attribute>
 				</attributes>
@@ -1342,11 +1343,11 @@
 			<itemtype code="EnergizerB2BEmployee" extends="Employee" autocreate="true" generate="true" jaloclass="com.energizer.core.jalo.EnergizerB2BEmployee">
 			<attributes>
 				<attribute qualifier="isSalesRep" type="java.lang.Boolean">
-					<modifiers/>
+					<modifiers optional="false" />
 					<persistence type="property" />
 				</attribute>
 				<attribute qualifier="active" type="java.lang.Boolean">
-					<modifiers/>
+					<modifiers optional="false" />
 					<persistence type="property" />
 				</attribute>
 				<attribute qualifier="salesRepCode" type="java.lang.String">
@@ -1385,7 +1386,7 @@
 					<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->
 				<attribute qualifier="registrationEmailFlag" type="java.lang.Boolean">
 					<description>When flag true, email has been sent otherwise false.</description>
-					<modifiers />
+					<modifiers optional="false" />
 					<persistence type="property" />
 				</attribute>
 				<attribute type="java.lang.String" qualifier="previousPasswords">
