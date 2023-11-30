@@ -431,9 +431,16 @@ public class AddToCartController extends AbstractController
 			final EnergizerProductModel productModel = energizerProductService.getProductWithCode(productCode);
 
 			orderEntry.getProduct().setUom(energizerCMIR.getUom());
+			LOG.info("ProductModel isPBG"+ productModel.getIsPBG());
+			LOG.info("EnergizerCmir IsWesellProduct"+ energizerCMIR.getIsWeSellProduct());
+
 			orderEntry.getProduct().setIsPBG(null != productModel.getIsPBG() ? productModel.getIsPBG() : false);
 			orderEntry.getProduct()
 					.setIsWeSellProduct(null != energizerCMIR.getIsWeSellProduct() ? energizerCMIR.getIsWeSellProduct() : false);
+
+			LOG.info("OrderEntry isPBG"+ orderEntry.getProduct().isIsPBG());
+			LOG.info("OrderEntry IsWesellProduct "+ orderEntry.getProduct().isIsWeSellProduct());
+
 		}
 		catch (final Exception e)
 		{

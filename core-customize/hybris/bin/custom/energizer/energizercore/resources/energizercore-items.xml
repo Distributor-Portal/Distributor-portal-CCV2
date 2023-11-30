@@ -442,8 +442,9 @@
 					</attribute>
 					<attribute qualifier="isPBG" type="java.lang.Boolean">
 						<description>If 'true', then it is a PBG Product and Non-PBG otherwise.</description>
-						<modifiers optional="false" />
-						<persistence type="property" />						
+						<persistence type="property" />
+						<modifiers read="true" write="true" optional="true" />
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
 					</attribute>
 					<attribute qualifier="obsoleteStatusMap" type="obsoleteStatusMap">
 						<description>This is to store the sales orgs specific obsolete status for a product.</description>
@@ -1191,8 +1192,9 @@
 					</attribute>
 					<attribute qualifier="isPBG" type="java.lang.Boolean">
 						<description>If 'true', then it is a PBG Product and Non-PBG otherwise.</description>
-						<modifiers optional="false" />
 						<persistence type="property" />
+						<modifiers read="true" write="true" optional="true" />
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
 					</attribute>
 					<attribute qualifier="isWeSellProduct" type="java.lang.Boolean">
 						<description>If 'true', then it is a WeSell Product and Non-WeSell otherwise.</description>
