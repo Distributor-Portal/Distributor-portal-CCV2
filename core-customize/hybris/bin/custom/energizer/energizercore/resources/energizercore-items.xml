@@ -512,7 +512,8 @@
 					</attribute>
 					<attribute qualifier="isWeSellProduct" type="java.lang.Boolean" >
 						<description>Whether it is a WeSell product</description>
-						<modifiers optional="false" />
+						<modifiers read="true" write="true" optional="true" />
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
 						<persistence type="property" />
 					</attribute>
 					<attribute qualifier="custPriceUOM" type="java.lang.String" >
@@ -1198,8 +1199,9 @@
 					</attribute>
 					<attribute qualifier="isWeSellProduct" type="java.lang.Boolean">
 						<description>If 'true', then it is a WeSell Product and Non-WeSell otherwise.</description>
-						<modifiers optional="false" />
-						<persistence type="property" />						
+						<modifiers read="true" write="true" optional="true" />
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+						<persistence type="property" />
 					</attribute>
 					<!-- Added item for WeSell Implementation - START -->
 					<attribute qualifier="inventoryAvailable" type="java.lang.Long">
