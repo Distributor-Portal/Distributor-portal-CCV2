@@ -46,7 +46,7 @@
 			<value code="Default" />
 			<value code="HOP" />
 		</enumtype>
-		
+
 		<enumtype code="CronJobResult" autocreate="false" generate="true" >
             <description>The result reports on how the CronJob's last run was.</description>
             <model package="de.hybris.platform.cronjob.enums"/>
@@ -60,15 +60,15 @@
             <value code="INTERNATIONAL" />
         </enumtype>
 	</enumtypes>
-	
-	 <maptypes>	
+
+	 <maptypes>
 	   <maptype code="palStackMap" argumenttype="java.lang.Integer"
          returntype="palStackList" generate="true" autocreate="true" />
-         
+
          <maptype code="obsoleteStatusMap" argumenttype="java.lang.String"
          returntype="java.lang.String" generate="true" autocreate="true" />
       </maptypes>
-	
+
 	<relations>
 		<relation code="AbstractOrder2B2BPermissionResults"
 		          localized="false" generate="false" autocreate="false">
@@ -83,8 +83,8 @@
 				<modifiers read="true" write="true" search="true" partof="true"/>
 			</targetElement>
 		</relation>
-		<!-- Added Relation for WeSell Implementation - START -->	
-		<relation code="EnergizerB2BEmployeeB2BUnitRelation" autocreate="true" generate="true" localized="false"> 
+		<!-- Added Relation for WeSell Implementation - START -->
+		<relation code="EnergizerB2BEmployeeB2BUnitRelation" autocreate="true" generate="true" localized="false">
 			<deployment table="B2BEmp2B2BUnitRel" typecode="10321" />
 			<sourceElement type="EnergizerB2BEmployee" qualifier="employee" cardinality="many" collectiontype="set">
 				<modifiers read="true" write="true" search="true"/>
@@ -162,7 +162,7 @@
 						<key attribute="date" />
 					</index>
 				</indexes>
-			</itemtype> 
+			</itemtype>
 
 
 			<itemtype code="OrganizationOrdersReportingCronJob"
@@ -252,15 +252,15 @@
 						<modifiers />
 						<persistence type="property" />
 					</attribute>
-					
+
 					<!-- EMEA expansion, added FreightType to store value as container or truck -->
-					
+
 					<attribute qualifier="freightType" type="java.lang.String">
 						<description>FreightType</description>
 						<modifiers />
 						<persistence type="property" />
 					</attribute>
-					
+
 					<attribute qualifier="customerAccountName" type="java.lang.String">
 						<description>Customer Account Name</description>
 						<modifiers />
@@ -268,7 +268,7 @@
 					</attribute>
 					<attribute qualifier="orderBlock" type="java.lang.Boolean">
 						<description>Order Block Flag</description>
-						<modifiers optional="false" />
+						<modifiers />
 						<persistence type="property" />
 					</attribute>
 					<attribute qualifier="currencyPreference" type="Currency">
@@ -306,7 +306,7 @@
 						<modifiers />
 						<persistence type="property" />
 					</attribute>
-					
+
 					<!-- Added PALLET Type for EMEA Container Optimization -->
 					<attribute qualifier="palletType" type="java.lang.String">
 						<description>The Pallet type, EU or US</description>
@@ -353,13 +353,13 @@
 					<!-- Display Image field - OOTB -->
 					<attribute qualifier="obsolete" type="java.lang.Boolean">
 						<description>Obsolete status - if obsolete then disable add to cart button</description>
-						<modifiers optional="false" />
+						<modifiers />
 						<persistence type="property" />
 					</attribute>
-					<!-- <attribute qualifier="productWeight" type="MetricUnit"> <description>product 
-						weight for each</description> <modifiers /> <persistence type="property" 
-						/> </attribute> <attribute qualifier="productVolume" type="MetricUnit"> <description>product 
-						volume for each</description> <modifiers /> <persistence type="property" 
+					<!-- <attribute qualifier="productWeight" type="MetricUnit"> <description>product
+						weight for each</description> <modifiers /> <persistence type="property"
+						/> </attribute> <attribute qualifier="productVolume" type="MetricUnit"> <description>product
+						volume for each</description> <modifiers /> <persistence type="property"
 						/> </attribute> -->
 					<attribute qualifier="productConversionFactors"
 						type="EnergizerProductConversionFactorList">
@@ -574,7 +574,7 @@
 						<modifiers />
 						<persistence type="property" />
 					</attribute>
-					
+
 					<attribute qualifier="packageLength" type="MetricUnit">
 						<description>length of the package for the product</description>
 						<modifiers />
@@ -676,8 +676,8 @@
 				</description>
 				<deployment table="en_password" typecode="10228" />
 				<attributes>
-					
-										
+
+
 					<attribute qualifier="passwordQuestion" type="localized:java.lang.String" >
 						<description>PasswordQuestion</description>
 						<persistence type="property" />
@@ -709,7 +709,7 @@
 					</attribute>
 					<attribute qualifier="registrationEmailFlag" type="java.lang.Boolean">
 						<description>When flag true, email has been send otherwize false.</description>
-						<modifiers optional="false" />
+						<modifiers />
 						<persistence type="property" />
 					</attribute>
 					<attribute type="java.lang.String" qualifier="previousPasswords">
@@ -785,7 +785,7 @@
 				</attributes>
 			</itemtype>
 
-			<!-- <itemtype code="EnergizerAddress" extends="Address" autocreate="true" 
+			<!-- <itemtype code="EnergizerAddress" extends="Address" autocreate="true"
 				generate="true" jaloclass="com.energizer.core.jalo.EnergizerAddress"> -->
 
 			<itemtype code="Address" autocreate="false" generate="false">
@@ -840,8 +840,8 @@
 			</itemtype>
 
 			<!-- <itemtype code="EnergizerOrder" extends="Order" autocreate="true" -->
-			<!-- Surendra : As discussed with Sriram and Kaushik changing item definition 
-				- renaming from energizer order to abstract order and movine few attribute 
+			<!-- Surendra : As discussed with Sriram and Kaushik changing item definition
+				- renaming from energizer order to abstract order and movine few attribute
 				to order level -->
 
 			<itemtype code="AbstractOrder" autocreate="false" generate="false">
@@ -909,7 +909,7 @@
 						<persistence type="property" />
 						<modifiers read="true" write="true" optional="true" />
 					</attribute>
-					
+
 					<attribute qualifier="containerHeight" type="java.lang.String">
 						<description>Container Height of the Packing</description>
 						<modifiers />
@@ -1005,7 +1005,7 @@
 					</attribute>
 					<!-- Added Code Changes for WeSell Implementation - END -->
 					</attributes>
-				
+
 			</itemtype>
 
 			<itemtype code="Order" autocreate="false" generate="false">
@@ -1068,8 +1068,8 @@
 						<persistence type="property" />
 					</attribute>
 
-					<!-- <attribute qualifier="archiveID" type="java.lang.String"> <description>this 
-						is reference to documents in SAP</description> <modifiers /> <persistence 
+					<!-- <attribute qualifier="archiveID" type="java.lang.String"> <description>this
+						is reference to documents in SAP</description> <modifiers /> <persistence
 						type="property" /> </attribute> -->
 					<attribute qualifier="isPendingApprovalEmailSent" type="java.lang.Boolean">
 						<description>to avoind sending email second time</description>
@@ -1114,7 +1114,7 @@
 					</attribute>
 				</attributes>
 			</itemtype>
-			<!-- Surendra : As discussed Sriram and Kaushik changing item definition 
+			<!-- Surendra : As discussed Sriram and Kaushik changing item definition
 				- renaming from energizer order entry to order entry -->
 			<!-- <itemtype code="OrderEntry" autocreate="false" generate="false"> -->
 			<itemtype code="AbstractOrderEntry" autocreate="false"
@@ -1145,7 +1145,7 @@
 						<modifiers />
 						<persistence type="property" />
 					</attribute>
-					<!-- Romil : As discussed with SAP team adding item definition for rejectionReason 
+					<!-- Romil : As discussed with SAP team adding item definition for rejectionReason
 						and itemTotalShipment to AbstractOrderEntry -->
 					<attribute qualifier="rejectionReason" type="java.lang.String">
 						<description>Rejection Reason</description>
@@ -1169,7 +1169,7 @@
 						<modifiers />
 						<persistence type="property" />
 					</attribute>
-					
+
 					<attribute qualifier="customerMaterialId" type="java.lang.String">
 						<description>Customer Material Id</description>
 						<modifiers />
@@ -1221,7 +1221,7 @@
 					</attribute>
 					<!-- Added item for WeSell Implementation - END -->
 				</attributes>
-				
+
 			</itemtype>
 
 			<itemtype code="EnergizerCategory" extends="Category"
@@ -1241,7 +1241,7 @@
 			</itemtype>
 			<itemtype code="EnergizerCronJob" extends="CronJob"
 				autocreate="true" generate="true">
-				
+
 				<deployment table="EnergizerCronJob" typecode="10210" />
 				<attributes>
 					<attribute qualifier="type" type="java.lang.String">
@@ -1296,7 +1296,7 @@
 						<persistence type="property" />
 						<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
 					</attribute>
-					
+
 					<!-- EMEA End -->
 					<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->
 					<attribute qualifier="userType" type="java.lang.String">
@@ -1326,7 +1326,7 @@
 			</itemtype>
 
 		</typegroup>
-		
+
 		<typegroup name="Processes">
 
 			<itemtype code="UnlockAccountProcess" extends="StoreFrontCustomerProcess"
@@ -1341,17 +1341,17 @@
 				</attributes>
 			</itemtype>
 		</typegroup>
-		
+
 		<!-- Added item for WeSell Implementation - START -->
 		<typegroup name="EnergizerB2BEmployee">
 			<itemtype code="EnergizerB2BEmployee" extends="Employee" autocreate="true" generate="true" jaloclass="com.energizer.core.jalo.EnergizerB2BEmployee">
 			<attributes>
 				<attribute qualifier="isSalesRep" type="java.lang.Boolean">
-					<modifiers optional="false" />
+					<modifiers  />
 					<persistence type="property" />
 				</attribute>
 				<attribute qualifier="active" type="java.lang.Boolean">
-					<modifiers optional="false" />
+					<modifiers />
 					<persistence type="property" />
 				</attribute>
 				<attribute qualifier="salesRepCode" type="java.lang.String">
@@ -1381,7 +1381,7 @@
 						<persistence type="property" >
 							<columntype>
 								<value>varchar(1000)</value>
-							</columntype>						
+							</columntype>
 						</persistence>
 						<description>Attribute is used during b2b employee forgotten password to ensure that the link can be used
 							only once.
@@ -1390,7 +1390,6 @@
 					<!--	WeSell Implementation -  Added Code Changes for Sales Rep Registration - by Venkat -->
 				<attribute qualifier="registrationEmailFlag" type="java.lang.Boolean">
 					<description>When flag true, email has been sent otherwise false.</description>
-					<modifiers optional="false" />
 					<persistence type="property" />
 				</attribute>
 				<attribute type="java.lang.String" qualifier="previousPasswords">
@@ -1416,7 +1415,7 @@
 						<modifiers/>
 						<persistence type="property" />
 					</attribute>
-					
+
 					<attribute qualifier="lastName" type="java.lang.String">
 						<modifiers/>
 						<persistence type="property" />
@@ -1485,7 +1484,7 @@
 				   </attribute>
 			   </attributes>
 		   </itemtype>
-			
+
 		</typegroup>
 		<!--	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat -->
 	<!-- Added item for WeSell Implementation - END -->
