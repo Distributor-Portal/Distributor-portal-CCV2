@@ -808,7 +808,6 @@
 					</attribute>
 					<attribute qualifier="active" type="java.lang.Boolean">
 						<description>SAP specific Id</description>
-						<modifiers optional="false" />
 						<persistence type="property" />
 					</attribute>
 					<attribute qualifier="soldToAddressId" type="java.lang.String">
