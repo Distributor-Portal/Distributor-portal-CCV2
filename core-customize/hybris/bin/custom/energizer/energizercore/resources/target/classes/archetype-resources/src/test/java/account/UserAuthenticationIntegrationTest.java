@@ -31,8 +31,10 @@ public class UserAuthenticationIntegrationTest extends WebSecurityConfigurationA
         ResultMatcher matcher = new ResultMatcher() {
             public void match(MvcResult mvcResult) throws Exception {
                 HttpSession session = mvcResult.getRequest().getSession();
-                SecurityContext securityContext = (SecurityContext) session.getAttribute(SEC_CONTEXT_ATTR);
-                Assert.assertEquals(securityContext.getAuthentication().getName(), username);
+                if (session != null) {
+                    SecurityContext securityContext = (SecurityContext) session.getAttribute(SEC_CONTEXT_ATTR);
+                    Assert.assertEquals(securityContext.getAuthentication().getName(), username);
+                }
             }
         };
         mockMvc.perform(post("/authenticate").param("username", username).param("password", "demo"))

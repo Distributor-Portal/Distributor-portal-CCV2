@@ -71,39 +71,39 @@ public class EnergizerWeightOrVolumeConverter
 
 	private static BigDecimal convertGramToKG(final BigDecimal gram)
 	{
-		final BigDecimal valueInKg = gram.multiply(new BigDecimal(.001));
+		final BigDecimal valueInKg = gram.multiply(BigDecimal.valueOf(.001));
 		return valueInKg;
 	}
 
 	private static BigDecimal convertLBtoKG(final BigDecimal lb)
 	{
-		final BigDecimal valueInKg = lb.multiply(new BigDecimal(0.453592));
+		final BigDecimal valueInKg = lb.multiply(BigDecimal.valueOf(0.453592));
 		return valueInKg;
 
 	}
 
 	private static BigDecimal convertCubicCMtoMeterCube(final BigDecimal CubicCM)
 	{
-		final BigDecimal valueInMeterCube = CubicCM.multiply(new BigDecimal(0.000001));
+		final BigDecimal valueInMeterCube = CubicCM.multiply(BigDecimal.valueOf(0.000001));
 		return valueInMeterCube;
 
 	}
 
 	private static BigDecimal convertCubicDecimeterToMeterCube(final BigDecimal cubicDecimeter)
 	{
-		final BigDecimal valueInMeterCube = cubicDecimeter.multiply(new BigDecimal(0.001));
+		final BigDecimal valueInMeterCube = cubicDecimeter.multiply(BigDecimal.valueOf(0.001));
 		return valueInMeterCube;
 	}
 
 	private static BigDecimal convertHectoLitreToMeterCube(final BigDecimal hectoLitre)
 	{
-		final BigDecimal valueInMeterCube = hectoLitre.multiply(new BigDecimal(0.01));
+		final BigDecimal valueInMeterCube = hectoLitre.multiply(BigDecimal.valueOf(0.01));
 		return valueInMeterCube;
 	}
 
 	private static BigDecimal convertCubicFtToMeterCube(final BigDecimal cubicFt)
 	{
-		final BigDecimal valueInMeterCube = cubicFt.multiply(new BigDecimal(0.0283168));
+		final BigDecimal valueInMeterCube = cubicFt.multiply(BigDecimal.valueOf(0.0283168));
 		return valueInMeterCube;
 	}
 }

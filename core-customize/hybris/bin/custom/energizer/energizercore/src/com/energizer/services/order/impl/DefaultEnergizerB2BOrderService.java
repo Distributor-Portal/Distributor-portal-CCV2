@@ -2457,20 +2457,20 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 
 						uomPrice = tsoItem.getCUSTPRICE().doubleValue();
 						basePriceData = new PriceData();
-						basePriceData.setValue(new BigDecimal(uomPrice));
+						basePriceData.setValue(BigDecimal.valueOf(uomPrice));
 						basePriceData.setCurrencyIso(currencyIsoCode);
 						basePriceData.setPriceType(PriceDataType.BUY);
 						basePriceData
 								.setFormattedValue(createPrice(currency, basePriceData.getValue().doubleValue()).getFormattedValue());
-						if (null != tsoItem.getINVENTORYAVAILABLE() && null != tsoItem.getINVENTORYAVAILABLE())
+						if (null != tsoItem.getINVENTORYAVAILABLE())
 						{
 							inventoryAvailable = tsoItem.getINVENTORYAVAILABLE().longValue();
 						}
-						if (null != tsoItem.getDISCOUNTAMT() && null != tsoItem.getDISCOUNTAMT())
+						if (null != tsoItem.getDISCOUNTAMT())
 						{
 							discountAmount = Double.parseDouble(tsoItem.getDISCOUNTAMT());
 						}
-						if (null != tsoItem.getDISCOUNTPERCENT() && null != tsoItem.getDISCOUNTPERCENT())
+						if (null != tsoItem.getDISCOUNTPERCENT())
 						{
 							discountPercent = Double.parseDouble(tsoItem.getDISCOUNTPERCENT());
 						}
@@ -2549,7 +2549,7 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 				}*/
 				if (null != cmirPriceRow)
 				{
-					BigDecimal newPrice = new BigDecimal(uomPrice);
+					BigDecimal newPrice = BigDecimal.valueOf(uomPrice);
 					newPrice = newPrice.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 					cmirPriceRow.setPrice(newPrice.doubleValue());
 					cmirPriceRow.setCurrency(currency);
@@ -2757,9 +2757,9 @@ public class DefaultEnergizerB2BOrderService implements EnergizerB2BOrderService
 						final Double eachUnitValue = Double.parseDouble(condition.getCONDVALUE().toString());
 						final Double quantityAtBaseUOM = Double.parseDouble(condition.getCONBASEVAL().toString());
 						final Double totalPriceValue = (eachUnitValue * quantityAtBaseUOM);
-						condTypePriceData.setValue(new BigDecimal(totalPriceValue / orderEntry.getQuantity()));
+						condTypePriceData.setValue(BigDecimal.valueOf(totalPriceValue / orderEntry.getQuantity()));
 						condTypePriceData.setCurrencyIso(condition.getCURRENCY());
-						condTypeTotalPriceData.setValue(new BigDecimal(totalPriceValue));
+						condTypeTotalPriceData.setValue(BigDecimal.valueOf(totalPriceValue));
 						condTypeTotalPriceData.setCurrencyIso(condition.getCURRENCY());
 						isCondTypePriceAvailable = true;
 						LOG.info("Pricing Data available for Cond Type: " + condition.getCONDTYPE() + ", material: " + prodCode);

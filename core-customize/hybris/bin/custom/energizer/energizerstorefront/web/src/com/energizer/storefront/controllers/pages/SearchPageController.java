@@ -687,7 +687,7 @@ public class SearchPageController extends AbstractSearchPageController
 
 			for (final Iterator iterator = productID.iterator(); iterator.hasNext();)
 			{
-				final String productCode = ((String) iterator.next()).replaceAll("\\[", "").replaceAll("\\]", "");
+				final String productCode = ((String) iterator.next()).replace("[", "").replace("]", "");
 
 
 				LOG.info("In loop, productCode " + productCode);

@@ -483,7 +483,7 @@ public class EnergizerOrderUpdateCSVProcessor extends AbstractEnergizerCSVProces
 								energizerOrderEntry.setAdjustedQty(orderEntryQty.intValue() / finalConversionFactor);
 								//since the price UOM is always maintained at each (as per confirmation from Hitesh Wadhwa )
 								energizerOrderEntry.setAdjustedLinePrice(BigDecimal.valueOf(lineItemTotalPrice));
-								energizerOrderEntry.setAdjustedItemPrice(new BigDecimal(itemTotalPrice * customerUOMMultiplier));
+								energizerOrderEntry.setAdjustedItemPrice(BigDecimal.valueOf(itemTotalPrice * customerUOMMultiplier));
 							}
 							else
 							{
@@ -500,7 +500,7 @@ public class EnergizerOrderUpdateCSVProcessor extends AbstractEnergizerCSVProces
 								energizerOrderEntry.setAdjustedLinePrice(new BigDecimal("0.00"));
 								// update the value with incoming value
 								energizerOrderEntry.setAdjustedQty(orderEntryQty.intValue());
-								energizerOrderEntry.setAdjustedItemPrice(new BigDecimal(itemTotalPrice * customerUOMMultiplier));
+								energizerOrderEntry.setAdjustedItemPrice(BigDecimal.valueOf(itemTotalPrice * customerUOMMultiplier));
 								energizerOrderEntry.setAdjustedLinePrice(BigDecimal.valueOf(lineItemTotalPrice));
 							}
 							else

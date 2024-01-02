@@ -271,8 +271,9 @@ public class EnergizerOrderStuckJob extends AbstractJobPerformable<EnergizerCron
 						if (data.startsWith("=") || data.startsWith("\""))
 						{
 							cell.setCellType(CellType.STRING);
-							data = data.replaceAll("\"", "");
-							data = data.replaceAll("=", "");
+							data = data.replace("\"", "");
+							data = data.replace("=", "");
+
 							cell.setCellValue(data);
 						}
 						else if (null == data || data.isEmpty())
@@ -282,9 +283,9 @@ public class EnergizerOrderStuckJob extends AbstractJobPerformable<EnergizerCron
 						}
 						else
 						{
-							data = data.replaceAll("\"", "");
-							data = data.replaceAll("\\[", "");
-							data = data.replaceAll("\\]", "");
+							data = data.replace("\"", "");
+							data = data.replace("\\[", "");
+							data = data.replace("\\]", "");
 							if (wesellOrder && i == 11)
 							{
 								cell.setCellType(CellType.NUMERIC);

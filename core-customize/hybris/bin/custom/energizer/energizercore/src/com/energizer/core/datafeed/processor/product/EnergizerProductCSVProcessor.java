@@ -352,8 +352,8 @@ public class EnergizerProductCSVProcessor extends AbstractEnergizerCSVProcessor
 			if (columnHeader.equalsIgnoreCase(EnergizerCoreConstants.ERPMATERIAL_ID)
 					|| columnHeader.equalsIgnoreCase(EnergizerCoreConstants.IMAGEREFERENCE_ID)
 					|| columnHeader.equalsIgnoreCase(EnergizerCoreConstants.PRODUCT_GROUP)
-					|| columnHeader.equalsIgnoreCase(EnergizerCoreConstants.LIST_PRICE_CURRENCY)
-					|| columnHeader.equalsIgnoreCase(EnergizerCoreConstants.ERPMATERIAL_ID))
+					|| columnHeader.equalsIgnoreCase(EnergizerCoreConstants.LIST_PRICE_CURRENCY))
+
 			{
 				if (value.isEmpty())
 				{

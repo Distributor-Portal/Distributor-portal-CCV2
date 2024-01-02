@@ -138,10 +138,11 @@ public class DefaultEnergizerQuickOrderFacade implements EnergizerQuickOrderFaca
 			if (productExistsInList(productCode, quickOrder))
 			{
 				final OrderEntryData entry = getExistingProductFromList(productCode, quickOrder);
-				Long qty = entry.getQuantity();
-				qty += ((qty % entry.getProduct().getMoq()) + 1) * entry.getProduct().getMoq();
-				entry.setQuantity(qty);
-
+				if (entry !=null) {
+					Long qty = entry.getQuantity();
+					qty += ((qty % entry.getProduct().getMoq()) + 1) * entry.getProduct().getMoq();
+					entry.setQuantity(qty);
+				}
 			}
 			else
 			{

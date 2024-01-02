@@ -182,6 +182,7 @@ public class DefaultEnergizerProductService implements EnergizerProductService
 			LOG.info("Exception occured in fetching CMIR model:::" + e);
 			throw e;
 		}
+
 		return (result.isEmpty()) ? null : result.get((result.size()) - 1);
 	}
 

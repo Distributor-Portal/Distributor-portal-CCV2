@@ -387,7 +387,10 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 		{
 			b2bUnit = energizerSolrQueryManipulationService.getB2BUnitForLoggedInUser();
 		}
-		model.setB2bUnit(b2bUnit);
+		if (model !=null)
+		{
+			model.setB2bUnit(b2bUnit);
+		}
 		// Added for order model unit!=b2bUnit issue fix - END
 		if (null != model.getUnit() && null != model.getB2bUnit())
 		{

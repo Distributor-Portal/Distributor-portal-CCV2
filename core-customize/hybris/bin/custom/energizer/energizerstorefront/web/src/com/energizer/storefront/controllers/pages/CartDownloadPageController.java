@@ -368,8 +368,9 @@ public class CartDownloadPageController extends AbstractSearchPageController
 					}
 					//cell.setCellType(Cell.CELL_TYPE_STRING);
 					cell.setCellType(CellType.STRING);
-					marerialId = marerialId.replaceAll("\"", "");
-					marerialId = marerialId.replaceAll("=", "");
+					marerialId = marerialId.replace("\"", "");
+
+					marerialId = marerialId.replace("=", "");
 					cell.setCellValue(marerialId);
 
 					String custMaterialID = StringUtils.EMPTY;

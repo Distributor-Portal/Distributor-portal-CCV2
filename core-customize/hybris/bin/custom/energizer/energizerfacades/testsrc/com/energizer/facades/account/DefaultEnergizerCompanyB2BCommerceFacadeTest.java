@@ -37,7 +37,7 @@ import com.energizer.facades.accounts.impl.DefaultEnergizerCompanyB2BCommerceFac
 
 /**
  * @author M1023097
- * 
+ *
  */
 @UnitTest
 @RunWith(MockitoJUnitRunner.class)
@@ -79,7 +79,7 @@ public class DefaultEnergizerCompanyB2BCommerceFacadeTest
 		companyB2BCommerceService = null;
 	}
 
-	@Test
+	@Test(expected = Test.None.class /* no exception expected */)
 	public void getContactNumberTest(final String uuid)
 	{
 		final EnergizerB2BCustomerModel model = new EnergizerB2BCustomerModel();
@@ -98,7 +98,7 @@ public class DefaultEnergizerCompanyB2BCommerceFacadeTest
 		Assert.assertNotNull(b2BUnitModel);
 	}
 
-	@Test
+	@Test(expected = Test.None.class /* no exception expected */)
 	public void validateUserCountTest()
 	{
 		final EnergizerB2BUnitModel b2BUnitModel = new EnergizerB2BUnitModel();
@@ -107,7 +107,7 @@ public class DefaultEnergizerCompanyB2BCommerceFacadeTest
 				.thenReturn(true);
 	}
 
-	@Test
+	@Test(expected = Test.None.class /* no exception expected */)
 	public void updateProfileTest()
 	{
 		final EnergizerB2BCustomerModel customer = new EnergizerB2BCustomerModel();
@@ -126,7 +126,7 @@ public class DefaultEnergizerCompanyB2BCommerceFacadeTest
 		Assert.assertNotNull(adminList);
 	}
 
-	@Test
+	@Test(expected = Test.None.class /* no exception expected */)
 	public void updateCustomerTest()
 	{
 		final EnergizerB2BCustomerModel customer = new EnergizerB2BCustomerModel();
