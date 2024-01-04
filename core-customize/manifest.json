@@ -1,6 +1,6 @@
 {
     "commerceSuiteVersion": "2211",
-	"solrVersion": "8.11",
+	"solrVersion": "9.2",
     "enableImageProcessingService": true,
     "extensions": [
 	    "azurecloud",
