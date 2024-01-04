@@ -186,20 +186,20 @@ public class DefaultEnergizerCatalogDownloadFacade implements EnergizerCatalogDo
 					{
 						//cell.setCellType(Cell.CELL_TYPE_STRING);
 						cell.setCellType(CellType.STRING);
-						data = data.replace("\"", "");
-						data = data.replace("=", "");
+						data = data.replaceAll("\"", "");
+						data = data.replaceAll("=", "");
 						cell.setCellValue(data);
 					}
 					else if (data.startsWith("\""))
 					{
-						data = data.replace("\"", "");
+						data = data.replaceAll("\"", "");
 						//cell.setCellType(Cell.CELL_TYPE_STRING);
 						cell.setCellType(CellType.STRING);
 						cell.setCellValue(data);
 					}
 					else
 					{
-						data = data.replace("\"", "");
+						data = data.replaceAll("\"", "");
 						//cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 						cell.setCellType(CellType.NUMERIC);
 						cell.setCellValue(data);
@@ -495,9 +495,9 @@ public class DefaultEnergizerCatalogDownloadFacade implements EnergizerCatalogDo
 						}
 						else
 						{
-							data = data.replace("\"", "");
-							data = data.replace("\\[", "");
-							data = data.replace("\\]", "");
+							data = data.replaceAll("\"", "");
+							data = data.replaceAll("\\[", "");
+							data = data.replaceAll("\\]", "");
 							//cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 							cell.setCellType(CellType.NUMERIC);
 							if (data == null || data.equalsIgnoreCase("null") || StringUtils.isEmpty(data))
