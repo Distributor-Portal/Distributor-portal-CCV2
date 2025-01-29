@@ -1,5 +1,5 @@
 {
-    "commerceSuiteVersion": "2211.21",
+    "commerceSuiteVersion": "2211.33",
 	"solrVersion": "9.5",
     "enableImageProcessingService": true,
     "extensions": [
