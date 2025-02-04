@@ -4,7 +4,7 @@
  For more information, on how to customize this file, please see https://lucene.apache.org/solr/guide/8_8/documents-fields-and-schema-design.html
 -->
 
-<schema name="hybris" version="9.2">
+<schema name="hybris" version="1.7">
 	<types>
 		<!-- Basic Types -->
 
