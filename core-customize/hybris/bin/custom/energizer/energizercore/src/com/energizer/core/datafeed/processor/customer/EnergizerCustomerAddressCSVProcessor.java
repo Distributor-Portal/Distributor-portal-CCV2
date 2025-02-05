@@ -20,7 +20,8 @@ import javax.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
-import org.apache.solr.common.StringUtils;
+//import org.apache.solr.common.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.energizer.core.datafeed.AbstractEnergizerCSVProcessor;
 import com.energizer.core.datafeed.EnergizerCSVFeedError;
