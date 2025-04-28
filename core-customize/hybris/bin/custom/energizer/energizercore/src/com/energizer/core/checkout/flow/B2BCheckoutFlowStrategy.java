@@ -16,7 +16,6 @@ package com.energizer.core.checkout.flow;
 import com.energizer.core.enums.B2BCheckoutFlowEnum;
 
 
-
 /**
  * Abstraction for strategy determining flow for checkout logic.
  *
