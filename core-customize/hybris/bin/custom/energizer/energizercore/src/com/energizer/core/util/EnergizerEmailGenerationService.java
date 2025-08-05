@@ -107,7 +107,7 @@ public class EnergizerEmailGenerationService extends DefaultEmailGenerationServi
 
 			//Added code changes for WeSell Implementation - START
 			//Add 'Sales Person Email ID ' ONLY for Non Sales Rep login
-			if (null != order.getPlacedBySalesRep() && !order.getPlacedBySalesRep())
+			if (BooleanUtils.isNotTrue(order.getPlacedBySalesRep()))
 			{
 				setSalesPersonEmailId(salesPersonEmailId);
 				setDisplayName(displayName);
@@ -147,7 +147,7 @@ public class EnergizerEmailGenerationService extends DefaultEmailGenerationServi
 
 			//Added code changes for WeSell Implementation - START
 			//Add 'cc' ONLY for Non Sales Rep login
-			if (null != order.getPlacedBySalesRep() && !order.getPlacedBySalesRep())
+			if (BooleanUtils.isNotTrue(order.getPlacedBySalesRep()))
 			{
 				if (null != b2bCustomerModelList && b2bCustomerModelList.size() > 0)
 				{
@@ -174,7 +174,7 @@ public class EnergizerEmailGenerationService extends DefaultEmailGenerationServi
 		if (emailSubject.indexOf("approved") != -1)
 		{
 			//Added if condition code changes for WeSell Implementation - START
-			if (null != order.getPlacedBySalesRep() && !order.getPlacedBySalesRep())
+			if (BooleanUtils.isNotTrue(order.getPlacedBySalesRep()))
 			{
 				ccAddress = getEmailService().getOrCreateEmailAddressForEmail(getSalesPersonEmailId(), getSalesPersonEmailId());
 				ccAddress.setEmailAddress(getSalesPersonEmailId());
@@ -197,7 +197,7 @@ public class EnergizerEmailGenerationService extends DefaultEmailGenerationServi
 					+ configurationService.getConfiguration().getString(ICS_DISPLAYNAME));
 
 			//Added if condition code changes for WeSell Implementation - START
-			if (null != order.getPlacedBySalesRep() && !order.getPlacedBySalesRep())
+			if (BooleanUtils.isNotTrue(order.getPlacedBySalesRep()))
 			{
 				/*-ccIcsAddress1 = getEmailService().getOrCreateEmailAddressForEmail(getConfigValue(ICS_EMAILID),
 						getConfigValue(ICS_DISPLAYNAME));*/
