@@ -1,8 +1,8 @@
-/**
- *
- */
 package com.energizer.core.invoice.impl;
 
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.models.BlobItem;
 import de.hybris.platform.cms2.servicelayer.services.CMSSiteService;
 import de.hybris.platform.commercefacades.order.data.OrderData;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
@@ -14,37 +14,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
+import java.util.Locale;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
 import com.energizer.core.invoice.EnergizerInvoiceService;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlobDirectory;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.ListBlobItem;
 
-
-/**
- * Fetch PDF from a file
- *
- * @author kaushik.ganguly
- *
- */
 public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 {
-
-
 	public static final String INVOICE_FILE_PATH = "invoice.filepath";
 	private static final String INVOICE_FILE_PATH_EMEA = "invoice.filepath.EMEA";
 	public static final String INVOICE_FILE_EXTENSION = ".pdf";
-
+	private static final Logger LOG = Logger.getLogger(DefaultEnergizerInvoiceService.class);
 	@Resource(name = "cmsSiteService")
 	private CMSSiteService cmsSiteService;
 
@@ -57,31 +44,20 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 	@Autowired
 	private SessionService sessionService;
 
-
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.energizer.core.invoice.EnergizerInvoiceService#getPDFInvoiceAsBytes()
-	 */
 	@Override
 	public byte[] getPDFInvoiceAsBytes(final OrderData orderData)
 	{
 		System.out.println("Enter in getPDFInvoiceAsBytes");
-		// YTODO Auto-generated method stub
 		System.out.println("erpOrderNumber1-->" + orderData.getErpOrderNumber());
 		return getPDFFromFilePath(orderData.getErpOrderNumber());
-
 	}
 
 	private byte[] getPDFFromFilePath(final String erpOrderNumber)
 	{
-
-		byte retVal[] = null;
+		byte[] retVal = null;
 		try
 		{
 			String filePath = Config.getParameter(INVOICE_FILE_PATH);
-
 			final String PERSONALCARE_EMEA = getConfigValue("site.personalCareEMEA");
 
 			if (PERSONALCARE_EMEA.equalsIgnoreCase(cmsSiteService.getCurrentSite().getUid()))
@@ -96,7 +72,6 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 			else
 			{
 				retVal = IOUtils.toByteArray(new FileInputStream(new File(filePath + erpOrderNumber + INVOICE_FILE_EXTENSION)));
-
 			}
 		}
 		catch (final IOException ex)
@@ -111,19 +86,12 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 		return configurationService.getConfiguration().getString(key);
 	}
 
-	/**
-	 * getInvoiceFile method will return the invoice file from
-	 *
-	 * @param directoryName
-	 * @return
-	 */
 	public File getInvoiceFile(final String directoryPath, final String erpOrderNo)
 	{
 		File invoiceFile = null;
 		if (StringUtils.isNotEmpty(erpOrderNo))
 		{
 			final File directory = new File(directoryPath);
-			//get all the files from a directory
 			final File[] fList = directory.listFiles();
 
 			for (final File file : fList)
@@ -140,52 +108,32 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 
 	public InputStream getInvoiceFileFromBlob(final String directoryPath, final String erpOrderNo)
 	{
-
 		InputStream invoiceFile = null;
-
 		if (StringUtils.isNotEmpty(erpOrderNo))
 		{
-			CloudBlobDirectory blobDirectory = null;
-			final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
-			final String filePath = Config.getParameter(INVOICE_FILE_PATH_EMEA);
-
+			final BlobContainerClient container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			// Use prefix to list blobs in the "directory"
+			String prefix = directoryPath.endsWith("/") ? directoryPath : directoryPath + "/";
 			try
 			{
-				blobDirectory = container.getDirectoryReference(filePath);
-
-				for (final ListBlobItem blobItem : blobDirectory.listBlobs())
+				for (BlobItem blobItem : container.listBlobsByHierarchy(prefix))
 				{
-
-					final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
-					System.out.println("subfullFilePath-1->" + subfullFilePath);
-					final String fullFilePath = subfullFilePath.substring(8);
-					System.out.println("fullFilePath-1->" + fullFilePath);
-					final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
-					System.out.println("fileName-1->" + fileName);
-					if (fileName.contains(erpOrderNo))
+					String blobName = blobItem.getName();
+					String fileName = blobName.substring(blobName.lastIndexOf('/') + 1);
+					if (fileName.contains(erpOrderNo) && fileName.toLowerCase(Locale.ROOT).endsWith(INVOICE_FILE_EXTENSION))
 					{
-						System.out.println("erpOrderNo-1->" + erpOrderNo);
-						final CloudBlockBlob blob2 = container.getBlockBlobReference(fullFilePath);
-						invoiceFile = new DataInputStream(blob2.getSnapshotQualifiedUri().toURL().openStream());
+						BlobClient blobClient = container.getBlobClient(blobName);
+						// Download blob content as InputStream
+						invoiceFile = new DataInputStream(blobClient.openInputStream());
 						break;
 					}
-
 				}
 			}
-			catch (StorageException | URISyntaxException e)
+			catch (final RuntimeException e)
 			{
-				// YTODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.info("Exception occurred while fetching invoice from blob storage: " + e.getMessage());
 			}
-			catch (final IOException e)
-			{
-				// YTODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 		}
-
 		return invoiceFile;
 	}
-
 }

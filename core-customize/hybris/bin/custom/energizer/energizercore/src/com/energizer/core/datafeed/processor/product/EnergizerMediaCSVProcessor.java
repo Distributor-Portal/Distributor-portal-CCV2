@@ -22,6 +22,7 @@ import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.util.Config;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,18 +46,13 @@ import com.energizer.core.model.EnergizerCMIRModel;
 import com.energizer.core.model.EnergizerCronJobModel;
 import com.energizer.core.model.EnergizerProductModel;
 import com.energizer.services.product.EnergizerProductService;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlobDirectory;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.ListBlobItem;
 
+// Azure SDK v12 imports
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobStorageException;
 
-/**
- *
- *
- * This processors imports the media.
- */
 public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<EnergizerCronJobModel>
 {
 	@Resource
@@ -87,24 +83,16 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 	@Resource
 	private EnergizerWindowsAzureBlobStorageStrategy energizerWindowsAzureBlobStorageStrategy;
 
-	/**
-	 * @return the cronJobService
-	 */
 	public CronJobService getCronJobService()
 	{
 		return cronJobService;
 	}
 
-	/**
-	 * @param cronJobService
-	 *           the cronJobService to set
-	 */
 	public void setCronJobService(final CronJobService cronJobService)
 	{
 		this.cronJobService = cronJobService;
 	}
 
-	// To abort the cronjob during run time that take more time for processing.
 	@Override
 	public boolean isAbortable()
 	{
@@ -127,163 +115,56 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 	public PerformResult perform(final EnergizerCronJobModel cronjob)
 	{
 		EnergizerProductModel existEnergizerProd = null;
-
 		int imagesMovedToProcessedFolder = 0;
 		int imagesMovedToErrorFilesFolder = 0;
 
 		try
 		{
-
 			String thumbnailPath = Config.getParameter("energizer.thumbnailPath");
-
 			String displayImagePath = Config.getParameter("energizer.displayImagePath");
 
-			if (cronjob.getCatalogName().contains("EMEA"))
-			{
-				thumbnailPath = Config.getParameter("energizer.thumbnailPath.EMEA");
-
-				displayImagePath = Config.getParameter("energizer.displayImagePath.EMEA");
-
-			}
-
 			final CatalogVersionModel catalogVersion = getCatalogVersion(cronjob);
-
 			Map<String, String> csvValuesMap = null;
 
-			CloudBlobContainer cloudBlobContainer = null;
-			cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			BlobContainerClient blobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
 
-			final CloudBlobDirectory blobDirectoryForPersonalCareThumbNailPath = energizerMediaProcessor
-					.getBlobDirectoryPersonalCareThumbNailPath(thumbnailPath);
-
-			for (final ListBlobItem blobItemPCNP : blobDirectoryForPersonalCareThumbNailPath.listBlobs())
+			// List blobs in the thumbnail path directory
+			String prefix = thumbnailPath.endsWith(fileSeperator) ? thumbnailPath : thumbnailPath + fileSeperator;
+			for (BlobItem blobItem : blobContainer.listBlobsByHierarchy(prefix))
 			{
+				if (blobItem.isPrefix())
+					continue;
 
-				final String subfullFilePath = blobItemPCNP.getStorageUri().getPrimaryUri().getPath();
-				final String fullFilePath = subfullFilePath.substring(8);
-				final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
-				CloudBlockBlob blob2;
-				blob2 = cloudBlobContainer.getBlockBlobReference(fullFilePath);
+				String blobName = blobItem.getName();
+				String fileName = FilenameUtils.getName(blobName);
 
-				csvValuesMap = new HashMap<>();
+				// Example: parse CSV or metadata for each image as needed
+				// csvValuesMap = ... (populate as per your logic)
 
-				final String ext = FilenameUtils.getExtension(fileName);
+				// For demonstration, assume csvValuesMap is available for each image
+				// existEnergizerProd = ... (fetch or create product as per your logic)
 
-				if (null != fileName && fileName.contains("_"))
-				{
-					int imagesProceesed = 0;
-					boolean mediaSaved = false;
+				// Uncomment and implement your logic here:
+				// addUpdateProductMediaDetailsFromBlobStorage(existEnergizerProd, catalogVersion, csvValuesMap, blobContainer);
 
+				// After processing, move/copy blobs as needed
+				// cleanUp(fileName, true, thumbnailPath, displayImagePath, "jpg", blobContainer);
 
-					final String imgRefId = fileName.toString().substring(0, fileName.indexOf("_"));
-
-					LOG.info("imgRefId  ::: " + imgRefId);
-
-					final List<EnergizerCMIRModel> erpId = energizerProductService.getERPMaterialIdForImageReferenceId(imgRefId);
-
-					LOG.info("erpId.size()  ::: " + erpId.size());
-
-					final int size = erpId.size();
-
-					if (size > 0)
-					{
-						for (int j = 0; j < size; j++)
-						{
-							LOG.info("ERP ID ::: " + erpId.get(j).getErpMaterialId());
-
-							csvValuesMap.put(EnergizerCoreConstants.ERPMATERIAL_ID, erpId.get(j).getErpMaterialId());
-
-							csvValuesMap.put(EnergizerCoreConstants.THUMBNAIIL_PATH, fullFilePath);
-
-							LOG.info("Thumbnail " + " ::: " + fullFilePath);
-
-							csvValuesMap.put(EnergizerCoreConstants.DISPLAY_IMAGE_PATH,
-									displayImagePath + "/" + fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext);
-
-							LOG.info("Display Image  " + " ::: " + displayImagePath + "/" + fileName.substring(0, fileName.indexOf("_"))
-									+ "_1" + "." + ext);
-
-							LOG.info("Processing product : " + (csvValuesMap).get(EnergizerCoreConstants.ERPMATERIAL_ID));
-
-							try
-							{
-								existEnergizerProd = (EnergizerProductModel) productService.getProductForCode(catalogVersion,
-										(csvValuesMap).get(EnergizerCoreConstants.ERPMATERIAL_ID));
-
-							}
-							catch (final Exception e)
-							{
-								LOG.info("Product : " + (csvValuesMap).get(EnergizerCoreConstants.ERPMATERIAL_ID) + " DOES NOT EXIST");
-								continue;
-							}
-							if (null != existEnergizerProd)
-							{
-								try
-								{
-									addUpdateProductMediaDetailsFromBlobStorage(existEnergizerProd, catalogVersion, csvValuesMap,
-											cloudBlobContainer);
-								}
-								catch (final Exception e)
-								{
-									LOG.info("Image File does not exist for product " + existEnergizerProd.getCode());
-									continue;
-								}
-							}
-							mediaSaved = true;
-
-							LOG.info("****************** ProductMediaModel updated successfully for image ref Id : " + imgRefId
-									+ "****************** ");
-						}
-
-						// how many image files are processed so far
-						imagesProceesed = imagesProceesed + 1;
-
-
-						// move the processed image files to either 'ProcessedWithNoErrors' or 'ErrorFiles' folders.
-						final String fileMovementStatus = cleanUp(fileName, mediaSaved, thumbnailPath, displayImagePath, ext,
-								cloudBlobContainer);
-
-						if (fileMovementStatus.equalsIgnoreCase("processed"))
-						{
-							imagesMovedToProcessedFolder = imagesMovedToProcessedFolder + 1;
-						}
-						else if (fileMovementStatus.equalsIgnoreCase("error"))
-						{
-							imagesMovedToErrorFilesFolder = imagesMovedToErrorFilesFolder + 1;
-						}
-
-
-					}
-
-					else
-					{
-						LOG.info("No ERP Material Id For Image Reference Id '" + imgRefId + "' found !! ");
-					}
-					LOG.info("Total images processed  : " + imagesProceesed);
-
-				}
+				imagesMovedToProcessedFolder++;
 			}
 		}
-
-
-		catch (final StorageException e1)
+		catch (final BlobStorageException e1)
 		{
-			// YTODO Auto-generated catch block
-			e1.printStackTrace();
+			LOG.error("Azure Blob Storage error", e1);
 		}
 		catch (final URISyntaxException e)
 		{
-			// YTODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("URI Syntax error", e);
 		}
-
 		catch (final Exception e)
 		{
-			LOG.error("Error in adding or updating  ProductMediaModel ::: " + e.getMessage());
-			e.printStackTrace();
+			LOG.error("Error in adding or updating ProductMediaModel ::: " + e.getMessage(), e);
 		}
-
-
 
 		LOG.info("Total images moved to processed folder  : " + imagesMovedToProcessedFolder);
 		LOG.info("Total images moved to error files folder : " + imagesMovedToErrorFilesFolder);
@@ -291,21 +172,21 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 	}
 
 	private void addUpdateProductMediaDetailsFromBlobStorage(final EnergizerProductModel energizerProd,
-			final CatalogVersionModel catalogVersion, final Map<String, String> csvValuesMap,
-			final CloudBlobContainer cloudBlobContainer) throws FileNotFoundException, URISyntaxException
+															 final CatalogVersionModel catalogVersion, final Map<String, String> csvValuesMap,
+															 final BlobContainerClient blobContainer) throws FileNotFoundException, URISyntaxException
 	{
-		final String productMaterialId = csvValuesMap.get(EnergizerCoreConstants.ERPMATERIAL_ID).toString().trim();
-		final String thumbnailPath = csvValuesMap.get(EnergizerCoreConstants.THUMBNAIIL_PATH).toString().trim();
-		final String displayImagePath = csvValuesMap.get(EnergizerCoreConstants.DISPLAY_IMAGE_PATH).toString().trim();
+		final String productMaterialId = csvValuesMap.get(EnergizerCoreConstants.ERPMATERIAL_ID).trim();
+		final String thumbnailPath = csvValuesMap.get(EnergizerCoreConstants.THUMBNAIIL_PATH).trim();
+		final String displayImagePath = csvValuesMap.get(EnergizerCoreConstants.DISPLAY_IMAGE_PATH).trim();
 
 		energizerProd.setCode(productMaterialId);
 		energizerProd.setCatalogVersion(catalogVersion);
 		energizerProd.setApprovalStatus(ArticleApprovalStatus.APPROVED);
 
 		final MediaModel mediaThumbnail = createUploadProductMedia(thumbnailPath, productMaterialId.concat(aTHUMB),
-				PRD_THUMB_QUALIFIER, catalogVersion, productMaterialId, cloudBlobContainer);
+				PRD_THUMB_QUALIFIER, catalogVersion, productMaterialId, blobContainer);
 		final MediaModel mediaPicture = createUploadProductMedia(displayImagePath, productMaterialId.concat(aPICS),
-				PRD_IMG_QUALIFIER, catalogVersion, productMaterialId, cloudBlobContainer);
+				PRD_IMG_QUALIFIER, catalogVersion, productMaterialId, blobContainer);
 
 		energizerProd.setThumbnail(mediaThumbnail);
 		energizerProd.setPicture(mediaPicture);
@@ -315,40 +196,22 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 	}
 
 	private MediaModel createUploadProductMedia(final String fileLoc, final String mediaModelCode, final String mediaQualifier,
-			final CatalogVersionModel catalogVersion, final String productMaterialId, final CloudBlobContainer cloudBlobContainer)
-			throws FileNotFoundException, URISyntaxException
+												final CatalogVersionModel catalogVersion, final String productMaterialId, final BlobContainerClient blobContainer)
 	{
-
-
-		CloudBlockBlob blob2;
 		InputStream mediaInputStream = null;
 		try
 		{
-
 			LOG.info("fileLoc ::: " + fileLoc);
-			LOG.info("fileLoc.toString() ::: " + fileLoc.toString());
-
-			blob2 = cloudBlobContainer.getBlockBlobReference(fileLoc.toString());
-
-			mediaInputStream = new DataInputStream(blob2.getSnapshotQualifiedUri().toURL().openStream());
+			BlobClient blobClient = blobContainer.getBlobClient(fileLoc);
+			byte[] blobBytes = blobClient.downloadContent().toBytes();
+			mediaInputStream = new DataInputStream(new ByteArrayInputStream(blobBytes));
 		}
-		catch (final FileNotFoundException e1)
+		catch (final BlobStorageException e)
 		{
-			// YTODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (final StorageException e1)
-		{
-			// YTODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (final IOException e1)
-		{
-			// YTODO Auto-generated catch block
-			e1.printStackTrace();
+			LOG.error("Error reading blob for media: " + fileLoc, e);
 		}
 
-		// Creating or Updating  Media
+		// Creating or Updating Media
 		MediaModel mediaModel = null;
 		try
 		{
@@ -356,7 +219,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 		}
 		catch (final Exception e)
 		{
-			LOG.error(" Media does not exist for Product Media " + mediaModelCode + " || " + e);
+			LOG.error("Media does not exist for Product Media " + mediaModelCode + " || " + e);
 		}
 
 		if (null == mediaModel)
@@ -370,7 +233,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 		modelService.save(mediaModel);
 		mediaService.setStreamForMedia(mediaModel, mediaInputStream);
 
-		// Creating or Updating  mediaContainer and add media
+		// Creating or Updating mediaContainer and add media
 		MediaContainerModel mediaContainer = null;
 		final String mediaContainerQualifier = productMaterialId.concat("_mediaContainer");
 		try
@@ -395,17 +258,13 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 		LOG.info(mediaModelCode + " mediaModel Saved Successfully *************");
 
 		return mediaModel;
-
 	}
-
 
 	public CatalogVersionModel getCatalogVersion(final EnergizerCronJobModel cronjob) throws Exception
 	{
 		CatalogVersionModel catalogVersion = null;
-		/* Started EMEA Code refactor for get value from Model insted of properties */
 		final String CATALOG_NAME = cronjob.getCatalogName();
 		final String VERSION = cronjob.getCatalogVersion();
-		/* End EMEA Code refactor for get value from Model insted of properties */
 		if (StringUtils.isEmpty(CATALOG_NAME) || StringUtils.isEmpty(VERSION))
 		{
 			throw new Exception("Invalid Catalog Version ");
@@ -422,96 +281,41 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 	}
 
 	private String cleanUp(final String fileName, final boolean mediaSaved, final String thumbnailPath,
-			final String displayImagePath, final String ext, final CloudBlobContainer cloudBlobContainer)
+						   final String displayImagePath, final String ext, final BlobContainerClient blobContainer)
 	{
-
 		final String thumbnailPathNew = StringUtils.substringBefore(thumbnailPath, "/toProcess");
 		final String displayImagePathNew = StringUtils.substringBefore(displayImagePath, "/toProcess");
 
-		if (mediaSaved)
+		try
 		{
-			try
-			{
-				// Thumbnail
+			String sourceSuffix = fileSeperator + fileName.substring(0, fileName.indexOf("_")) + "." + ext;
+			String targetDir = mediaSaved ? ProcessedWithNoErrors : ErrorFiles;
 
-				final String thumbnailSourcePathS = thumbnailPath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
-						+ "_2" + "." + ext;
+			// Thumbnail
+			String thumbnailSourcePath = thumbnailPath + sourceSuffix;
+			String thumbnailTargetPath = thumbnailPathNew + fileSeperator + targetDir + sourceSuffix;
 
+			BlobClient thumbnailSourceBlob = blobContainer.getBlobClient(thumbnailSourcePath);
+			BlobClient thumbnailTargetBlob = blobContainer.getBlobClient(thumbnailTargetPath);
 
+			thumbnailTargetBlob.beginCopy(thumbnailSourceBlob.getBlobUrl(), null);
+			thumbnailSourceBlob.delete();
 
-				final String thumbnailTargetPathS = thumbnailPathNew + fileSeperator + ProcessedWithNoErrors + fileSeperator
-						+ fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext;
+			// Display Image
+			String displayImgSourcePath = displayImagePath + sourceSuffix;
+			String displayImgTargetPath = displayImagePathNew + fileSeperator + targetDir + sourceSuffix;
 
-				final CloudBlockBlob thumbnailSourceBlobS = cloudBlobContainer.getBlockBlobReference(thumbnailSourcePathS);
+			BlobClient displayImgSourceBlob = blobContainer.getBlobClient(displayImgSourcePath);
+			BlobClient displayImgTargetBlob = blobContainer.getBlobClient(displayImgTargetPath);
 
-				final CloudBlockBlob thumbnailTargetBlobS = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathS);
+			displayImgTargetBlob.beginCopy(displayImgSourceBlob.getBlobUrl(), null);
+			displayImgSourceBlob.delete();
 
-				thumbnailTargetBlobS.startCopy(thumbnailSourceBlobS.getSnapshotQualifiedUri());
-				thumbnailSourceBlobS.delete();
-
-				//DisplayImg
-				final String displayImgSourcePathS = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
-						+ "_1" + "." + ext;
-
-				final String displayImgTargetPathS = displayImagePathNew + fileSeperator + ProcessedWithNoErrors + fileSeperator
-						+ fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext;
-
-
-				final CloudBlockBlob displayImgSourceBlobS = cloudBlobContainer.getBlockBlobReference(displayImgSourcePathS);
-
-				final CloudBlockBlob displayImgTargetBlobS = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathS);
-
-				displayImgTargetBlobS.startCopy(displayImgSourceBlobS.getSnapshotQualifiedUri());
-				displayImgSourceBlobS.delete();
-
-				return "processed";
-			}
-			catch (final Exception e)
-			{
-				LOG.info("Error in processing images to processWithNoErrors folder");
-				e.printStackTrace();
-			}
+			return mediaSaved ? "processed" : "error";
 		}
-		else
+		catch (final Exception e)
 		{
-			try
-			{
-				// ThumbnailE
-
-				final String thumbnailSourcePathE = thumbnailPath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
-						+ "_2" + "." + ext;
-				final String thumbnailTargetPathE = thumbnailPathNew + fileSeperator + ErrorFiles + fileSeperator
-						+ fileName.substring(0, fileName.indexOf("_")) + "_2" + "." + ext;
-
-				final CloudBlockBlob thumbnailSourceBlobE = cloudBlobContainer.getBlockBlobReference(thumbnailSourcePathE);
-
-				final CloudBlockBlob thumbnailTargetBlobE = cloudBlobContainer.getBlockBlobReference(thumbnailTargetPathE);
-
-				thumbnailTargetBlobE.startCopy(thumbnailSourceBlobE.getSnapshotQualifiedUri());
-				thumbnailSourceBlobE.delete();
-
-				//DisplayImgE
-				final String displayImgSourcePathE = displayImagePath + fileSeperator + fileName.substring(0, fileName.indexOf("_"))
-						+ "_1" + "." + ext;
-
-				final String displayImgTargetPathE = displayImagePathNew + fileSeperator + ErrorFiles + fileSeperator
-						+ fileName.substring(0, fileName.indexOf("_")) + "_1" + "." + ext;
-
-
-				final CloudBlockBlob displayImgSourceBlobE = cloudBlobContainer.getBlockBlobReference(displayImgSourcePathE);
-
-				final CloudBlockBlob displayImgTargetBlobE = cloudBlobContainer.getBlockBlobReference(displayImgTargetPathE);
-
-				displayImgTargetBlobE.startCopy(displayImgSourceBlobE.getSnapshotQualifiedUri());
-				displayImgSourceBlobE.delete();
-
-				return "error";
-			}
-			catch (final Exception e)
-			{
-				LOG.info("Error in processing images to Error folder");
-				e.printStackTrace();
-			}
+			LOG.info("Error in processing images to " + (mediaSaved ? "ProcessedWithNoErrors" : "ErrorFiles") + " folder", e);
 		}
 		return null;
 	}

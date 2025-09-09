@@ -235,8 +235,8 @@ public class EnergizerCustomerCSVProcessor extends AbstractEnergizerCSVProcessor
 						energizeB2BUnit.setEnableContainerOptimization(false);
 
 
-						energizeB2BUnit.setSalesArea(this.getCronjob().getRegion());  
-						
+						energizeB2BUnit.setSalesArea(this.getCronjob().getRegion());
+
 						try
 						{
 							modelService.save(energizeB2BUnit);
@@ -353,7 +353,7 @@ public class EnergizerCustomerCSVProcessor extends AbstractEnergizerCSVProcessor
 							LOG.info("Currency Model or Language Model Not Found!");
 						}
 						b2bUnit.setMaxUserLimit(maxUserLimit);
-						b2bUnit.setLocname(csvValuesMap.get(CUSTOMER_NAME).trim());
+						b2bUnit.setName(csvValuesMap.get(CUSTOMER_NAME).trim());
 						/*-if (this.getCronjob().getPath().contains(EnergizerCoreConstants.LATAM))
 						{
 							b2bUnit.setSalesArea(EnergizerCoreConstants.LATAM);
@@ -650,7 +650,6 @@ public class EnergizerCustomerCSVProcessor extends AbstractEnergizerCSVProcessor
 
 	/**
 	 * @param record
-	 * @param csvValuesMap
 	 * @return
 	 */
 	private void validate(final CSVRecord record)
@@ -775,7 +774,7 @@ public class EnergizerCustomerCSVProcessor extends AbstractEnergizerCSVProcessor
 	}
 
 	/**
-	 * @param companyB2BCommerceService
+	 * @param b2BCommerceUnitService
 	 *           the companyB2BCommerceService to set
 	 */
 	public void setB2BCommerceUnitService(final B2BCommerceUnitService b2BCommerceUnitService)
@@ -792,7 +791,7 @@ public class EnergizerCustomerCSVProcessor extends AbstractEnergizerCSVProcessor
 	}
 
 	/**
-	 * @param b2bCommerceCostCenterService
+	 * @param b2BCommerceCostCenterService
 	 *           the b2BCommerceCostCenterService to set
 	 */
 	public void setB2BCommerceCostCenterService(final B2BCommerceCostCenterService b2BCommerceCostCenterService)
@@ -809,7 +808,7 @@ public class EnergizerCustomerCSVProcessor extends AbstractEnergizerCSVProcessor
 	}
 
 	/**
-	 * @param b2bCommerceBudgetService
+	 * @param b2BBudgetService
 	 *           the b2BCommerceBudgetService to set
 	 */
 	public void setB2BBudgetService(final B2BBudgetService b2BBudgetService)

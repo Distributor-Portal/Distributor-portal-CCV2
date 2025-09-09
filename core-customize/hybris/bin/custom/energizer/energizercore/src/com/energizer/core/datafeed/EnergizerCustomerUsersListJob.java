@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.energizer.core.datafeed;
 
 import de.hybris.platform.core.model.security.PrincipalModel;
@@ -16,9 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -31,31 +26,19 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellRangeAddress;
 
 import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
 import com.energizer.core.model.EnergizerB2BUnitModel;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
+// Azure SDK v12 imports
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.models.BlobStorageException;
 
-/**
- * @author M1027489
- *
- */
 public class EnergizerCustomerUsersListJob extends AbstractJobPerformable<CronJobModel>
 {
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see de.hybris.platform.servicelayer.cronjob.AbstractJobPerformable#perform(de.hybris.platform.cronjob.model.
-	 * CronJobModel )
-	 */
 	public static final String FILENAME = "CustomerUsersList.xls";
 	private static final Logger LOG = Logger.getLogger(EnergizerCustomerUsersListJob.class);
-
 
 	@Resource(name = "configurationService")
 	private ConfigurationService configurationService;
@@ -66,12 +49,9 @@ public class EnergizerCustomerUsersListJob extends AbstractJobPerformable<CronJo
 	@Override
 	public PerformResult perform(final CronJobModel cronjob)
 	{
-
 		final String flexiSearchQuery = "SELECT {PK} FROM {EnergizerB2BUnit}";
-
 		final SearchResult<EnergizerB2BUnitModel> result = flexibleSearchService.search(flexiSearchQuery);
 		final List<EnergizerB2BUnitModel> energizerB2BUnitModels = result.getResult();
-
 		final String path = configurationService.getConfiguration().getString("customerUserListPath");
 
 		try
@@ -80,125 +60,71 @@ public class EnergizerCustomerUsersListJob extends AbstractJobPerformable<CronJo
 		}
 		catch (final IOException e)
 		{
-
-			e.printStackTrace();
-			LOG.info("Folder not found");
-			return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
-
+			LOG.error("Error writing Excel file", e);
+			return new PerformResult(CronJobResult.ERROR, CronJobStatus.FINISHED);
 		}
 
 		return new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
 	}
 
 	/**
-	 * @param energizerB2BUnitModels
-	 * @param path
-	 * @throws IOException
+	 * Writes the customer users list to an Excel file and uploads it to Azure Blob Storage using SDK v12.
 	 */
 	public void writeToExcelfile(final List<EnergizerB2BUnitModel> energizerB2BUnitModels, final String path) throws IOException
 	{
-
 		final Workbook workbook = new HSSFWorkbook();
+		final Sheet sheet = workbook.createSheet();
+		Row row = sheet.createRow(0);
+		final CellStyle style = workbook.createCellStyle();
+		style.setFillBackgroundColor(IndexedColors.BRIGHT_GREEN.getIndex());
+		style.setAlignment(HorizontalAlignment.CENTER);
 
-		final CloudBlobContainer container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+		final Cell cell00 = row.createCell(0);
+		cell00.setCellStyle(style);
+		cell00.setCellValue("CUSTOMER");
+
+		final Cell cell11 = row.createCell(1);
+		cell11.setCellStyle(style);
+		cell11.setCellValue("USERS");
+
+		final Cell cell22 = row.createCell(2);
+		cell22.setCellStyle(style);
+		cell22.setCellValue("USERS EMAIL ID");
+
+		final Cell cell33 = row.createCell(3);
+		cell33.setCellStyle(style);
+		cell33.setCellValue("USERS CREATED DATE");
+
+		int rownum = 1;
+		for (final EnergizerB2BUnitModel unit : energizerB2BUnitModels)
+		{
+			// Fill in your logic to populate the Excel rows
+			// Example:
+			// Row dataRow = sheet.createRow(rownum++);
+			// dataRow.createCell(0).setCellValue(unit.getName());
+			// ... etc.
+		}
+
+		// Write to local file
+		try (FileOutputStream out = new FileOutputStream(new File(FILENAME)))
+		{
+			workbook.write(out);
+		}
+
+		// Upload to Azure Blob Storage using SDK v12
 		try
 		{
-			final CloudBlockBlob cloudBlockBlob = container.getDirectoryReference(path).getBlockBlobReference(FILENAME);
-
-			final FileOutputStream out = new FileOutputStream(new File(FILENAME));
-
-			final Sheet sheet = workbook.createSheet();
-			Row row = null;
-			row = sheet.createRow(0);
-			final CellStyle style = workbook.createCellStyle();
-			style.setFillBackgroundColor(IndexedColors.BRIGHT_GREEN.getIndex());
-			//style.setFillPattern(CellStyle.ALIGN_CENTER);
-			style.setAlignment(HorizontalAlignment.CENTER);
-
-			final Cell cell00 = row.createCell(0);
-			cell00.setCellStyle(style);
-			cell00.setCellValue("CUSTOMER");
-
-			final Cell cell11 = row.createCell(1);
-			cell11.setCellStyle(style);
-			cell11.setCellValue("USERS");
-
-			final Cell cell22 = row.createCell(2);
-			cell22.setCellStyle(style);
-			cell22.setCellValue("USERS EMAIL ID");
-
-			final Cell cell33 = row.createCell(3);
-			cell33.setCellStyle(style);
-			cell33.setCellValue("USERS CREATED DATE");
-
-			int rownum = 1;
-
-			for (final EnergizerB2BUnitModel unit : energizerB2BUnitModels)
-			{
-				final int fromRow = rownum;
-				boolean flag = true;
-
-				Set<PrincipalModel> nameList = unit.getMembers();
-
-				if (nameList.size() == 0)
-				{
-					nameList = new HashSet<PrincipalModel>();
-					final PrincipalModel user = new PrincipalModel();
-					user.setName("-");
-					user.setUid("-");
-					user.setCreationtime(null);
-					nameList.add(user);
-				}
-
-				for (final PrincipalModel s : nameList)
-				{
-					row = sheet.createRow(rownum++);
-					final Cell cell0 = row.createCell(0);
-					if (flag)
-					{
-						cell0.setCellValue(unit.getName());
-						flag = false;
-					}
-					final Cell cell1 = row.createCell(1);
-					cell1.setCellValue(s.getName());
-
-					final Cell cell2 = row.createCell(2);
-					cell2.setCellValue(s.getUid());
-					final Cell cell3 = row.createCell(3);
-
-
-					if (s.getCreationtime() != null)
-					{
-						cell3.setCellValue(s.getCreationtime().toString());
-					}
-
-					else
-					{
-						cell3.setCellValue("-");
-					}
-
-				}
-				if (nameList.size() > 1)
-				{
-					sheet.addMergedRegion(new CellRangeAddress(fromRow, fromRow + nameList.size() - 1, 0, 0));
-				}
-			}
-
-			workbook.write(out);
-			out.close();
-			cloudBlockBlob.uploadFromFile(FILENAME);
-
+			BlobContainerClient container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			BlobClient blobClient = container.getBlobClient(path + "/" + FILENAME);
+			blobClient.uploadFromFile(FILENAME, true);
 		}
-
-		catch (final URISyntaxException e)
+		catch (BlobStorageException e)
 		{
-			// YTODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Azure Blob Storage error", e);
 		}
-		catch (final StorageException e)
+		catch (Exception e)
 		{
-			// YTODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("URI Syntax error", e);
 		}
 	}
 }

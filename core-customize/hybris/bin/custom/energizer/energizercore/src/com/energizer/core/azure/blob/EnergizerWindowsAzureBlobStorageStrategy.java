@@ -1,26 +1,12 @@
-/**
- *
- */
 package com.energizer.core.azure.blob;
 
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import de.hybris.platform.azure.media.storage.WindowsAzureBlobStorageStrategy;
 import de.hybris.platform.util.Config;
-
-import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
-
 import org.apache.log4j.Logger;
 
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-
-
-/**
- * @author MU20325022
- *
- */
 public class EnergizerWindowsAzureBlobStorageStrategy extends WindowsAzureBlobStorageStrategy
 {
 	Logger LOG = Logger.getLogger(EnergizerWindowsAzureBlobStorageStrategy.class);
@@ -28,48 +14,34 @@ public class EnergizerWindowsAzureBlobStorageStrategy extends WindowsAzureBlobSt
 	public static final String containerName = Config.getParameter("azure.blob.storage.container.name");
 
 	/**
-	 * @return
+	 * @return BlobContainerClient
 	 */
-	public CloudBlobContainer getBlobContainer()
+	public BlobContainerClient getBlobContainer()
 	{
-		CloudBlobContainer container = null;
-
 		try
 		{
-			container = getBlobClient().getContainerReference(containerName);
-
+			return getBlobClient().getBlobContainerClient(containerName);
 		}
-		catch (URISyntaxException | StorageException e)
+		catch (Exception e)
 		{
-			// YTODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Failed to get BlobContainerClient", e);
+			return null;
 		}
-		return container;
 	}
 
 	/**
-	 * TODO: Move this method to separate file while refratoring
-	 *
-	 * @return
+	 * @return BlobServiceClient
 	 */
-	public CloudBlobClient getBlobClient()
+	public BlobServiceClient getBlobClient()
 	{
-		CloudStorageAccount storageAccount;
-		CloudBlobClient blobClient = null;
-
 		try
 		{
-			storageAccount = CloudStorageAccount.parse(connectionString);
-			blobClient = storageAccount.createCloudBlobClient();
+			return new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
 		}
-		catch (InvalidKeyException | URISyntaxException e)
+		catch (Exception e)
 		{
-			// YTODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Failed to create BlobServiceClient", e);
+			return null;
 		}
-		return blobClient;
-
-
 	}
-
 }

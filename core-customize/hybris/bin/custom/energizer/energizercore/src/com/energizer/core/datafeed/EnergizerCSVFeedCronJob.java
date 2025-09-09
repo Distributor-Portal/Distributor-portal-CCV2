@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.energizer.core.datafeed;
 
 import de.hybris.platform.acceleratorservices.email.EmailService;
@@ -18,7 +15,6 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,31 +29,17 @@ import org.apache.log4j.Logger;
 import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
 import com.energizer.core.datafeed.processor.product.EnergizerProduct2CategoryRelationCSVProcessor;
 import com.energizer.core.model.EnergizerCronJobModel;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlobDirectory;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.ListBlobItem;
 
+// Azure SDK v12 imports
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobStorageException;
 
-/**
- * @author M9005674
- *
- */
 public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCronJobModel>
 {
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see de.hybris.platform.servicelayer.cronjob.AbstractJobPerformable#perform(de.hybris.platform.cronjob.model.
-	 * CronJobModel )
-	 */
-
 	private static final Logger LOG = Logger.getLogger(EnergizerCSVFeedCronJob.class);
-
-	private static DecimalFormat df2 = new DecimalFormat("#.##");
-
+	private static final DecimalFormat df2 = new DecimalFormat("#.##");
 	public static final String dummyFileName = Config.getParameter("azure.blob.storage.dummy.file.name");
 
 	@Resource
@@ -68,99 +50,84 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 	@Resource
 	private EnergizerWindowsAzureBlobStorageStrategy energizerWindowsAzureBlobStorageStrategy;
 
-	/**
-	 * @return the cronJobService
-	 */
+	@Resource
+	private ConfigurationService configurationService;
+
 	public CronJobService getCronJobService()
 	{
 		return cronJobService;
 	}
 
-	/**
-	 * @param cronJobService
-	 *           the cronJobService to set
-	 */
 	public void setCronJobService(final CronJobService cronJobService)
 	{
 		this.cronJobService = cronJobService;
 	}
 
-	// Added by Soma - To abort those cronjobs during run time that take more time for processing.
 	@Override
 	public boolean isAbortable()
 	{
 		return true;
 	}
 
-	@Resource
-	private ConfigurationService configurationService;
-
 	@Override
 	public synchronized PerformResult perform(final EnergizerCronJobModel cronjob)
 	{
 		LOG.info("************************ PROCESSING START FOR THIS CRONJOB  ***************************");
-
 		final Long jobStartTime = System.currentTimeMillis();
 		LOG.info("Before processing this cronjob : " + jobStartTime + " milliseconds !!");
 
-		List<EnergizerCSVFeedError> errors = new ArrayList<EnergizerCSVFeedError>();
-		List<EnergizerCSVFeedError> techfeedErrors = new ArrayList<EnergizerCSVFeedError>();
-		List<EnergizerCSVFeedError> busfeedErrors = new ArrayList<EnergizerCSVFeedError>();
+		List<EnergizerCSVFeedError> errors = new ArrayList<>();
+		List<EnergizerCSVFeedError> techfeedErrors = new ArrayList<>();
+		List<EnergizerCSVFeedError> busfeedErrors = new ArrayList<>();
 		PerformResult performResult = null;
-		final List<String> emailAddress = new ArrayList<String>();
+		final List<String> emailAddress = new ArrayList<>();
 		final String type = cronjob.getType();
 
 		if (type == null)
 		{
 			LOG.info("There is no Type defined for the job " + cronjob.getCode());
-			LOG.info(
-					"*********************************** NOTHING TO PROCESS FOR THIS CRONJOB  *****************************************");
+			LOG.info("*********************************** NOTHING TO PROCESS FOR THIS CRONJOB  *****************************************");
 			return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
 		}
 		final AbstractEnergizerCSVProcessor energizerCSVProcessor = (AbstractEnergizerCSVProcessor) Registry.getApplicationContext()
 				.getBean(type);
-		/* Added for EMEA cronjob import */
 		energizerCSVProcessor.setCronjob(cronjob);
-		/* EMEA End */
 
 		try
 		{
-			// get container and iterate blob list
-
-			CloudBlobContainer cloudBlobContainer = null;
-			cloudBlobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
-
-			final CloudBlobDirectory blobDirectory = energizerCSVProcessor.getBlobDirectoryForFeedType(type);
-
+			// Get container and iterate blob list
+			BlobContainerClient container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			String prefix = cronjob.getPath() + AbstractEnergizerCSVProcessor.fileSeperator + type +
+					AbstractEnergizerCSVProcessor.fileSeperator + AbstractEnergizerCSVProcessor.toProcess +
+					AbstractEnergizerCSVProcessor.fileSeperator;
 
 			Boolean exceptionOccured = false;
 			if (null != cronjob.getEmailAddress())
 			{
 				emailAddress.add(cronjob.getEmailAddress());
 			}
-			energizerCSVProcessor.flush(); /* This is to flush the buffer of existing errorList and message as well */
+			energizerCSVProcessor.flush();
 
 			String resultType = "";
 
-			for (final ListBlobItem blobItem : blobDirectory.listBlobs())
+			for (BlobItem blobItem : container.listBlobsByHierarchy(prefix))
 			{
+				if (blobItem.isPrefix())
+					continue;
 
-				final String subfullFilePath = blobItem.getStorageUri().getPrimaryUri().getPath();
-				final String fullFilePath = subfullFilePath.substring(8);
+				final String fullFilePath = blobItem.getName();
 				final String fileName = StringUtils.substringAfterLast(fullFilePath, "/");
-
-
 
 				if (!(dummyFileName.equalsIgnoreCase(fileName)))
 				{
-
 					final Long fileProcessingStartTime = System.currentTimeMillis();
 
 					Iterable<CSVRecord> csvRecords;
-					CloudBlockBlob blob2;
+					BlobClient blobClient = container.getBlobClient(fullFilePath);
 
-					blob2 = cloudBlobContainer.getBlockBlobReference(fullFilePath);
-
+					// Download blob content as text
+					byte[] blobBytes = blobClient.downloadContent().toBytes();
+					String blobText = new String(blobBytes);
 
 					csvRecords = energizerCSVProcessor.parse(fullFilePath);
 
@@ -170,20 +137,17 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					sessionService.setAttribute("fileName", fileName);
 
 					errors = energizerCSVProcessor.process(csvRecords, cronjob.getCatalogName(), cronjob);
-					exceptionOccured = (errors.size() != 0) ? true : false;
+					exceptionOccured = (errors.size() != 0);
 
-					energizerCSVProcessor
-							.setMasterDataStream(new DataInputStream(new ByteArrayInputStream(blob2.downloadText().getBytes())));
+					energizerCSVProcessor.setMasterDataStream(new DataInputStream(new ByteArrayInputStream(blobText.getBytes())));
 
-					final List<EmailAttachmentModel> emailAttachmentList = new ArrayList<EmailAttachmentModel>();
-					final EmailAttachmentModel attachmentModel = emailService
-							.createEmailAttachment(energizerCSVProcessor.getMasterDataStream(),
-									StringUtils
-											.replace(fileName.toLowerCase(), ".csv",
-													"_" + new Date().getTime() + "."
-															+ de.hybris.platform.impex.constants.ImpExConstants.File.EXTENSION_CSV)
-											.toLowerCase(),
-									de.hybris.platform.impex.constants.ImpExConstants.File.MIME_TYPE_CSV);
+					final List<EmailAttachmentModel> emailAttachmentList = new ArrayList<>();
+					final EmailAttachmentModel attachmentModel = emailService.createEmailAttachment(
+							energizerCSVProcessor.getMasterDataStream(),
+							StringUtils.replace(fileName.toLowerCase(), ".csv",
+									"_" + new Date().getTime() + "." +
+											de.hybris.platform.impex.constants.ImpExConstants.File.EXTENSION_CSV).toLowerCase(),
+							de.hybris.platform.impex.constants.ImpExConstants.File.MIME_TYPE_CSV);
 
 					emailAttachmentList.add(attachmentModel);
 
@@ -220,8 +184,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					{
 						if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
 						{
-
-							energizerCSVProcessor.Blobcleanup(fileName, cronjob, true, fullFilePath, blob2, cloudBlobContainer);
+							energizerCSVProcessor.Blobcleanup(fileName, cronjob, true, fullFilePath, fullFilePath, container);
 						}
 						energizerCSVProcessor.flush();
 					}
@@ -229,8 +192,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					{
 						if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
 						{
-
-							energizerCSVProcessor.Blobcleanup(fileName, cronjob, false, fullFilePath, blob2, cloudBlobContainer);
+							energizerCSVProcessor.Blobcleanup(fileName, cronjob, false, fullFilePath, fullFilePath, container);
 						}
 						energizerCSVProcessor.flush();
 					}
@@ -240,18 +202,11 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					if (clearAbortRequestedIfNeeded(cronjob))
 					{
 						LOG.info(cronjob.getRegion() + " : CRONJOB IS ABORTED WHILE PERFORMING ...");
-
-						/* This is to flush the buffer of existing errorList and message as well */
 						energizerCSVProcessor.flush();
-
 						resultType = "aborted";
-						//abort the job
 						cronJobService.requestAbortCronJob(cronjob);
-
 						return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
-
 					}
-
 
 					if (exceptionOccured)
 					{
@@ -267,74 +222,46 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 
 					final Long fileProcessingEndTime = System.currentTimeMillis();
 					LOG.info("After processing this file : " + fileProcessingEndTime + " milliseconds !!");
-
-					LOG.info(
-							"Cronjob file processing time taken in milliseconds == " + (fileProcessingEndTime - fileProcessingStartTime)
-									+ " , seconds == " + (fileProcessingEndTime - fileProcessingStartTime) / 1000);
-
+					LOG.info("Cronjob file processing time taken in milliseconds == " + (fileProcessingEndTime - fileProcessingStartTime)
+							+ " , seconds == " + (fileProcessingEndTime - fileProcessingStartTime) / 1000);
 					LOG.info("************** PROCESSING END FOR THIS FILE  '" + fileName + "' ***************");
-
 				}
 				else
 				{
-
 					LOG.info("************** Nothing to processing, there is dummy file  '" + fileName + "' ***************");
-
 					LOG.info("************** Result Type  '" + resultType + "' ***************");
 
-					if (resultType.equalsIgnoreCase("error"))
+					if ("error".equalsIgnoreCase(resultType))
 					{
 						performResult = new PerformResult(CronJobResult.ERROR, CronJobStatus.FINISHED);
-
 					}
-
-					else if (resultType.equalsIgnoreCase("sucess"))
+					else if ("sucess".equalsIgnoreCase(resultType))
 					{
 						performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
-
 					}
-
-
-					else if (resultType.equalsIgnoreCase("aborted"))
+					else if ("aborted".equalsIgnoreCase(resultType))
 					{
 						performResult = new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
-
 					}
-
-
 					else
 					{
 						performResult = new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
-
 					}
-
-
 				}
-
 			}
 		}
-
-		catch (final StorageException e1)
+		catch (final BlobStorageException e1)
 		{
-			// YTODO Auto-generated catch block
-			e1.printStackTrace();
+			LOG.error("Azure Blob Storage error", e1);
 		}
-		catch (final URISyntaxException e)
+		catch (final Exception e)
 		{
-			// YTODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (final IOException e)
-		{
-			// YTODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Exception", e);
 		}
 
 		final Long jobEndTime = System.currentTimeMillis();
-
 		LOG.info("Cronjob total processing time taken in milliseconds == " + (jobEndTime - jobStartTime) + ", seconds ==  "
 				+ (jobEndTime - jobStartTime) / 1000);
-
 		LOG.info("************************ PROCESSING END FOR THIS CRONJOB  ***************************");
 
 		return performResult;
@@ -349,5 +276,4 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 	{
 		return df2.format((double) file.length() / 1024) + "  kb";
 	}
-
 }
