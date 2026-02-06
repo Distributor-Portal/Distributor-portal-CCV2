@@ -176,11 +176,14 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 				int nullCounter = 0;
 				for (final EnergizerCMIRModel cmir : cmirListFromDB_buff)
 				{
-					// Populate cmirMapFromDB as per your logic
+					if(null != cmir.getErpMaterialId() && null != cmir.getB2bUnit()) {
+						cmirMapFromDB.put(cmir.getErpMaterialId().trim().concat("_").concat(cmir.getB2bUnit().getUid().trim()), cmir);
+					} else {
+						nullCounter++;
+					}
 				}
-				if (nullCounter > 0)
-				{
-					// Handle nulls if needed
+				if (nullCounter > 0) {
+					LOG.info("Either the erpMaterialID/b2bUnit is NULL for '" + nullCounter + "' CMIR records in DB, so ignoring them for comparison...");
 				}
 				LOG.info("CMIR Map from DB size : " + cmirMapFromDB.size());
 				try
