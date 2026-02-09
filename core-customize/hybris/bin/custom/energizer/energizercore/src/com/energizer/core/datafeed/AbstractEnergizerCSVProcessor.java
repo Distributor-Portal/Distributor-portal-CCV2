@@ -14,21 +14,13 @@ import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.util.Config;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -109,30 +101,37 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 	// --- Azure SDK v12 methods ---
 
 	// Parse CSV from blob using Azure SDK v12
-	public Iterable<CSVRecord> parse(final String blobUri)
+	public Iterable<CSVRecord> parse(final String blobPath)
 	{
-		LOG.info(" enter in parsemethod");
-		final CSVFormat csvFormat = CSVFormat.EXCEL.withDelimiter(DELIMETER).withIgnoreSurroundingSpaces();
-		Iterable<CSVRecord> blobRecordS = null;
+		LOG.info("enter in parse method");
+
+		final CSVFormat csvFormat =
+				CSVFormat.EXCEL
+						.withDelimiter(DELIMETER)
+						.withIgnoreSurroundingSpaces();
+
+
 		try
 		{
-			BlobContainerClient container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
-			BlobClient blobClient = container.getBlobClient(blobUri);
-			byte[] blobBytes = blobClient.downloadContent().toBytes();
-			if (blobBytes.length > 0)
+			BlobContainerClient container =
+					energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+
+			BlobClient blobClient =
+					container.getBlobClient(blobPath);
+			LOG.info("enter in blobClient");
+
+			try (InputStream inputStream = blobClient.openInputStream();
+				 Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8))
 			{
-				LOG.info(" enter in readerBlob");
-				final Reader readerBlob = new StringReader(new String(blobBytes));
-				blobRecordS = csvFormat.withHeader().parse(readerBlob);
+				LOG.info("enter in readerBlob");
+				return csvFormat.parse(reader);
 			}
 		}
-		catch (BlobStorageException | IOException e)
+		catch (Exception e)
 		{
-			LOG.info(" readerBlob error");
-			LOG.error(e.getMessage());
+			LOG.error("readerBlob error", e);
+			return Collections.emptyList();
 		}
-		LOG.info("outfromparse");
-		return blobRecordS;
 	}
 
 	// List blob names for a feed type (directory listing)
