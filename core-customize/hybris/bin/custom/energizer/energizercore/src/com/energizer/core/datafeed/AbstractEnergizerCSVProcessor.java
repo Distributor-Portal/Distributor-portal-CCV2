@@ -108,7 +108,10 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 		final CSVFormat csvFormat =
 				CSVFormat.EXCEL
 						.withDelimiter(DELIMETER)
-						.withIgnoreSurroundingSpaces();
+						.withIgnoreSurroundingSpaces()
+			            .withHeader().withSkipHeaderRecord(true);
+
+	
 
 
 		try
