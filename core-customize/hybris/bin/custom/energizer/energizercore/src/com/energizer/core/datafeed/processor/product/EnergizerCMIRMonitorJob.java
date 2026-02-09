@@ -229,9 +229,10 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 					Iterable<CSVRecord> csvRecords = null;
 					final Long cmirFinalSetStartTime = System.currentTimeMillis();
 					for (String blobName : blobNames) {
+						LOG.info("blobname " + blobName);
 
 						final String fileName = blobName.substring(blobName.lastIndexOf("/") + 1);
-
+						LOG.info("fileName " + fileName);
 
 						if (!(dummyFileName.equalsIgnoreCase(fileName))) {
 							final Long fileProcessingStartTime = System.currentTimeMillis();
@@ -243,7 +244,10 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 							try (FileWriter writer = new FileWriter(tempFile)) {
 								writer.write(blobText);
 							}
-							csvRecords = energizerCSVProcessor.parse(tempFile.getAbsolutePath());
+							LOG.info("tempfile  " + tempFile.getAbsolutePath());
+							LOG.info("blobname  " + blobName);
+							//csvRecords = energizerCSVProcessor.parse(tempFile.getAbsolutePath());
+							csvRecords = energizerCSVProcessor.parse(blobName);
 							// Clean up temporary file
 							tempFile.delete();
 							//csvRecords = csvUtils.parse(f);
@@ -274,107 +278,107 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 							return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
 						}
 					}
-						final Long cmirFinalSetEndTime = System.currentTimeMillis();
-						LOG.info("Total time taken for preparing set of total matching records : "
-								+ (cmirFinalSetEndTime - cmirFinalSetStartTime) + " milliseconds, "
-								+ (cmirFinalSetEndTime - cmirFinalSetStartTime) / 1000 + " seconds ...");
+					final Long cmirFinalSetEndTime = System.currentTimeMillis();
+					LOG.info("Total time taken for preparing set of total matching records : "
+							+ (cmirFinalSetEndTime - cmirFinalSetStartTime) + " milliseconds, "
+							+ (cmirFinalSetEndTime - cmirFinalSetStartTime) / 1000 + " seconds ...");
 
-						final Long cmirSetupInactiveStartTime = System.currentTimeMillis();
-						LOG.info("Total matching records in the DB vs. CSV : " + (null != cmirFinalSet ? cmirFinalSet.size() : 0));
-						// Valid records(cmirFinalSet) are removed from the total list (cmirSetFromDB) to filter out the invalid records that are to be set inactive.
-						cmirSetFromDB.removeAll(cmirFinalSet);
+					final Long cmirSetupInactiveStartTime = System.currentTimeMillis();
+					LOG.info("Total matching records in the DB vs. CSV : " + (null != cmirFinalSet ? cmirFinalSet.size() : 0));
+					// Valid records(cmirFinalSet) are removed from the total list (cmirSetFromDB) to filter out the invalid records that are to be set inactive.
+					cmirSetFromDB.removeAll(cmirFinalSet);
 
-						if (null != cmirSetFromDB && cmirSetFromDB.size() > 0 && cmirFinalSet.size() > 0)
+					if (null != cmirSetFromDB && cmirSetFromDB.size() > 0 && cmirFinalSet.size() > 0)
+					{
+						LOG.info("Total non-matching CMIR records(overall) to be set false : " + cmirSetFromDB.size());
+						int cmirSetInActive = 0;
+						int priceRowsSetInActive = 0;
+						final List<EnergizerCMIRModel> cmirs = new ArrayList<EnergizerCMIRModel>();
+						// cmirSetFromDB has only the invalid CMIR records of all the files now -> Has to be set inactive.
+						for (final EnergizerCMIRModel cmir : cmirSetFromDB)
 						{
-							LOG.info("Total non-matching CMIR records(overall) to be set false : " + cmirSetFromDB.size());
-							int cmirSetInActive = 0;
-							int priceRowsSetInActive = 0;
-							final List<EnergizerCMIRModel> cmirs = new ArrayList<EnergizerCMIRModel>();
-							// cmirSetFromDB has only the invalid CMIR records of all the files now -> Has to be set inactive.
-							for (final EnergizerCMIRModel cmir : cmirSetFromDB)
+							if (cmir.getIsActive() == true)
 							{
-								if (cmir.getIsActive() == true)
-								{
-									/*
-									 * LOG.debug("cmirs getting disabled for models having erpmaterialid -" +
-									 * cmir.getErpMaterialId() + "\tcust_matid - " + cmir.getCustomerMaterialId() + "\tb2bunit - " +
-									 * cmir.getB2bUnit().getUid());
-									 */
-									cmir.setIsActive(false);
-									cmirs.add(cmir);
-									//modelService.save(cmir);
-									/*
-									 * final List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
-									 * .getAllEnergizerPriceRowForB2BUnit(cmir.getErpMaterialId(), cmir.getB2bUnit().getUid()); if
-									 * (energizerPriceRow != null) {
-									 *
-									 * LOG.debug("Number of price rows to be modified for " + cmir.getErpMaterialId() + "=" +
-									 * energizerPriceRow.size());
-									 *
-									 * for (final EnergizerPriceRowModel priceRow : energizerPriceRow) {
-									 * priceRow.setIsActive(false); modelService.save(priceRow); } }
-									 */
-									/* c.getErpMaterialId(). */
-									cmirSetInActive = cmirSetInActive + 1;
-								}
+								/*
+								 * LOG.debug("cmirs getting disabled for models having erpmaterialid -" +
+								 * cmir.getErpMaterialId() + "\tcust_matid - " + cmir.getCustomerMaterialId() + "\tb2bunit - " +
+								 * cmir.getB2bUnit().getUid());
+								 */
+								cmir.setIsActive(false);
+								cmirs.add(cmir);
+								//modelService.save(cmir);
+								/*
+								 * final List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
+								 * .getAllEnergizerPriceRowForB2BUnit(cmir.getErpMaterialId(), cmir.getB2bUnit().getUid()); if
+								 * (energizerPriceRow != null) {
+								 *
+								 * LOG.debug("Number of price rows to be modified for " + cmir.getErpMaterialId() + "=" +
+								 * energizerPriceRow.size());
+								 *
+								 * for (final EnergizerPriceRowModel priceRow : energizerPriceRow) {
+								 * priceRow.setIsActive(false); modelService.save(priceRow); } }
+								 */
+								/* c.getErpMaterialId(). */
+								cmirSetInActive = cmirSetInActive + 1;
 							}
+						}
 
-							modelService.saveAll(cmirs); // Save all inactive CMIRs
+						modelService.saveAll(cmirs); // Save all inactive CMIRs
 
-							final List<EnergizerPriceRowModel> energizerPriceRows = new ArrayList<>();
+						final List<EnergizerPriceRowModel> energizerPriceRows = new ArrayList<>();
 
-							if(cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL) && cmirSetFromDB.size() > 0 ){
-								//To Avoid Flexible search exception on querying for WESELL
-								LOG.info("Inside WESELL Split Clause" + cmirSetFromDB.size());
-								List<Set<EnergizerCMIRModel>> splitSets = split(cmirSetFromDB, wesellSplitFilesCount);
-								for (final Set<EnergizerCMIRModel> splitSet : splitSets)
-								{
-									LOG.info("Querying Size " + splitSet.size());
-									List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
-											.getActiveEnergizerPriceRowForCMIRModelSet(splitSet);
-									energizerPriceRows.addAll(energizerPriceRow);
-									energizerPriceRow.clear();
-								}
-						    }else{
-								LOG.info("Querying Size " + cmirSetFromDB.size());
-								final List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
-										.getActiveEnergizerPriceRowForCMIRModelSet(cmirSetFromDB);
+						if(cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL) && cmirSetFromDB.size() > 0 ){
+							//To Avoid Flexible search exception on querying for WESELL
+							LOG.info("Inside WESELL Split Clause" + cmirSetFromDB.size());
+							List<Set<EnergizerCMIRModel>> splitSets = split(cmirSetFromDB, wesellSplitFilesCount);
+							for (final Set<EnergizerCMIRModel> splitSet : splitSets)
+							{
+								LOG.info("Querying Size " + splitSet.size());
+								List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
+										.getActiveEnergizerPriceRowForCMIRModelSet(splitSet);
 								energizerPriceRows.addAll(energizerPriceRow);
+								energizerPriceRow.clear();
 							}
-
-
-							final List<EnergizerPriceRowModel> priceRows = new ArrayList<EnergizerPriceRowModel>();
-
-							if (null != energizerPriceRows && energizerPriceRows.size() > 0)
-							{
-								LOG.info("Total non-matching PriceRow records(overall) to be set false : " + energizerPriceRows.size());
-								for (final EnergizerPriceRowModel priceRow : energizerPriceRows)
-								{
-									priceRow.setIsActive(false);
-									priceRows.add(priceRow);
-									//modelService.save(priceRow);
-									priceRowsSetInActive = priceRowsSetInActive + 1;
-								}
-								modelService.saveAll(priceRows); // Save all inactive price rows
-							}
-
-							LOG.info("Total non-matching CMIRs in the DB setup inactive now : " + cmirSetInActive);
-							LOG.info("Total non-matching Price Rows in the DB setup inactive now : " + priceRowsSetInActive);
-							LOG.info("CMIR Monitor Job is COMPLETED for " + cronjob.getRegion() + " !!");
-
-							//csvUtils.getReader().close();
-							sendMail(cmirSetFromDB.toString(), cronjob.getEmailAddress());
-
-							final Long cmirSetupInactiveEndTime = System.currentTimeMillis();
-							LOG.info("Time taken for setting up CMIRs & PriceRows inactive : "
-									+ (cmirSetupInactiveEndTime - cmirSetupInactiveStartTime) + " milliseconds, "
-									+ (cmirSetupInactiveEndTime - cmirSetupInactiveStartTime) / 1000 + " seconds ...");
+						}else{
+							LOG.info("Querying Size " + cmirSetFromDB.size());
+							final List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
+									.getActiveEnergizerPriceRowForCMIRModelSet(cmirSetFromDB);
+							energizerPriceRows.addAll(energizerPriceRow);
 						}
-						else
+
+
+						final List<EnergizerPriceRowModel> priceRows = new ArrayList<EnergizerPriceRowModel>();
+
+						if (null != energizerPriceRows && energizerPriceRows.size() > 0)
 						{
-							LOG.info("nothing to update");
-							//csvUtils.getReader().close();
+							LOG.info("Total non-matching PriceRow records(overall) to be set false : " + energizerPriceRows.size());
+							for (final EnergizerPriceRowModel priceRow : energizerPriceRows)
+							{
+								priceRow.setIsActive(false);
+								priceRows.add(priceRow);
+								//modelService.save(priceRow);
+								priceRowsSetInActive = priceRowsSetInActive + 1;
+							}
+							modelService.saveAll(priceRows); // Save all inactive price rows
 						}
+
+						LOG.info("Total non-matching CMIRs in the DB setup inactive now : " + cmirSetInActive);
+						LOG.info("Total non-matching Price Rows in the DB setup inactive now : " + priceRowsSetInActive);
+						LOG.info("CMIR Monitor Job is COMPLETED for " + cronjob.getRegion() + " !!");
+
+						//csvUtils.getReader().close();
+						sendMail(cmirSetFromDB.toString(), cronjob.getEmailAddress());
+
+						final Long cmirSetupInactiveEndTime = System.currentTimeMillis();
+						LOG.info("Time taken for setting up CMIRs & PriceRows inactive : "
+								+ (cmirSetupInactiveEndTime - cmirSetupInactiveStartTime) + " milliseconds, "
+								+ (cmirSetupInactiveEndTime - cmirSetupInactiveStartTime) / 1000 + " seconds ...");
+					}
+					else
+					{
+						LOG.info("nothing to update");
+						//csvUtils.getReader().close();
+					}
 
 				}
 				catch (final Exception e)
@@ -416,7 +420,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 	 * csvRecords, final EnergizerCronJobModel cronjob)
 	 */
 	public Set<EnergizerCMIRModel> checkUpdate(final Map<String, EnergizerCMIRModel> cmirMapFromDB,
-			final Iterable<CSVRecord> csvRecords, final EnergizerCronJobModel cronjob)
+											   final Iterable<CSVRecord> csvRecords, final EnergizerCronJobModel cronjob)
 	{
 		Map<String, String> csvValuesMap = null;
 		final Set<EnergizerCMIRModel> preparedSet = new HashSet<EnergizerCMIRModel>();
