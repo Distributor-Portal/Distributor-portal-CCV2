@@ -127,7 +127,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 				 CSVParser Parser= csvFormat.parse(reader))
 			{
 				LOG.info("enter in readerBlob");
-				return csvFormat.parse(reader);
+				return parser.getRecords();
 			}
 		}
 		catch (Exception e)
