@@ -470,9 +470,9 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 						 * cmirModel.getCustomerMaterialId());
 						 */
 						/* } */
-						LOG.info("CSV record LOOP(line473)")
+						LOG.info("CSV record LOOP(line473)");
 					}
-					LOG.info("CSV record LOOP(line474)")
+					LOG.info("CSV record LOOP(line474)");
 					if (addedToPreparedSet != 0 && addedToPreparedSet % 3000 == 0)
 					{
 						LOG.info("Added " + addedToPreparedSet + " cmirModels to the preparedSet so far !!");
