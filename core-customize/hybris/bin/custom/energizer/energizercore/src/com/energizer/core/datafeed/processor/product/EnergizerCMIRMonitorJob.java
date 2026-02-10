@@ -435,6 +435,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 			{
 				for (final CSVRecord record : csvRecords)
 				{
+					LOG.info("CSV record LOOP");
 					csvValuesMap = record.toMap();
 					erpMaterialId = csvValuesMap.get(EnergizerCoreConstants.ERPMATERIAL_ID).toString().trim();
 					b2bUnitId = csvValuesMap.get(EnergizerCoreConstants.ENERGIZER_ACCOUNT_ID).toString().trim();
@@ -443,6 +444,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 					{
 						mapKey = erpMaterialId.toString().trim().concat("_").concat(b2bUnitId.toString().trim());
 					}
+					LOG.info("CSV record LOOP(line447)");
 					/* for (final EnergizerCMIRModel cmirModel : cmirList) */
 					if (null != cmirMapFromDB && null != cmirMapFromDB.get(mapKey)
 							&& cmirMapFromDB.get(mapKey).getErpMaterialId().equals(erpMaterialId)
@@ -468,7 +470,9 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 						 * cmirModel.getCustomerMaterialId());
 						 */
 						/* } */
+						LOG.info("CSV record LOOP(line473)")
 					}
+					LOG.info("CSV record LOOP(line474)")
 					if (addedToPreparedSet != 0 && addedToPreparedSet % 3000 == 0)
 					{
 						LOG.info("Added " + addedToPreparedSet + " cmirModels to the preparedSet so far !!");
