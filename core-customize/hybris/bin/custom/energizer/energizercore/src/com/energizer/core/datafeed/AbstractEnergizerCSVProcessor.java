@@ -125,15 +125,12 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 
 			try (InputStream inputStream = blobClient.openInputStream();
 				 Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-				 CSVParser parser = csvFormat.parse(reader))
-			{
+				 CSVParser parser = csvFormat.parse(reader)){
+					 
+			LOG.info("enter in readerBlob");
 				return parser.getRecords();
 			}
-			{
-				LOG.info("enter in readerBlob");
-				return csvFormat.parse(reader);
-			}
-		}
+		
 		catch (Exception e)
 		{
 			LOG.error("readerBlob error", e);
