@@ -23,10 +23,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 import javax.annotation.Resource;
-import javax.swing.text.html.parser.Parser;
 
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang.NumberUtils;
 import org.apache.commons.lang.StringUtils;
@@ -123,8 +121,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 			LOG.info("enter in blobClient");
 
 			try (InputStream inputStream = blobClient.openInputStream();
-				 Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-				 CSVParser Parser= csvFormat.parse(reader))
+				 Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8))
 			{
 				LOG.info("enter in readerBlob");
 				return csvFormat.parse(reader);
