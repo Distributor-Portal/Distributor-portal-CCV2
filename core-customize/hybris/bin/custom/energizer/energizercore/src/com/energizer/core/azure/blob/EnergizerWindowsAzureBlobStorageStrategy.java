@@ -1,12 +1,26 @@
+/**
+ *
+ */
 package com.energizer.core.azure.blob;
+
+import de.hybris.platform.azure.media.storage.WindowsAzureBlobStorageStrategy;
+import de.hybris.platform.util.Config;
+
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+
+import org.apache.log4j.Logger;
 
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import de.hybris.platform.azure.media.storage.WindowsAzureBlobStorageStrategy;
-import de.hybris.platform.util.Config;
-import org.apache.log4j.Logger;
+import com.azure.storage.common.StorageSharedKeyCredential;
 
+
+/**
+ * @author MU20325022
+ *
+ */
 public class EnergizerWindowsAzureBlobStorageStrategy extends WindowsAzureBlobStorageStrategy
 {
 	Logger LOG = Logger.getLogger(EnergizerWindowsAzureBlobStorageStrategy.class);
@@ -14,34 +28,44 @@ public class EnergizerWindowsAzureBlobStorageStrategy extends WindowsAzureBlobSt
 	public static final String containerName = Config.getParameter("azure.blob.storage.container.name");
 
 	/**
-	 * @return BlobContainerClient
+	 * @return
 	 */
-	public BlobContainerClient getBlobContainer()
+	public BlobContainerClient getBlobContainerClient()
 	{
+		BlobContainerClient containerClient = null;
+
 		try
 		{
-			return getBlobClient().getBlobContainerClient(containerName);
+			containerClient = getBlobServiceClient().getBlobContainerClient(containerName);
+
 		}
 		catch (Exception e)
 		{
-			LOG.error("Failed to get BlobContainerClient", e);
-			return null;
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return containerClient;
 	}
 
 	/**
-	 * @return BlobServiceClient
+	 * TODO: Move this method to separate file while refratoring
+	 *
+	 * @return
 	 */
-	public BlobServiceClient getBlobClient()
+	public BlobServiceClient getBlobServiceClient()
 	{
+		BlobServiceClient blobServiceClient = null;
+
 		try
 		{
-			return new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
+			blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
 		}
 		catch (Exception e)
 		{
-			LOG.error("Failed to create BlobServiceClient", e);
-			return null;
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return blobServiceClient;
 	}
+
 }
