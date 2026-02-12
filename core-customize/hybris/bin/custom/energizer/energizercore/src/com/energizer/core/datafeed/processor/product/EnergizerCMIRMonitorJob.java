@@ -1,11 +1,11 @@
 package com.energizer.core.datafeed.processor.product;
 
 import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
-import com.azure.storage.blob.BlobClient;
+import com.google.common.collect.Iterables;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.google.common.collect.Iterables;
 import de.hybris.platform.acceleratorservices.email.EmailService;
 import de.hybris.platform.acceleratorservices.model.email.EmailAddressModel;
 import de.hybris.platform.acceleratorservices.model.email.EmailMessageModel;
@@ -20,9 +20,7 @@ import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.util.Config;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import javax.annotation.Resource;
@@ -39,6 +37,7 @@ import com.energizer.core.model.EnergizerCMIRModel;
 import com.energizer.core.model.EnergizerCronJobModel;
 import com.energizer.core.model.EnergizerPriceRowModel;
 import com.energizer.services.product.EnergizerProductService;
+
 
 /**
  * @author M1030106
@@ -174,18 +173,13 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 		{
 
 
-			BlobContainerClient container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
-			String prefix = cronjob.getPath() + AbstractEnergizerCSVProcessor.fileSeperator + cronjob.getType() +
-					AbstractEnergizerCSVProcessor.fileSeperator + AbstractEnergizerCSVProcessor.toProcess + AbstractEnergizerCSVProcessor.fileSeperator;
+			BlobContainerClient blobContainerClient = null;
+			blobContainerClient = energizerWindowsAzureBlobStorageStrategy.getBlobContainerClient();
+			/* Added for EMEA cronjob import */
 
-			List<String> blobNames = new ArrayList<>();
-			for (BlobItem blobItem : container.listBlobsByHierarchy(prefix)) {
-				if (!blobItem.isPrefix()) {
-					blobNames.add(blobItem.getName());
-				}
-			}
+			final String blobDirectoryPath = energizerCSVProcessor.getBlobDirectoryPathForFeedType(cronjob.getType());
 
-			final Integer filesCount = blobNames.size();
+			final Integer filesCount = filesCount(blobContainerClient, blobDirectoryPath);
 
 			//final List<File> files = csvUtils.getFilesForFeedType("energizerCMIRCSVProcessor");
 			//LOG.info("LOADING FILES FROM CMIR folder FOR MONITORING" + files);
@@ -228,28 +222,17 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 				{
 					Iterable<CSVRecord> csvRecords = null;
 					final Long cmirFinalSetStartTime = System.currentTimeMillis();
-					for (String blobName : blobNames) {
-						LOG.info("blobname " + blobName);
+					for (final BlobItem blobItem : blobContainerClient.listBlobs(null, null)) {
 
-						final String fileName = blobName.substring(blobName.lastIndexOf("/") + 1);
-						LOG.info("fileName " + fileName);
+						final String fullFilePath = blobItem.getName();
+						final String fileName = org.apache.commons.lang3.StringUtils.substringAfterLast(fullFilePath, "/");
 
-						if (!(dummyFileName.equalsIgnoreCase(fileName))) {
+
+						if (!(dummyFileName.equalsIgnoreCase(fileName)) && fullFilePath.startsWith(blobDirectoryPath)) {
 							final Long fileProcessingStartTime = System.currentTimeMillis();
-							BlobClient blobClient = container.getBlobClient(blobName);
-							byte[] blobBytes = blobClient.downloadContent().toBytes();
-							String blobText = new String(blobBytes, StandardCharsets.UTF_8);
-							// Create a temporary file to write blob content for parsing
-							File tempFile = File.createTempFile("cmir_blob_", ".csv");
-							try (FileWriter writer = new FileWriter(tempFile)) {
-								writer.write(blobText);
-							}
-							LOG.info("tempfile  " + tempFile.getAbsolutePath());
-							LOG.info("blobname  " + blobName);
-							//csvRecords = energizerCSVProcessor.parse(tempFile.getAbsolutePath());
-							csvRecords = energizerCSVProcessor.parse(blobName);
-							// Clean up temporary file
-							tempFile.delete();
+							BlobClient blobClient;
+							blobClient = blobContainerClient.getBlobClient(fullFilePath);
+							csvRecords = energizerCSVProcessor.parse(fullFilePath);
 							//csvRecords = csvUtils.parse(f);
 							if (null != cmirListFromDB_buff && null != csvRecords) {
 								final Long preparedSetStartTime = System.currentTimeMillis();
@@ -278,107 +261,107 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 							return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
 						}
 					}
-					final Long cmirFinalSetEndTime = System.currentTimeMillis();
-					LOG.info("Total time taken for preparing set of total matching records : "
-							+ (cmirFinalSetEndTime - cmirFinalSetStartTime) + " milliseconds, "
-							+ (cmirFinalSetEndTime - cmirFinalSetStartTime) / 1000 + " seconds ...");
+						final Long cmirFinalSetEndTime = System.currentTimeMillis();
+						LOG.info("Total time taken for preparing set of total matching records : "
+								+ (cmirFinalSetEndTime - cmirFinalSetStartTime) + " milliseconds, "
+								+ (cmirFinalSetEndTime - cmirFinalSetStartTime) / 1000 + " seconds ...");
 
-					final Long cmirSetupInactiveStartTime = System.currentTimeMillis();
-					LOG.info("Total matching records in the DB vs. CSV : " + (null != cmirFinalSet ? cmirFinalSet.size() : 0));
-					// Valid records(cmirFinalSet) are removed from the total list (cmirSetFromDB) to filter out the invalid records that are to be set inactive.
-					cmirSetFromDB.removeAll(cmirFinalSet);
+						final Long cmirSetupInactiveStartTime = System.currentTimeMillis();
+						LOG.info("Total matching records in the DB vs. CSV : " + (null != cmirFinalSet ? cmirFinalSet.size() : 0));
+						// Valid records(cmirFinalSet) are removed from the total list (cmirSetFromDB) to filter out the invalid records that are to be set inactive.
+						cmirSetFromDB.removeAll(cmirFinalSet);
 
-					if (null != cmirSetFromDB && cmirSetFromDB.size() > 0 && cmirFinalSet.size() > 0)
-					{
-						LOG.info("Total non-matching CMIR records(overall) to be set false : " + cmirSetFromDB.size());
-						int cmirSetInActive = 0;
-						int priceRowsSetInActive = 0;
-						final List<EnergizerCMIRModel> cmirs = new ArrayList<EnergizerCMIRModel>();
-						// cmirSetFromDB has only the invalid CMIR records of all the files now -> Has to be set inactive.
-						for (final EnergizerCMIRModel cmir : cmirSetFromDB)
+						if (null != cmirSetFromDB && cmirSetFromDB.size() > 0 && cmirFinalSet.size() > 0)
 						{
-							if (cmir.getIsActive() == true)
+							LOG.info("Total non-matching CMIR records(overall) to be set false : " + cmirSetFromDB.size());
+							int cmirSetInActive = 0;
+							int priceRowsSetInActive = 0;
+							final List<EnergizerCMIRModel> cmirs = new ArrayList<EnergizerCMIRModel>();
+							// cmirSetFromDB has only the invalid CMIR records of all the files now -> Has to be set inactive.
+							for (final EnergizerCMIRModel cmir : cmirSetFromDB)
 							{
-								/*
-								 * LOG.debug("cmirs getting disabled for models having erpmaterialid -" +
-								 * cmir.getErpMaterialId() + "\tcust_matid - " + cmir.getCustomerMaterialId() + "\tb2bunit - " +
-								 * cmir.getB2bUnit().getUid());
-								 */
-								cmir.setIsActive(false);
-								cmirs.add(cmir);
-								//modelService.save(cmir);
-								/*
-								 * final List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
-								 * .getAllEnergizerPriceRowForB2BUnit(cmir.getErpMaterialId(), cmir.getB2bUnit().getUid()); if
-								 * (energizerPriceRow != null) {
-								 *
-								 * LOG.debug("Number of price rows to be modified for " + cmir.getErpMaterialId() + "=" +
-								 * energizerPriceRow.size());
-								 *
-								 * for (final EnergizerPriceRowModel priceRow : energizerPriceRow) {
-								 * priceRow.setIsActive(false); modelService.save(priceRow); } }
-								 */
-								/* c.getErpMaterialId(). */
-								cmirSetInActive = cmirSetInActive + 1;
+								if (cmir.getIsActive() == true)
+								{
+									/*
+									 * LOG.debug("cmirs getting disabled for models having erpmaterialid -" +
+									 * cmir.getErpMaterialId() + "\tcust_matid - " + cmir.getCustomerMaterialId() + "\tb2bunit - " +
+									 * cmir.getB2bUnit().getUid());
+									 */
+									cmir.setIsActive(false);
+									cmirs.add(cmir);
+									//modelService.save(cmir);
+									/*
+									 * final List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
+									 * .getAllEnergizerPriceRowForB2BUnit(cmir.getErpMaterialId(), cmir.getB2bUnit().getUid()); if
+									 * (energizerPriceRow != null) {
+									 *
+									 * LOG.debug("Number of price rows to be modified for " + cmir.getErpMaterialId() + "=" +
+									 * energizerPriceRow.size());
+									 *
+									 * for (final EnergizerPriceRowModel priceRow : energizerPriceRow) {
+									 * priceRow.setIsActive(false); modelService.save(priceRow); } }
+									 */
+									/* c.getErpMaterialId(). */
+									cmirSetInActive = cmirSetInActive + 1;
+								}
 							}
-						}
 
-						modelService.saveAll(cmirs); // Save all inactive CMIRs
+							modelService.saveAll(cmirs); // Save all inactive CMIRs
 
-						final List<EnergizerPriceRowModel> energizerPriceRows = new ArrayList<>();
+							final List<EnergizerPriceRowModel> energizerPriceRows = new ArrayList<>();
 
-						if(cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL) && cmirSetFromDB.size() > 0 ){
-							//To Avoid Flexible search exception on querying for WESELL
-							LOG.info("Inside WESELL Split Clause" + cmirSetFromDB.size());
-							List<Set<EnergizerCMIRModel>> splitSets = split(cmirSetFromDB, wesellSplitFilesCount);
-							for (final Set<EnergizerCMIRModel> splitSet : splitSets)
-							{
-								LOG.info("Querying Size " + splitSet.size());
-								List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
-										.getActiveEnergizerPriceRowForCMIRModelSet(splitSet);
+							if(cronjob.getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL) && cmirSetFromDB.size() > 0 ){
+								//To Avoid Flexible search exception on querying for WESELL
+								LOG.info("Inside WESELL Split Clause" + cmirSetFromDB.size());
+								List<Set<EnergizerCMIRModel>> splitSets = split(cmirSetFromDB, wesellSplitFilesCount);
+								for (final Set<EnergizerCMIRModel> splitSet : splitSets)
+								{
+									LOG.info("Querying Size " + splitSet.size());
+									List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
+											.getActiveEnergizerPriceRowForCMIRModelSet(splitSet);
+									energizerPriceRows.addAll(energizerPriceRow);
+									energizerPriceRow.clear();
+								}
+						    }else{
+								LOG.info("Querying Size " + cmirSetFromDB.size());
+								final List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
+										.getActiveEnergizerPriceRowForCMIRModelSet(cmirSetFromDB);
 								energizerPriceRows.addAll(energizerPriceRow);
-								energizerPriceRow.clear();
 							}
-						}else{
-							LOG.info("Querying Size " + cmirSetFromDB.size());
-							final List<EnergizerPriceRowModel> energizerPriceRow = energizerProductService
-									.getActiveEnergizerPriceRowForCMIRModelSet(cmirSetFromDB);
-							energizerPriceRows.addAll(energizerPriceRow);
-						}
 
 
-						final List<EnergizerPriceRowModel> priceRows = new ArrayList<EnergizerPriceRowModel>();
+							final List<EnergizerPriceRowModel> priceRows = new ArrayList<EnergizerPriceRowModel>();
 
-						if (null != energizerPriceRows && energizerPriceRows.size() > 0)
-						{
-							LOG.info("Total non-matching PriceRow records(overall) to be set false : " + energizerPriceRows.size());
-							for (final EnergizerPriceRowModel priceRow : energizerPriceRows)
+							if (null != energizerPriceRows && energizerPriceRows.size() > 0)
 							{
-								priceRow.setIsActive(false);
-								priceRows.add(priceRow);
-								//modelService.save(priceRow);
-								priceRowsSetInActive = priceRowsSetInActive + 1;
+								LOG.info("Total non-matching PriceRow records(overall) to be set false : " + energizerPriceRows.size());
+								for (final EnergizerPriceRowModel priceRow : energizerPriceRows)
+								{
+									priceRow.setIsActive(false);
+									priceRows.add(priceRow);
+									//modelService.save(priceRow);
+									priceRowsSetInActive = priceRowsSetInActive + 1;
+								}
+								modelService.saveAll(priceRows); // Save all inactive price rows
 							}
-							modelService.saveAll(priceRows); // Save all inactive price rows
+
+							LOG.info("Total non-matching CMIRs in the DB setup inactive now : " + cmirSetInActive);
+							LOG.info("Total non-matching Price Rows in the DB setup inactive now : " + priceRowsSetInActive);
+							LOG.info("CMIR Monitor Job is COMPLETED for " + cronjob.getRegion() + " !!");
+
+							//csvUtils.getReader().close();
+							sendMail(cmirSetFromDB.toString(), cronjob.getEmailAddress());
+
+							final Long cmirSetupInactiveEndTime = System.currentTimeMillis();
+							LOG.info("Time taken for setting up CMIRs & PriceRows inactive : "
+									+ (cmirSetupInactiveEndTime - cmirSetupInactiveStartTime) + " milliseconds, "
+									+ (cmirSetupInactiveEndTime - cmirSetupInactiveStartTime) / 1000 + " seconds ...");
 						}
-
-						LOG.info("Total non-matching CMIRs in the DB setup inactive now : " + cmirSetInActive);
-						LOG.info("Total non-matching Price Rows in the DB setup inactive now : " + priceRowsSetInActive);
-						LOG.info("CMIR Monitor Job is COMPLETED for " + cronjob.getRegion() + " !!");
-
-						//csvUtils.getReader().close();
-						sendMail(cmirSetFromDB.toString(), cronjob.getEmailAddress());
-
-						final Long cmirSetupInactiveEndTime = System.currentTimeMillis();
-						LOG.info("Time taken for setting up CMIRs & PriceRows inactive : "
-								+ (cmirSetupInactiveEndTime - cmirSetupInactiveStartTime) + " milliseconds, "
-								+ (cmirSetupInactiveEndTime - cmirSetupInactiveStartTime) / 1000 + " seconds ...");
-					}
-					else
-					{
-						LOG.info("nothing to update");
-						//csvUtils.getReader().close();
-					}
+						else
+						{
+							LOG.info("nothing to update");
+							//csvUtils.getReader().close();
+						}
 
 				}
 				catch (final Exception e)
@@ -389,7 +372,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 				}
 			}
 		}
-		catch (final Exception e)
+		catch (final BlobStorageException e)
 		{
 			LOG.error("ERROR OCCURED WHILE LOADING FILES : " + "\t\t" + e.getMessage());
 			e.printStackTrace();
@@ -420,7 +403,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 	 * csvRecords, final EnergizerCronJobModel cronjob)
 	 */
 	public Set<EnergizerCMIRModel> checkUpdate(final Map<String, EnergizerCMIRModel> cmirMapFromDB,
-											   final Iterable<CSVRecord> csvRecords, final EnergizerCronJobModel cronjob)
+			final Iterable<CSVRecord> csvRecords, final EnergizerCronJobModel cronjob)
 	{
 		Map<String, String> csvValuesMap = null;
 		final Set<EnergizerCMIRModel> preparedSet = new HashSet<EnergizerCMIRModel>();
@@ -434,8 +417,10 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 			if (null != csvRecords)
 			{
 				for (final CSVRecord record : csvRecords)
+
 				{
-					LOG.info("CSV record LOOP");
+					LOG.info("inside for loop")
+
 					csvValuesMap = record.toMap();
 					erpMaterialId = csvValuesMap.get(EnergizerCoreConstants.ERPMATERIAL_ID).toString().trim();
 					b2bUnitId = csvValuesMap.get(EnergizerCoreConstants.ENERGIZER_ACCOUNT_ID).toString().trim();
@@ -444,7 +429,6 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 					{
 						mapKey = erpMaterialId.toString().trim().concat("_").concat(b2bUnitId.toString().trim());
 					}
-					LOG.info("CSV record LOOP(line447)");
 					/* for (final EnergizerCMIRModel cmirModel : cmirList) */
 					if (null != cmirMapFromDB && null != cmirMapFromDB.get(mapKey)
 							&& cmirMapFromDB.get(mapKey).getErpMaterialId().equals(erpMaterialId)
@@ -470,9 +454,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 						 * cmirModel.getCustomerMaterialId());
 						 */
 						/* } */
-						LOG.info("CSV record LOOP(line473)");
 					}
-					LOG.info("CSV record LOOP(line474)");
 					if (addedToPreparedSet != 0 && addedToPreparedSet % 3000 == 0)
 					{
 						LOG.info("Added " + addedToPreparedSet + " cmirModels to the preparedSet so far !!");
@@ -502,10 +484,11 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 		return;
 	}
 
-	public int filesCount(BlobContainerClient container, String prefix) throws BlobStorageException {
+	public int filesCount( BlobContainerClient blobContainerClient, String blobDirectoryPath) throws BlobStorageException {
+
 		int counter = 0;
-		for (BlobItem blobItem : container.listBlobsByHierarchy(prefix)) {
-			if (!blobItem.isPrefix()) {
+		for (final BlobItem blobItem : blobContainerClient.listBlobs(null, null)) {
+			if (blobItem.getName().startsWith(blobDirectoryPath)) {
 				counter++;
 			}
 		}
