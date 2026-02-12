@@ -96,7 +96,7 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 		try
 		{
 			// Get container and iterate blob list
-			BlobContainerClient container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			BlobContainerClient container = energizerWindowsAzureBlobStorageStrategy.getBlobContainerClient();
 			String prefix = cronjob.getPath() + AbstractEnergizerCSVProcessor.fileSeperator + type +
 					AbstractEnergizerCSVProcessor.fileSeperator + AbstractEnergizerCSVProcessor.toProcess +
 					AbstractEnergizerCSVProcessor.fileSeperator;
@@ -184,7 +184,8 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					{
 						if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
 						{
-							energizerCSVProcessor.Blobcleanup(fileName, cronjob, true, fullFilePath, fullFilePath, container);
+							BlobClient sourceBlob = container.getBlobClient(fullFilePath);
+							energizerCSVProcessor.Blobcleanup(fileName, cronjob, true, fullFilePath, sourceBlob, container);
 						}
 						energizerCSVProcessor.flush();
 					}
@@ -192,7 +193,8 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					{
 						if (!(energizerCSVProcessor instanceof EnergizerProduct2CategoryRelationCSVProcessor))
 						{
-							energizerCSVProcessor.Blobcleanup(fileName, cronjob, false, fullFilePath, fullFilePath, container);
+							BlobClient sourceBlob = container.getBlobClient(fullFilePath);
+							energizerCSVProcessor.Blobcleanup(fileName, cronjob, false, fullFilePath, sourceBlob, container);
 						}
 						energizerCSVProcessor.flush();
 					}
