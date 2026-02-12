@@ -419,7 +419,7 @@ public class EnergizerCMIRMonitorJob extends AbstractJobPerformable<EnergizerCro
 				for (final CSVRecord record : csvRecords)
 
 				{
-					LOG.info("inside for loop")
+					LOG.info("inside for loop");
 
 					csvValuesMap = record.toMap();
 					erpMaterialId = csvValuesMap.get(EnergizerCoreConstants.ERPMATERIAL_ID).toString().trim();
