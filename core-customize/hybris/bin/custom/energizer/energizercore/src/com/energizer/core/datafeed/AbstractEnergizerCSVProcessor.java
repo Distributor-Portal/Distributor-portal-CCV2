@@ -257,20 +257,19 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 
 		try
 		{
-			CloudBlockBlob blob2;
-
-			blob2 = energizerWindowsAzureBlobStorageStrategy.getBlobContainer().getBlockBlobReference(blobUri);
-			if (StringUtils.isNotEmpty(blob2.downloadText()))
+			BlobClient blobClient = energizerWindowsAzureBlobStorageStrategy.getBlobContainerClient().getBlobClient(blobUri);
+			String blobText = blobClient.downloadContent().toString();
+			if (StringUtils.isNotEmpty(blobText))
 			{
 				LOG.info(" enter in readerBlob");
 
-				final Reader readerBlob = new StringReader(blob2.downloadText());
+				final Reader readerBlob = new StringReader(blobText);
 
 				blobRecordS = csvFormat.withHeader().parse(readerBlob);
 			}
 
 		}
-		catch (URISyntaxException | StorageException | IOException e)
+		catch (BlobStorageException | IOException e)
 		{
 			LOG.info(" readerBlob error");
 			LOG.error(e.getMessage());
