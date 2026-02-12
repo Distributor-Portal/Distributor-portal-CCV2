@@ -114,7 +114,7 @@ public class EnergizerCustomerUsersListJob extends AbstractJobPerformable<CronJo
 		// Upload to Azure Blob Storage using SDK v12
 		try
 		{
-			BlobContainerClient container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			BlobContainerClient container = energizerWindowsAzureBlobStorageStrategy.getBlobContainerClient();
 			BlobClient blobClient = container.getBlobClient(path + "/" + FILENAME);
 			blobClient.uploadFromFile(FILENAME, true);
 		}

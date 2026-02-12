@@ -111,7 +111,7 @@ public class DefaultEnergizerInvoiceService implements EnergizerInvoiceService
 		InputStream invoiceFile = null;
 		if (StringUtils.isNotEmpty(erpOrderNo))
 		{
-			final BlobContainerClient container = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			final BlobContainerClient container = energizerWindowsAzureBlobStorageStrategy.getBlobContainerClient();
 			// Use prefix to list blobs in the "directory"
 			String prefix = directoryPath.endsWith("/") ? directoryPath : directoryPath + "/";
 			try
