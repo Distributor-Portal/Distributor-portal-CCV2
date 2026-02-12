@@ -126,7 +126,7 @@ public class EnergizerMediaCSVProcessor extends AbstractJobPerformable<Energizer
 			final CatalogVersionModel catalogVersion = getCatalogVersion(cronjob);
 			Map<String, String> csvValuesMap = null;
 
-			BlobContainerClient blobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainer();
+			BlobContainerClient blobContainer = energizerWindowsAzureBlobStorageStrategy.getBlobContainerClient();
 
 			// List blobs in the thumbnail path directory
 			String prefix = thumbnailPath.endsWith(fileSeperator) ? thumbnailPath : thumbnailPath + fileSeperator;
