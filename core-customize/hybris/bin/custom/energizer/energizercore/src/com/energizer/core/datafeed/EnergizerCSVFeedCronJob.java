@@ -135,8 +135,11 @@ public class EnergizerCSVFeedCronJob extends AbstractJobPerformable<EnergizerCro
 					LOG.info("Before processing this file : " + fileProcessingStartTime + " milliseconds !!");
 
 					sessionService.setAttribute("fileName", fileName);
+					energizerCSVProcessor.setFileName(fileName);
 
 					errors = energizerCSVProcessor.process(csvRecords, cronjob.getCatalogName(), cronjob);
+					// Clear session after processing
+                     sessionService.removeAttribute("fileName");
 					exceptionOccured = (errors.size() != 0);
 
 					energizerCSVProcessor.setMasterDataStream(new DataInputStream(new ByteArrayInputStream(blobText.getBytes())));
