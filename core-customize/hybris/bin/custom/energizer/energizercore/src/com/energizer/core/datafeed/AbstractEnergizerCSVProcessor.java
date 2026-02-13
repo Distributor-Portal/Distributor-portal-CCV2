@@ -72,7 +72,7 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 	private String enviorment;
 	private static String CATALOG_NAME = "";
 	private static String VERSION = "";
-	private static String fileName = "";
+	private String fileName = "";
 	private FileReader reader;
 	private long totalRecords = 0;
 	private long recordSucceeded = 0;
@@ -682,9 +682,9 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 	 * @param fileName
 	 *           the fileName to set
 	 */
-	public static void setFileName(final String fileName)
+	public void setFileName(final String fileName)
 	{
-		AbstractEnergizerCSVProcessor.fileName = fileName;
+		this.fileName = fileName;
 	}
 
 	/**
