@@ -483,7 +483,7 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 		catch (final Exception e)
 		{
 			LOG.error("Error in adding or updating  Energizer Product/CMIR Model :  " + e.getMessage() + ", at line number :: "
-					+ e.getLineNumber());
+					+ e.getStackTrace()[0].getLineNumber());
 			//e.printStackTrace();
 		}
 		getTechnicalFeedErrors().addAll(getBusinessFeedErrors());
