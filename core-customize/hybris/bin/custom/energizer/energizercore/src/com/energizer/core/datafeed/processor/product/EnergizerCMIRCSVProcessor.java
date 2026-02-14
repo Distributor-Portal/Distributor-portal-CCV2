@@ -405,7 +405,7 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 									currency = energizerB2BUnitModel.getCurrencyPreference().getIsocode();
 								}
 								if (!(this.getCronjob().getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL))
-										&& priceRowModel != null && priceRowModel.getB2bUnit().getCurrencyPreference().getIsocode() != null
+										&& priceRowModel != null && priceRowModel.getB2bUnit() != null && priceRowModel.getB2bUnit().getCurrencyPreference() != null && priceRowModel.getB2bUnit().getCurrencyPreference().getIsocode() != null
 										&& !priceRowModel.getB2bUnit().getCurrencyPreference().getIsocode().equals(currency))
 								{
 									LOG.error("Energizer price row currency preference  "
