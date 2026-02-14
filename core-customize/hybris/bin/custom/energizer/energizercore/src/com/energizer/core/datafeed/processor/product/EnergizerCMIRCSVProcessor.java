@@ -344,7 +344,7 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 									recordsFailedFromSet += 1;
 									LOG.info("Error occured while saving Product CMIR model for ERP_MATERIAL_ID : "
 											+ cmirData.getErpMaterialID() + ", ENERGIZER_ACCOUNT_ID : " + cmirData.getEnergizerAccountID()
-											+ "cause : " + e.getMessage() + ", at line number :: " + e);
+											+ "cause : " + e.getMessage() + ", at line number :: " + e.getStackTrace()[0].getLineNumber());
 
 									LOG.error(e.getMessage());
 									continue;
@@ -405,7 +405,7 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 									currency = energizerB2BUnitModel.getCurrencyPreference().getIsocode();
 								}
 								if (!(this.getCronjob().getRegion().equalsIgnoreCase(EnergizerCoreConstants.WESELL))
-										&& priceRowModel != null && priceRowModel.getB2bUnit() != null && priceRowModel.getB2bUnit().getCurrencyPreference() != null && priceRowModel.getB2bUnit().getCurrencyPreference().getIsocode() != null
+										&& priceRowModel != null && priceRowModel.getB2bUnit().getCurrencyPreference().getIsocode() != null
 										&& !priceRowModel.getB2bUnit().getCurrencyPreference().getIsocode().equals(currency))
 								{
 									LOG.error("Energizer price row currency preference  "
@@ -429,7 +429,7 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 							}
 							catch (final Exception e)
 							{
-								LOG.info("Error while processing CMIR at line number :: " + e
+								LOG.info("Error while processing CMIR at line number :: " + e.getStackTrace()[0].getLineNumber()
 										+ " , cause:: " + e.getMessage() + ", for erpMaterialID : " + cmirData.getErpMaterialID()
 										+ " , energizerAccountID : " + cmirData.getEnergizerAccountID());
 								continue;
@@ -483,7 +483,7 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 		catch (final Exception e)
 		{
 			LOG.error("Error in adding or updating  Energizer Product/CMIR Model :  " + e.getMessage() + ", at line number :: "
-					+ e);
+					+ e.getLineNumber());
 			//e.printStackTrace();
 		}
 		getTechnicalFeedErrors().addAll(getBusinessFeedErrors());
