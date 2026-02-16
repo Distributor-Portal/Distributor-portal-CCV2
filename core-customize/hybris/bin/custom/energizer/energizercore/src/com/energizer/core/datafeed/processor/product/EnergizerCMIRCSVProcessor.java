@@ -584,20 +584,18 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 		energizerCMIRModel.setCmirOwner(energizerCMIRModel.getB2bUnit().getSalesArea());
 	}
 
-	private boolean isENRPriceRowModelSame(final EnergizerPriceRowModel enrPriceRow, final CMIRCSVData cmirData,
-			final EnergizerProductModel energizerProduct)
-	{
-		if (enrPriceRow != null && enrPriceRow.getB2bUnit().getUid().equals(cmirData.getEnergizerAccountID()))
-		{
-			if (!enrPriceRow.getIsActive())
-			{
-				return false;
-			}
-			LOG.debug(" isENRPriceRowModelSame()... SAME PRICE ROW RECORD");
-			return true;
-		}
-		return false;
-	}
+private boolean isENRPriceRowModelSame(final EnergizerPriceRowModel enrPriceRow, final CMIRCSVData cmirData,
+        final EnergizerProductModel energizerProduct)
+{
+    if (enrPriceRow != null && enrPriceRow.getB2bUnit() != null 
+        && enrPriceRow.getB2bUnit().getUid().equals(cmirData.getEnergizerAccountID()))
+    {        if (!enrPriceRow.getIsActive())
+        {            return false;
+        }        LOG.debug(" isENRPriceRowModelSame()... SAME PRICE ROW RECORD");
+        return true;
+    }
+    return false;
+}
 
 	/**
 	 * @param record
