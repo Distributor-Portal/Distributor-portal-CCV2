@@ -1,0 +1,164 @@
+# ImpEx for Importing CMS Content
+
+# Macros / Replacement Parameter definitions
+$contentCatalog=energizerContentCatalog
+$productCatalog=energizerProductCatalog
+$storeName=energizer
+
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default=Staged])[unique=true,default=$productCatalog:Staged]
+$siteResource=jar:com.energizer.initialdata.setup.InitialDataSystemSetup&/energizerinitialdata/import/contentCatalogs/$contentCatalog
+
+
+$picture=media(code, $contentCV)
+$lang=en
+
+
+# CMS Site Settings
+UPDATE CMSSite;uid[unique=true];defaultPreviewCategory(code, $productCV);defaultPreviewProduct(code, $productCV)
+
+
+
+# Site Logo
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText
+;;/images/theme/energizer-logo.png;energizer-logo.png;$siteResource/images/theme/energizer-logo.png;image/png;Energizer
+
+
+# Site Logo Component
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink;$picture[lang=$lang]
+;;SiteLogoComponent;Site Logo Component;SiteLogoComponent;/;/images/theme/energizer-logo.png
+
+
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&componentRef;target(code)[default='sameWindow']
+;;HomepageNavLink;Home Page Nav Link;/;HomepageNavLink
+;;Flash_Light_Batteries_Link;Flash Light Batteries Link;c/SEG1001;Flash_Light_Batteries_Link
+;;Lantern_Batteries_Link;Lantern BatteriesLink;c/SEG1002;
+;;Inverter_Batteries_Link;Inverter Batteries Link;c/SEG1003;Inverter_Batteries_Link
+;;Speciality_Batteries_Link;Speciality Batteries Link;c/SEG1004;Speciality_Batteries_Link
+
+# CMS Navigation Nodes #
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;children(uid,$contentCV)[mode=append]
+;root;;root;;
+
+
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);links(&componentRef);&nodeRef
+;SiteRootNode;;SiteRootNode;root;HomepageNavLink;SiteRootNode
+;Flash_Light_Batteries_Nav_Node;;Flash Light Battery;SiteRootNode;;Flash_Light_Batteries_Nav_Node
+;Lantern_Batteries_Nav_Node;;LanternBattery;SiteRootNode;;Lantern_Batteries_Nav_Node
+;Inverter_Batteries_Nav_Node;;Inverted Battery;SiteRootNode;;Inverter_Batteries_Nav_Node
+;Speciality_Batteries_Nav_Node;;Speciality Battery;SiteRootNode;;Speciality_Batteries_Nav_Node
+
+
+
+INSERT_UPDATE NavigationBarComponent;$contentCV[unique=true];uid[unique=true];name;wrapAfter;link(uid, $contentCV);styleClass;navigationNode(&nodeRef);dropDownLayout(code)[default=AUTO];&componentRef
+;;Flash_Light_Batteries_Bar_Component;Flash Light Bar Component;10;Flash_Light_Batteries_Link;;;;Flash_Light_Batteries_Bar_Component
+;;Lantern_Batteries_Bar_Component;Lantern Bar Component;10;Lantern_Batteries_Link;;;;Lantern_Batteries_Bar_Component
+;;Inverter_Batteries_Bar_Component;Inverted Drills Bar Component;10;Inverter_Batteries_Link;;;;Inverter_Batteries_Bar_Component
+;;Speciality_Batteries_Bar_Component;Speciality Drills Bar Component;10;Speciality_Batteries_Link;;;;Speciality_Batteries_Bar_Component
+
+
+
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow']
+;;UserLoginLink;User Login Link;/login;UserLoginLink;UserLoginLink
+;;MyAccountLink;My Account Link;/my-account;MyAccountLink;MyAccountLink
+;;MyCompanyLink;My Company Link;/my-company/organization-management;MyCompanyLink;MyCompanyLink
+;;LogoutLink;Logout Link;/logout;LogoutLink;LogoutLink
+;;StoreFinderLink;Store Finder Link;/store-finder;StoreFinderLink;StoreFinderLink
+;;QuickOrderPageLink;Quick Order;/my-account/quickorder;QuickOrderPageLink;QuickOrderPageLink
+;;ExcelOrderPageLink;Excel Order;/my-account/excelfileupload;ExcelOrderPageLink;ExcelOrderPageLink
+
+INSERT_UPDATE CMSUserGroupRestriction;$contentCV[unique=true];uid[unique=true];name;userGroups(uid);includeSubgroups;components(&componentRef)
+;;CustomerGroupRestriction;Customer Group Restriction;b2bapprovergroup,b2bcustomergroup,b2badmingroup;true;MyAccountLink
+;;AdminGroupRestriction;Admin Group Restriction;b2badmingroup;true;MyCompanyLink
+;;ViewerGroupRestriction;Viewer Group Restriction;b2bviewergroup;true;MyAccountLink
+
+# CMS User Restrictions
+INSERT_UPDATE CMSUserRestriction;$contentCV[unique=true];uid[unique=true];name;users(uid);components(&componentRef);&componentRef
+;;AnonymousUserRestriction;Anonymous User Restriction;anonymous;UserLoginLink;AnonymousUserRestriction
+
+INSERT_UPDATE CMSInverseRestriction;$contentCV[unique=true];uid[unique=true];name;originalRestriction(&componentRef);components(&componentRef)
+;;LoggedInRestriction;Logged In Restriction;AnonymousUserRestriction;LogoutLink
+
+
+# CMS User Group Restrictions
+UPDATE CMSUserGroupRestriction;$contentCV[unique=true];uid[unique=true];components(uid,$contentCV)[mode=append]
+;;CustomerGroupRestriction;QuickOrderPageLink,ExcelOrderPageLink
+
+# CMS Navigation Nodes - Header
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);links(&linkRef);&nodeRef
+;HeaderLinksNode;;Header Links;SiteRootNode;UserLoginLink,MyAccountLink,MyCompanyLink,QuickOrderPageLink,ExcelOrderPageLink,LogoutLink,StoreFinderLink;HeaderLinksNode
+
+# Header Navigation Component - Header
+INSERT_UPDATE HeaderNavigationComponent;$contentCV[unique=true];uid[unique=true];name;wrapAfter;link(uid, $contentCV);styleClass;navigationNode(&nodeRef);dropDownLayout(code)[default=AUTO];&componentRef
+;;DefaultHeaderNavigationComponent;Header Navigation Component;0;HomepageNavLink;;HeaderLinksNode;;DefaultHeaderNavigationComponent
+
+
+
+# CMS Mini Cart Component
+INSERT_UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;totalDisplay(code);shownProductCount;lightboxBannerComponent(&componentRef)
+;;MiniCart;Mini Cart;MiniCart;TOTAL;3;
+
+
+# CMS SearchBox Components
+INSERT_UPDATE SearchBoxComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;SearchBox;Search Box;SearchBox
+
+# CMS Language and Currency Component
+INSERT_UPDATE LanguageCurrencyComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;LangCurrencyComponent;Language and Currency Component;LangCurrencyComponent
+
+
+
+# Site Logo
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText
+;;/images/banners/homepage/Powertools_468x418_Rotating_Image_EN_02.jpg;Powertools_468x418_Rotating_Image_EN_02.jpg;$siteResource/images/banners/homepage/Powertools_468x418_Rotating_Image_EN_02.jpg;image/jpg;Energizer
+
+
+# Site Logo Component
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink;$picture[lang=$lang]
+;;HomePageBannerComponent;Homepage banner component;HomePageBannerComponent;;/images/banners/homepage/Powertools_468x418_Rotating_Image_EN_02.jpg
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;Section1Slot-EnergizerHomePageBanner;HomePageBannerComponent
+# ContentSlotForPage 
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true];;;
+;;Section1-EnergizerHomePageBanner;Section1;;Section1Slot-EnergizerHomePageBanner;;;
+
+
+
+# Content Slots
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;SiteLogoSlot;SiteLogoComponent
+;;NavigationBarSlot;Flash_Light_Batteries_Bar_Component,Lantern_Batteries_Bar_Component,Inverter_Batteries_Bar_Component,Speciality_Batteries_Bar_Component
+;;HeaderLinksSlot;DefaultHeaderNavigationComponent
+;;SearchBoxSlot;SearchBox,LangCurrencyComponent
+;;MiniCartSlot;MiniCart
+
+#add to cart component to PDP
+# CMS Action Restrictions
+INSERT_UPDATE CMSActionRestriction;$contentCV[unique=true];uid[unique=true];name;
+;;ActionRestriction;A CMSAction restriction;
+
+# CMS ProductAddToCart Components
+INSERT_UPDATE ProductAddToCartComponent;$contentCV[unique=true];uid[unique=true];name;actions(&actionRef);&componentRef
+;;AddToCart;Product Add To Cart;AddToCartAction;AddToCart
+
+# CMS AddToCart Action
+INSERT_UPDATE AddToCartAction;$contentCV[unique=true];uid[unique=true];url;name;restrictions(uid,$contentCV);&actionRef
+;;AddToCartAction;/cart/add;Product Add To Cart Action;ActionRestriction;AddToCartAction
+
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(uid,$contentCV)
+;;AddToCartSlot;AddToCart
+
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ProductDetailsPageTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;AddToCart-ProductDetails;AddToCart;;AddToCartSlot;true
+
+
+
+# CMS Mini Cart Component
+INSERT_UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;totalDisplay(code);shownProductCount;lightboxBannerComponent(&componentRef);restrictions(uid,$contentCV)
+;;MiniCart;Mini Cart;MiniCart;TOTAL;3;;CustomerGroupRestriction

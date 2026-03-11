@@ -1,0 +1,24 @@
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
+
+<c:url value="${urlLink}" var="encodedUrl" />
+
+<div class="simple_disp-img">
+	<c:choose>
+		<c:when test="${empty encodedUrl || encodedUrl eq '#'}">
+			<img title="${media.altText}" alt="${media.altText}" src="${media.url}">
+		</c:when>
+		<c:otherwise>
+		<c:if test="${urlLink eq '/'}">
+			<c:set var="encodedUrl" value="/"/>
+			<a href="${encodedUrl}"><img title="${media.altText}" alt="${media.altText}" src="${media.url}"></a>
+		</c:if>
+		<c:if test="${urlLink ne '/'}">
+			<a href="${encodedUrl}"><img title="${media.altText}" alt="${media.altText}" src="${media.url}"></a>
+		</c:if>
+			
+		</c:otherwise>
+	</c:choose>
+</div>

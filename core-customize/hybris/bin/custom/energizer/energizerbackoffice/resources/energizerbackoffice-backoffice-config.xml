@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2018 SAP SE or an SAP affiliate company.  All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<config xmlns="http://www.hybris.com/cockpit/config">
+
+ 
+
+    <!-- energizerbackoffice UI configuration should be provided here -->
+
+ 
+
+    <!--<context component="component-code" module="energizerbackoffice">-->
+        <!--Please check documentation for code snippets for specific components-->
+    <!--</context>-->
+    
+	<context component="explorer-tree" merge-by="module" parent="auto">
+	  <n:explorer-tree xmlns:n="http://www.hybris.com/cockpitng/config/explorertree">
+	        <n:navigation-node id="EdgewellGroup" >
+	            <n:type-node id="EnergizerB2BUnit" code="EnergizerB2BUnit" />
+	            <n:type-node id="EnergizerProduct" code="EnergizerProduct" />
+	            <n:type-node id="EnergizerCMIR" code="EnergizerCMIR" />
+	            <n:type-node id="EnergizerProductConversionFactor" code="EnergizerProductConversionFactor" />
+	            <n:type-node id="EnergizerSalesAreaUOM" code="EnergizerSalesAreaUOM" />
+	            <n:type-node id="EnergizerB2BUnitLeadTime" code="EnergizerB2BUnitLeadTime" />
+	            <n:type-node id="EnergizerB2BCustomer" code="EnergizerB2BCustomer" />
+	            <n:type-node id="EnergizerB2BEmployee" code="EnergizerB2BEmployee" />
+	            <n:type-node id="EnergizerPriceRow" code="EnergizerPriceRow" />
+	            <n:type-node id="MetricUnit" code="MetricUnit" />
+	            <n:type-node id="EnergizerShippingPoint" code="EnergizerShippingPoint" />
+	        </n:navigation-node>
+	    </n:explorer-tree>
+	</context>
+	<!-- Added for role based view -->
+	<context component="explorer-tree" principal="b2bbusinessbackofficerole" merge-mode="none" >
+	  <n:explorer-tree xmlns:n="http://www.hybris.com/cockpitng/config/explorertree">
+	        <n:navigation-node id="hmc_treenode_catalog">
+				<n:type-node code="Catalog" id="hmc_typenode_catalog"/>
+				<n:type-node code="Category" id="hmc_typenode_category"/>
+				<n:type-node code="Unit" id="hmc_typenode_unit"/>
+			</n:navigation-node>
+			<n:navigation-node id="hmc_treenode_user">
+				<n:type-node code="UserGroup" id="hmc_typenode_usergroup"/>
+				<n:type-node code="Employee" id="hmc_typenode_employee"/>
+				<n:type-node code="Customer" id="hmc_typenode_customer"/>
+				<n:type-node code="Address" id="hmc_typenode_address"/>
+			</n:navigation-node>
+			<n:navigation-node id="hmc_treenode_order">
+				<n:type-node code="Order" id="hmc_typenode_order"/>
+				<n:type-node code="OrderEntry" id="hmc_typenode_orderentry"/>
+			</n:navigation-node>
+			<n:navigation-node id="hmc_treenode_pricesettings">
+				<n:navigation-node id="hmc_treenode_prices">
+					<n:type-node code="ProductPriceGroup" id="hmc_typenode_productpricegroup"/>
+					<n:type-node code="UserPriceGroup" id="hmc_typenode_userpricegroup"/>
+					<n:type-node code="PriceRow" id="hmc_typenode_pricerow"/>
+				</n:navigation-node>
+			</n:navigation-node>
+			<n:navigation-node id="hmc_treenode_marketing">
+				<n:navigation-node id="hmc_treenode_orderstatistics">
+					<n:type-node code="Cart" id="hmc_typenode_cart"/>
+					<n:type-node code="CartEntry" id="hmc_typenode_cartentry"/>
+				</n:navigation-node>
+			</n:navigation-node>
+			<n:navigation-node id="hmc.b2bapprovalprocessgroup">
+                <n:type-node code="B2BPermission" id="B2BPermission"/>
+            </n:navigation-node>
+	        <n:navigation-node id="EdgewellGroup">
+	            <n:type-node id="EnergizerB2BUnit" code="EnergizerB2BUnit" />
+	            <n:type-node id="EnergizerProduct" code="EnergizerProduct" />
+	            <n:type-node id="EnergizerCMIR" code="EnergizerCMIR" />
+	            <n:type-node id="EnergizerProductConversionFactor" code="EnergizerProductConversionFactor" />
+	            <n:type-node id="EnergizerSalesAreaUOM" code="EnergizerSalesAreaUOM" />
+	            <n:type-node id="EnergizerB2BUnitLeadTime" code="EnergizerB2BUnitLeadTime" />
+	            <n:type-node id="EnergizerB2BCustomer" code="EnergizerB2BCustomer" />
+	            <n:type-node id="EnergizerB2BEmployee" code="EnergizerB2BEmployee" />
+	            <n:type-node id="EnergizerPriceRow" code="EnergizerPriceRow" />
+	            <n:type-node id="MetricUnit" code="MetricUnit" />
+	            <n:type-node id="EnergizerShippingPoint" code="EnergizerShippingPoint" />
+	            <n:type-node id="EnergizerCronJob" code="EnergizerCronJob" />
+	        </n:navigation-node>
+	        <n:navigation-node id="hmc.group.basecommerce">
+                <n:type-node code="BaseStore" id="BaseStore"/>
+                <n:type-node code="PointOfService" id="PointOfService"/>                
+            </n:navigation-node>
+	        <n:navigation-node id="hmc.b2bcommercegroup">
+                <n:type-node code="B2BCostCenter" id="B2BCostCenter"/>
+                <n:type-node code="B2BBudget" id="B2BBudget"/>
+            </n:navigation-node>
+	    </n:explorer-tree>
+	</context>
+     <!-- Added for role based view -->
+	<!-- Added for EnergizerB2BUnit - START -->
+	
+	<context merge-by="type" parent="B2BUnit" type="EnergizerB2BUnit" component="simple-search">
+        <simple-search:simple-search xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch">
+            <simple-search:field xmlns="http://www.hybris.com/cockpitng/config/simplesearch" name="uid"/>
+        </simple-search:simple-search>
+    </context>
+    
+	<context merge-by="type" parent="B2BUnit" type="EnergizerB2BUnit" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="salesOrganisation" selected="true" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="enableContainerOptimization" selected="false" operator="equals" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="distributionChannel" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="division" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="region" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="freightType" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="customerAccountName" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="orderBlock" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="currencyPreference" selected="true" operator="equals" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="minimumOrderValue" selected="false" operator="startsWith" />           	
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="maxUserLimit" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="salesPersonEmailId" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="contactNumber" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="erpOrderingType" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="palletType" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="salesArea" selected="true" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="energizerCreditLimit" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="customerBalance" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="creditAvailable" selected="false" operator="startsWith" />
+            	
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+    
+	<context merge-by="type" parent="B2BUnit" type="EnergizerB2BUnit" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="salesOrganisation"/>
+            <list-view:column qualifier="currencyPreference"/>
+            <list-view:column qualifier="salesArea"/>
+        </list-view:list-view>
+    </context>
+	<!-- Added for EnergizerB2BUnit - END -->
+	
+	<!-- Added for EnergizerProduct - START -->
+	<context merge-by="type" parent="Product" type="EnergizerProduct" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="obsolete" selected="true" operator="equals" />           	
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="segmentCode" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="segmentName" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="familyCode" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="familyName" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="groupCode" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="groupName" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="subGroupCode" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="subGroupName" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="searchAttribute" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="sapCategoryConcatValue" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="imageReferenceId" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="isPBG" selected="true" operator="equals" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="obsoleteStatusMap" selected="false" operator="startsWith" />
+             	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="nonObsoleteSalesOrgsString" selected="true" operator="startsWith" />
+            	
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+    
+	<context merge-by="type" parent="Product" type="EnergizerProduct" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="obsolete"/>
+            <list-view:column qualifier="isPBG"/>
+            <list-view:column qualifier="nonObsoleteSalesOrgsString"/>
+        </list-view:list-view>
+    </context>
+	<!-- Added for EnergizerProduct - END -->
+
+	<!-- Added for EnergizerCMIR - START -->
+	<context merge-by="type" parent="GenericItem" type="EnergizerCMIR" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="b2bUnit" selected="true" operator="equals" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="erpMaterialId" selected="true" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="customerMaterialId" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="customerMaterialDescription" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="shippingPoint" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="uom" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="orderingUnit" selected="false" operator="startsWith" />            	
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="isActive" selected="true" operator="equals" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="siteId" selected="true" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="isWeSellProduct" selected="true" operator="equals" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="custPriceUOM" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="cmirOwner" selected="false" operator="startsWith" />
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+    
+	<context merge-by="type" parent="GenericItem" type="EnergizerCMIR" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="erpMaterialId"/>
+            <list-view:column qualifier="b2bUnit"/>
+            <list-view:column qualifier="isActive"/>
+            <list-view:column qualifier="siteId"/>
+            <list-view:column qualifier="isWeSellProduct"/>
+        </list-view:list-view>
+    </context>
+	<!-- Added for EnergizerCMIR - END -->
+	
+	<!-- Added for EnergizerProductConversionFactor - START -->
+	<context merge-by="type" parent="GenericItem" type="EnergizerProductConversionFactor" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="packageCode" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="erpMaterialId" selected="true" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="alternateUOM" selected="true" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="conversionMultiplier" selected="true" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="packageVolume" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="packageWeight" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="packageLength" selected="false" operator="startsWith" />            	
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="packageWidth" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="packageHeight" selected="false" operator="startsWith" />
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+    
+	<context merge-by="type" parent="GenericItem" type="EnergizerProductConversionFactor" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="erpMaterialId"/>
+            <list-view:column qualifier="alternateUOM"/>
+            <list-view:column qualifier="conversionMultiplier"/>
+        </list-view:list-view>
+    </context>
+	<!-- Added for EnergizerProductConversionFactor - END -->
+	
+	<!-- Added for EnergizerSalesAreaUOM - START -->
+	<context merge-by="type" parent="GenericItem" type="EnergizerSalesAreaUOM" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="familyID" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="salesOrganisation" selected="true" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="distributionChannel" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="division" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="customerAccountId" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="measureOfQuantity" selected="false" operator="startsWith" />
+            	<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="unitOfMeasure" selected="true" operator="startsWith" /> 
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+    
+	<context merge-by="type" parent="GenericItem" type="EnergizerSalesAreaUOM" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="salesOrganisation"/>
+            <list-view:column qualifier="unitOfMeasure"/>
+        </list-view:list-view>
+    </context>
+	<!-- Added for EnergizerSalesAreaUOM - END -->
+	
+	<!-- Added for B2BUnitLeadTime - START -->
+    <!-- <context merge-by="type" parent="GenericItem" type="EnergizerB2BUnitLeadTime" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="b2bUnitId" selected="true" operator="equals" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="soldToAddressId" selected="true" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="shippingPointId" selected="true" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="leadTime" selected="true" operator="startsWith" />
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context> -->
+   
+   <context parent="GenericItem" type="EnergizerB2BUnitLeadTime" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch" connection-operator="AND">
+            <advanced-search:field-list disable-attributes-comparator="false" disable-subtypes-checkbox="false">
+                <advanced-search:field name="b2bUnitId" selected="true" operator="equals" />
+                <advanced-search:field name="soldToAddressId" selected="true" operator="startsWith" />
+                <advanced-search:field name="shippingPointId" selected="true" operator="startsWith" />
+                <advanced-search:field name="leadTime" selected="true" operator="startsWith" />
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+   
+    <context merge-by="type" parent="GenericItem" type="EnergizerB2BUnitLeadTime" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+             <list-view:column qualifier="b2bUnitId"/>
+             <list-view:column qualifier="soldToAddressId"/>
+             <list-view:column qualifier="shippingPointId"/>
+             <list-view:column qualifier="leadTime"/>
+        </list-view:list-view>
+    </context>
+    <!-- Added for B2BUnitLeadTime - END -->
+    
+     <!-- Added for B2BEmployee - START -->
+    <context merge-by="type" parent="Employee" type="EnergizerB2BEmployee" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="isSalesRep" selected="true" operator="equals" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="active" selected="true" operator="equals" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="salesRepCode" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="email" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="contactNumber" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="priority" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="workingForList" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="registrationEmailFlag" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="previousPasswords" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="passwordModifiedTime" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="isPasswordQuestionSet" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="Title" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="firstName" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="lastName" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="salesOrganisation" selected="true" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="currency" selected="true" operator="startsWith" />
+               
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+   
+    <context merge-by="type" parent="Employee" type="EnergizerB2BEmployee" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+             <list-view:column qualifier="isSalesRep"/>
+             <list-view:column qualifier="active"/>
+             <list-view:column qualifier="salesOrganisation"/>
+            <list-view:column qualifier="currency"/>
+        </list-view:list-view>
+    </context>
+    <!-- Added for B2BEmployee - END -->
+    
+   <!-- Added for MetricUnit - START -->
+    <context merge-by="type" parent="GenericItem" type="MetricUnit" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="measurement" selected="true" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="measuringUnits" selected="true" operator="startsWith" />
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+   
+    <context merge-by="type" parent="GenericItem" type="MetricUnit" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="measurement"/>
+            <list-view:column qualifier="measuringUnits"/>
+        </list-view:list-view>
+    </context>
+    <!-- Added for MetricUnit - END -->
+    
+    <!-- Added for ShippingPoint - START -->
+    <context merge-by="type" parent="GenericItem" type="EnergizerShippingPoint" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="shippingPointId" selected="true" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="shippingPointName" selected="true" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="shippingPointAddress" selected="false" operator="equals" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="shippingPointLocation" selected="true" operator="startsWith" />
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+   
+    <context merge-by="type" parent="GenericItem" type="EnergizerShippingPoint" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+             <list-view:column qualifier="shippingPointId"/>
+             <list-view:column qualifier="shippingPointName"/>
+             <list-view:column qualifier="shippingPointAddress"/>
+             <list-view:column qualifier="shippingPointLocation"/>
+        </list-view:list-view>
+    </context>
+    <!-- Added for ShippingPoint - END -->
+    
+    <!-- Added for PriceRow - START -->
+    <context merge-by="type" parent="PriceRow" type="EnergizerPriceRow" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="b2bUnit" selected="true" operator="equals" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="isActive" selected="true" operator="equals" />    
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+   
+    <context merge-by="type" parent="PriceRow" type="EnergizerPriceRow" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="b2bUnit"/>
+            <list-view:column qualifier="isActive"/>  
+        </list-view:list-view>
+    </context>
+    <!-- Added for PriceRow - END -->
+	
+	
+<!-- Added for EnergizerCategory - START -->
+ <context merge-by="type" parent="Category" type="EnergizerCategory" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+            <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="categoryType" selected="true" operator="startsWith" />
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+
+
+    <!-- Added for EnergizerCategory - END -->
+    
+     
+     <!-- Added for AbstractOrder - START -->
+     <context merge-by="type" parent="GenericItem" type="AbstractOrder" component="advanced-search">
+         <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="b2bUnit" selected="true" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="orderType" selected="false" operator="equals"/>                        
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="shippingPointId" selected="false" operator="startsWith"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="requestedDeliveryDate" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="orderVolume" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="orderWeight" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="containerVolumeUtilization" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="containerWeightUtilization" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="leadTime" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="containerHeight" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="containerPackingType" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="totalPalletCount" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="virtualPalletCount" selected="false" operator="equals"/>                
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="partialPalletCount" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="palStackData" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="orderComments" selected="false" operator="startsWith"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="agreeEdgewellUnitPriceForAllProducts" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="deliveryNoteFiles" selected="false" operator="startsWith"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="cartCode" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="salesRepUid" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="salesRepEmailID" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="salesRepName" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="placedBySalesRep" selected="true" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="selectedEmpUid" selected="false" operator="startsWith"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="selectedEmpEmailID" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="selectedEmpName" selected="false" operator="startsWith"/>
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+     </context>
+    <context merge-by="type" parent="GenericItem" type="AbstractOrder" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="b2bUnit"/>
+        </list-view:list-view>
+    </context>
+    <!-- Added for AbstractOrder - END -->
+    
+    <!-- Added for Order - START -->
+    
+    <context merge-by="type" parent="AbstractOrder" type="Order" component="advanced-search">
+       <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="erpOrderNumber" selected="true" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="invoiceNumber" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="erpOrderCreator" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="shipmentTrackingURL" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="adjustedTotalPrice" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="adjustedShippingCharge" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="adjustedTaxCharges" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="containerId" selected="false" operator="equals"/>                
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="sealNumber" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="vesselNumber" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="invoicePDF" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="isPendingApprovalEmailSent" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="orderApprover" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="documentID" selected="false" operator="equals"/>                
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="contrEP" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="documentClass" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="rejectionComment" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="readyForReprocessing" selected="false" operator="equals"/>              
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="reprocessed" selected="false" operator="equals"/>
+            </advanced-search:field-list>
+       </advanced-search:advanced-search>        
+    </context>
+     <context merge-by="type" parent="AbstractOrder" type="Order" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="erpOrderNumber"/>
+        </list-view:list-view>
+    </context>
+    <!-- Added for Order - END -->
+    
+    
+     <!-- Added for AbstractOrderEntry - START -->
+     <context merge-by="type" parent="GenericItem" type="AbstractOrderEntry" component="advanced-search">
+      <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="adjustedQty" selected="true" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="adjustedItemPrice" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="adjustedLinePrice" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="rejectionReason" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="rejectedStatus" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="itemTotalShipment" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="isNewEntry" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="customerMaterialId" selected="false" operator="equals"/>                
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="expectedUnitPrice" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="agreeEdgewellPrice" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="eachUnitPrice" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="isPBG" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="isWeSellProduct" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="inventoryAvailable" selected="false" operator="equals"/>                
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="discountAmount" selected="false" operator="equals"/>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="discountPercent" selected="false" operator="equals"/>
+            </advanced-search:field-list>
+       </advanced-search:advanced-search>     
+     </context>
+     
+     <context merge-by="type" parent="GenericItem" type="AbstractOrderEntry" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="isPBG"/>
+            <list-view:column qualifier="isWeSellProduct"/>
+        </list-view:list-view>
+    </context>
+     <!-- Added for AbstractOrderEntry - END -->
+     
+     <!-- Added for EnergizerCronjob - START -->
+     <context merge-by="type" parent="CronJob" type="EnergizerCronJob" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="type" selected="true" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="displayName" selected="true" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="technicalEmailAddress" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="businessEmailAddress" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="catalogName" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="catalogVersion" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="path" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="fromDate" selected="false" operator="equals" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="toDate" selected="false" operator="equals" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="dataFeedJob" selected="false" operator="equals" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="userType" selected="false" operator="startsWith" />
+                <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="region" selected="true" operator="startsWith" />
+               
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+    
+    <context merge-by="type" parent="CronJob" type="EnergizerCronJob" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="displayName"/>
+            <list-view:column qualifier="region"/>
+        </list-view:list-view>
+    </context>
+     <!-- Added for EnergizerCronjob - END -->
+    
+     <!-- Added for Address - START -->
+     <context merge-by="type"  type="Address" component="advanced-search">
+        <advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+            <advanced-search:field-list>
+            <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="erpAddressId" selected="true" operator="startsWith" />
+            <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="salesPersonEmailId" selected="true" operator="startsWith" />
+            <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="displayName" selected="true" operator="startsWith" />
+            <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="active" selected="false" operator="equals" />
+            <advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="soldToAddressId" selected="true" operator="startsWith" />
+            </advanced-search:field-list>
+        </advanced-search:advanced-search>
+    </context>
+    <context merge-by="type" type="Address" component="listview">
+        <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+            <list-view:column qualifier="erpAddressId"/>
+            <list-view:column qualifier="soldToAddressId"/>
+        </list-view:list-view>
+    </context>
+    
+     <!-- Added for Address - END -->
+</config>

@@ -1,0 +1,71 @@
+/**
+ *
+ */
+package com.energizer.core.azure.blob;
+
+import de.hybris.platform.azure.media.storage.WindowsAzureBlobStorageStrategy;
+import de.hybris.platform.util.Config;
+
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+
+import org.apache.log4j.Logger;
+
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.common.StorageSharedKeyCredential;
+
+
+/**
+ * @author MU20325022
+ *
+ */
+public class EnergizerWindowsAzureBlobStorageStrategy extends WindowsAzureBlobStorageStrategy
+{
+	Logger LOG = Logger.getLogger(EnergizerWindowsAzureBlobStorageStrategy.class);
+	public static final String connectionString = Config.getParameter("azure.blob.storage.account.connection-string");
+	public static final String containerName = Config.getParameter("azure.blob.storage.container.name");
+
+	/**
+	 * @return
+	 */
+	public BlobContainerClient getBlobContainerClient()
+	{
+		BlobContainerClient containerClient = null;
+
+		try
+		{
+			containerClient = getBlobServiceClient().getBlobContainerClient(containerName);
+
+		}
+		catch (Exception e)
+		{
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return containerClient;
+	}
+
+	/**
+	 * TODO: Move this method to separate file while refratoring
+	 *
+	 * @return
+	 */
+	public BlobServiceClient getBlobServiceClient()
+	{
+		BlobServiceClient blobServiceClient = null;
+
+		try
+		{
+			blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
+		}
+		catch (Exception e)
+		{
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return blobServiceClient;
+	}
+
+}

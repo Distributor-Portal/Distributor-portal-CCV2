@@ -1,0 +1,441 @@
+# ImpEx for Importing CMS Content
+
+# Macros / Replacement Parameter definitions
+$contentCatalog=personalCareEMEAContentCatalog
+$productCatalog=personalCareEMEAProductCatalog
+$storeName=personalCareEMEA
+$defaultCurrency=EUR
+
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default=Staged])[unique=true,default=$productCatalog:Staged]
+$siteResource=jar:com.energizer.initialdata.setup.InitialDataSystemSetup&/energizerinitialdata/import/contentCatalogs/$contentCatalog
+$jarResourceCms=jar:com.energizer.core.setup.CoreSystemSetup&/energizercore/import/cockpits/cmscockpit
+
+$picture=media(code, $contentCV)
+$lang=en
+
+# Import config properties into impex macros
+UPDATE GenericItem[processor=de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor];pk[unique=true]
+$websitePersonalCareEMEA=$config-website.personalCareEMEA.https
+$siteIdDefaultCurrency=$websitePersonalCareEMEA/$defaultCurrency
+
+# Content catalog for CMS contents
+INSERT_UPDATE ContentCatalog;id[unique=true];defaultCatalog
+;$contentCatalog;true
+
+# CMS Site Settings
+UPDATE CMSSite;uid[unique=true];defaultPreviewCategory(code, $productCV);defaultPreviewProduct(code, $productCV)
+
+# Site Logo
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText
+;;/images/theme/PCLogo.png;PCLogo.png;$siteResource/images/theme/PCLogo.png;image/png;Edgewell
+
+# Site Logo Component
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink;$picture[lang=$lang]
+;;SiteLogoComponent;Site Logo Component;SiteLogoComponent;$siteIdDefaultCurrency;/images/theme/PCLogo.png
+
+#Starting - Added CMS Link Components for personalCareEMEA - START
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&componentRef;target(code)[default='sameWindow']
+;;HomepageEMEANavLink;Home Page Nav Link;/;HomepageEMEANavLink
+
+#########################  First Level Category EMEA Link - Start ##########################
+;;"Sun_Skin_Care_EMEA_Link";"Sun & Skin Care Link";c/Sun & Skin Care;"Sun_Skin_Care_EMEA_Link"
+;;Wet_Shave_EMEA_Link;Wet Shave Link;c/Wet Shave;Wet_Shave_EMEA_Link
+#########################  First Level Category EMEA Link - End ##########################
+
+#########################  Second Level Category EMEA Link - Start ##########################
+;;Sun_Care_EMEA_Link;Sun Care Link;c/Sun & Skin Care-Sun Care;Sun_Care_EMEA_Link
+;;Disposables_EMEA_Link;Disposables Link;c/Wet Shave-Disposables;Disposables_EMEA_Link
+;;Mens_Systems_EMEA_Link;"Men's Systems Link";"c/Wet Shave-Men's Systems";Mens_Systems_EMEA_Link
+;;Shave_Prep_EMEA_Link;Shave Prep Link;c/Wet Shave-Shave Prep;Shave_Prep_EMEA_Link
+;;Womens_Systems_EMEA_Link;"Women's Systems Link";"c/Wet Shave-Women's Systems";Womens_Systems_EMEA_Link
+#########################  Second Level Category EMEA Link - End ##########################
+
+#########################  Third Level Category EMEA Link - Start ##########################
+;;Banana_Boat_EMEA_Link;Banana Boat Link;c/Sun & Skin Care-Sun Care-Banana Boat;Banana_Boat_EMEA_Link
+;;Hawaiian_Tropic_EMEA_Link;Hawaiian Tropic Link;c/Sun & Skin Care-Sun Care-Hawaiian Tropic;Hawaiian_Tropic_EMEA_Link
+;;"Exacta3_Extra3_EMEA_Link";Exacta3/Extra3 Link;"c/Wet Shave-Disposables-Exacta3 | Extra3";"Exacta3_Extra3_EMEA_Link"
+;;"Lng_Hndl_Rubber_Disposables_EMEA_Link";"Lng Hndl/Rubber Disposables Link";"c/Wet Shave-Disposables-Lng Hndl | Rubber Disposables";"Lng_Hndl_Rubber_Disposables_EMEA_Link"
+;;Low_End_Double_Disposables_EMEA_Link;Low End Double Disposables Link;c/Wet Shave-Disposables-Low End Double Disposables;Low_End_Double_Disposables_EMEA_Link
+;;Low_End_Single_Disposables_EMEA_Link;Low End Single Disposables Link;c/Wet Shave-Disposables-Low End Single Disposables;Low_End_Single_Disposables_EMEA_Link
+;;Other_PBG_Disposables_EMEA_Link;Other PBG Disposables Link;c/Wet Shave-Disposables-Other PBG Disposables;Other_PBG_Disposables_EMEA_Link
+;;Quattro_Disposables_EMEA_Link;Quattro Disposables Link;c/Wet Shave-Disposables-Quattro Disposables;Quattro_Disposables_EMEA_Link
+;;"Slim_Twin_EII_Disposables_EMEA_Link";"Slim Twin/EII Disposables Link";"c/Wet Shave-Disposables-Slim Twin | EII Disposables";"Slim_Twin_EII_Disposables_EMEA_Link"
+;;Xtreme_3_Disposables_EMEA_Link;Xtreme 3 Disposables Link;c/Wet Shave-Disposables-Xtreme 3 Disposables;Xtreme_3_Disposables_EMEA_Link
+;;Hydro_Blades_EMEA_Link;Hydro Blades Link;"c/Wet Shave-Men's Systems-Hydro Blades";Hydro_Blades_EMEA_Link
+;;Hydro_Razors_EMEA_Link;Hydro Razors Link;"c/Wet Shave-Men's Systems-Hydro Razors";Hydro_Razors_EMEA_Link
+;;"Mens_Other_Blades_EMEA_Link";"Men's Other Blades Link";"c/Wet Shave-Men's Systems-Men's Other Blades";"Mens_Other_Blades_EMEA_Link"
+;;"Mens_Other_Razors_EMEA_Link";"Men's Other Razors Link";"c/Wet Shave-Men's Systems-Men's Other Razors";"Mens_Other_Razors_EMEA_Link"
+;;Quattro_Blades_EMEA_Link;Quattro Blades Link;"c/Wet Shave-Men's Systems-Quattro Blades";Quattro_Blades_EMEA_Link
+;;Quattro_Razors_EMEA_Link;Quattro Razors Link;"c/Wet Shave-Men's Systems-Quattro Razors";Quattro_Razors_EMEA_Link
+;;Quattro_Trimmers_EMEA_Link;Quattro Trimmers Link;"c/Wet Shave-Men's Systems-Quattro Trimmers";Quattro_Trimmers_EMEA_Link
+;;Legacy_Shave_Preps_EMEA_Link;Legacy Shave Preps Link;"c/Wet Shave-Shave Prep-Legacy Shave Preps";Legacy_Shave_Preps_EMEA_Link
+;;Intuition_Blades_EMEA_Link;Intuition Blades Link;"c/Wet Shave-Women's Systems-Intuition Blades";Intuition_Blades_EMEA_Link
+;;Intuition_Razors_EMEA_Link;Intuition Razors Link;c/Wet Shave-Women's Systems-Intuition Razors;Intuition_Razors_EMEA_Link
+;;Lady_P_Silk_Blades_EMEA_Link;Lady P/Silk Blades Link;"c/Wet Shave-Women's Systems-Lady P | Silk Blades";Lady_P_Silk_Blades_EMEA_Link
+;;Lady_P_Silk_Razors_EMEA_Link;Lady P/Silk Razors Link;"c/Wet Shave-Women's Systems-Lady P | Silk Razors";Lady_P_Silk_Razors_EMEA_Link
+;;Quattro_for_Women_Blades_EMEA_Link;Quattro for Women Blades Link;"c/Wet Shave-Women's Systems-Quattro for Women Blades";Quattro_for_Women_Blades_EMEA_Link
+;;Quattro_for_Women_Razors_EMEA_Link;Quattro for Women Razors Link;"c/Wet Shave-Women's Systems-Quattro for Women Razors";Quattro_for_Women_Razors_EMEA_Link
+;;Quattro_for_Women_Trimmers_EMEA_Link;Quattro for Women Trimmers Link;"c/Wet Shave-Women's Systems-Quattro for Women Trimmers";Quattro_for_Women_Trimmers_EMEA_Link
+;;Hydro_Silk_Blades_EMEA_Link;Hydro Silk Blades Link;"c/Wet Shave-Women's Systems-Hydro Silk Blades";Hydro_Silk_Blades_EMEA_Link
+;;Hydro_Silk_Razors_EMEA_Link;Hydro Silk Razors Link;"c/Wet Shave-Women's Systems-Hydro Silk Razors";Hydro_Silk_Razors_EMEA_Link
+#########################  Third Level Category EMEA Link - End ##########################
+
+#Ending - Added CMS Link Components for personalCareEMEA - END
+
+# CMS Navigation Nodes #
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;children(uid,$contentCV)[mode=append]
+;root;;root;;
+
+#Starting - Added Navigation Bar Components for personalCareEMEA - START
+
+INSERT_UPDATE NavigationBarComponent;$contentCV[unique=true];uid[unique=true];name;wrapAfter;link(uid, $contentCV);styleClass;navigationNode(&nodeRef);dropDownLayout(code)[default=AUTO];&componentRef
+
+#########################  First Level EMEA Navigation Bar Components - Start ##########################
+;;Sun_Skin_Care_EMEA_Bar_Component;"Sun & Skin Care Bar Component";10;Sun_Skin_Care_EMEA_Link;;"Sun_Skin_Care_EMEA_Nav_Node";;Sun_Skin_Care_EMEA_Bar_Component
+;;Wet_Shave_EMEA_Bar_Component;Wet Shave Bar Component;10;Wet_Shave_EMEA_Link;;Wet_Shave_EMEA_Nav_Node;;Wet_Shave_EMEA_Bar_Component
+#########################  First Level EMEA Navigation Bar Components - End ##########################
+
+#Ending - Added Navigation Bar Components for personalCareEMEA - END
+
+#Starting - Added Navigation Nodes for personalCareEMEA - START
+
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);children(uid,$contentCV)[mode=append];links(&componentRef);&nodeRef
+
+#########################  First Level EMEA Nav Nodes - Start ##########################
+;SiteRootNode;;SiteRootNode;root;;HomepageEMEANavLink;SiteRootNode
+;Sun_Skin_Care_EMEA_Nav_Node;;Sun & Skin Care Nav Node;SiteRootNode;Sun_Care_EMEA_Nav_Node;Sun_Skin_Care_EMEA_Link;Sun_Skin_Care_EMEA_Nav_Node
+;Wet_Shave_EMEA_Nav_Node;;Wet Shave Nav Node;SiteRootNode;Disposables_EMEA_Nav_Node,Mens_Systems_EMEA_Nav_Node,Shave_Prep_EMEA_Nav_Node,Womens_Systems_EMEA_Nav_Node;Wet_Shave_EMEA_Link;Wet_Shave_EMEA_Nav_Node
+#########################  First Level EMEA Nav Nodes - End ##########################
+
+#########################  Second Level EMEA Nav Nodes - Start ##########################
+;Sun_Care_EMEA_Nav_Node;;Sun Care Nav Node;Sun_Skin_Care_EMEA_Nav_Node;Banana_Boat_EMEA_Nav_Node,Hawaiian_Tropic_EMEA_Nav_Node;Sun_Care_EMEA_Link;Sun_Care_EMEA_Nav_Node
+;Disposables_EMEA_Nav_Node;;Disposables Nav Node;Wet_Shave_EMEA_Nav_Node;Exacta3_Extra3_EMEA_Nav_Node,Lng_Hndl_Rubber_Disposables_EMEA_Nav_Node,Lng_Hndl_Rubber_Disposables_EMEA_Nav_Node,Low_End_Double_Disposables_EMEA_Nav_Node,Low_End_Single_Disposables_EMEA_Nav_Node,Other_PBG_Disposables_EMEA_Nav_Node,Quattro_Disposables_EMEA_Nav_Node,Slim_Twin_EII_Disposables_EMEA_Nav_Node,Xtreme_3_Disposables_EMEA_Nav_Node;Disposables_EMEA_Link;Disposables_EMEA_Nav_Node
+;Mens_Systems_EMEA_Nav_Node;;"Men's Systems Nav Node";Wet_Shave_EMEA_Nav_Node;Hydro_Blades_EMEA_Nav_Node,Hydro_Razors_EMEA_Nav_Node,Mens_Other_Blades_EMEA_Nav_Node,Mens_Other_Razors_EMEA_Nav_Node,Quattro_Blades_EMEA_Nav_Node,Quattro_Razors_EMEA_Nav_Node,Quattro_Trimmers_EMEA_Nav_Node;Mens_Systems_EMEA_Link;Mens_Systems_EMEA_Nav_Node
+;Shave_Prep_EMEA_Nav_Node;;Shave Prep Nav Node;Wet_Shave_EMEA_Nav_Node;Legacy_Shave_Preps_EMEA_Nav_Node;Shave_Prep_EMEA_Link;Shave_Prep_EMEA_Nav_Node
+;Womens_Systems_EMEA_Nav_Node;;Womens Systems Nav Node;Wet_Shave_EMEA_Nav_Node;Intuition_Blades_EMEA_Nav_Node,Intuition_Razors_EMEA_Nav_Node,Lady_P_Silk_Blades_EMEA_Nav_Node,Lady_P_Silk_Razors_EMEA_Nav_Node,Quattro_for_Women_Blades_EMEA_Nav_Node,Quattro_for_Women_Razors_EMEA_Nav_Node,Quattro_for_Women_Trimmers_EMEA_Nav_Node;Womens_Systems_EMEA_Link;Womens_Systems_EMEA_Nav_Node
+#########################  Second Level EMEA Nav Nodes - End ##########################
+
+#########################  Third Level EMEA Nav Nodes - Start ##########################
+;Banana_Boat_EMEA_Nav_Node;;Banana Boat Nav Node;Sun_Care_EMEA_Nav_Node;;Banana_Boat_EMEA_Link;Banana_Boat_EMEA_Nav_Node
+;Hawaiian_Tropic_EMEA_Nav_Node;;Hawaiian Tropic Nav Node;Sun_Care_EMEA_Nav_Node;;Hawaiian_Tropic_EMEA_Link;Hawaiian_Tropic_EMEA_Nav_Node
+;"Exacta3_Extra3_EMEA_Nav_Node";;Exacta3 Extra3 Nav Node;Disposables_EMEA_Nav_Node;;"Exacta3_Extra3_EMEA_Link";"Exacta3_Extra3_EMEA_Nav_Node"
+;Lng_Hndl_Rubber_Disposables_EMEA_Nav_Node;;Lng Hndl Rubber Disposables Nav Node;Disposables_EMEA_Nav_Node;;"Lng_Hndl_Rubber_Disposables_EMEA_Link";Lng_Hndl_Rubber_Disposables_EMEA_Nav_Node
+;Low_End_Double_Disposables_EMEA_Nav_Node;;Low End Double Disposables Nav Node;Disposables_EMEA_Nav_Node;;Low_End_Double_Disposables_EMEA_Link;Low_End_Double_Disposables_EMEA_Nav_Node
+;Low_End_Single_Disposables_EMEA_Nav_Node;;Low End Single Disposables Nav Node;Disposables_EMEA_Nav_Node;;Low_End_Single_Disposables_EMEA_Link;Low_End_Single_Disposables_EMEA_Nav_Node
+;Other_PBG_Disposables_EMEA_Nav_Node;;Other PBG Disposables Nav Node;Disposables_EMEA_Nav_Node;;Other_PBG_Disposables_EMEA_Link;Other_PBG_Disposables_EMEA_Nav_Node
+;Quattro_Disposables_EMEA_Nav_Node;;Quattro Disposables Nav Node;Disposables_EMEA_Nav_Node;;Quattro_Disposables_EMEA_Link;Quattro_Disposables_EMEA_Nav_Node
+;Slim_Twin_EII_Disposables_EMEA_Nav_Node;;Slim Twin EII Disposables Nav Node;Disposables_EMEA_Nav_Node;;"Slim_Twin_EII_Disposables_EMEA_Link";Slim_Twin_EII_Disposables_EMEA_Nav_Node
+;Xtreme_3_Disposables_EMEA_Nav_Node;;Xtreme 3 Disposables Nav Node;Disposables_EMEA_Nav_Node;;"Xtreme_3_Disposables_EMEA_Link";Xtreme_3_Disposables_EMEA_Nav_Node
+;Hydro_Blades_EMEA_Nav_Node;;Hydro Blades Nav Node;Mens_Systems_EMEA_Nav_Node;;Hydro_Blades_EMEA_Link;Hydro_Blades_EMEA_Nav_Node
+;Hydro_Razors_EMEA_Nav_Node;;Hydro Razors Nav Node;Mens_Systems_EMEA_Nav_Node;;Hydro_Razors_EMEA_Link;Hydro_Razors_EMEA_Nav_Node
+;Mens_Other_Blades_EMEA_Nav_Node;;"Men's Other Blades Nav Node";Mens_Systems_EMEA_Nav_Node;;Mens_Other_Blades_EMEA_Link;Mens_Other_Blades_EMEA_Nav_Node
+;Mens_Other_Razors_EMEA_Nav_Node;;"Men's Other Razors Nav Node";Mens_Systems_EMEA_Nav_Node;;Mens_Other_Razors_EMEA_Link;Mens_Other_Razors_EMEA_Nav_Node
+;Quattro_Blades_EMEA_Nav_Node;;"Quattro Blades Nav Node";Mens_Systems_EMEA_Nav_Node;;Quattro_Blades_EMEA_Link;Quattro_Blades_EMEA_Nav_Node
+;Quattro_Razors_EMEA_Nav_Node;;"Quattro Razors Nav Node";Mens_Systems_EMEA_Nav_Node;;Quattro_Razors_EMEA_Link;Quattro_Razors_EMEA_Nav_Node
+;Quattro_Trimmers_EMEA_Nav_Node;;"Quattro Trimmers Nav Node";Mens_Systems_EMEA_Nav_Node;;Quattro_Trimmers_EMEA_Link;Quattro_Trimmers_EMEA_Nav_Node
+;Legacy_Shave_Preps_EMEA_Nav_Node;;Legacy Shave Preps Nav Node;Shave_Prep_EMEA_Nav_Node;;Legacy_Shave_Preps_EMEA_Link;Legacy_Shave_Preps_EMEA_Nav_Node
+;Intuition_Blades_EMEA_Nav_Node;;Intuition Blades Nav Node;Womens_Systems_EMEA_Nav_Node;;Intuition_Blades_EMEA_Link;Intuition_Blades_EMEA_Nav_Node
+;Intuition_Razors_EMEA_Nav_Node;;Intuition Razors Nav Node;Womens_Systems_EMEA_Nav_Node;;Intuition_Razors_EMEA_Link;Intuition_Razors_EMEA_Nav_Node
+;Lady_P_Silk_Blades_EMEA_Nav_Node;;Lady P Silk Blades Nav Node;Womens_Systems_EMEA_Nav_Node;;Lady_P_Silk_Blades_EMEA_Link;Lady_P_Silk_Blades_EMEA_Nav_Node
+;Lady_P_Silk_Razors_EMEA_Nav_Node;;Lady P Silk Razors Nav Node;Womens_Systems_EMEA_Nav_Node;;Lady_P_Silk_Razors_EMEA_Link;Lady_P_Silk_Razors_EMEA_Nav_Node
+;Quattro_for_Women_Blades_EMEA_Nav_Node;;Quattro for Women Blades Nav Node;Womens_Systems_EMEA_Nav_Node;;Quattro_for_Women_Blades_EMEA_Link;Quattro_for_Women_Blades_EMEA_Nav_Node
+;Quattro_for_Women_Razors_EMEA_Nav_Node;;Quattro for Women Razors Nav Node;Womens_Systems_EMEA_Nav_Node;;Quattro_for_Women_Razors_EMEA_Link;Quattro_for_Women_Razors_EMEA_Nav_Node
+;Quattro_for_Women_Trimmers_EMEA_Nav_Node;;Quattro for Women Trimmers Nav Node;Womens_Systems_EMEA_Nav_Node;;Quattro_for_Women_Trimmers_EMEA_Link;Quattro_for_Women_Trimmers_EMEA_Nav_Node
+;Hydro_Silk_Blades_EMEA_Nav_Node;;Hydro Silk Blades Nav Node;Womens_Systems_EMEA_Nav_Node;;Hydro_Silk_Blades_EMEA_Link;Hydro_Silk_Blades_EMEA_Nav_Node
+;Hydro_Silk_Razors_EMEA_Nav_Node;;Hydro Silk Razors Nav Node;Womens_Systems_EMEA_Nav_Node;;Hydro_Silk_Razors_EMEA_Link;Hydro_Silk_Razors_EMEA_Nav_Node
+#########################  Third Level EMEA Nav Nodes - End ##########################
+
+#Ending - Added Navigation Nodes for personalCareEMEA - END
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow']
+;;UserLoginLink;User Login Link;/login;UserLoginLink;UserLoginLink
+;;MyAccountLink;My Account Link;/my-account;MyAccountLink;MyAccountLink
+;;MyCompanyLink;My Company Link;/my-company/organization-management;MyCompanyLink;MyCompanyLink
+;;LogoutLink;Logout Link;/logout;LogoutLink;LogoutLink
+#;;StoreFinderLink;Store Finder Link;/store-finder;StoreFinderLink;StoreFinderLink
+;;QuickOrderPageLink;Quick Order;/my-account/quickorder;QuickOrderPageLink;QuickOrderPageLink
+;;ExcelOrderPageLink;Excel Order;/my-account/excelfileupload;ExcelOrderPageLink;ExcelOrderPageLink
+;;CatalogDownloadPageLink;Catalog Download;/my_account/catalogDownload;CatalogDownloadPageLink;CatalogDownloadPageLink
+;;OrderHistoryDownloadPageLink;OrderHistory Download;/my_account/orderHistoryDownload;OrderHistoryDownloadPageLink;OrderHistoryDownloadPageLink
+
+INSERT_UPDATE CMSUserGroupRestriction;$contentCV[unique=true];uid[unique=true];name;userGroups(uid);includeSubgroups;components(&componentRef)
+;;CustomerGroupRestriction;Customer Group Restriction;b2bcustomergroup,b2badmingroup;true;MyAccountLink
+;;ApproverGroupRestriction;Approver Group Restriction;b2bapprovergroup;true;MyAccountLink
+;;AdminGroupRestriction;Admin Group Restriction;b2badmingroup;true;MyCompanyLink
+;;ViewerGroupRestriction;Viewer Group Restriction;b2bviewergroup;true;MyAccountLink
+
+# CMS User Restrictions
+INSERT_UPDATE CMSUserRestriction;$contentCV[unique=true];uid[unique=true];name;users(uid);components(&componentRef);&componentRef
+;;AnonymousUserRestriction;Anonymous User Restriction;anonymous;UserLoginLink;AnonymousUserRestriction
+
+INSERT_UPDATE CMSInverseRestriction;$contentCV[unique=true];uid[unique=true];name;originalRestriction(&componentRef);components(&componentRef)
+;;LoggedInRestriction;Logged In Restriction;AnonymousUserRestriction;LogoutLink
+
+
+# CMS User Group Restrictions
+UPDATE CMSUserGroupRestriction;$contentCV[unique=true];uid[unique=true];components(uid,$contentCV)[mode=append]
+;;CustomerGroupRestriction;QuickOrderPageLink,ExcelOrderPageLink,CatalogDownloadPageLink;OrderHistoryDownloadPageLink
+
+# CMS Navigation Nodes - Header
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);links(&linkRef);&nodeRef
+;HeaderLinksNode;;Header Links;SiteRootNode;UserLoginLink,MyAccountLink,MyCompanyLink,QuickOrderPageLink,ExcelOrderPageLink,CatalogDownloadPageLink,OrderHistoryDownloadPageLink,LogoutLink;HeaderLinksNode
+
+# Header Navigation Component - Header
+INSERT_UPDATE HeaderNavigationComponent;$contentCV[unique=true];uid[unique=true];name;wrapAfter;link(uid, $contentCV);styleClass;navigationNode(&nodeRef);dropDownLayout(code)[default=AUTO];&componentRef
+;;DefaultHeaderNavigationComponent;Header Navigation Component;0;HomepageEMEANavLink;;HeaderLinksNode;;DefaultHeaderNavigationComponent
+
+
+
+# CMS Mini Cart Component
+INSERT_UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;totalDisplay(code);shownProductCount;lightboxBannerComponent(&componentRef)
+;;MiniCart;Mini Cart;MiniCart;TOTAL;7;
+
+
+# CMS SearchBox Components
+INSERT_UPDATE SearchBoxComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;SearchBox;Search Box;SearchBox
+
+# CMS Language and Currency Component
+INSERT_UPDATE LanguageCurrencyComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;LangCurrencyComponent;Language and Currency Component;LangCurrencyComponent
+
+
+
+
+# Site Logo
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText
+#;;/images/banners/homepage/banners 950px x600px Q4.jpg;banners 950px x600px Q4.jpg;$siteResource/images/banners/homepage/banners 950px x600px Q4.jpg;image/jpg;Schick Mens
+#;;/images/banners/homepage/banners 950px x600px X3.jpg;banners 950px x600px X3.jpg;$siteResource/images/banners/homepage/banners 950px x600px X3.jpg;image/jpg;Schick Womens
+#;;/images/banners/homepage/BB  950px x 600px BB.jpg;BB  950px x 600px BB.jpg;$siteResource/images/banners/homepage/BB  950px x 600px BB.jpg;image/jpg;Banana Boat
+#;;/images/banners/homepage/Powertools_468x418_Rotating_Image_EN_02.jpg;Powertools_468x418_Rotating_Image_EN_02.jpg;$siteResource/images/banners/homepage/Powertools_468x418_Rotating_Image_EN_02.jpg;image/jpg;Energizer
+;;/images/banners/homepage/playtex 950px x 600px ENG.jpg;playtex 950px x 600px ENG.jpg;$siteResource/images/banners/homepage/playtex 950px x 600px ENG.jpg;image/jpg;Playtex
+;;/images/banners/homepage/banners 950px x600px carefree ENG.jpg;banners 950px x600px carefree ENG.jpg;$siteResource/images/banners/homepage/banners 950px x600px carefree ENG.jpg;image/jpg;Carefree
+;;/images/banners/homepage/banners 950px x600px stayfree ENG.jpg;banners 950px x600px stayfree ENG.jpg;$siteResource/images/banners/homepage/banners 950px x600px stayfree ENG.jpg;image/jpg;Stayfree
+;;/images/banners/homepage/BB  950px x 600px BB ENG.jpg;BB  950px x 600px BB ENG.jpg;$siteResource/images/banners/homepage/BB  950px x 600px BB ENG.jpg;image/jpg;Banana Boat
+;;/images/banners/homepage/banners 950px x600px HT ENG.jpg;banners 950px x600px HT ENG.jpg;$siteResource/images/banners/homepage/banners 950px x600px HT ENG.jpg;image/jpg;Hawaiian Tropic
+;;/images/banners/homepage/banners 950px x600px X3 ENG.jpg;banners 950px x600px X3 ENG.jpg;$siteResource/images/banners/homepage/banners 950px x600px X3 ENG.jpg;image/jpg;Schick 3
+;;/images/banners/homepage/banners 950px x600px Q4 ENG.jpg;banners 950px x600px Q4 ENG.jpg;$siteResource/images/banners/homepage/banners 950px x600px Q4 ENG.jpg;image/jpg;Schick Quattro
+
+
+
+# Site Logo Component
+INSERT_UPDATE BannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink;$picture[lang=$lang];external
+#;;HomePageBannerComponent11;Homepage banner component11;HomePageBannerComponent11;http://www.playtexlatinoamerica.com/;/images/banners/homepage/banners 950px x600px Q4.jpg;true
+#;;HomePageBannerComponent22;Homepage banner component22;HomePageBannerComponent22;http://www.carefreeliners.com;/images/banners/homepage/banners 950px x600px X3.jpg;true
+#;;HomePageBannerComponent33;Homepage banner component33;HomePageBannerComponent33;http://www.stayfree.com/;/images/banners/homepage/BB  950px x 600px BB.jpg;true
+#;;HomePageBannerComponent11;Homepage banner component11;HomePageBannerComponent11;http://www.schicklatinoamerica.com/;/images/banners/homepage/banners 950px x600px X3 ENG.jpg;true
+#;;HomePageBannerComponent22;Homepage banner component22;HomePageBannerComponent22;http://www.hawaiiantropiclatinoamerica.com/;/images/banners/homepage/banners 950px x600px HT ENG.jpg;true
+#;;HomePageBannerComponent33;Homepage banner component33;HomePageBannerComponent33;http://www.schicklatinoamerica.com/;/images/banners/homepage/banners 950px x600px Q4 ENG.jpg;true
+#;;HomePageBannerComponent44;Homepage banner component44;HomePageBannerComponent44;http://www.bananaboatlatinoamerica.com/;/images/banners/homepage/BB  950px x 600px BB ENG.jpg;true
+#;;HomePageBannerComponent55;Homepage banner component55;HomePageBannerComponent55;http://www.playtexlatinoamerica.com/;/images/banners/homepage/playtex 950px x 600px ENG.jpg;true
+#;;HomePageBannerComponent66;Homepage banner component66;HomePageBannerComponent66;http://www.carefreeliners.com;/images/banners/homepage/banners 950px x600px carefree ENG.jpg;true
+#;;HomePageBannerComponent77;Homepage banner component77;HomePageBannerComponent77;http://www.stayfree.com/;/images/banners/homepage/banners 950px x600px stayfree ENG.jpg;true
+
+;;HomePageBannerComponent11;Homepage banner component11;HomePageBannerComponent11;;/images/banners/homepage/banners 950px x600px X3 ENG.jpg;true
+;;HomePageBannerComponent22;Homepage banner component22;HomePageBannerComponent22;;/images/banners/homepage/banners 950px x600px HT ENG.jpg;true
+;;HomePageBannerComponent33;Homepage banner component33;HomePageBannerComponent33;;/images/banners/homepage/banners 950px x600px Q4 ENG.jpg;true
+;;HomePageBannerComponent44;Homepage banner component44;HomePageBannerComponent44;;/images/banners/homepage/BB  950px x 600px BB ENG.jpg;true
+;;HomePageBannerComponent55;Homepage banner component55;HomePageBannerComponent55;;/images/banners/homepage/playtex 950px x 600px ENG.jpg;true
+;;HomePageBannerComponent66;Homepage banner component66;HomePageBannerComponent66;;/images/banners/homepage/banners 950px x600px carefree ENG.jpg;true
+;;HomePageBannerComponent77;Homepage banner component77;HomePageBannerComponent77;;/images/banners/homepage/banners 950px x600px stayfree ENG.jpg;true
+
+
+INSERT_UPDATE RotatingImagesComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;banners(&componentRef)
+;;rotatingbanner;rotatingbanner;rotatingbanner;HomePageBannerComponent11,HomePageBannerComponent22,HomePageBannerComponent33,HomePageBannerComponent44,HomePageBannerComponent55,HomePageBannerComponent66,HomePageBannerComponent77
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;Section1Slot-EnergizerHomePageBanner;rotatingbanner
+# ContentSlotForPage 
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true];;;
+;;Section1-EnergizerHomePageBanner;Section1;;Section1Slot-EnergizerHomePageBanner;;;
+
+
+
+# Content Slots
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;SiteLogoSlot;SiteLogoComponent
+
+# Starting - Added for Personal Care EMEA Content Slots - Start
+;;NavigationBarSlot;Sun_Skin_Care_EMEA_Bar_Component,Wet_Shave_EMEA_Bar_Component
+# Ending - Added for Personal Care EMEA Content Slots - End
+
+;;HeaderLinksSlot;DefaultHeaderNavigationComponent
+;;SearchBoxSlot;SearchBox,LangCurrencyComponent
+;;MiniCartSlot;MiniCart
+
+#add to cart component to PDP
+# CMS Action Restrictions
+INSERT_UPDATE CMSActionRestriction;$contentCV[unique=true];uid[unique=true];name;
+;;ActionRestriction;A CMSAction restriction;
+
+# CMS ProductAddToCart Components
+INSERT_UPDATE ProductAddToCartComponent;$contentCV[unique=true];uid[unique=true];name;actions(&actionRef);&componentRef
+;;AddToCart;Product Add To Cart;AddToCartAction;AddToCart
+
+# CMS AddToCart Action
+INSERT_UPDATE AddToCartAction;$contentCV[unique=true];uid[unique=true];url;name;restrictions(uid,$contentCV);&actionRef
+;;AddToCartAction;/cart/add;Product Add To Cart Action;ActionRestriction;AddToCartAction
+
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(uid,$contentCV)
+;;AddToCartSlot;AddToCart
+
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ProductDetailsPageTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;AddToCart-ProductDetails;AddToCart;;AddToCartSlot;true
+
+
+
+
+# CMS Mini Cart Component
+INSERT_UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;totalDisplay(code);shownProductCount;lightboxBannerComponent(&componentRef);restrictions(uid,$contentCV)
+;;MiniCart;Mini Cart;MiniCart;TOTAL;3;;CustomerGroupRestriction
+
+
+# Footer Component
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&componentRef;target(code)[default='sameWindow']
+#;;CopyRightLink;CopyRight Link;"";CopyRightLink;sameWindow
+#;;TrademarkLink;Trademark Link;"http://www.energizerholdings.com/en/Pages/default.aspx";TrademarkLink;sameWindow
+#;;TermsAndConditionsLink;Terms And Conditions Link;"/terms-conditions";TermsAndConditionsLink;newWindow
+
+#INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];mime;realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite=true];folder(qualifier)[default='images'];;
+#;;frequentlyAskedQuestionsPage;text/png;;;;;
+
+# Simple Content Pages
+#UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];previewImage(code, $contentCV);linkComponents(uid, $contentCV);;;;;
+#;;faq;frequentlyAskedQuestionsPage;FAQLink;;;;;
+
+# Footer CMS Link Components
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&componentRef;target(code)[default='sameWindow']
+;;AboutUSLink;About US Link;"http://edgewell.com/about-us/";AboutUSLink;newWindow
+;;ContactUSLink;Contact US Link;"/content/contactus";ContactUSLink;
+;;FAQLink;FAQ Link;"/content/faq";FAQLink;
+;;PrivacyPolicyLink;Privacy Policy Link;"/content/privacypolicy";PrivacyPolicyLink;
+;;LegalLink;Legal Link;"http://edgewell.com/legal/";LegalLink;newWindow
+;;TermsOfServiceLink;Terms Of Service Link;"/content/termsofservice";TermsOfServiceLink;
+;;TermsAndConditionsLink;Terms And Conditions;"/content/termsandconditions";TermsAndConditionsLink;
+
+# Footer CMS Paragraph Components
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;aboutUsParagraphComponent;About Us Paragraph Component;aboutUsParagraphComponent
+;;contactUsParagraphComponent;Contact Us Paragraph Component;contactUsParagraphComponent
+;;faqParagraphComponent;FAQs Paragraph Component;faqParagraphComponent
+;;privacyPolicyParagraphComponent;Privacy Policy Paragraph Component;privacyPolicyParagraphComponent
+;;legalParagraphComponent;Legal Paragraph Component;legalParagraphComponent
+;;termsOfServiceParagraphComponent;Terms of Service Paragraph Component;termsOfServiceParagraphComponent
+;;termsAndConditionsParagraphComponent;Terms And Conditions Paragraph Component;termsAndConditionsParagraphComponent
+
+
+INSERT_UPDATE CMSNavigationNode ;uid[unique=true];$contentCV[unique=true]; name;parent(uid, $contentCV);links(&componentRef);&nodeRef
+;SiteRootNode; ;   SiteRootNode; root;;SiteRootNode;EnergizerNavNode; ; Energizer Site;  SiteRootNode;;EnergizerNavNode
+;FooterNavNode;  ;Footer Nav Node;root;AboutUSLink,PrivacyPolicyLink,ContactUSLink,LegalLink,FAQLink,TermsOfServiceLink,TermsAndConditionsLink;FooterNavNode
+
+#INSERT_UPDATE FooterComponent;$contentCV[unique=true];uid[unique=true];navigationNodes(&nodeRef);&componentRef
+#;;FooterComponent;FooterNavNode;FooterComponent
+
+# Added wrapAfter value to fix JSP UI issue
+INSERT_UPDATE FooterComponent;$contentCV[unique=true];uid[unique=true];wrapAfter;navigationNodes(&nodeRef);&componentRef
+;;FooterComponent;2;FooterNavNode;FooterComponent
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang];&componentRef
+;;FooterParagraphComponent;"<br/>&copy;2015 Edgewell Personal Care &nbsp;&nbsp;&nbsp;SCHICK, WILKINSON SWORD, PERSONNA, EDGE, SKINTIMATE, GENTLE GLIDE, 360&deg;, 360&deg; PROTECTION, PLAY ON, SPORT, SPORT LEVEL PROTECTION, FLEXFIT, CAREFREE, STAYFREE, THERMOCONTROL, O.B., BANANA BOAT, HAWAIIAN TROPIC, LITTER GENIE, WET ONES and associated word marks and logos are trademarks or registered trademarks of Edgewell Personal Care Brands, LLC (or an Edgewell affiliate company) in the United States and other countries throughout the world. PLAYTEX is a trademark used under license.";FooterParagraphComponent
+;;EmptyCartMessageParagraphComponent;"<h2>You have no items in your Cart.</h2>";EmptyCartMessageParagraphComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;FooterSlot;FooterComponent,FooterParagraphComponent
+;;EmptyCartMessageParagraphComponentSlot;EmptyCartMessageParagraphComponent
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='CartPageTemplate'];contentSlot(uid,$contentCV)[unique=true]
+;;MiddleContent-CartPageSlot;MiddleContent;;EmptyCartMessageParagraphComponentSlot
+
+
+#removing the search text box from the login page as suggested in the observations
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;LoginPage_SearchBoxSlot;LangCurrencyComponent
+#;;cs_RegionBasedSiteDropdownSelectorSlot;RegionBasedSiteDropdownSelectorComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position;contentSlot(uid,$contentCV)[unique=true];page(uid,$contentCV)
+;;SearchBox-LoginPage1;SearchBox;LoginPage_SearchBoxSlot;login
+#;;csp_RegionBasedSiteDropdownSelectorSlot;csn_RegionBasedSiteDropdownSelector;cs_RegionBasedSiteDropdownSelectorSlot;login
+
+
+
+
+######Contact Us Page
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=en];&componentRef
+;;ContactUsParagraphComponent;"<br/>&nbsp;&nbsp;&nbsp;<br/><h3>Contact Us </h3><br/><b>E-mail us at</b> : Edgewellics@edgewell.com<br/><b>Call us at</b> : (+) 1 (314) 594 1900<br/><br/><b>Write to us at </b>: Edgewell Personal Care, Timberlake Corporate Center III, 1350 Timberlake Manor Parkway, Chesterfield, MO 63017, Attention: International Customer Service";ContactUsParagraphComponent
+
+# Content Slots TopHeaderSlot-ContentPage1
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;TopHeaderSlot-ContentPage1;ContactUsParagraphComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='contactUs'];contentSlot(uid,$contentCV)[unique=true]
+;; Section1-ContentPage1;Section1;; TopHeaderSlot-ContentPage1
+
+
+###### Apparel DE Terms And Conditions Page
+
+# CMSParagraphComponent
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;;;;
+;;termsAndConditionsMenuParagraph;Terms and Conditions Paragraph;TermsAndConditionsMenuParagraph;;;;
+;;termsAndConditionsTextParagraph;Terms and Conditions Paragraph;TermsAndConditionsTextParagraph;;;;
+ 
+
+# ContentSlot
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef);;;
+;;Section2ASlot-TermsAndConditions;Section2A Slot for Terms and Conditions Page;true;TermsAndConditionsMenuParagraph;;;
+;;Section2BSlot-TermsAndConditions;Section2B Slot for Terms and Conditions Page;true;TermsAndConditionsTextParagraph;;;
+
+# ContentSlotForPage
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='termsAndConditions'];contentSlot(uid,$contentCV)[unique=true];;;
+;;Section2A-TermsAndConditions;Section2A;;Section2ASlot-TermsAndConditions;;;
+;;Section2B-TermsAndConditions;Section2B;;Section2BSlot-TermsAndConditions;;;
+
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=en];
+;;termsAndConditionsMenuParagraph;""
+;;termsAndConditionsTextParagraph;"</br></br></br><div style='position: absolute; left: 10%;'>Distributor understands, acknowledges and agrees that all sales made by Edgewell to Distributor are </br> subject to the terms and conditions of sale set </br> forth in the distribution agreement applicable to Distributor.
+</div>"
+
+
+############## Footer Links Pages(Content Slots Association) - START ###############
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active[default='true'];cmsComponents(&componentRef)
+;;AboutUsContentSlot;Content Slot for About Us;;aboutUsParagraphComponent
+;;ContactUsContentSlot;Content Slot for Contact Us;;contactUsParagraphComponent
+;;FAQsContentSlot;Content Slot for FAQs;;faqParagraphComponent
+;;PrivacyPolicyContentSlot;Content Slot for Privacy Policy;;privacyPolicyParagraphComponent
+;;LegalContentSlot;Content Slot for Legal;;legalParagraphComponent
+;;TermsOfServiceContentSlot;Content Slot for Terms Of Service;;termsOfServiceParagraphComponent
+;;TermsAndConditionsContentSlot;Content Slot for Terms And Conditions;;termsAndConditionsParagraphComponent
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='FooterPageTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-FooterPage;SiteLogo;;SiteLogoSlot;true
+;;HomepageLink-FooterPage;HomepageNavLink;;HomepageNavLinkSlot;true
+;;HeaderLinks-FooterPage;HeaderLinks;;HeaderLinksSlot;true
+;;SearchBox-FooterPage;SearchBox;;SearchBoxSlot;true
+;;NavigationBar-FooterPage;NavigationBar;;NavigationBarSlot;true
+;;MiniCart-FooterPage;MiniCart;;MiniCartSlot;true
+;;Footer-FooterPage;Footer;;FooterSlot;true
+;;TopHeaderSlot-FooterPage;TopHeaderSlot;;TopHeaderSlot;true
+;;BottomHeaderSlot-FooterPage;BottomHeaderSlot;;BottomHeaderSlot;true
+;;cst_AboutUsContentSlot-FooterPage;aboutusContent;;AboutUsContentSlot;true
+;;cst_ContactUsContentSlot-FooterPage;contactusContent;;ContactUsContentSlot;true
+;;cst_FAQsContentSlot-FooterPage;faqContent;;FAQsContentSlot;true
+;;cst_PrivacyPolicyContentSlot-FooterPage;privacypolicyContent;;PrivacyPolicyContentSlot;true
+;;cst_LegalContentSlot-FooterPage;legalContent;;LegalContentSlot;true
+;;cst_TermsOfServiceContentSlot-FooterPage;termsofserviceContent;;TermsOfServiceContentSlot;true
+;;cst_TermsAndConditionsContentSlot-FooterPage;termsandconditionsContent;;TermsAndConditionsContentSlot;true
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true];contentSlot(uid,$contentCV)[unique=true]
+;;csp_AboutUsContentSlot-FooterPage;aboutusContent;footerHomePage;AboutUsContentSlot
+;;csp_ContactUsContentSlot-FooterPage;contactusContent;footerHomePage;ContactUsContentSlot
+;;csp_FAQsContentSlot-FooterPage;faqContent;footerHomePage;FAQsContentSlot
+;;csp_PrivacyPolicyContentSlot-FooterPage;privacypolicyContent;footerHomePage;PrivacyPolicyContentSlot
+;;csp_LegalContentSlot-FooterPage;legalContent;footerHomePage;LegalContentSlot
+;;csp_TermsOfServiceContentSlot-FooterPage;termsofserviceContent;footerHomePage;TermsOfServiceContentSlot
+;;csp_TermsAndConditionsContentSlot-FooterPage;termsandconditionsContent;footerHomePage;TermsAndConditionsContentSlot
+
+############## Footer Links Pages(Content Slots Association) - END ###############

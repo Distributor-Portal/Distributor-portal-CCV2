@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2014 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="beans.xsd">
+
+	<!-- Add accelerator facades specific variantOption options -->
+	<enum class="com.energizer.facades.product.ProductVariantOption">
+		<value>URL</value>
+		<value>MEDIA</value>
+        <value>PRICE</value>
+        <value>STOCK</value>
+	</enum>
+	
+		<!-- ************ Start Product Details Page Bean defination ******************* -->
+	<bean class="de.hybris.platform.commercefacades.product.data.ProductData">
+		<property name="obsolete" type="boolean" />
+		<property name="productDescription" type="java.lang.String" />
+		<property name="erpMaterialID" type="java.lang.String" />
+		<property name="customerMaterialId" type="java.lang.String" />
+		<property name="customerProductName" type="java.lang.String" />
+		<property name="customerProductPrice" type="java.math.BigDecimal" />
+		<property name="customerPriceCurrency" type="java.lang.String" />
+		<property name="shippingPoint" type="java.lang.String" />
+		<property name="shippingPointName" type="java.lang.String" />
+		<property name="shippingPointLocation" type="java.lang.String" />
+		<property name="moq" type="java.lang.Integer" />
+		<property name="uom" type="java.lang.String" />
+		<property name="baseUOM" type="java.lang.Integer" />
+		<property name="weight" type="java.lang.Double" />
+		<property name="weightUom" type="java.lang.String" />
+		<property name="volume" type="java.lang.Double" />
+		<property name="volumeUom" type="java.lang.String" />
+		<property name="segmentName" type="java.lang.String" />
+		<property name="familyName" type="java.lang.String" />
+		<property name="groupName" type="java.lang.String" />
+		<property name="isActive" type="boolean" />
+		<property name="numberOfLayersPerPallet" type="java.lang.Integer"/>
+		<property name="numberOfCasesPerPallet" type="java.lang.Integer" />
+		<property name="numberOfCasesPerLayer" type="java.lang.Integer" />
+		<property name="ean" type="java.lang.String" />
+		<property name="numberOfCUsPerSU" type="java.lang.Integer"/>
+		<property name="numberOfSUsPerPallet" type="java.lang.Integer" />
+		<property name="isPBG" type="boolean" />
+		<property name="isWeSellProduct" type="boolean" />
+		<property name="priceUOM" type="java.lang.String"/>
+		<property name="removeFromCart" type="boolean" />
+		
+	</bean>
+	<!-- ************ End Product Details Page Bean defination ******************* -->	
+	
+		
+	<!-- ************ Start CartData Bean defination ******************* -->
+	<bean class="de.hybris.platform.commercefacades.order.data.CartData">
+		<property name="totalProductWeightInPercent" type="java.lang.Double" />
+		<property name="totalProductVolumeInPercent" type="java.lang.Double" />
+		<property name="shippingPoint" type="java.lang.String"></property>
+		<property name="businesRuleErrors" type="java.util.List&lt;String>"/>
+		<property name="isContainerFull" type="boolean" />
+		<property name="isOrderBlocked" type="boolean" />
+		<property name="containerHeight" type="java.lang.String" />
+		<property name="containerPackingType" type="java.lang.String" />
+		<property name="floorSpaceCount" type="java.lang.Integer" />
+		<property name="isFloorSpaceFull" type="boolean" />
+		<property name="enableFloorSpaceGraphics" type="boolean" />
+		<property name="floorSpaceProductsMap" type="java.util.Map&lt;java.lang.Integer,java.lang.Integer>" />
+		<property name="productsNotAddedToCart" type="java.util.Map&lt;String,java.lang.Integer>" />
+		<property name="productsNotDoubleStacked" type="java.util.Map&lt;String,java.util.List>" />
+		<property name="nonPalletFloorSpaceProductsMap" type="java.util.Map&lt;java.lang.Integer,java.lang.Double>" />
+		<property name="availableVolume" type="java.lang.Double" />
+		<property name="availableWeight" type="java.lang.Double" />
+		<property name="errorMessage" type="boolean" />
+		<property name="totalPalletCount" type="java.lang.Integer" />
+		<property name="virtualPalletCount" type="java.lang.Integer" />
+		<property name="partialPalletCount" type="java.lang.Integer" />
+		<property name="palStackData" type="java.util.Map&lt;Integer,java.util.List&lt;String&gt;>"/>
+    	<property name="deliveryNoteFiles" type="java.util.Collection&lt;com.energizer.core.data.EnergizerDeliveryNoteData>"/> 
+	</bean>
+	<!-- ************ End CartData Bean definition ******************* -->	
+
+	<bean class="de.hybris.platform.commercefacades.order.data.OrderEntryData">
+		<property name="referenceShippingPoint" type="java.lang.String" />
+		<property name="shippingPoint" type="java.lang.String" />
+		<property name="shippingPointLocation" type="java.lang.String" />
+		<property name="referenceShippingPointLocation" type="java.lang.String" />
+		<property name="expectedUnitPrice" type="java.lang.String"/>
+		<property name="agreeEdgewellUnitPrice" type="java.lang.boolean" />	
+		<property name="eachUnitPrice" type="de.hybris.platform.commercefacades.product.data.PriceData" />	
+		<property name="inventoryAvailable" type="java.lang.String" />
+		<property name="discountAmount" type="java.lang.String" />
+		<property name="discountPercent" type="java.lang.String" />
+	</bean>
+		
+	<bean class="de.hybris.platform.commercefacades.user.data.CustomerData">
+		<property name="passwordQuestion" type="String"/>
+		<property name="passwordAnswer" type="String"/>
+	</bean>
+	
+	<bean class="de.hybris.platform.commercefacades.order.data.OrderHistoryData">
+		<property name="referenceNumber" type="String"/>
+		<property name="erpOrderCreator" type="String"/>
+		<property name="b2bOrderData" type="de.hybris.platform.commercefacades.order.data.OrderData"/>
+		<property name="salesRepName" type="String"/>
+	</bean>
+	
+	<!--  Added EnergizerB2BEmployeeData Bean defination for WeSell Implementation - START -->
+	<bean class="com.energizer.facades.employee.data.EnergizerB2BEmployeeData">
+		<property name="uid" type="java.lang.String"/>
+		<property name="name" type="java.lang.String"/>
+		<property name="isSalesRep" type="java.lang.boolean"/>
+		<property name="active" type="java.lang.boolean"/>
+		<property name="salesRepCode" type="java.lang.String"/>
+		<property name="email" type="java.lang.String"/>
+		<property name="contactNumber" type="java.lang.String"/>
+		<property name="priority" type="java.lang.String"/>
+		<property name="selectedB2BUnit" type="com.energizer.core.data.EnergizerB2BUnitData"/>
+		<property name="b2bUnitList" type="java.util.List&lt; com.energizer.core.data.EnergizerB2BUnitData>"/>
+		<property name="passwordQuestion" type="String"/>
+		<property name="passwordAnswer" type="String"/>
+		<property name="titleCode" type="String"/>
+		<property name="firstName" type="String" />
+		<property name="lastName" type="String"/>
+		<property name="salesOrganisation" type="java.lang.String" />
+		<property name="currency" type="java.lang.String" /> 
+	</bean> 
+	<!--  Added EnergizerB2BEmployeeData Bean defination for WeSell Implementation - END -->
+</beans>

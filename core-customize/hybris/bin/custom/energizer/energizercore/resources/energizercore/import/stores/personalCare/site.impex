@@ -1,0 +1,41 @@
+#
+# Import the CMS Site configuration for the Powertools store
+#
+$productCatalog=personalCareProductCatalog
+$contentCatalog=personalCareContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$defaultLanguage=en
+$storeUid=personalCare
+$siteUid=personalCare
+
+# Import config properties into impex macros
+UPDATE GenericItem[processor=de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor];pk[unique=true]
+
+# Load the storefront context root config param
+$storefrontContextRoot=$config-b2bStorefrontContextRoot
+  
+# CMS Site
+INSERT_UPDATE CMSSite;uid[unique=true];theme(code);channel(code);stores(uid);contentCatalogs(id);defaultCatalog(id);defaultLanguage(isoCode);urlPatterns;active;previewURL;startingPage(uid,$contentCV);urlEncodingAttributes;defaultPromotionGroup(Identifier)[default=personalCarePromoGrp]
+#;$siteUid;green;B2B;$storeUid;$contentCatalog;$productCatalog;$defaultLanguage;(?i)^https?://[^/]+(/[^?]*)?\?(.*\&)?(site=$siteUid)(|\&.*)$,(?i)^https?://$siteUid\.[^/]+(|/.*|\?.*)$,(?i)^https?://qa\.edgewell\.[^/]+(|/.*|\?.*)$,(?i)^https?://live\.edgewell\.[^/]+(|/.*|\?.*)$,(?i)^https?://edgewell\.[^/]+(|/.*|\?.*)$,(?i)^https?://hybrisportal\.edgewell\.[^/]+(|/.*|\?.*)$,(?i)^https?://orderportal\.edgewell\.[^/]+(|/.*|\?.*)$,(?i)^https?://qa\.care\.[^/]+\/USD\/login+(|/.*|\?.*)$(?i)^https?://dev\.edgewell\.[^/]+(|/.*|\?.*)$;true;$storefrontContextRoot/?site=$siteUid;homepage;currency
+;$siteUid;green;B2B;$storeUid;$contentCatalog;$productCatalog;$defaultLanguage;(?i)^https?://[^/]+(/[^?]*)?\?(.*\&)?(site=$siteUid)(|\&.*)$,(?i)^https?://$siteUid\.[^/]+(|/.*|\?.*)$,(?i)^https?://qa\.edgewell\.[^/]+\/USD\/login+(|/.*|\?.*)$,(?i)^https?://live\.edgewell\.[^/]+\/USD\/login+(|/.*|\?.*)$,(?i)^https?://edgewell\.[^/]+\/USD\/login+(|/.*|\?.*)$,(?i)^https?://hybrisportal\.edgewell\.[^/]+\/USD\/login+(|/.*|\?.*)$,(?i)^https?://orderportal\.edgewell\.[^/]+\/USD\/login+(|/.*|\?.*)$,(?i)^https?://qa\.care\.[^/]+\/USD\/login+(|/.*|\?.*)$,(?i)^https?://dev\.edgewell\.[^/]+\/USD\/login+(|/.*|\?.*)$;true;$storefrontContextRoot/?site=$siteUid;homepage;currency
+
+# Cart Cleanup CronJobs
+INSERT_UPDATE CartRemovalCronJob;code[unique=true];job(code)[default=cartRemovalJob];sites(uid)[default=$siteUid];sessionLanguage(isoCode)[default=en]
+;$siteUid-CartRemovalJob
+
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];second;minute;hour;day;month;year;relative;active;maxAcceptableDelay
+;$siteUid-CartRemovalJob;0;5;4;-1;-1;-1;false;true;-1
+
+# EnergizerShippingPoint 
+INSERT_UPDATE EnergizerShippingPoint;shippingPointId[unique=true];shippingPointName
+;712;ENR – Rock Hill DC
+;843;KIK Canada
+;A519;Singapore Export
+;867;Drop Ship Schick Asia Limited
+
+#Added for WeSell
+;L351;DHL Supply Chain PR
+;L372;OPEN MARKET
+;L358;DHL Supply Chain MEX
+;L359;PERUFARMA
+;L371;ADMINISTRACION Y TRANSPORTES

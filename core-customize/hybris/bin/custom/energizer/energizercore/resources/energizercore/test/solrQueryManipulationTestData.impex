@@ -1,0 +1,11 @@
+
+
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid);locname[lang=en];
+;customergroup;;
+;vjdbcReportsGroup;;
+;b2bgroup;customergroup;
+;b2badmingroup;b2bgroup;
+;b2bcustomergroup;b2bgroup;
+;b2bmanagergroup;b2bgroup,vjdbcReportsGroup;
+;b2bapprovergroup;b2bgroup;
+;salesrepgroup;b2bgroup;

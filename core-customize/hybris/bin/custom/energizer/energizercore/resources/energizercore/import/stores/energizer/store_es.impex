@@ -1,0 +1,12 @@
+# 
+# Import the Powertools BaseStore
+#
+# Localization es
+#
+
+$lang=es
+
+$storeUid=energizer
+
+UPDATE BaseStore;uid[unique=true];name[lang=$lang]
+;$storeUid;"Energizer Store";

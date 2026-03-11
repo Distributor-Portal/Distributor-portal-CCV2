@@ -1,0 +1,12 @@
+# 
+# Import the Powertools BaseStore
+#
+# Localization en
+#
+
+$lang=en
+
+$storeUid=houseHold
+
+UPDATE BaseStore;uid[unique=true];name[lang=$lang]
+;$storeUid;"HouseHold Store";

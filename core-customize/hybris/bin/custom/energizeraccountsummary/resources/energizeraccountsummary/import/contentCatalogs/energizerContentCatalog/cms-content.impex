@@ -1,0 +1,183 @@
+$contentCatalog=energizerContentCatalog
+$contentCV=catalogVersion(catalog(id[default=$contentCatalog]),version[default='Staged'])
+$jarResourceCms=jar:com.energizer.energizeraccountsummary.setup.InitialDataSystemSetup
+$jarResourceCmsImages=jar:com.energizer.energizeraccountsummary.constants.AccountsummaryaddonConstants&/energizeraccountsummary/import/cockpits/cmscockpit
+$lang=en
+
+# CMS Navigation Nodes #
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;children(uid,$contentCV)[mode=append]
+;root;;root;;
+
+
+# CMS Link Components - My Company
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow']
+;;CompanyHomeLink;Company Home Link;/my-company/organization-management/;CompanyHomeLink;CompanyHomeLink
+;;CompanyOrganizationtLink;Company Manage Organization Link;/my-company/organization-management/;CompanyOrganizationtLink;CompanyOrganizationtLink
+;;CompanyBudgetLink;Company Manage Budget Link;/my-company/organization-management/manage-budgets/;CompanyBudgetLink;CompanyBudgetLink
+;;CompanyBudgetAddLink;Company Add Budget Link;/my-company/organization-management/manage-budgets/add;CompanyBudgetAddLink;CompanyBudgetAddLink
+;;CompanyBudgetEditLink;Company Edit Budget Link;/my-company/organization-management/manage-budgets/;CompanyBudgetEditLink;CompanyBudgetEditLink
+;;CompanyCostCenterLink;Company Manage Cost Centers Link;/my-company/organization-management/manage-costcenters/;CompanyCostCenterLink;CompanyCostCenterLink
+;;CompanyCostCenterAddLink;Company Add Cost Centers Link;/my-company/organization-management/manage-costcenters/add;CompanyCostCenterAddLink;CompanyCostCenterAddLink
+;;CompanyCostCenterEditLink;Company Manage Cost Centers Link;/my-company/organization-management/manage-costcenters/;CompanyCostCenterEditLink;CompanyCostCenterEditLink
+;;CompanyUnitsLink;Company Manage Units Link;/my-company/organization-management/manage-units/;CompanyUnitsLink;CompanyUnitsLink
+;;CompanyUnitsAddLink;Company Add Units Link;/my-company/organization-management/manage-units/;CompanyUnitsAddLink;CompanyUnitsAddLink
+;;CompanyUnitsEditLink;Company Edit Units Link;/my-company/organization-management/manage-units/;CompanyUnitsEditLink;CompanyUnitsEditLink
+;;CompanyUsersLink;Company Manage Users Link;/my-company/organization-management/manage-users/;CompanyUsersLink;CompanyUsersLink
+;;CompanyUsersAddLink;Company Add Users Link;/my-company/organization-management/manage-users/;CompanyUsersAddLink;CompanyUsersAddLink
+;;CompanyUsersEditLink;Company Edit Users Link;/my-company/organization-management/manage-users/;CompanyUsersEditLink;CompanyUsersEditLink
+;;CompanyUserGroupsLink;Company Manage User Groups Link;/my-company/organization-management/manage-usergroups/;CompanyUserGroupsLink;CompanyUserGroupsLink
+;;CompanyUserGroupsAddLink;Company Add User Groups Link;/my-company/organization-management/manage-usergroups/;CompanyUserGroupsAddLink;CompanyUserGroupsAddLink
+;;CompanyUserGroupsEditLink;Company Edit User Groups Link;/my-company/organization-management/manage-usergroups/;CompanyUserGroupsEditLink;CompanyUserGroupsEditLink
+;;CompanyPermissionsLink;Company Manage User Groups Link;/my-company/organization-management/manage-permissions/;CompanyPermissionsLink;CompanyPermissionsLink
+;;CompanyPermissionsAddLink;Company Add User Groups Link;/my-company/organization-management/manage-permissions/;CompanyPermissionsAddLink;CompanyPermissionsAddLink
+;;CompanyPermissionsEditLink;Company Edit User Groups Link;/my-company/organization-management/manage-permissions/;CompanyPermissionsEditLink;CompanyPermissionsEditLink
+;;CompanySummaryLink;Company Account Summary Link;/my-company/organization-management/accountstatus/;CompanySummaryLink;CompanySummaryLink
+;;CompanySummaryViewLink;Company Account Summary Link;/my-company/organization-management/accountstatus/;CompanySummaryViewLink;CompanySummaryViewLink
+
+
+
+# CMS Link Components
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&componentRef;target(code)[default='sameWindow']
+;;MyCompanyLink;My Company Link;/my-company;MyCompanyLink
+;;ManageBudgetsLink;Manage Budgets Link;/my-company/organization-management/manage-budgets;ManageBudgetsLink
+;;ManageCostCentersLink;Manage Cost Centers Link;/my-company/organization-management/manage-costcenters;ManageCostCentersLink
+;;ManageBusinessUnitsLink;Manage Business Units Link;/my-company/organization-management/manage-units;ManageBusinessUnitsLink
+;;ManageUsersLink;Manage Users Link;/my-company/organization-management/manage-users;ManageUsersLink
+;;ManageUsergroupsLink;Manage Usergroups Link;/my-company/organization-management/manage-usergroups;ManageUsergroupsLink
+;;ManagePermissionsLink;Manage Permissions Link;/my-company/organization-management/manage-permissions;ManagePermissionsLink
+;;CompanySummaryLink;Company Account Summary Link;/my-company/organization-management/accountstatus/;CompanySummaryLink
+
+
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);links(uid,$contentCV)[mode=append];&nodeRef
+;SiteRootNode;;SiteRootNode;root;;SiteRootNode
+;EnergizerNavNode;;Energizer Site;SiteRootNode;;EnergizerNavNode
+;MyCompanyNavNode;;My Company Nav Node;EnergizerNavNode;;MyCompanyNavNode
+;MyCompanyLinksNavNode;;My Company Links;MyCompanyNavNode;CompanySummaryLink;MyCompanyLinksNavNode
+
+
+# CMS Navigation Nodes - My Company
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;title;parent(uid, $contentCV);links(&linkRef);&nodeRef
+;CompanyLeftNavNode;;Your Company;Your Company;SiteRootNode;CompanyOrganizationtLink,CompanyBudgetLink,CompanyCostCenterLink,CompanyUnitsLink,CompanyUsersLink,CompanyUserGroupsLink,CompanyPermissionsLink,CompanySummaryLink;CompanyLeftNavNode
+;CompanyBudgetNavNode;;Your Company;Manage Budgets;SiteRootNode;CompanyBudgetAddLink,CompanyBudgetEditLink;CompanyBudgetNavNode
+;CompanyCostCenterNavNode;;Your Company;Manage CostCenters;SiteRootNode;CompanyCostCenterAddLink,CompanyCostCenterEditLink;CompanyCostCenterNavNode
+;CompanyUnitsNavNode;;Your Company;Manage Units;SiteRootNode;CompanyUnitsAddLink,CompanyCostCenterEditLink;CompanyUnitsNavNode
+;CompanyUsersNavNode;;Your Company;Manage Users;SiteRootNode;CompanyUsersAddLink,CompanyUsersEditLink;CompanyUsersNavNode
+;CompanyUserGroupsNavNode;;Your Company;Manage UserGroups;SiteRootNode;CompanyUserGroupsAddLink,CompanyUserGroupsEditLink;CompanyUserGroupsNavNode
+;CompanyPermissionsNavNode;;Your Company;Manage Permissions;SiteRootNode;CompanyPermissionsAddLink,CompanyPermissionsEditLink;CompanyPermissionsNavNode
+;CompanySummaryNavNode;;Your Company;Account Summary;SiteRootNode;CompanySummaryViewLink;CompanySummaryNavNode
+
+# CMS Navigation Nodes - My Company
+UPDATE CMSNavigationNode;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;CompanySummaryNavNode;"Account Summary"
+
+
+
+UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];linkName[lang=$lang]
+ ;;CompanyBudgetAddLink;"Add New Budgets"
+ ;;CompanyBudgetEditLink;"Edit or disable budgets"
+ ;;CompanyBudgetLink;"Manage Budgets"
+ ;;CompanyCostCenterAddLink;"Add new cost center"
+ ;;CompanyCostCenterEditLink;"Edit or disable cost centers"
+ ;;CompanyCostCenterLink;"Manage Cost Centers"
+ ;;CompanyHomeLink;"My Company"
+ ;;CompanyOrganizationtLink;"Organization Management"
+ ;;CompanyPermissionsAddLink;"Add new permission"
+ ;;CompanyPermissionsEditLink;"Edit or disable permissions"
+ ;;CompanyPermissionsLink;"Manage Permissions"
+ ;;CompanyUnitsAddLink;"Create new units"
+ ;;CompanyUnitsEditLink;"Edit or disable units"
+ ;;CompanyUnitsLink;"Manage Business Units"
+ ;;CompanyUserGroupsAddLink;"Add new usergroup"
+ ;;CompanyUserGroupsEditLink;"Edit or disable order usergroups"
+ ;;CompanyUserGroupsLink;"Manage Usergroups"
+ ;;CompanyUsersAddLink;"Add new users"
+ ;;CompanyUsersEditLink;"Edit or disable users"
+ ;;CompanyUsersLink;"Manage Users"
+ ;;LogoutLink;"Sign Out"
+ ;;ManageBudgetsLink;"Manage Budgets"
+ ;;ManageBusinessUnitsLink;"Manage Business Units"
+ ;;ManageCostCentersLink;"Manage Cost Centers"
+ ;;ManagePermissionsLink;"Manage Permissions"
+ ;;ManageUsergroupsLink;"Manage Usergroups"
+ ;;ManageUsersLink;"Manage Users"
+ ;;MyAccountLink;"My Account"
+ ;;MyCompanyLink;"My Company"
+ ;;CompanySummaryLink;"Account Summary"
+ ;;CompanySummaryViewLink;"View Account Summary"
+ 
+# Navigation Bar Component - My Company
+INSERT_UPDATE AccountNavigationComponent;$contentCV[unique=true];uid[unique=true];name;navigationNode(&nodeRef);styleClass;&componentRef
+;;CompanyLeftNavigationComponent;Account Left Navigation Component;CompanyLeftNavNode;;CompanyLeftNavigationComponent
+;;CompanyBudgetNavigationComponent;Company Budget Navigation Component;CompanyBudgetNavNode;;CompanyBudgetNavigationComponent
+;;CompanyCostCenterNavigationComponent;Company CostCenter Navigation Component;CompanyCostCenterNavNode;;CompanyCostCenterNavigationComponent
+;;CompanyUnitsNavigationComponent;Company Units Navigation Component;CompanyUnitsNavNode;;CompanyUnitsNavigationComponent
+;;CompanyUsersNavigationComponent;Company Users Navigation Component;CompanyUsersNavNode;;CompanyUsersNavigationComponent
+;;CompanyUserGroupsNavigationComponent;Company UserGroups Navigation Component;CompanyUserGroupsNavNode;;CompanyUserGroupsNavigationComponent
+;;CompanyPermissionsNavigationComponent;Company Permissions Navigation Component;CompanyPermissionsNavNode;;CompanyPermissionsNavigationComponent
+;;CompanySummaryNavigationComponent;Company Summary Navigation Component;CompanySummaryNavNode;;CompanySummaryNavigationComponent
+
+# Account Navigation Bar Component - My Company
+INSERT_UPDATE AccountNavigationCollectionComponent;$contentCV[unique=true];uid[unique=true];name;components(uid, $contentCV);&componentRef
+;;CompanyHomepageComponent;Company Homepage Component;CompanyBudgetNavigationComponent, CompanyCostCenterNavigationComponent, CompanyUnitsNavigationComponent, CompanyUsersNavigationComponent, CompanyUserGroupsNavigationComponent, CompanyPermissionsNavigationComponent, CompanySummaryNavigationComponent;CompanyHomepageComponent
+
+# CMS Cockpit Preview Image for AccountStatusPage
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];mime;realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite=true]
+;;accountStatusPagePreview;text/png;AccountStatusPage.png;$jarResourceCmsImages/preview-images/energizer/AccountStatusPage.png
+
+# Preview for AccountStatusPage
+UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];previewImage(code,$contentCV)
+;;accountstatus;accountStatusPagePreview:
+
+# CMS Cockpit Preview Image for AccountSummaryPage
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];mime;realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite=true]
+;;accountSummaryPagePreview;text/png;AccountSummaryPage.png;$jarResourceCmsImages/preview-images/energizer/AccountSummaryPage.png
+
+# Preview for AccountSummaryPage
+UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];previewImage(code,$contentCV)
+;;accountstatusdetail;accountSummaryPagePreview:
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef);;;
+;;SideContent-Company;Side Content Slot for My Company Homepage;true;CompanyLeftNavigationComponent;;;
+;;BodyContent-Company;Body Content Slot for My Company Homepage;true;CompanyHomepageComponent;;;
+
+# ContentSlotForPage
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true];contentSlot(uid,$contentCV)[unique=true];;;
+;;SideContent-Company;SideContent;my-company;SideContent-Company;;;
+;;BodyContent-Company;BodyContent;my-company;BodyContent-Company;;;
+;;SideContent-Organization;SideContent;organizationManagement;SideContent-Company;;;
+;;SideContent-Units;SideContent;manageUnits;SideContent-Company;;;
+;;SideContent-UserGroups;SideContent;manageUsergroups;SideContent-Company;;;
+;;SideContent-UnitApprovers;SideContent;manageUnitApprovers;SideContent-Company;;;
+
+
+# CMS User Group Restrictions
+INSERT_UPDATE CMSUserGroupRestriction;$contentCV[unique=true];uid[unique=true];name;userGroups(uid);includeSubgroups;components(&componentRef)
+;;CustomerGroupRestriction;Customer Group Restriction;b2bapprovergroup,b2bcustomergroup,b2badmingroup,b2bviewergroup;true;MyAccountLink
+
+################################################################################################
+##	   This is to disable the MANAGE BUDGETS,MANAGE COSTCENTERS							      ##
+##     MANAGE UNITS, MANAGE USERGROUPS, MANAGE PERMISSIONS on body content side. 		      ##
+## 	   visible=true, this will be enable the component on the body content side, else   false ##
+################################################################################################
+# CMS Navigation Nodes - My Company
+UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];visible
+;CompanyBudgetNavNode;;false
+;CompanyCostCenterNavNode;;false
+;CompanyUnitsNavNode;;false
+;CompanyUserGroupsNavNode;;false
+;CompanyPermissionsNavNode;;false
+
+
+####################################################################################################
+##	   This is to disable the COMPANY BUDGETS,COMPANY COSTCENTERS							      ##
+##     COMPANY UNITS, COMPANY USERGROUPS, COMPANY PERMISSIONS								      ##
+## 	   WHEN visible=true, this will be enable the component on the left hand side  ELSE disabled  ##
+####################################################################################################
+
+UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];visible
+;;CompanyBudgetLink;false
+;;CompanyCostCenterLink;false
+;;CompanyPermissionsLink;false
+;;CompanyUnitsLink;false
+;;CompanyUserGroupsLink;false
+

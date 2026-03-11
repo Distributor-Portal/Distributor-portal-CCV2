@@ -1,0 +1,24 @@
+# ImpEx for Importing CMS Content
+
+# Macros / Replacement Parameter definitions
+$contentCatalog=personalCareEMEAContentCatalog
+$productCatalog=personalCareEMEAProductCatalog
+$storeName=personalCareEMEA
+
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default=Staged])[unique=true,default=$productCatalog:Staged]
+$siteResource=jar:com.energizer.initialdata.setup.InitialDataSystemSetup&/energizerinitialdata/import/contentCatalogs/$contentCatalog
+$jarResourceCms=jar:com.energizer.core.setup.CoreSystemSetup&/energizercore/import/cockpits/cmscockpit
+
+$picture=media(code, $contentCV)
+$lang=en
+
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;content[lang=en];
+;;contactUsParagraphComponent;Contact Us Paragraph Component;contactUsParagraphComponent;"
+<div class='subtitle' id='stickytypeheader'>Contact Us</div>
+<div id='sticky'></div>
+<div id='main' style='overflow-y:hidden;'>
+<b>E-mail us at</b> : 
+CustomerService.Iberia@edgewell.com<br><b>Tel</b> : 0034 91 572 33 10<br><br><b>Address</b>: Edgewell Personal Care Spain, Paseo de la Castellana 135 planta 12, 28046 Madrid, Spain, Attention: Customer Service
+</div>"

@@ -1,0 +1,10 @@
+#
+# Import the Powertools Content Catalog
+#
+# Localization en
+#
+$lang=en
+$contentCatalog=houseHoldContentCatalog
+
+UPDATE ContentCatalog;id[unique=true];name[lang=$lang];
+ ;$contentCatalog;"HouseHold Content Catalog";

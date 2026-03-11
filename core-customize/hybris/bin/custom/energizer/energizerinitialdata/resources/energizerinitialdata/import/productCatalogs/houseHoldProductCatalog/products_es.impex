@@ -1,0 +1,19 @@
+# ImpEx for Importing Product Localisations
+ 
+# Macros / Replacement Parameter definitions
+$productCatalog=energizerProductCatalog
+
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+
+# Language
+$lang=es
+
+UPDATE Product;$catalogVersion;code[unique=true];name[lang=$lang];summary[lang=$lang];description[lang=$lang]
+;;PRD001;Energizer-PRD001;Energizer-PRD001;Energizer-PRD001
+;;PRD002;Energizer-PRD002;Energizer-PRD002;Energizer-PRD002
+;;PRD003;Energizer-PRD003;Energizer-PRD003;Energizer-PRD003
+;;PRD004;Energizer-PRD004;Energizer-PRD004;Energizer-PRD004
+;;PRD005;Energizer-PRD005;Energizer-PRD005;Energizer-PRD005
+;;PRD006;Energizer-PRD006;Energizer-PRD006;Energizer-PRD006
+;;PRD007;Energizer-PRD007;Energizer-PRD007;Energizer-PRD007
+;;PRD008;Energizer-PRD008;Energizer-PRD008;Energizer-PRD008

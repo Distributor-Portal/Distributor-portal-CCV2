@@ -1,0 +1,63 @@
+body, table {font:10pt verdana;}
+.cntutil_wrapper_cls{float:left;width:100%;border:0px solid;}
+
+#floorSpace_cont{
+	height:150px; width:636px; position:relative;background-color: #ffd799;margin-left:10px;float:left;margin-right:26px;border-top: 1px solid #000000;border-right: 2px solid #000000;
+}
+#volume_cont{
+    height:300px; width:150px; position:relative;background-color: #ffd799;margin-left:10px;float:left;margin-right:90px;
+}#weight_cont{
+    height:300px; width:150px; position:relative;background-color: #ffd799;float:left;left:10px;top:0px;float:left;
+}
+#volume_utilization{
+    height: 0px; width:150px; background-color: #33cc33; position:absolute; bottom:0; left:0;
+}#weight_utilization{
+    height: 0px; width:150px; background-color: #33cc33; position:absolute; bottom:0; left:0;
+}
+#divider {margin-top:150px;width:100%;position:relative;display:inline-block;border-top:dashed 1px yellow;z-index:1}
+
+.divider_20{top:0px;left:0px;width:100%;position:absolute;display:inline-block;border-top:dashed 1px red;z-index:1;float:left;width:285%;text-align:right;margin-top: -1px;}
+
+.divider_40{top:0px;left:0px;width:100%;position:absolute;display:inline-block;border-top:dashed 1px red;z-index:1;width:105%; text-align:right;margin-top: -1px;}
+
+.span_cls{position:relative;top:-9px;left:32px;font-weight: bold;font-size: 1.2em;}
+.cnt_utl_cls{position:relative; width:175px;top:0px;float:left;font-weight: bold;font-size: 1.2em;}
+.cnt_utllbl_cls{position:relative;top:300px;text-align:center;}
+.cnt_utlvolfill_cls{position:relative;top:50px;z-index:101;text-align:center;}
+.cnt_utlwilfill_cls{position:relative;top:50px;z-index:101;text-align:center;}
+.fixthis_row_cls{padding-bottom:45px;}
+.cnt_fs_utllbl_cls{position:relative;top:10px;text-align:center;}
+
+
+
+#floorSpace_cont .cnt_utllbl_cls{ top: 317px;}
+/*.cnt_utl_cls{
+	text-transform: uppercase;
+}*/
+
+
+.spinnerDiv{
+	width: 100%;
+	height: 100%;
+	background-color: #ffffff;
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 200;
+	right: 0;
+	display: none;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+	opacity: 0.5;
+}
+
+.spinnerDiv .spinnerImg{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -50px;
+	margin-left:  -100px;
+}

@@ -1,0 +1,10 @@
+#
+# Import the Powertools Content Catalog
+#
+# Localization en
+#
+$lang=en
+$contentCatalog=energizerContentCatalog
+
+UPDATE ContentCatalog;id[unique=true];name[lang=$lang];
+ ;$contentCatalog;"Energizer Content Catalog";

@@ -1,0 +1,30 @@
+# 
+# Create the Powertools BaseStore
+#
+
+$productCatalog=energizerProductCatalog
+$classificationCatalog=EnergizerClassification
+$currencies=USD
+$net=true
+$storeUid=energizer
+$defaultCurrency=USD
+$languages=en,es
+$defaultLanguage=en
+$deliveryCountries=US
+$submitOrderProcessCode=order-process
+$paymentProvider=Mockup
+
+INSERT_UPDATE PromotionGroup;Identifier[unique=true];
+;energizerPromoGrp;
+
+# Base Store
+INSERT_UPDATE BaseStore;uid[unique=true];catalogs(id);currencies(isocode);net;taxGroup(code);storelocatorDistanceUnit(code);defaultCurrency(isocode);languages(isocode);defaultLanguage(isocode);deliveryCountries(isocode);submitOrderProcessCode;paymentProvider;
+;$storeUid;$productCatalog,$classificationCatalog;$currencies;$net;;miles;$defaultCurrency;$languages;$defaultLanguage;$deliveryCountries;$submitOrderProcessCode;$paymentProvider;
+
+#INSERT_UPDATE BaseStore2DeliveryModeRel;source(uid)[unique=true];target(code)[unique=true]
+#;energizer;premium-net
+#;energizer;standard-net
+#;energizer;premium-gross
+#;energizer;standard-gross
+#;energizer;free-standard-shipping
+

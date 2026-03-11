@@ -1,0 +1,392 @@
+# ImpEx for Importing CMS Content
+
+# Macros / Replacement Parameter definitions
+$contentCatalog=personalCareContentCatalog
+$productCatalog=personalCareProductCatalog
+$storeName=personalCare
+$defaultCurrency=USD
+
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default=Staged])[unique=true,default=$productCatalog:Staged]
+$siteResource=jar:com.energizer.initialdata.setup.InitialDataSystemSetup&/energizerinitialdata/import/contentCatalogs/$contentCatalog
+
+
+$picture=media(code, $contentCV)
+$lang=en
+
+# Import config properties into impex macros
+UPDATE GenericItem[processor=de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor];pk[unique=true]
+$websitePersonalCare=$config-website.personalCare.https
+$siteIdDefaultCurrency=$websitePersonalCare/$defaultCurrency
+
+# Content catalog for CMS contents
+INSERT_UPDATE ContentCatalog;id[unique=true];defaultCatalog
+;$contentCatalog;true
+
+# CMS Site Settings
+UPDATE CMSSite;uid[unique=true];defaultPreviewCategory(code, $productCV);defaultPreviewProduct(code, $productCV)
+
+# Site Logo
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText
+;;/images/theme/PCLogo.png;PCLogo.png;$siteResource/images/theme/PCLogo.png;image/png;Edgewell
+
+
+# Site Logo Component
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink;$picture[lang=$lang]
+;;SiteLogoComponent;Site Logo Component;SiteLogoComponent;$siteIdDefaultCurrency;/images/theme/PCLogo.png
+
+
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&componentRef;target(code)[default='sameWindow']
+;;HomepageNavLink;Home Page Nav Link;/;HomepageNavLink
+;;Feminine_Care_Link;Feminine Care Link;c/Feminine Care;Feminine_Care_Link
+;;Infant_Care_Link; Infant Care Link;c/Infant Care;Infant_Care_Link
+;;Shaving_Link;Shaving Link;c/Shaving;Shaving_Link
+;;Skin_Care_Link;Skin Care Link;c/Skin Care;Skin_Care_Link
+;;Sun_Care_Link;Sun Care Link;c/Sun Care;Sun_Care_Link
+;;PBG_Link;PBG Link;c/PBG;PBG_Link
+;;Playtex_Link;Playtex Link;c/Feminine Care-Playtex;Playtex_Link
+;;Carefree_Link;Carefree Link;c/Feminine Care-Carefree;Carefree_Link
+;;Stayfree_Link;Stayfree Link;c/Feminine Care-Stayfree;Stayfree_Link
+;;Ob_Link;Ob Link;c/Feminine Care-o.b.;Ob_Link
+;;Infant_Playtex_Link;Playtex Link;c/Infant Care-Playtex;Infant_Playtex_Link
+;;Schick_Link;Schick Link;c/Shaving-Schick;Schick_Link
+;;Edge_Link;Edge Link;c/Shaving-Edge;Edge_Link
+;;Skintimate_Link;Skintimate Link;c/Shaving-Skintimate;Skintimate_Link
+;;SkinCare_Playtex_Link;Playtex Link;c/Skin Care-Playtex;SkinCare_Playtex_Link
+;;Personal_Cleansing_Clothes_Link;Personal Cleansing Clothes Link;c/Skin Care-Personal Cleansing Clothes;Personal_Cleansing_Clothes_Link
+;;Wet_Ones_Link;Wet Ones Link;c/Skin Care-Wet Ones;Wet_Ones_Link
+;;Banana_Boat_Link;Banana Boat Link;c/Sun Care-Banana Boat;Banana_Boat_Link
+;;Hawaiian_Tropic_Link;Hawaiian Tropic Link;c/Sun Care-Hawaiian Tropic;Hawaiian_Tropic_Link
+;;Personna_Link;Personna Link;c/PBG-Personna;Personna_Link
+;;Private_Label_Link;Private Label Link;c/PBG-Private Label;Private_Label_Link
+
+#########################  Third Level Category Link Start ##########################
+;;Shaving_Schick_Hydro_Link;Hydro Link;c/Shaving-Schick-Hydro;Shaving_Schick_Hydro_Link
+;;Shaving_Schick_DoubleEdge_Link;Double Edge Link;c/Shaving-Schick-Double Edge;Shaving_Schick_DoubleEdge_Link
+;;Shaving_Schick_Other_Link;Other Link;c/Shaving-Schick-Other;Shaving_Schick_Other_Link
+;;Shaving_Schick_Quattro_Link;Quattro Link;c/Shaving-Schick-Quattro;Shaving_Schick_Quattro_Link
+;;Shaving_Schick_Exacta2SlimTwin_Link;Exacta 2 Slim Twin Link;c/Shaving-Schick-Exacta 2 Slim Twin;Shaving_Schick_Exacta2SlimTwin_Link
+;;Shaving_Schick_Xtreme3_Link;Xtreme 3 Link;c/Shaving-Schick-Xtreme 3;Shaving_Schick_Xtreme3_Link
+;;Shaving_Schick_Protect_Link;Protect Link;c/Shaving-Schick-Protect;Shaving_Schick_Protect_Link
+;;Shaving_Schick_Intuition_Link;Intuition Link;c/Shaving-Schick-Intuition;Shaving_Schick_Intuition_Link
+;;Shaving_Schick_LadyProtect_Link;Lady Protect Link;c/Shaving-Schick-Lady Protect;Shaving_Schick_LadyProtect_Link
+;;Shaving_Edge_Edge_Link;Edge Link;c/Shaving-Edge-Edge;Shaving_Edge_Edge_Link
+;;Shaving_Skintimate_Skintimate_Link;Skintimate Link;c/Shaving-Skintimate-Skintimate;Shaving_Skintimate_Skintimate_Link
+;;FeminineCare_Carefree_Carefree_Link;Carefree Link;c/Feminine Care-Carefree-Carefree;FeminineCare_Carefree_Carefree_Link
+;;FeminineCare_Playtex_GentleGlide_Link;Gentle Glide Link;c/Feminine Care-Playtex-Gentle Glide;FeminineCare_Playtex_GentleGlide_Link
+;;FeminineCare_Playtex_Sport_Link;Sport Link;c/Feminine Care-Playtex-Sport;FeminineCare_Playtex_Sport_Link
+;;FeminineCare_Stayfree_Stayfree_Link;Stayfree Link;c/Feminine Care-Stayfree-Stayfree;FeminineCare_Stayfree_Stayfree_Link
+;;FeminineCare_o.b._o.b._Link;o.b. Link;c/Feminine Care-o.b.-o.b.;FeminineCare_o.b._o.b._Link
+;;InfantCare_Playtex_Dropins_Link;Drop Ins Link;c/Infant Care-Playtex-Drop Ins;InfantCare_Playtex_Dropins_Link
+;;InfantCare_Playtex_VentAire_Link;VentAire Link;c/Infant Care-Playtex-VentAire;InfantCare_Playtex_VentAire_Link
+;;InfantCare_Playtex_DropinsVentAire_Link;Drop Ins / Infant Link;c/Infant Care-Playtex-Drop Ins & VentAire;InfantCare_Playtex_DropinsVentAire_Link
+;;InfantCare_Playtex_CupsMealtime_Link;Cups & Mealtime Link;c/Infant Care-Playtex-Cups & Mealtime;InfantCare_Playtex_CupsMealtime_Link
+;;InfantCare_Playtex_DiaperGenie_Link;Diaper Genie Link;c/Infant Care-Playtex-Diaper Genie;InfantCare_Playtex_DiaperGenie_Link
+;;InfantCare_Playtex_Accessories_Link;Accessories Link;c/Infant Care-Playtex-Accessories;InfantCare_Playtex_Accessories_Link
+;;InfantCare_Playtex_Binky_Link;Binky Link;c/Infant Care-Playtex-Binky;InfantCare_Playtex_Binky_Link
+;;InfantCare_Playtex_Holder_Link;Holder Link;c/Infant Care-Playtex-Holder;InfantCare_Playtex_Holder_Link
+;;InfantCare_Playtex_OrthoPro_Link;Ortho Pro Link;c/Infant Care-Playtex-Ortho Pro;InfantCare_Playtex_OrthoPro_Link
+;;SkinCare_Playtex_Playtex_Link;Playtex Link;c/Skin Care-Playtex-Playtex;SkinCare_Playtex_Playtex_Link
+
+#########################  Third Level Category Link End ##########################
+
+
+# CMS Navigation Nodes #
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;children(uid,$contentCV)[mode=append]
+;root;;root;;
+
+INSERT_UPDATE NavigationBarComponent;$contentCV[unique=true];uid[unique=true];name;wrapAfter;link(uid, $contentCV);styleClass;navigationNode(&nodeRef);dropDownLayout(code)[default=AUTO];&componentRef
+;;Feminine_Care_Bar_Component;Feminine Care Bar Component;10;Feminine_Care_Link;;Feminine_Care_Nav_Node;;Feminine_Care_Bar_Component
+;;Infant_Care_Bar_Component;Infant Care Bar Component;10;Infant_Care_Link;;Infant_Care_Nav_Node;;Infant_Care_Bar_Component
+;;Shaving_Bar_Component;Shaving Bar Component;10;Shaving_Link;;Shaving_Nav_Node;;Shaving_Bar_Component
+;;Skin_Care_Bar_Component;Skin Care Bar Component;10;Skin_Care_Link;;Skin_Care_Nav_Node;;Skin_Care_Bar_Component
+;;Sun_Care_Bar_Component;Sun Care Bar Component;10;Sun_Care_Link;;Sun_Care_Nav_Node;;Sun_Care_Bar_Component
+;;PBG_Bar_Component;PBG Bar Component;10;PBG_Link;;PBG_Nav_Node;;PBG_Bar_Component
+
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);children(uid,$contentCV)[mode=append];links(&componentRef);&nodeRef
+;SiteRootNode;;SiteRootNode;root;;HomepageNavLink;SiteRootNode
+;Feminine_Care_Nav_Node;;ABC;SiteRootNode; ; ;Feminine_Care_Nav_Node
+;Infant_Care_Nav_Node;;Infant Care;SiteRootNode; ; ;Infant_Care_Nav_Node
+;Shaving_Nav_Node;;Shaving;SiteRootNode;Edge_Nav_Node,Schick_Nav_Node,Skintimate_Nav_Node ; ;Shaving_Nav_Node
+;Skin_Care_Nav_Node;;Skin Care;SiteRootNode; ; ;Skin_Care_Nav_Node
+;Sun_Care_Nav_Node;;Sun Care;SiteRootNode; ; ;Sun_Care_Nav_Node
+;PBG_Nav_Node;;PBG;SiteRootNode; ; ;PBG_Nav_Node
+;Carefree_Nav_Node;;Carefree;Feminine_Care_Nav_Node; ;Carefree_Link;Carefree_Nav_Node
+;Ob_Nav_Node;;Ob;Feminine_Care_Nav_Node; ;Ob_Link;Ob_Nav_Node
+;Playtex_Nav_Node;;Playtex;Feminine_Care_Nav_Node; ;Playtex_Link;Playtex_Nav_Node
+;Stayfree_Nav_Node;;Stayfree;Feminine_Care_Nav_Node; ;Stayfree_Link;Stayfree_Nav_Node
+;Infant_Playtex_Nav_Node;;Playtex;Infant_Care_Nav_Node; ;Infant_Playtex_Link;Infant_Playtex_Nav_Node
+;Edge_Nav_Node;;Edge;Shaving_Nav_Node; ;Edge_Link;Edge_Nav_Node
+;Schick_Nav_Node;;Schick;Shaving_Nav_Node; ;Schick_Link;Schick_Nav_Node
+;Skintimate_Nav_Node;;Skintimate;Shaving_Nav_Node; ;Skintimate_Link;Skintimate_Nav_Node
+;Personal_Cleansing_Clothes_Nav_Node;;Personal Cleansing Clothes;Skin_Care_Nav_Node; ;Personal_Cleansing_Clothes_Link;Personal_Cleansing_Clothes_Nav_Node
+;SkinCare_Playtex_Nav_Node;;Playtex;Skin_Care_Nav_Node; ;SkinCare_Playtex_Link;SkinCare_Playtex_Nav_Node
+;Wet_Ones_Nav_Node;;Wet Ones;Skin_Care_Nav_Node; ;Wet_Ones_Link;Wet_Ones_Nav_Node
+;Banana_Boat_Nav_Node;;Banana Boat;Sun_Care_Nav_Node; ;Banana_Boat_Link;Banana_Boat_Nav_Node
+;Hawaiian_Tropic_Nav_Node;;Hawaiian Tropic;Sun_Care_Nav_Node; ;Hawaiian_Tropic_Link;Hawaiian_Tropic_Nav_Node
+;Personna_Nav_Node;;Personna;PBG_Nav_Node; ;Personna_Link;Personna_Nav_Node
+;Private_Label_Nav_Node;;Private Label;PBG_Nav_Node; ;Private_Label_Link;Private_Label_Nav_Node
+
+
+#########################  Third Level Category Navigation end##########################
+;Shaving_Schick_Hydro_Nav_Node;;Hydro;Schick_Nav_Node; ;Shaving_Schick_Hydro_Link;Shaving_Schick_Hydro_Nav_Node
+;Shaving_Schick_DoubleEdge_Nav_Node;;DoubleEdge;Schick_Nav_Node; ;Shaving_Schick_DoubleEdge_Link;Shaving_Schick_DoubleEdge_Nav_Node
+;Shaving_Schick_Other_Nav_Node;;Other;Schick_Nav_Node; ;Shaving_Schick_Other_Link;Shaving_Schick_Other_Nav_Node
+;Shaving_Schick_Quattro_Nav_Node;;Quattro;Schick_Nav_Node; ;Shaving_Schick_Quattro_Link;Shaving_Schick_Quattro_Nav_Node
+;Shaving_Schick_Exacta2SlimTwin_Nav_Node;;Exacta 2/SlimTwin;Schick_Nav_Node; ;Shaving_Schick_Exacta2SlimTwin_Link;Shaving_Schick_Exacta2SlimTwin_Nav_Node
+;Shaving_Schick_Xtreme3_Nav_Node;;Xtreme3;Schick_Nav_Node; ;Shaving_Schick_Xtreme3_Link;Shaving_Schick_Xtreme3_Nav_Node
+;Shaving_Schick_Protect_Nav_Node;;Protect;Schick_Nav_Node; ;Shaving_Schick_Protect_Link;Shaving_Schick_Protect_Nav_Node
+;Shaving_Schick_Intuition_Nav_Node;;Intuition;Schick_Nav_Node; ;Shaving_Schick_Intuition_Link;Shaving_Schick_Intuition_Nav_Node
+;Shaving_Schick_LadyProtect_Nav_Node;;Lady Protect;Schick_Nav_Node; ;Shaving_Schick_LadyProtect_Link;Shaving_Schick_LadyProtect_Nav_Node
+;Shaving_Edge_Edge_Nav_Node;;Edge;Edge_Nav_Node; ;Shaving_Edge_Edge_Link;Shaving_Edge_Edge_Nav_Node
+;Shaving_Skintimate_Skintimate_Nav_Node;;Skintimate;Skintimate_Nav_Node; ;Shaving_Skintimate_Skintimate_Link;Shaving_Skintimate_Skintimate_Nav_Node
+;FeminineCare_Carefree_Carefree_Nav_Node;;Carefree;Carefree_Nav_Node; ;FeminineCare_Carefree_Carefree_Link;FeminineCare_Carefree_Carefree_Nav_Node
+;FeminineCare_Playtex_GentleGlide_Nav_Node;;Carefree;Playtex_Nav_Node; ;FeminineCare_Playtex_GentleGlide_Link;FeminineCare_Playtex_GentleGlide_Nav_Node
+;FeminineCare_Playtex_Sport_Nav_Node;;Sport;Playtex_Nav_Node; ;FeminineCare_Playtex_Sport_Link;FeminineCare_Playtex_Sport_Nav_Node
+;FeminineCare_Stayfree_Stayfree_Nav_Node;;Sport;Stayfree_Nav_Node; ;FeminineCare_Stayfree_Stayfree_Link;FeminineCare_Stayfree_Stayfree_Nav_Node
+;FeminineCare_o.b._o.b._Nav_Node;;o.b.;Ob_Nav_Node; ;FeminineCare_o.b._o.b._Link;FeminineCare_o.b._o.b._Nav_Node
+;InfantCare_Playtex_Dropins_Nav_Node;;Dropins;Infant_Playtex_Nav_Node; ;InfantCare_Playtex_Dropins_Link;InfantCare_Playtex_Dropins_Nav_Node
+;InfantCare_Playtex_VentAire_Nav_Node;;VentAire;Infant_Playtex_Nav_Node; ;InfantCare_Playtex_VentAire_Link;InfantCare_Playtex_VentAire_Nav_Node
+;InfantCare_Playtex_DropinsVentAire_Nav_Node;;Dropins VentAire;Infant_Playtex_Nav_Node; ;InfantCare_Playtex_DropinsVentAire_Link;InfantCare_Playtex_DropinsVentAire_Nav_Node
+;InfantCare_Playtex_CupsMealtime_Nav_Node;;CupsMealtime;Infant_Playtex_Nav_Node; ;InfantCare_Playtex_CupsMealtime_Link;InfantCare_Playtex_CupsMealtime_Nav_Node
+;InfantCare_Playtex_DiaperGenie_Nav_Node;;DiaperGenie;Infant_Playtex_Nav_Node; ;InfantCare_Playtex_DiaperGenie_Link;InfantCare_Playtex_DiaperGenie_Nav_Node
+;InfantCare_Playtex_Accessories_Nav_Node;;Accessories;Infant_Playtex_Nav_Node; ;InfantCare_Playtex_Accessories_Link;InfantCare_Playtex_Accessories_Nav_Node
+;InfantCare_Playtex_Binky_Nav_Node;;Binky;Infant_Playtex_Nav_Node; ;InfantCare_Playtex_Binky_Link;InfantCare_Playtex_Binky_Nav_Node
+;InfantCare_Playtex_Holder_Nav_Node;;Holder;Infant_Playtex_Nav_Node; ;InfantCare_Playtex_Holder_Link;InfantCare_Playtex_Holder_Nav_Node
+;InfantCare_Playtex_OrthoPro_Nav_Node;;OrthoPro;Infant_Playtex_Nav_Node; ;InfantCare_Playtex_OrthoPro_Link;InfantCare_Playtex_OrthoPro_Nav_Node
+;SkinCare_Playtex_Playtex_Nav_Node;;Playtex;SkinCare_Playtex_Nav_Node; ;SkinCare_Playtex_Playtex_Link;SkinCare_Playtex_Playtex_Nav_Node
+
+#########################  Third Level Category Navigation end ##########################
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow']
+;;UserLoginLink;User Login Link;/login;UserLoginLink;UserLoginLink
+;;MyAccountLink;My Account Link;/my-account;MyAccountLink;MyAccountLink
+;;MyCompanyLink;My Company Link;/my-company/organization-management;MyCompanyLink;MyCompanyLink
+;;LogoutLink;Logout Link;/logout;LogoutLink;LogoutLink
+#;;StoreFinderLink;Store Finder Link;/store-finder;StoreFinderLink;StoreFinderLink
+;;QuickOrderPageLink;Quick Order;/my-account/quickorder;QuickOrderPageLink;QuickOrderPageLink
+;;ExcelOrderPageLink;Excel Order;/my-account/excelfileupload;ExcelOrderPageLink;ExcelOrderPageLink
+;;CatalogDownloadPageLink;Catalog Download;/my_account/catalogDownload;CatalogDownloadPageLink;CatalogDownloadPageLink
+;;OrderHistoryDownloadPageLink;OrderHistory Download;/my_account/orderHistoryDownload;OrderHistoryDownloadPageLink;OrderHistoryDownloadPageLink
+
+INSERT_UPDATE CMSUserGroupRestriction;$contentCV[unique=true];uid[unique=true];name;userGroups(uid);includeSubgroups;components(&componentRef)
+;;CustomerGroupRestriction;Customer Group Restriction;b2bcustomergroup,b2badmingroup;true;MyAccountLink
+;;ApproverGroupRestriction;Approver Group Restriction;b2bapprovergroup;true;MyAccountLink
+;;AdminGroupRestriction;Admin Group Restriction;b2badmingroup;true;MyCompanyLink
+;;ViewerGroupRestriction;Viewer Group Restriction;b2bviewergroup;true;MyAccountLink,CatalogDownloadPageLink
+
+# CMS User Restrictions
+INSERT_UPDATE CMSUserRestriction;$contentCV[unique=true];uid[unique=true];name;users(uid);components(&componentRef);&componentRef
+;;AnonymousUserRestriction;Anonymous User Restriction;anonymous;UserLoginLink;AnonymousUserRestriction
+
+INSERT_UPDATE CMSInverseRestriction;$contentCV[unique=true];uid[unique=true];name;originalRestriction(&componentRef);components(&componentRef)
+;;LoggedInRestriction;Logged In Restriction;AnonymousUserRestriction;LogoutLink
+
+
+# CMS User Group Restrictions
+UPDATE CMSUserGroupRestriction;$contentCV[unique=true];uid[unique=true];components(uid,$contentCV)[mode=append]
+;;CustomerGroupRestriction;QuickOrderPageLink,ExcelOrderPageLink,CatalogDownloadPageLink,OrderHistoryDownloadPageLink
+
+# CMS Navigation Nodes - Header
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);links(&linkRef);&nodeRef
+;HeaderLinksNode;;Header Links;SiteRootNode;UserLoginLink,MyAccountLink,MyCompanyLink,QuickOrderPageLink,ExcelOrderPageLink,CatalogDownloadPageLink,OrderHistoryDownloadPageLink,LogoutLink;HeaderLinksNode
+
+# Header Navigation Component - Header
+INSERT_UPDATE HeaderNavigationComponent;$contentCV[unique=true];uid[unique=true];name;wrapAfter;link(uid, $contentCV);styleClass;navigationNode(&nodeRef);dropDownLayout(code)[default=AUTO];&componentRef
+;;DefaultHeaderNavigationComponent;Header Navigation Component;0;HomepageNavLink;;HeaderLinksNode;;DefaultHeaderNavigationComponent
+
+
+
+# CMS Mini Cart Component
+INSERT_UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;totalDisplay(code);shownProductCount;lightboxBannerComponent(&componentRef)
+;;MiniCart;Mini Cart;MiniCart;TOTAL;7;
+
+
+# CMS SearchBox Components
+INSERT_UPDATE SearchBoxComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;SearchBox;Search Box;SearchBox
+
+# CMS Language and Currency Component
+INSERT_UPDATE LanguageCurrencyComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;LangCurrencyComponent;Language and Currency Component;LangCurrencyComponent
+
+
+
+
+# Site Logo
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText
+#;;/images/banners/homepage/Banner 950 x 600px Banana Boat Sport ENG.jpg;Banner 950 x 600px Banana Boat Sport ENG.jpg;$siteResource/images/banners/homepage/Banner 950 x 600px Banana Boat Sport ENG.jpg;image/jpg;Banana Boat
+#;;/images/banners/homepage/Banner 950 x 600px Ozono Duo Defense ENG.jpg;Banner 950 x 600px Ozono Duo Defense ENG.jpg;$siteResource/images/banners/homepage/Banner 950 x 600px Ozono Duo Defense ENG.jpg;image/jpg;Ozono Duo
+#;;/images/banners/homepage/Banner 950 x 600px Playtex ENG.jpg;Banner 950 x 600px Playtex ENG.jpg;$siteResource/images/banners/homepage/Banner 950 x 600px Playtex ENG.jpg;image/jpg;Playtex
+#;;/images/banners/homepage/Banner 950 x 600px SWS Mujer ENG.jpg;Banner 950 x 600px SWS Mujer ENG.jpg;$siteResource/images/banners/homepage/Banner 950 x 600px SWS Mujer ENG.jpg;image/jpg;SWS Mujer
+#;;/images/banners/homepage/Banner 950 x 600px Xtreme3 Ultimate ENG.png;Banner 950 x 600px Xtreme3 Ultimate ENG.png;$siteResource/images/banners/homepage/Banner 950 x 600px Xtreme3 Ultimate ENG.png;image/jpg;Xtreme3 
+#;;/images/banners/homepage/Banner 950 x 600px Carefree ENG.jpg;Banner 950 x 600px Carefree ENG.jpg;$siteResource/images/banners/homepage/Banner 950 x 600px Carefree ENG.jpg;image/jpg;Carefree
+#;;/images/banners/homepage/Banner 950 x 600px Stayfree ENG.jpg;Banner 950 x 600px Stayfree ENG.jpg;$siteResource/images/banners/homepage/Banner 950 x 600px Stayfree ENG.jpg;image/jpg;Stayfree
+;;/images/banners/homepage/Banner-950-x-533px-Mineral-Sport-BB-ENG.jpg;Banner-950-x-533px-Mineral-Sport-BB-ENG.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Mineral-Sport-BB-ENG.jpg;image/jpg;Banana Boat
+;;/images/banners/homepage/Banner-950-x-533px-Playtex-ENG.jpg;Banner-950-x-533px-Playtex-ENG.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Playtex-ENG.jpg;image/jpg;Playtex
+;;/images/banners/homepage/Banner-950-x-533px-SWS-Fem-ENG.jpg;Banner-950-x-533px-SWS-Fem-ENG.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-SWS-Fem-ENG.jpg;image/jpg;SWS Mujer
+;;/images/banners/homepage/Banner-950-x-533px-Xtreme3-Ultimate-ENG.jpg;Banner-950-x-533px-Xtreme3-Ultimate-ENG.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Xtreme3-Ultimate-ENG.jpg;image/jpg;Xtreme3 
+;;/images/banners/homepage/Banner-950-x-533px-Crefree-Breathe-ENG.jpg;Banner-950-x-533px-Crefree-Breathe-ENG.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Crefree-Breathe-ENG.jpg;image/jpg;Carefree
+;;/images/banners/homepage/Banner-950-x-533px-Stayfree-Carefree-ENG.jpg;Banner-950-x-533px-Stayfree-Carefree-ENG.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Stayfree-Carefree-ENG.jpg;image/jpg;Stayfree
+;;/images/banners/homepage/Banner-950-x-533px-Antioxidant-ENG.jpg;Banner-950-x-533px-Antioxidant-ENG.jpg;$siteResource/images/banners/homepage/Banner-950-x-533px-Antioxidant-ENG.jpg;image/jpg;Hawaiian Tropic
+
+
+# Site Logo Component
+INSERT_UPDATE BannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink;$picture[lang=$lang];external
+#;;HomePageBannerComponent11;Homepage banner component11;HomePageBannerComponent11;http://www.bananaboatlatinoamerica.com/;/images/banners/homepage/Banner 950 x 600px Banana Boat Sport ENG.jpg;true
+#;;HomePageBannerComponent22;Homepage banner component22;HomePageBannerComponent22;http://www.hawaiiantropiclatinoamerica.com/;/images/banners/homepage/Banner 950 x 600px Ozono Duo Defense ENG.jpg;true
+#;;HomePageBannerComponent33;Homepage banner component33;HomePageBannerComponent33;http://www.playtexlatinoamerica.com/;/images/banners/homepage/Banner 950 x 600px Playtex ENG.jpg;true
+#;;HomePageBannerComponent44;Homepage banner component44;HomePageBannerComponent44;http://www.schicklatinoamerica.com/;/images/banners/homepage/Banner 950 x 600px SWS Mujer ENG.jpg;true
+#;;HomePageBannerComponent55;Homepage banner component55;HomePageBannerComponent55;http://www.schicklatinoamerica.com/;/images/banners/homepage/Banner 950 x 600px Xtreme3 Ultimate ENG.png;true
+#;;HomePageBannerComponent66;Homepage banner component66;HomePageBannerComponent66;http://www.getcarefree.com/;/images/banners/homepage/Banner 950 x 600px Carefree ENG.jpg;true
+#;;HomePageBannerComponent77;Homepage banner component77;HomePageBannerComponent77;http://www.stayfree.com/;/images/banners/homepage/Banner 950 x 600px Stayfree ENG.jpg;true
+;;HomePageBannerComponent11;Homepage banner component11;HomePageBannerComponent11;http://www.bananaboatlatinoamerica.com/;/images/banners/homepage/Banner-950-x-533px-Mineral-Sport-BB-ENG.jpg;true
+;;HomePageBannerComponent22;Homepage banner component22;HomePageBannerComponent22;http://www.playtexlatinoamerica.com/;/images/banners/homepage/Banner-950-x-533px-Playtex-ENG.jpg;true
+;;HomePageBannerComponent33;Homepage banner component33;HomePageBannerComponent33;http://www.schicklatinoamerica.com/;/images/banners/homepage/Banner-950-x-533px-SWS-Fem-ENG.jpg;true
+;;HomePageBannerComponent44;Homepage banner component44;HomePageBannerComponent44;http://www.schicklatinoamerica.com/;/images/banners/homepage/Banner-950-x-533px-Xtreme3-Ultimate-ENG.jpg;true
+;;HomePageBannerComponent55;Homepage banner component55;HomePageBannerComponent55;http://www.getcarefree.com/;/images/banners/homepage/Banner-950-x-533px-Crefree-Breathe-ENG.jpg;true
+;;HomePageBannerComponent66;Homepage banner component66;HomePageBannerComponent66;http://www.stayfree.com/;/images/banners/homepage/Banner-950-x-533px-Stayfree-Carefree-ENG.jpg;true
+;;HomePageBannerComponent77;Homepage banner component77;HomePageBannerComponent77;http://www.hawaiiantropiclatinoamerica.com/;/images/banners/homepage/Banner-950-x-533px-Antioxidant-ENG.jpg;true
+
+
+INSERT_UPDATE RotatingImagesComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;banners(&componentRef)
+;;rotatingbanner;rotatingbanner;rotatingbanner;HomePageBannerComponent11,HomePageBannerComponent22,HomePageBannerComponent33,HomePageBannerComponent44,HomePageBannerComponent55,HomePageBannerComponent66,HomePageBannerComponent77
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;Section1Slot-EnergizerHomePageBanner;rotatingbanner
+# ContentSlotForPage 
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true];;;
+;;Section1-EnergizerHomePageBanner;Section1;;Section1Slot-EnergizerHomePageBanner;;;
+
+
+
+# Content Slots
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;SiteLogoSlot;SiteLogoComponent
+;;NavigationBarSlot;Feminine_Care_Bar_Component,Infant_Care_Bar_Component,Shaving_Bar_Component,Skin_Care_Bar_Component,Sun_Care_Bar_Component,PBG_Bar_Component
+;;HeaderLinksSlot;DefaultHeaderNavigationComponent
+;;SearchBoxSlot;SearchBox,LangCurrencyComponent
+;;MiniCartSlot;MiniCart
+
+#add to cart component to PDP
+# CMS Action Restrictions
+INSERT_UPDATE CMSActionRestriction;$contentCV[unique=true];uid[unique=true];name;
+;;ActionRestriction;A CMSAction restriction;
+
+# CMS ProductAddToCart Components
+INSERT_UPDATE ProductAddToCartComponent;$contentCV[unique=true];uid[unique=true];name;actions(&actionRef);&componentRef
+;;AddToCart;Product Add To Cart;AddToCartAction;AddToCart
+
+# CMS AddToCart Action
+INSERT_UPDATE AddToCartAction;$contentCV[unique=true];uid[unique=true];url;name;restrictions(uid,$contentCV);&actionRef
+;;AddToCartAction;/cart/add;Product Add To Cart Action;ActionRestriction;AddToCartAction
+
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(uid,$contentCV)
+;;AddToCartSlot;AddToCart
+
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ProductDetailsPageTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;AddToCart-ProductDetails;AddToCart;;AddToCartSlot;true
+
+
+
+
+# CMS Mini Cart Component
+INSERT_UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;totalDisplay(code);shownProductCount;lightboxBannerComponent(&componentRef);restrictions(uid,$contentCV)
+;;MiniCart;Mini Cart;MiniCart;TOTAL;3;;CustomerGroupRestriction
+
+
+# Footer Component
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&componentRef;target(code)[default='sameWindow']
+;;AboutUSLink;About US Link;"http://edgewell.com/about-us/";AboutUSLink;newWindow
+#;;CopyRightLink;CopyRight Link;"";CopyRightLink;sameWindow
+#;;TrademarkLink;Trademark Link;"http://www.energizerholdings.com/en/Pages/default.aspx";TrademarkLink;sameWindow
+;;TermsAndConditionsLink;Terms And Conditions Link;"http://www.energizer.com/energizer-legal-statement";TermsAndConditionsLink;newWindow
+;;PrivacyPolicyLink;Privacy Policy Link;"http://edgewell.com/privacy-policy/";PrivacyPolicyLink;newWindow
+#;;ContactUSLink;Contact US Link;"http://www.energizerholdings.com/en/pages/contactus.aspx";ContactUSLink;newWindow
+;;LegalLink;Legal Link;"http://edgewell.com/legal/";LegalLink;newWindow
+;;FAQLink;FAQ Link;"http://edgewell.com/legal/";FAQLink;newWindow
+
+#INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];mime;realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite=true];folder(qualifier)[default='images'];;
+#;;frequentlyAskedQuestionsPage;text/png;;;;;
+
+# Simple Content Pages
+#UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];previewImage(code, $contentCV);linkComponents(uid, $contentCV);;;;;
+#;;faq;frequentlyAskedQuestionsPage;FAQLink;;;;;
+
+INSERT_UPDATE CMSNavigationNode ;uid[unique=true];$contentCV[unique=true]; name;parent(uid, $contentCV);links(&componentRef);&nodeRef
+;SiteRootNode; ;   SiteRootNode; root;;SiteRootNode;EnergizerNavNode; ; Energizer Site;  SiteRootNode;;EnergizerNavNode
+;FooterNavNode;  ;Footer Nav Node;root; AboutUSLink,,,PrivacyPolicyLink,ContactUSLink,LegalLink,FAQLink; FooterNavNode
+
+INSERT_UPDATE FooterComponent;$contentCV[unique=true];uid[unique=true];wrapAfter;navigationNodes(&nodeRef);&componentRef
+;;FooterComponent;2;FooterNavNode;FooterComponent
+
+
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang];&componentRef
+;;FooterParagraphComponent;"<br/>&copy;2019 Edgewell Personal Care &nbsp;&nbsp;&nbsp;SCHICK, WILKINSON SWORD, PERSONNA, EDGE, SKINTIMATE, GENTLE GLIDE, 360&deg;, 360&deg; PROTECTION, PLAY ON, SPORT, SPORT LEVEL PROTECTION, FLEXFIT, CAREFREE, STAYFREE, THERMOCONTROL, O.B., BANANA BOAT, HAWAIIAN TROPIC, LITTER GENIE, WET ONES and associated word marks and logos are trademarks or registered trademarks of Edgewell Personal Care Brands, LLC (or an Edgewell affiliate company) in the United States and other countries throughout the world. PLAYTEX is a trademark used under license.";FooterParagraphComponent
+;;EmptyCartMessageParagraphComponent;"<h2>You have no items in your Cart.</h2>";EmptyCartMessageParagraphComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;FooterSlot;FooterComponent,FooterParagraphComponent
+;;EmptyCartMessageParagraphComponentSlot;EmptyCartMessageParagraphComponent
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='CartPageTemplate'];contentSlot(uid,$contentCV)[unique=true]
+;;MiddleContent-CartPageSlot;MiddleContent;;EmptyCartMessageParagraphComponentSlot
+
+
+#removing the search text box from the login page as suggested in the observations
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;LoginPage_SearchBoxSlot;LangCurrencyComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position;contentSlot(uid,$contentCV)[unique=true];page(uid,$contentCV)
+;;SearchBox-LoginPage1;SearchBox;LoginPage_SearchBoxSlot;login
+
+
+
+
+######Contact Us Page
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=en];&componentRef
+;;ContactUsParagraphComponent;"<br/>&nbsp;&nbsp;&nbsp;<br/><h3>Contact Us </h3><br/><b>E-mail us at</b> : Edgewellics@edgewell.com<br/><b>Call us at</b> : (+) 1 (314) 594 1900<br/><br/><b>Write to us at </b>: Edgewell Personal Care, Timberlake Corporate Center III, 1350 Timberlake Manor Parkway, Chesterfield, MO 63017, Attention: International Customer Service";ContactUsParagraphComponent
+
+# Content Slots TopHeaderSlot-ContentPage1
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;TopHeaderSlot-ContentPage1;ContactUsParagraphComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='contactUs'];contentSlot(uid,$contentCV)[unique=true]
+;; Section1-ContentPage1;Section1;; TopHeaderSlot-ContentPage1
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&componentRef;target(code)[default='sameWindow']
+;;ContactUSLink; Contact US Link ;/ContactUs; ContactUSLink;
+
+
+
+
+###### Apparel DE Terms And Conditions Page
+
+# CMSParagraphComponent
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;;;;
+;;termsAndConditionsMenuParagraph;Terms and Conditions Paragraph;TermsAndConditionsMenuParagraph;;;;
+;;termsAndConditionsTextParagraph;Terms and Conditions Paragraph;TermsAndConditionsTextParagraph;;;;
+ 
+
+# ContentSlot
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef);;;
+;;Section2ASlot-TermsAndConditions;Section2A Slot for Terms and Conditions Page;true;TermsAndConditionsMenuParagraph;;;
+;;Section2BSlot-TermsAndConditions;Section2B Slot for Terms and Conditions Page;true;TermsAndConditionsTextParagraph;;;
+
+# ContentSlotForPage
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='termsAndConditions'];contentSlot(uid,$contentCV)[unique=true];;;
+;;Section2A-TermsAndConditions;Section2A;;Section2ASlot-TermsAndConditions;;;
+;;Section2B-TermsAndConditions;Section2B;;Section2BSlot-TermsAndConditions;;;
+
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=en];
+;;termsAndConditionsMenuParagraph;""
+;;termsAndConditionsTextParagraph;"</br></br></br><div style='position: absolute; left: 10%;'>Distributor understands, acknowledges and agrees that all sales made by Edgewell to Distributor are </br> subject to the terms and conditions of sale set </br> forth in the distribution agreement applicable to Distributor.
+</div>"
+
+INSERT_UPDATE SearchBoxComponent;$contentCV[unique=true];uid[unique=true];maxProducts
+;;SearchBox;10
