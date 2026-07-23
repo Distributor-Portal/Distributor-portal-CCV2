@@ -5,5 +5,5 @@
 // Generated on: 2015.04.21 at 06:51:43 PM IST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://Microsoft.LobServices.Sap/2007/03/Rfc/", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://Microsoft.LobServices.Sap/2007/03/Rfc/", elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package com.energizer.core.invoicepdf.jaxb.xsd.objects;

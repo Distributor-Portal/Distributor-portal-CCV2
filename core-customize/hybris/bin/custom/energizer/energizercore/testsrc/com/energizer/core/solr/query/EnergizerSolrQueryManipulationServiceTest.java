@@ -21,7 +21,7 @@ import de.hybris.platform.servicelayer.user.UserService;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;

@@ -20,10 +20,9 @@ import com.energizer.storefront.breadcrumb.ResourceBreadcrumbBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.ui.context.Theme;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -48,7 +47,6 @@ public class DefaultResourceBreadcrumbBuilder implements ResourceBreadcrumbBuild
 		return i18nService;
 	}
 
-	@Required
 	public void setI18nService(final I18NService i18nService)
 	{
 		this.i18nService = i18nService;

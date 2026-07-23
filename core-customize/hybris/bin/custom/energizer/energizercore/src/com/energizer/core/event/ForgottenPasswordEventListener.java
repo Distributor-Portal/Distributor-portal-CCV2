@@ -22,8 +22,6 @@ import de.hybris.platform.processengine.BusinessProcessService;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.servicelayer.util.ServicesUtil;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Event listener for forgotten password functionality.
@@ -38,7 +36,6 @@ public class ForgottenPasswordEventListener extends AbstractSiteEventListener<Fo
 		return businessProcessService;
 	}
 
-	@Required
 	public void setBusinessProcessService(final BusinessProcessService businessProcessService)
 	{
 		this.businessProcessService = businessProcessService;
@@ -49,7 +46,6 @@ public class ForgottenPasswordEventListener extends AbstractSiteEventListener<Fo
 		return modelService;
 	}
 
-	@Required
 	public void setModelService(final ModelService modelService)
 	{
 		this.modelService = modelService;

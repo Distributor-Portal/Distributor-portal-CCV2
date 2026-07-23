@@ -9,7 +9,7 @@ import de.hybris.platform.servicelayer.search.SearchResult;
 
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import com.energizer.core.model.EnergizerB2BUnitModel;
 import com.energizer.services.product.dao.EnergizerB2BUnitDao;

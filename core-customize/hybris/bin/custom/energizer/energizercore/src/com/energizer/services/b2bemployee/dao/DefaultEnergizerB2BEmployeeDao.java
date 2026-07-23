@@ -18,11 +18,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.annotation.Resource;
-
-import org.springframework.util.StringUtils;
+import jakarta.annotation.Resource;
 
 import com.energizer.core.model.EnergizerB2BCustomerModel;
+
+import org.springframework.util.ObjectUtils;
 import com.energizer.core.model.EnergizerB2BEmployeeModel;
 import com.energizer.core.model.EnergizerB2BUnitModel;
 
@@ -150,17 +150,17 @@ public class DefaultEnergizerB2BEmployeeDao implements EnergizerB2BEmployeeDao
 			String dateFilterQuery = null;
 			final HashMap<String, Object> params = new HashMap<String, Object>();
 
-			if ((null == fromDate || StringUtils.isEmpty(fromDate)) && !(null == toDate || StringUtils.isEmpty(toDate)))
+			if ((null == fromDate || ObjectUtils.isEmpty(fromDate)) && !(null == toDate || ObjectUtils.isEmpty(toDate)))
 			{
 				dateFilterQuery = "AND {o.creationTime} <=?toDate";
 				params.put("toDate", toDate);
 			}
-			else if (!(null == fromDate || StringUtils.isEmpty(fromDate)) && (null == toDate || StringUtils.isEmpty(toDate)))
+			else if (!(null == fromDate || ObjectUtils.isEmpty(fromDate)) && (null == toDate || ObjectUtils.isEmpty(toDate)))
 			{
 				dateFilterQuery = "AND {o.creationTime} >=?fromDate";
 				params.put("fromDate", fromDate);
 			}
-			else if (!(null == fromDate || StringUtils.isEmpty(fromDate)) && !(null == toDate || StringUtils.isEmpty(toDate)))
+			else if (!(null == fromDate || ObjectUtils.isEmpty(fromDate)) && !(null == toDate || ObjectUtils.isEmpty(toDate)))
 			{
 				dateFilterQuery = "AND {o.creationTime} >=?fromDate AND {o.creationTime} <=?toDate";
 				params.put("fromDate", fromDate);

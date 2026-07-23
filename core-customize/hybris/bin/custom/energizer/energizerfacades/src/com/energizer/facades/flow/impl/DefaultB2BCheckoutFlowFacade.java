@@ -15,8 +15,6 @@ package com.energizer.facades.flow.impl;
 
 import de.hybris.platform.b2bacceleratorfacades.order.impl.DefaultB2BCheckoutFacade;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import com.energizer.core.checkout.flow.B2BCheckoutFlowStrategy;
 import com.energizer.core.checkout.pci.B2BCheckoutPciStrategy;
 import com.energizer.core.enums.B2BCheckoutFlowEnum;
@@ -53,7 +51,6 @@ public class DefaultB2BCheckoutFlowFacade extends DefaultB2BCheckoutFacade imple
 		return checkoutFlowStrategy;
 	}
 
-	@Required
 	public void setCheckoutFlowStrategy(final B2BCheckoutFlowStrategy strategy)
 	{
 		this.checkoutFlowStrategy = strategy;
@@ -64,7 +61,6 @@ public class DefaultB2BCheckoutFlowFacade extends DefaultB2BCheckoutFacade imple
 		return this.b2BCheckoutPciStrategy;
 	}
 
-	@Required
 	public void setCheckoutPciStrategy(final B2BCheckoutPciStrategy strategy)
 	{
 		this.b2BCheckoutPciStrategy = strategy;

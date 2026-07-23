@@ -3,6 +3,8 @@
  */
 package com.energizer.core.event;
 
+import java.io.Serial;
+
 /**
  * @author Srivenkata_N
  *
@@ -13,6 +15,7 @@ public class B2BEmployeeUnlockAccountEvent extends B2BEmployeeAbstractCommerceUs
 	/**
 	 *
 	 */
+	@Serial
 	private static final long serialVersionUID = 1L;
 	private String token;
 	//private EnergizerB2BEmployeeModel salesRepUser;

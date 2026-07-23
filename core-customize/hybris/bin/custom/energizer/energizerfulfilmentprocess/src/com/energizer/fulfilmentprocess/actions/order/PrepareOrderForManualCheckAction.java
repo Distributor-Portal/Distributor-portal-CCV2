@@ -24,7 +24,6 @@ import de.hybris.platform.servicelayer.util.ServicesUtil;
 import de.hybris.platform.task.RetryLaterException;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -61,7 +60,6 @@ public class PrepareOrderForManualCheckAction extends AbstractProceduralAction<O
 		return eventService;
 	}
 
-	@Required
 	public void setEventService(final EventService eventService)
 	{
 		this.eventService = eventService;

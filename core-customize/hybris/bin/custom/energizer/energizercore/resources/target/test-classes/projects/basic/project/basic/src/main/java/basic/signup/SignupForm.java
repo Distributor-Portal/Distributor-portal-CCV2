@@ -1,5 +1,7 @@
 package basic.signup;
 
+import jakarta.validation.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.*;
 
 import basic.account.Account;

@@ -78,7 +78,7 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;

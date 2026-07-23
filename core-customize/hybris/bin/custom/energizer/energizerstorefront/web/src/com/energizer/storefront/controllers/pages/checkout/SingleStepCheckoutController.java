@@ -68,16 +68,16 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.mail.internet.AddressException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.validation.ValidationException;
-import javax.xml.bind.JAXBException;
+import jakarta.annotation.Resource;
+import jakarta.mail.internet.AddressException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
+import jakarta.xml.bind.JAXBException;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.annotation.Scope;
@@ -86,8 +86,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -708,7 +710,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 		return ControllerConstants.Views.Fragments.SingleStepCheckout.DeliveryAddressFormPopup;
 	}
 
-	@RequestMapping(value = "/summary/createUpdateDeliveryAddress.json", method = RequestMethod.POST)
+	@PostMapping("/summary/createUpdateDeliveryAddress.json")
 	@RequireHardLogIn
 	public String createUpdateDeliveryAddress(final Model model, @Valid
 	final AddressForm form, final BindingResult bindingResult)
@@ -776,7 +778,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 
 
 	@ResponseBody
-	@RequestMapping(value = "/summary/setCostCenter.json", method = RequestMethod.POST)
+	@PostMapping("/summary/setCostCenter.json")
 	@RequireHardLogIn
 	public CartData setCostCenter(@RequestParam(value = "costCenterId")
 	final String costCenterId) throws Exception
@@ -799,7 +801,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 
 
 	@ResponseBody
-	@RequestMapping(value = "/summary/setDeliveryDate.json", method = RequestMethod.POST)
+	@PostMapping("/summary/setDeliveryDate.json")
 	@RequireHardLogIn
 	public CartData setDeliveryDate(@RequestParam(value = "deliveryDate")
 	final String deliveryDate) throws ParseException, Exception
@@ -819,7 +821,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 
 
 	@ResponseBody
-	@RequestMapping(value = "/summary/updateCostCenter.json", method = RequestMethod.POST)
+	@PostMapping("/summary/updateCostCenter.json")
 	@RequireHardLogIn
 	public CartData updateCostCenterForCart(@RequestParam(value = "costCenterId")
 	final String costCenterId)
@@ -841,7 +843,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/summary/setPaymentDetails.json", method = RequestMethod.POST)
+	@PostMapping("/summary/setPaymentDetails.json")
 	@RequireHardLogIn
 	public CartData setPaymentDetails(@RequestParam(value = "paymentId")
 	final String paymentId)
@@ -859,7 +861,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 
 
 	@ResponseBody
-	@RequestMapping(value = "/summary/setPaymentType.json", method = RequestMethod.POST)
+	@PostMapping("/summary/setPaymentType.json")
 	@RequireHardLogIn
 	public CartData setPaymentType(@RequestParam(value = "paymentType")
 	final String paymentType)
@@ -876,7 +878,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 
 
 	@ResponseBody
-	@RequestMapping(value = "/summary/setPurchaseOrderNumber.json", method = RequestMethod.POST)
+	@PostMapping("/summary/setPurchaseOrderNumber.json")
 	@RequireHardLogIn
 	public CartData setPurchaseOrderNumber(@RequestParam(value = "purchaseOrderNumber")
 	final String purchaseOrderNumber) throws Exception
@@ -953,7 +955,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 		return ControllerConstants.Views.Fragments.SingleStepCheckout.PaymentDetailsFormPopup;
 	}
 
-	@RequestMapping(value = "/summary/createUpdatePaymentDetails.json", method = RequestMethod.POST)
+	@PostMapping("/summary/createUpdatePaymentDetails.json")
 	@RequireHardLogIn
 	public String createUpdatePaymentDetails(final Model model, @Valid
 	final PaymentDetailsForm form, final BindingResult bindingResult)
@@ -1558,7 +1560,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 		}
 	}
 
-	@RequestMapping(value = "/uploadDeliveryNotesFile", method = RequestMethod.POST)
+	@PostMapping("/uploadDeliveryNotesFile")
 	@RequireHardLogIn
 	@ResponseBody
 	public String uploadDeliveryNotesFile(final Model model, @RequestParam("file")
@@ -1633,7 +1635,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 
 	}
 
-	@RequestMapping(value = "/downloadDeliveryNoteFile", method = RequestMethod.GET)
+	@GetMapping("/downloadDeliveryNoteFile")
 	public void downloadDeliveryNoteFile(@RequestParam("cartID")
 	final String cartID, @RequestParam("fileName")
 	final String fileName, @RequestParam(value = "inline", required = true)
@@ -1693,7 +1695,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 		 */
 	}
 
-	@RequestMapping(value = "/removeDeliveryNoteFile", method = RequestMethod.POST)
+	@PostMapping("/removeDeliveryNoteFile")
 	@ResponseBody
 	public String removeDeliveryNoteFile(final Model model, @RequestParam("cartID")
 	final String cartID, @RequestParam("fileName")

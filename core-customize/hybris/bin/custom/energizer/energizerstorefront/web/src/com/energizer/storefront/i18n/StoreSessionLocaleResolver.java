@@ -17,10 +17,9 @@ import de.hybris.platform.servicelayer.i18n.I18NService;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
@@ -39,7 +38,6 @@ public class StoreSessionLocaleResolver implements LocaleResolver
 		return i18NService;
 	}
 
-	@Required
 	public void setI18NService(final I18NService i18NService)
 	{
 		this.i18NService = i18NService;

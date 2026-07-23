@@ -27,8 +27,6 @@ import de.hybris.platform.servicelayer.model.ModelService;
 import java.util.Date;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 public abstract class AbstractOrderEventListener<T extends AbstractEvent> extends AbstractEventListener<T>
 {
@@ -44,7 +42,6 @@ public abstract class AbstractOrderEventListener<T extends AbstractEvent> extend
 		return modelService;
 	}
 
-	@Required
 	public void setModelService(final ModelService modelService)
 	{
 		this.modelService = modelService;
@@ -55,7 +52,6 @@ public abstract class AbstractOrderEventListener<T extends AbstractEvent> extend
 		return orderHistoryService;
 	}
 
-	@Required
 	public void setOrderHistoryService(final OrderHistoryService orderHistoryService)
 	{
 		this.orderHistoryService = orderHistoryService;
@@ -66,7 +62,6 @@ public abstract class AbstractOrderEventListener<T extends AbstractEvent> extend
 		return i18NService;
 	}
 
-	@Required
 	public void setI18NService(final I18NService i18nService)
 	{
 		i18NService = i18nService;
@@ -77,7 +72,6 @@ public abstract class AbstractOrderEventListener<T extends AbstractEvent> extend
 		return businessProcessService;
 	}
 
-	@Required
 	public void setBusinessProcessService(final BusinessProcessService businessProcessService)
 	{
 		this.businessProcessService = businessProcessService;
@@ -97,7 +91,7 @@ public abstract class AbstractOrderEventListener<T extends AbstractEvent> extend
 	{
 		if (order.getLocale() != null)
 		{
-			getI18NService().setCurrentLocale(new Locale(order.getLocale()));
+			getI18NService().setCurrentLocale(Locale.of(order.getLocale()));
 		}
 	}
 

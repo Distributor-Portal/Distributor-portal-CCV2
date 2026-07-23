@@ -22,8 +22,6 @@ import de.hybris.platform.processengine.action.AbstractProceduralAction;
 import de.hybris.platform.processengine.model.BusinessProcessParameterModel;
 import de.hybris.platform.tx.Transaction;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Action for cart calculation
@@ -61,7 +59,6 @@ public class CalculateCartAction extends AbstractProceduralAction<ReplenishmentP
 		return commerceCartService;
 	}
 
-	@Required
 	public void setCommerceCartService(final CommerceCartService commerceCartService)
 	{
 		this.commerceCartService = commerceCartService;
@@ -72,7 +69,6 @@ public class CalculateCartAction extends AbstractProceduralAction<ReplenishmentP
 		return impersonationService;
 	}
 
-	@Required
 	public void setImpersonationService(final ImpersonationService impersonationService)
 	{
 		this.impersonationService = impersonationService;

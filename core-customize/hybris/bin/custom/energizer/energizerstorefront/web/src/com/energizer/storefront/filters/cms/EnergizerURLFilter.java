@@ -20,12 +20,13 @@ import de.hybris.platform.jalo.JaloObjectNoLongerValidException;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -94,8 +95,8 @@ public class EnergizerURLFilter extends OncePerRequestFilter implements CMSFilte
 			final String requestURL = httpRequest.getRequestURL().toString();
 			final String websiteURL = configurationService.getConfiguration().getString(
 					WEBSITE + getCurrentCmsSite().getUid() + HTTPS);
-			final URL aURL = new URL(requestURL);
-			final URL bURL = new URL(websiteURL);
+			final URL aURL = URI.create(requestURL).toURL();
+			final URL bURL = URI.create(websiteURL).toURL();
 			if (requestURL.indexOf(bURL.getHost()) != -1 && requestURL.indexOf(aURL.getHost()) != -1
 					&& requestURL.indexOf(bURL.getHost()) != requestURL.lastIndexOf(aURL.getHost()))
 			{

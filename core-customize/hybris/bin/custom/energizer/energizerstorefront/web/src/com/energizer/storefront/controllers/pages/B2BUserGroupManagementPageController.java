@@ -28,15 +28,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,7 +60,7 @@ import com.energizer.storefront.forms.B2BUserGroupForm;
 @RequestMapping("/my-company/organization-management/manage-usergroups")
 public class B2BUserGroupManagementPageController extends MyCompanyPageController
 {
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	@RequireHardLogIn
 	public String getPagedB2BUserGroups(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -80,7 +82,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUserGroupsPage;
 	}
 
-	@RequestMapping(value = "/disable", method = RequestMethod.GET)
+	@GetMapping("/disable")
 	@RequireHardLogIn
 	public String disableUsergroupConfirmation(@RequestParam("usergroup") final String usergroup, final Model model)
 			throws CMSItemNotFoundException
@@ -98,7 +100,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUsergroupDisableConfirmationPage;
 	}
 
-	@RequestMapping(value = "/disable", method = RequestMethod.POST)
+	@PostMapping("/disable")
 	@RequireHardLogIn
 	public String disableUserGroup(@RequestParam("usergroup") final String usergroup, final Model model)
 			throws CMSItemNotFoundException
@@ -107,7 +109,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 		return String.format(REDIRECT_TO_USERGROUP_DETAILS, urlEncode(usergroup));
 	}
 
-	@RequestMapping(value = "/remove", method = RequestMethod.GET)
+	@GetMapping("/remove")
 	@RequireHardLogIn
 	public String removeUsergroupConfirmation(@RequestParam("usergroup") final String usergroup, final Model model)
 			throws CMSItemNotFoundException
@@ -125,7 +127,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUsergroupRemoveConfirmationPage;
 	}
 
-	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	@PostMapping("/remove")
 	@RequireHardLogIn
 	public String removeUserGroup(@RequestParam("usergroup") final String usergroup, final Model model,
 			final RedirectAttributes redirectModel) throws CMSItemNotFoundException
@@ -136,7 +138,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 		return REDIRECT_TO_USER_GROUPS_PAGE;
 	}
 
-	@RequestMapping(value = "/permissions", method = RequestMethod.GET)
+	@GetMapping("/permissions")
 	@RequireHardLogIn
 	public String getPagedPermissionsForUserGroup(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -184,7 +186,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 		return b2bPermissionFacade.removePermissionFromUserGroup(usergroup, permission);
 	}
 
-	@RequestMapping(value = "/details", method = RequestMethod.GET)
+	@GetMapping("/details")
 	@RequireHardLogIn
 	public String viewUserGroupDetails(@RequestParam("usergroup") final String usergroup, final Model model,
 			final HttpServletRequest request) throws CMSItemNotFoundException
@@ -209,7 +211,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUsergroupViewPage;
 	}
 
-	@RequestMapping(value = "/members", method = RequestMethod.GET)
+	@GetMapping("/members")
 	@RequireHardLogIn
 	public String getPagedCustomersForUserGroup(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -271,7 +273,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 		return userData;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	@GetMapping("/edit")
 	@RequireHardLogIn
 	public String editUserGroup(@RequestParam("usergroup") final String usergroup, final Model model)
 			throws CMSItemNotFoundException
@@ -311,7 +313,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUsergroupEditPage;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	@PostMapping("/edit")
 	@RequireHardLogIn
 	public String editUserGroup(@RequestParam("usergroup") final String usergroup, @Valid final B2BUserGroupForm userGroupForm,
 			final BindingResult bindingResult, final Model model, final RedirectAttributes redirectModel)
@@ -396,7 +398,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 
 	}
 
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	@GetMapping("/create")
 	@RequireHardLogIn
 	public String createUserGroup(final Model model) throws CMSItemNotFoundException
 	{
@@ -422,7 +424,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUsergroupCreatePage;
 	}
 
-	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	@PostMapping("/create")
 	@RequireHardLogIn
 	public String createUserGroup(@Valid final B2BUserGroupForm userGroupForm, final BindingResult bindingResult,
 			final Model model, final RedirectAttributes redirectModel) throws CMSItemNotFoundException

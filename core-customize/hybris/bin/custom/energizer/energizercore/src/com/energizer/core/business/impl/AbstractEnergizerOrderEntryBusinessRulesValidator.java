@@ -11,7 +11,7 @@ import de.hybris.platform.servicelayer.exceptions.ModelNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 

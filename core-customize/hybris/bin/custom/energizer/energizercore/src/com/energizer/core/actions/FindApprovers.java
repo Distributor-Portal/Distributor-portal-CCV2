@@ -15,9 +15,8 @@ import de.hybris.platform.task.RetryLaterException;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.energizer.core.model.EnergizerB2BCustomerModel;
 import com.energizer.services.order.EnergizerB2BPermissionService;
@@ -105,7 +104,6 @@ public class FindApprovers extends AbstractSimpleB2BApproveOrderDecisionAction
 		return this.b2bPermissionService;
 	}
 
-	@Required
 	public void setB2bPermissionService(final EnergizerB2BPermissionService b2bPermissionService)
 	{
 		this.b2bPermissionService = b2bPermissionService;
@@ -116,7 +114,6 @@ public class FindApprovers extends AbstractSimpleB2BApproveOrderDecisionAction
 		return this.permissionResultHelper;
 	}
 
-	@Required
 	public void setPermissionResultHelper(final B2BPermissionResultHelperImpl permissionResultHelper)
 	{
 		this.permissionResultHelper = permissionResultHelper;

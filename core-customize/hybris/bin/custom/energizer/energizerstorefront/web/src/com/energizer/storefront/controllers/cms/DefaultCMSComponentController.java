@@ -18,8 +18,8 @@ import de.hybris.platform.servicelayer.exceptions.AttributeNotSupportedException
 import de.hybris.platform.servicelayer.model.ModelService;
 import com.energizer.storefront.controllers.ControllerConstants;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;

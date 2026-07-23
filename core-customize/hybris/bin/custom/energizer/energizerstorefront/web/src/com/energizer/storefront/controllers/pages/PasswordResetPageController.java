@@ -24,17 +24,18 @@ import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import de.hybris.platform.servicelayer.user.UserService;
 import de.hybris.platform.util.Config;
 
-import javax.annotation.Resource;
-import javax.validation.Valid;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -133,7 +134,7 @@ public class PasswordResetPageController extends AbstractPageController
 
 	//	WeSell Implementation -  Added Code Changes for Forgot Password/Unlock Account for Sales Rep login - by Venkat
 
-	@RequestMapping(value = "/request", method = RequestMethod.GET)
+	@GetMapping("/request")
 	public String getPasswordRequest(final Model model) throws CMSItemNotFoundException
 	{
 		model.addAttribute(new ForgottenPwdForm());
@@ -141,7 +142,7 @@ public class PasswordResetPageController extends AbstractPageController
 		return ControllerConstants.Views.Fragments.Password.PasswordResetRequestPopup;
 	}
 
-	@RequestMapping(value = "/request", method = RequestMethod.POST)
+	@PostMapping("/request")
 	public String passwordRequest(@Valid
 	final ForgottenPwdForm form, final BindingResult bindingResult) throws CMSItemNotFoundException
 	{
@@ -164,7 +165,7 @@ public class PasswordResetPageController extends AbstractPageController
 	}
 
 
-	@RequestMapping(value = "/reset-password", method = RequestMethod.GET)
+	@GetMapping("/reset-password")
 	public String getPasswordResetPage(final Model model, @RequestParam(required = false)
 	final String uid) throws CMSItemNotFoundException
 	{
@@ -182,7 +183,7 @@ public class PasswordResetPageController extends AbstractPageController
 	}
 
 
-	@RequestMapping(value = "/reset-password", method = RequestMethod.POST)
+	@PostMapping("/reset-password")
 	public String passwordResetPage(@Valid
 	final ResetPwdForm resetPwdForm, final BindingResult bindingResult, final Model model) throws CMSItemNotFoundException
 	{
@@ -265,7 +266,7 @@ public class PasswordResetPageController extends AbstractPageController
 	}
 
 
-	@RequestMapping(value = "/request-page", method = RequestMethod.GET)
+	@GetMapping("/request-page")
 	public String getPasswordRequestPage(final Model model, @RequestParam(required = false)
 	final String uid) throws CMSItemNotFoundException
 	{
@@ -282,7 +283,7 @@ public class PasswordResetPageController extends AbstractPageController
 		return ControllerConstants.Views.Fragments.Password.PasswordResetRequestPage;
 	}
 
-	@RequestMapping(value = "/request-page", method = RequestMethod.POST)
+	@PostMapping("/request-page")
 	public String passwordRequestPage(@Valid
 	final ForgottenPwdForm forgottenPwdForm, final BindingResult bindingResult, final Model model) throws CMSItemNotFoundException
 	{
@@ -377,7 +378,7 @@ public class PasswordResetPageController extends AbstractPageController
 
 	}
 
-	@RequestMapping(value = "/change", method = RequestMethod.GET)
+	@GetMapping("/change")
 	public String getChangePassword(@RequestParam(required = false)
 	final String token, final Model model) throws CMSItemNotFoundException
 	{
@@ -394,7 +395,7 @@ public class PasswordResetPageController extends AbstractPageController
 		return ControllerConstants.Views.Pages.Password.PasswordResetChangePage;
 	}
 
-	@RequestMapping(value = "/change", method = RequestMethod.POST)
+	@PostMapping("/change")
 	public String changePassword(@Valid
 	final UpdatePwdForm form, final BindingResult bindingResult, final Model model, final RedirectAttributes redirectModel)
 			throws CMSItemNotFoundException
@@ -486,7 +487,7 @@ public class PasswordResetPageController extends AbstractPageController
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(page));
 	}
 
-	@RequestMapping(value = "/unlock-account", method = RequestMethod.GET)
+	@GetMapping("/unlock-account")
 	public String getUnlockAccountRequestPage(final Model model, @RequestParam(required = false)
 	final String uid) throws CMSItemNotFoundException
 	{
@@ -502,7 +503,7 @@ public class PasswordResetPageController extends AbstractPageController
 		return ControllerConstants.Views.Fragments.Account.UnlockAccountRequestPage;
 	}
 
-	@RequestMapping(value = "/unlock-account", method = RequestMethod.POST)
+	@PostMapping("/unlock-account")
 	public String unlockAccountRequestPage(@Valid
 	final UnlockAccountForm unlockAccountForm, final BindingResult bindingResult, final Model model)
 			throws CMSItemNotFoundException
@@ -588,7 +589,7 @@ public class PasswordResetPageController extends AbstractPageController
 		return ControllerConstants.Views.Fragments.Account.UnlockAccountRequestPage;
 	}
 
-	@RequestMapping(value = "/confirm-account", method = RequestMethod.GET)
+	@GetMapping("/confirm-account")
 	public String getConfirmAccountPage(@RequestParam(required = false)
 	final String token, final Model model) throws CMSItemNotFoundException
 	{
@@ -652,7 +653,7 @@ public class PasswordResetPageController extends AbstractPageController
 		return ControllerConstants.Views.Fragments.Account.confirmAccountRequestPage;
 	}
 
-	@RequestMapping(value = "/confirm-account", method = RequestMethod.POST)
+	@PostMapping("/confirm-account")
 	public String confirmAccount(@Valid
 	final ConfirmAccountForm form, final BindingResult bindingResult, final Model model, final RedirectAttributes redirectModel)
 			throws CMSItemNotFoundException

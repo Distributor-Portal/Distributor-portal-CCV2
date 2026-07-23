@@ -12,11 +12,10 @@ import de.hybris.platform.solrfacetsearch.search.RawQuery;
 import de.hybris.platform.solrfacetsearch.search.SearchQuery;
 import de.hybris.platform.solrfacetsearch.search.SearchQuery.Operator;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.util.ClientUtils;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -41,7 +40,6 @@ public class DefaultEnergizerFreeTextQueryBuilder extends AbstractFreeTextQueryB
 		return propertyName;
 	}
 
-	@Required
 	public void setPropertyName(final String propertyName)
 	{
 		this.propertyName = propertyName;
@@ -52,7 +50,6 @@ public class DefaultEnergizerFreeTextQueryBuilder extends AbstractFreeTextQueryB
 		return boost;
 	}
 
-	@Required
 	public void setBoost(final int boost)
 	{
 		this.boost = boost;

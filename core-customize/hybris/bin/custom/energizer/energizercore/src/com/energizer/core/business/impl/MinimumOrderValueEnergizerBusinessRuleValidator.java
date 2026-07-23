@@ -6,7 +6,7 @@ package com.energizer.core.business.impl;
 import de.hybris.platform.commercefacades.order.data.AbstractOrderData;
 import de.hybris.platform.util.localization.Localization;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import com.energizer.business.BusinessRuleError;
 import com.energizer.core.model.EnergizerB2BUnitModel;

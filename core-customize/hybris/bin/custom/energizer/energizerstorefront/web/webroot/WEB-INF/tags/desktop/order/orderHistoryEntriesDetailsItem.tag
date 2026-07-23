@@ -4,7 +4,7 @@
 <%@ attribute name="itemHolderTitleKey" required="true"
 	type="java.lang.String"%>
 <%@ attribute name="isQuoteNegotiation" type="java.lang.Boolean"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="template" tagdir="/WEB-INF/tags/desktop/template"%>
 <%@ taglib prefix="theme" tagdir="/WEB-INF/tags/shared/theme"%>
 <%@ taglib prefix="nav" tagdir="/WEB-INF/tags/desktop/nav"%>

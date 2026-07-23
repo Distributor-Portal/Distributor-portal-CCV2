@@ -18,7 +18,6 @@ import de.hybris.platform.processengine.action.AbstractProceduralAction;
 import de.hybris.platform.servicelayer.event.EventService;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +44,6 @@ public class SendsubmitOrderToSAPFailedNotification extends AbstractProceduralAc
 		Logger.getLogger(getClass()).info("Process: " + process.getCode() + " in step " + getClass());
 	}
 
-	@Required
 	public void setEventService(final EventService eventService)
 	{
 		this.eventService = eventService;

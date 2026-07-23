@@ -19,7 +19,6 @@ import de.hybris.platform.processengine.action.AbstractProceduralAction;
 import de.hybris.platform.servicelayer.event.EventService;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 public class SendOrderPlacedNotificationAction extends AbstractProceduralAction<OrderProcessModel>
@@ -40,7 +39,6 @@ public class SendOrderPlacedNotificationAction extends AbstractProceduralAction<
 		return eventService;
 	}
 
-	@Required
 	public void setEventService(final EventService eventService)
 	{
 		this.eventService = eventService;

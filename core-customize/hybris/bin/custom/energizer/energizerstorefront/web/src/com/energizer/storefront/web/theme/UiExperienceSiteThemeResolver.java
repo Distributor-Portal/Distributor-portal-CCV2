@@ -19,10 +19,9 @@ import de.hybris.platform.cms2.servicelayer.services.CMSSiteService;
 import de.hybris.platform.commerceservices.enums.SiteTheme;
 import de.hybris.platform.commerceservices.enums.UiExperienceLevel;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.servlet.theme.AbstractThemeResolver;
 
 
@@ -108,7 +107,6 @@ public class UiExperienceSiteThemeResolver extends AbstractThemeResolver
 	 * @param cmsSiteService
 	 *           the CMSSiteService to set
 	 */
-	@Required
 	public void setCmsSiteService(final CMSSiteService cmsSiteService)
 	{
 		this.cmsSiteService = cmsSiteService;
@@ -119,7 +117,6 @@ public class UiExperienceSiteThemeResolver extends AbstractThemeResolver
 		return uiExperienceService;
 	}
 
-	@Required
 	public void setUiExperienceService(final UiExperienceService uiExperienceService)
 	{
 		this.uiExperienceService = uiExperienceService;

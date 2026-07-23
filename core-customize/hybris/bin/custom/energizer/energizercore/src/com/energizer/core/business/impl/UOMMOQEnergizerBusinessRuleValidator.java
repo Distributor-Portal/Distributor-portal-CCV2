@@ -7,7 +7,7 @@ import de.hybris.platform.commercefacades.order.data.OrderEntryData;
 import de.hybris.platform.servicelayer.exceptions.ModelNotFoundException;
 import de.hybris.platform.util.localization.Localization;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import com.energizer.business.BusinessRuleError;
 import com.energizer.core.model.EnergizerCMIRModel;

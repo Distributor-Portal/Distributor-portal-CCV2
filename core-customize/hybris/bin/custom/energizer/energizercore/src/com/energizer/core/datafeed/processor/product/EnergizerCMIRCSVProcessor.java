@@ -22,12 +22,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 
 import com.energizer.core.constants.EnergizerCoreConstants;
@@ -517,13 +517,13 @@ public class EnergizerCMIRCSVProcessor extends AbstractEnergizerCSVProcessor
 		if (cmirData.getCustomerMaterialDescription() != null && !(cmirData.getCustomerMaterialDescription().isEmpty()))//if cust mat desc is in the feed then update that with the existing or new model
 		{
 			energizerCMIRModel.setCustomerMaterialDescription(cmirData.getCustomerMaterialDescription(),
-					new Locale(cmirData.getLanguage().toLowerCase()));
+					Locale.of(cmirData.getLanguage().toLowerCase()));
 			LOG.debug("THE CUST-MAT-DESCRIPTION IS not empty for" + cmirData.getCustomerMaterialID());
 		}
 		else
 		//if cust mat desc not in the feed , Then empty cust-mat description is updated as empty space to avoid null in the existing model or new model.
 		{
-			energizerCMIRModel.setCustomerMaterialDescription(" ", new Locale(cmirData.getLanguage().toLowerCase()));
+			energizerCMIRModel.setCustomerMaterialDescription(" ", Locale.of(cmirData.getLanguage().toLowerCase()));
 
 			LOG.debug("THE CUST-MAT-DESCRIPTION IS empty for" + cmirData.getCustomerMaterialID());
 		}

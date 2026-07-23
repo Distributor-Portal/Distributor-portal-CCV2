@@ -21,9 +21,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
-import org.fest.util.Collections;
+import org.assertj.core.util.IterableUtil;
 
 import com.energizer.core.model.EnergizerB2BCustomerModel;
 import com.energizer.core.model.EnergizerB2BUnitModel;
@@ -47,7 +47,7 @@ public class EnergizerB2BPermissionService extends DefaultB2BPermissionService
 	{
 		final Set<B2BPermissionResultModel> permissionResult = new HashSet<>();
 		final EnergizerB2BCustomerModel customer = (EnergizerB2BCustomerModel) order.getUser();
-		if (Collections.isEmpty(openPermissions))
+		if (IterableUtil.isNullOrEmpty(openPermissions))
 		{
 			return permissionResult;
 		}
@@ -83,7 +83,7 @@ public class EnergizerB2BPermissionService extends DefaultB2BPermissionService
 	{
 		final List<B2BPermissionResultModel> permissionResult = new ArrayList<>();
 		final EnergizerB2BCustomerModel customer = (EnergizerB2BCustomerModel) order.getUser();
-		if (Collections.isEmpty(openPermissions))
+		if (IterableUtil.isNullOrEmpty(openPermissions))
 		{
 			return permissionResult;
 		}

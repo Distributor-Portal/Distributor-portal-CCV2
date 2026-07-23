@@ -26,7 +26,6 @@ import de.hybris.platform.util.Config;
 import com.energizer.fulfilmentprocess.constants.EnergizerFulfilmentProcessConstants;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -44,7 +43,6 @@ public class FraudCheckOrderAction extends AbstractFraudCheckAction<OrderProcess
 		return fraudService;
 	}
 
-	@Required
 	public void setFraudService(final FraudService fraudService)
 	{
 		this.fraudService = fraudService;
@@ -55,7 +53,6 @@ public class FraudCheckOrderAction extends AbstractFraudCheckAction<OrderProcess
 		return providerName;
 	}
 
-	@Required
 	public void setProviderName(final String providerName)
 	{
 		this.providerName = providerName;

@@ -16,7 +16,7 @@ import de.hybris.platform.util.PriceValue;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
 

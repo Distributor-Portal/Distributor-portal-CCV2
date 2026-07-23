@@ -8,7 +8,7 @@
 <%@ attribute name="filterSkus" required="false" type="java.util.List" %>
 
 <%@ taglib prefix="product" tagdir="/WEB-INF/tags/desktop/product" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="theme" tagdir="/WEB-INF/tags/shared/theme" %>
 <%@ taglib prefix="common" tagdir="/WEB-INF/tags/desktop/common" %>

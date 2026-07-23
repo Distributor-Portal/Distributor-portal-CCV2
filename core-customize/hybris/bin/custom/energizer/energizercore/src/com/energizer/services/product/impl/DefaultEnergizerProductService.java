@@ -13,10 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.energizer.core.model.EnergizerCMIRModel;
 import com.energizer.core.model.EnergizerPriceRowModel;
@@ -237,7 +236,6 @@ public class DefaultEnergizerProductService implements EnergizerProductService
 		return coversionFactor;
 	}
 
-	@Required
 	public void setEnergizerProductDAO(final EnergizerProductDAO energizerProductDAO)
 	{
 		this.energizerProductDAO = energizerProductDAO;

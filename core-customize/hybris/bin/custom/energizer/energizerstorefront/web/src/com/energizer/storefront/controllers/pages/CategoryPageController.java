@@ -36,19 +36,19 @@ import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.energizer.core.solr.query.EnergizerSolrQueryManipulationService;
@@ -65,6 +65,7 @@ import com.energizer.storefront.util.XSSFilterUtil;
  */
 @Controller
 @Scope("tenant")
+// FRAMEWORK_UPDATE - TODO - AntPathMatcher was replaced with PathPatternParser as the new default path parser in Spring 6. Adjust this path to the new matching rules or re-enable deprecated AntPathMatcher. Consult "Adapting to PathPatternParser new default URL Matcher" JDK21 Upgrade Step in SAP Help documentation.
 @RequestMapping(value = "/**/c")
 public class CategoryPageController extends AbstractSearchPageController
 {
@@ -109,7 +110,7 @@ public class CategoryPageController extends AbstractSearchPageController
 	private static final String NO_RESULTS_CMS_PAGE_ID = "searchEmpty";
 
 
-	@RequestMapping(value = CATEGORY_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping(CATEGORY_CODE_PATH_VARIABLE_PATTERN)
 	public String category(@PathVariable("categoryCode") final String categoryCode,
 			@RequestParam(value = "q", required = false) String searchQuery,
 			@RequestParam(value = "page", defaultValue = "0") final int page,
@@ -210,7 +211,7 @@ public class CategoryPageController extends AbstractSearchPageController
 		return getViewPage(categoryPage);
 	}
 
-	@RequestMapping(value = "/{categoryCode}/results", method = RequestMethod.GET)
+	@GetMapping("/{categoryCode}/results")
 	public String searchResults(@PathVariable("categoryCode") final String categoryCode,
 			@RequestParam("q") final String searchQuery, @RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final ShowMode showMode,

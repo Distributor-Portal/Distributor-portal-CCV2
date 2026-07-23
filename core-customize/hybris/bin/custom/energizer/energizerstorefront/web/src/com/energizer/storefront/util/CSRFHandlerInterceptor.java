@@ -17,11 +17,11 @@ import de.hybris.platform.util.Config;
 
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 
 /**
@@ -38,7 +38,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * @see CSRFRequestDataValueProcessor
  * 
  */
-public class CSRFHandlerInterceptor extends HandlerInterceptorAdapter
+public class CSRFHandlerInterceptor implements HandlerInterceptor
 {
 	private final String CSRF_ALLOWED_URLS = "csrf.allowed.url.patterns";
 

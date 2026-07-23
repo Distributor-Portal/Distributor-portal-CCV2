@@ -24,7 +24,7 @@ import com.energizer.fulfilmentprocess.impl.DefaultCheckOrderService;
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.fest.assertions.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 

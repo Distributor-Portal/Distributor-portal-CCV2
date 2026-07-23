@@ -1,8 +1,10 @@
 package basic.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,22 +21,22 @@ import basic.account.UserService;
 @EnableWebMvcSecurity
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public UserService userService() {
+	@Bean
+	UserService userService() {
         return new UserService();
     }
 
-    @Bean
-    public TokenBasedRememberMeServices rememberMeServices() {
+	@Bean
+	TokenBasedRememberMeServices rememberMeServices() {
         return new TokenBasedRememberMeServices("remember-me-key", userService());
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
+	@Bean
+	PasswordEncoder passwordEncoder() {
         return new StandardPasswordEncoder();
 	}
 
-    @Override
+    /*~~(Migrate manually based on https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter)~~>*/@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .eraseCredentials(true)
@@ -44,24 +46,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .antMatchers("/", "/favicon.ico", "/resources/**", "/signup").permitAll()
-                .anyRequest().authenticated()
-                .and()
-            .formLogin()
-                .loginPage("/signin")
-                .permitAll()
-                .failureUrl("/signin?error=1")
-                .loginProcessingUrl("/authenticate")
-                .and()
-            .logout()
-                .logoutUrl("/logout")
-                .permitAll()
-                .logoutSuccessUrl("/signin?logout")
-                .and()
-            .rememberMe()
-                .rememberMeServices(rememberMeServices())
-                .key("remember-me-key");
+		http
+				.authorizeHttpRequests(withDefaults());
     }
 }

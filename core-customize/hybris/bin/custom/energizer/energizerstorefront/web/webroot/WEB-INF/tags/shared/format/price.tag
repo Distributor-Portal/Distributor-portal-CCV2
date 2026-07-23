@@ -5,9 +5,9 @@
 <%@ attribute name="currencyISO" required="false" type="java.lang.String" %>
 <%@ attribute name="totals" required="false" type="java.lang.Boolean" %>
 <%@ attribute name="cartPopUpItems" required="false" type="java.lang.Boolean" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ attribute name="isSalesRepUserCart" required="false" type="java.lang.Boolean" %>
 <%--

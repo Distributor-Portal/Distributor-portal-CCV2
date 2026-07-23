@@ -25,7 +25,6 @@ import de.hybris.platform.servicelayer.util.ServicesUtil;
 import de.hybris.platform.store.BaseStoreModel;
 import de.hybris.platform.store.services.BaseStoreService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -51,7 +50,6 @@ public class SubmitOrderEventListener extends AbstractSiteEventListener<SubmitOr
 	 * @param businessProcessService
 	 *           the businessProcessService to set
 	 */
-	@Required
 	public void setBusinessProcessService(final BusinessProcessService businessProcessService)
 	{
 		this.businessProcessService = businessProcessService;
@@ -69,7 +67,6 @@ public class SubmitOrderEventListener extends AbstractSiteEventListener<SubmitOr
 	 * @param baseStoreService
 	 *           the baseStoreService to set
 	 */
-	@Required
 	public void setBaseStoreService(final BaseStoreService baseStoreService)
 	{
 		this.baseStoreService = baseStoreService;
@@ -87,7 +84,6 @@ public class SubmitOrderEventListener extends AbstractSiteEventListener<SubmitOr
 	 * @param modelService
 	 *           the modelService to set
 	 */
-	@Required
 	public void setModelService(final ModelService modelService)
 	{
 		this.modelService = modelService;

@@ -13,8 +13,6 @@
  */
 package com.energizer.core.checkout.pci.impl;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import com.energizer.core.checkout.pci.B2BCheckoutPciStrategy;
 import com.energizer.core.enums.B2BCheckoutPciOptionEnum;
 
@@ -33,7 +31,6 @@ public class FixedB2BCheckoutPciStrategy implements B2BCheckoutPciStrategy
 		return this.subscriptionPciOption;
 	}
 
-	@Required
 	public void setSubscriptionPciOption(final B2BCheckoutPciOptionEnum subscriptionPciOption)
 	{
 		this.subscriptionPciOption = subscriptionPciOption;

@@ -87,7 +87,7 @@ public class MultipleCatalogsSyncJobPerformableTest
 
 		performable.perform(cronJob);
 
-		Mockito.verifyZeroInteractions(setup);
+		Mockito.verifyNoInteractions(setup);
 	}
 
 
@@ -99,7 +99,7 @@ public class MultipleCatalogsSyncJobPerformableTest
 
 		performable.perform(cronJob);
 
-		Mockito.verifyZeroInteractions(setup);
+		Mockito.verifyNoInteractions(setup);
 
 	}
 

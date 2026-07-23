@@ -19,8 +19,6 @@ import de.hybris.platform.servicelayer.cronjob.PerformResult;
 import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import com.energizer.core.model.MultipleCatalogsSyncCronJobModel;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import com.google.common.base.Preconditions;
 
 
@@ -64,13 +62,11 @@ public class B2BDefaultSetupSyncJobService extends DefaultSetupSyncJobService
 		return cronJobModel;
 	}
 
-	@Required
 	public void setCronJobService(final CronJobService cronJobService)
 	{
 		this.cronJobService = cronJobService;
 	}
 
-	@Required
 	public void setFlexibleSearchService(final FlexibleSearchService flexibleSearchService)
 	{
 		this.flexibleSearchService = flexibleSearchService;

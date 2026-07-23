@@ -27,7 +27,6 @@ import com.energizer.fulfilmentprocess.constants.EnergizerFulfilmentProcessConst
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -44,7 +43,6 @@ public class CleanUpFraudOrderJob extends AbstractJobPerformable<CronJobModel>
 		return businessProcessService;
 	}
 
-	@Required
 	public void setBusinessProcessService(final BusinessProcessService businessProcessService)
 	{
 		this.businessProcessService = businessProcessService;

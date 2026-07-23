@@ -22,7 +22,7 @@ import de.hybris.platform.commercefacades.order.data.OrderData;
 import de.hybris.platform.core.enums.OrderStatus;
 import de.hybris.platform.servicelayer.ServicelayerTransactionalBaseTest;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import junit.framework.Assert;
 

@@ -46,13 +46,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.mail.internet.AddressException;
+import jakarta.annotation.Resource;
+import jakarta.mail.internet.AddressException;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.energizer.business.BusinessRuleError;
 import com.energizer.core.business.service.EnergizerOrderBusinessRuleValidationService;
@@ -778,7 +777,6 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 	 * @param energizerB2BUnitConverter
 	 *           the energizerB2BUnitConverter to set
 	 */
-	@Required
 	public void setEnergizerB2BUnitConverter(
 			final Converter<EnergizerB2BUnitModel, EnergizerB2BUnitData> energizerB2BUnitConverter)
 	{
@@ -821,7 +819,6 @@ public class DefaultEnergizerB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlo
 	/**
 	 * @param orderEntryConverter
 	 */
-	@Required
 	public void setOrderEntryConverter(final Converter<AbstractOrderEntryModel, OrderEntryData> orderEntryConverter)
 	{
 		this.orderEntryConverter = orderEntryConverter;

@@ -17,11 +17,10 @@ import de.hybris.platform.commercefacades.customer.CustomerFacade;
 import com.energizer.storefront.security.AutoLoginStrategy;
 import com.energizer.storefront.security.GUIDCookieStrategy;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -69,7 +68,6 @@ public class DefaultAutoLoginStrategy implements AutoLoginStrategy
 		return authenticationManager;
 	}
 
-	@Required
 	public void setAuthenticationManager(final AuthenticationManager authenticationManager)
 	{
 		this.authenticationManager = authenticationManager;
@@ -80,7 +78,6 @@ public class DefaultAutoLoginStrategy implements AutoLoginStrategy
 		return customerFacade;
 	}
 
-	@Required
 	public void setCustomerFacade(final CustomerFacade customerFacade)
 	{
 		this.customerFacade = customerFacade;
@@ -91,7 +88,6 @@ public class DefaultAutoLoginStrategy implements AutoLoginStrategy
 		return guidCookieStrategy;
 	}
 
-	@Required
 	public void setGuidCookieStrategy(final GUIDCookieStrategy guidCookieStrategy)
 	{
 		this.guidCookieStrategy = guidCookieStrategy;
@@ -102,7 +98,6 @@ public class DefaultAutoLoginStrategy implements AutoLoginStrategy
 		return rememberMeServices;
 	}
 
-	@Required
 	public void setRememberMeServices(final RememberMeServices rememberMeServices)
 	{
 		this.rememberMeServices = rememberMeServices;

@@ -15,7 +15,7 @@ package com.energizer.storefront.variants.impl;
 
 import java.util.Comparator;
 
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 
 /**

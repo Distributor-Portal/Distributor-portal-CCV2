@@ -25,9 +25,7 @@ import de.hybris.platform.site.BaseSiteService;
 
 import java.util.Collection;
 
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.annotation.Required;
+import jakarta.annotation.Resource;
 
 
 /**
@@ -45,7 +43,6 @@ public class RegistrationEventListener extends AbstractSiteEventListener<Registe
 		return businessProcessService;
 	}
 
-	@Required
 	public void setBusinessProcessService(final BusinessProcessService businessProcessService)
 	{
 		this.businessProcessService = businessProcessService;
@@ -56,7 +53,6 @@ public class RegistrationEventListener extends AbstractSiteEventListener<Registe
 		return modelService;
 	}
 
-	@Required
 	public void setModelService(final ModelService modelService)
 	{
 		this.modelService = modelService;

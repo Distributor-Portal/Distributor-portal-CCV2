@@ -23,8 +23,6 @@ import de.hybris.platform.processengine.BusinessProcessService;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.servicelayer.util.ServicesUtil;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Event listener for order confirmation functionality.
@@ -39,7 +37,6 @@ public class OrderConfirmationEventListener extends AbstractSiteEventListener<Or
 		return businessProcessService;
 	}
 
-	@Required
 	public void setBusinessProcessService(final BusinessProcessService businessProcessService)
 	{
 		this.businessProcessService = businessProcessService;
@@ -50,7 +47,6 @@ public class OrderConfirmationEventListener extends AbstractSiteEventListener<Or
 		return modelService;
 	}
 
-	@Required
 	public void setModelService(final ModelService modelService)
 	{
 		this.modelService = modelService;

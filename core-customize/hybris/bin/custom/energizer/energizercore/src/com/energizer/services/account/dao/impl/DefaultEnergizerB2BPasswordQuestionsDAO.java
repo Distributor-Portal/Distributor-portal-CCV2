@@ -8,7 +8,7 @@ import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import com.energizer.core.jalo.EnergizerPasswordQuestions;
 import com.energizer.services.account.dao.EnergizerB2BPasswordQuestionsDAO;

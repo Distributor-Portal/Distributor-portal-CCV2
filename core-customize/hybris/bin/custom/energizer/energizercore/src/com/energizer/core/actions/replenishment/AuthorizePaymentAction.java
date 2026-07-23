@@ -25,8 +25,6 @@ import de.hybris.platform.payment.model.PaymentTransactionEntryModel;
 import de.hybris.platform.processengine.action.AbstractSimpleDecisionAction;
 import de.hybris.platform.processengine.model.BusinessProcessParameterModel;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Action for authorizing payments.
@@ -73,7 +71,6 @@ public class AuthorizePaymentAction extends AbstractSimpleDecisionAction<Repleni
 		return commerceCheckoutService;
 	}
 
-	@Required
 	public void setCommerceCheckoutService(final CommerceCheckoutService commerceCheckoutService)
 	{
 		this.commerceCheckoutService = commerceCheckoutService;
@@ -84,7 +81,6 @@ public class AuthorizePaymentAction extends AbstractSimpleDecisionAction<Repleni
 		return impersonationService;
 	}
 
-	@Required
 	public void setImpersonationService(final ImpersonationService impersonationService)
 	{
 		this.impersonationService = impersonationService;

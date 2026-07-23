@@ -31,8 +31,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.collections4.CollectionUtils;
 
 
 /**
@@ -216,7 +215,6 @@ public class ProductVariantMatrixPopulator<SOURCE extends ProductModel, TARGET e
 		return valueCategoryComparator;
 	}
 
-	@Required
 	public void setValueCategoryComparator(final Comparator<VariantValueCategoryModel> valueCategoryComparator)
 	{
 		this.valueCategoryComparator = valueCategoryComparator;
@@ -227,7 +225,6 @@ public class ProductVariantMatrixPopulator<SOURCE extends ProductModel, TARGET e
 		return variantMatrixElementPopulator;
 	}
 
-	@Required
 	public void setVariantMatrixElementPopulator(
 			final Populator<VariantValueCategoryModel, VariantMatrixElementData> variantMatrixElementPopulator)
 	{

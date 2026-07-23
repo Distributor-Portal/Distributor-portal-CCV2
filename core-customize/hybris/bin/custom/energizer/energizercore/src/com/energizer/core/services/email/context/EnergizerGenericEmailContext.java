@@ -14,11 +14,10 @@ import de.hybris.platform.servicelayer.config.ConfigurationService;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -63,7 +62,6 @@ public class EnergizerGenericEmailContext extends VelocityContext
 		return urlEncoderService;
 	}
 
-	@Required
 	public void setUrlEncoderService(final UrlEncoderService urlEncoderService)
 	{
 		this.urlEncoderService = urlEncoderService;
@@ -84,7 +82,6 @@ public class EnergizerGenericEmailContext extends VelocityContext
 		return siteBaseUrlResolutionService;
 	}
 
-	@Required
 	public void setSiteBaseUrlResolutionService(final SiteBaseUrlResolutionService siteBaseUrlResolutionService)
 	{
 		this.siteBaseUrlResolutionService = siteBaseUrlResolutionService;
@@ -95,7 +92,6 @@ public class EnergizerGenericEmailContext extends VelocityContext
 		return customerEmailResolutionService;
 	}
 
-	@Required
 	public void setCustomerEmailResolutionService(final CustomerEmailResolutionService customerEmailResolutionService)
 	{
 		this.customerEmailResolutionService = customerEmailResolutionService;
@@ -106,7 +102,6 @@ public class EnergizerGenericEmailContext extends VelocityContext
 		return configurationService;
 	}
 
-	@Required
 	public void setConfigurationService(final ConfigurationService configurationService)
 	{
 		this.configurationService = configurationService;
@@ -271,7 +266,7 @@ public class EnergizerGenericEmailContext extends VelocityContext
 		if (language != null)
 		{
 			put(EMAIL_LANGUAGE, language);
-			String fromName = emailPageModel.getFromName(new Locale(language.getIsocode()));
+			String fromName = emailPageModel.getFromName(Locale.of(language.getIsocode()));
 			if (fromName == null)
 			{
 				fromName = emailPageModel.getFromName();

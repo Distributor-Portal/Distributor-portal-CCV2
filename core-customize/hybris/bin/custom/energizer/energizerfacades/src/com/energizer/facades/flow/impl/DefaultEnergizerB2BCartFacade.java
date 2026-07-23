@@ -19,9 +19,9 @@ import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 
 import com.energizer.core.model.EnergizerB2BUnitModel;

@@ -32,6 +32,7 @@ package com.energizer.storefront.security.cookie;
  *  limitations under the License.
  */
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.FieldPosition;
@@ -49,6 +50,7 @@ import java.util.TimeZone;
 // rules
 public class ServerCookie implements Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	// Other fields

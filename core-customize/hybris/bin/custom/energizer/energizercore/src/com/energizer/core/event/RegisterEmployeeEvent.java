@@ -3,6 +3,8 @@
  */
 package com.energizer.core.event;
 
+import java.io.Serial;
+
 import com.energizer.core.model.EnergizerB2BEmployeeModel;
 
 
@@ -16,6 +18,7 @@ public class RegisterEmployeeEvent extends B2BEmployeeAbstractCommerceUserEvent
 	/**
 	 *
 	 */
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	public RegisterEmployeeEvent()

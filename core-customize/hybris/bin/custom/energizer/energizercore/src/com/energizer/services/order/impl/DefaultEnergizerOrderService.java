@@ -24,9 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.energizer.core.model.EnergizerB2BUnitModel;
 import com.energizer.core.model.EnergizerProductModel;
@@ -84,7 +84,7 @@ public class DefaultEnergizerOrderService implements EnergizerOrderService
 		//Possible OrderStatus values
 		//these values must be present in energizercore.xml
 		final List<String> possibleOrderStatusValues = Arrays
-				.asList(Config.getParameter("possibleOrderStatus").split(new Character(',').toString()));
+				.asList(Config.getParameter("possibleOrderStatus").split(Character.valueOf(',').toString()));
 		final String orderStatusCode = energizerOrderStatusCode.toUpperCase();
 		final boolean result = possibleOrderStatusValues.contains(orderStatusCode);
 		if (result)

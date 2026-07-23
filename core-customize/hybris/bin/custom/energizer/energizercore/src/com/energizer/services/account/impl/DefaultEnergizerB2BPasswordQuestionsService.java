@@ -6,7 +6,7 @@ package com.energizer.services.account.impl;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import com.energizer.services.account.EnergizerB2BPasswordQuestionsService;
 import com.energizer.services.account.dao.impl.DefaultEnergizerB2BPasswordQuestionsDAO;

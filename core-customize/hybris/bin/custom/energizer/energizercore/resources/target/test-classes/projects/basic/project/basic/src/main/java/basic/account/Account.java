@@ -1,6 +1,6 @@
 package basic.account;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 

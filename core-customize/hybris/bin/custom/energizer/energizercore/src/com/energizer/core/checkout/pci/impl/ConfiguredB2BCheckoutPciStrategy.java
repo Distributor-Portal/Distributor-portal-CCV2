@@ -16,8 +16,6 @@ package com.energizer.core.checkout.pci.impl;
 import de.hybris.platform.acceleratorservices.config.SiteConfigService;
 import de.hybris.platform.acceleratorservices.payment.constants.PaymentConstants;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import com.energizer.core.enums.B2BCheckoutPciOptionEnum;
 
 
@@ -33,7 +31,6 @@ public class ConfiguredB2BCheckoutPciStrategy extends AbstractB2BCheckoutPciStra
 		return siteConfigService;
 	}
 
-	@Required
 	public void setSiteConfigService(final SiteConfigService siteConfigService)
 	{
 		this.siteConfigService = siteConfigService;

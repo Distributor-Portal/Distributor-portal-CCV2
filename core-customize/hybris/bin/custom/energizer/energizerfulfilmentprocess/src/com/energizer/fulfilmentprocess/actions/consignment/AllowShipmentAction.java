@@ -23,8 +23,6 @@ import de.hybris.platform.warehouse.Process2WarehouseAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 public class AllowShipmentAction extends AbstractAction<ConsignmentProcessModel>
 {
@@ -86,7 +84,6 @@ public class AllowShipmentAction extends AbstractAction<ConsignmentProcessModel>
 		return process2WarehouseAdapter;
 	}
 
-	@Required
 	public void setProcess2WarehouseAdapter(final Process2WarehouseAdapter process2WarehouseAdapter)
 	{
 		this.process2WarehouseAdapter = process2WarehouseAdapter;

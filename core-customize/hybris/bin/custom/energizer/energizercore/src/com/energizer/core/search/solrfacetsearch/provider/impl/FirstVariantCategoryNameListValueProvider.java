@@ -27,8 +27,7 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.collections4.CollectionUtils;
 
 import com.energizer.core.search.solrfacetsearch.provider.AbstractMultidimensionalProductFieldValueProvider;
 
@@ -168,7 +167,6 @@ public class FirstVariantCategoryNameListValueProvider extends AbstractMultidime
 		return variantValueCategoryModelPriorityComparator;
 	}
 
-	@Required
 	public void setVariantValueCategoryModelPriorityComparator(
 			final Comparator<VariantValueCategoryModel> variantValueCategoryModelPriorityComparator)
 	{
@@ -180,7 +178,6 @@ public class FirstVariantCategoryNameListValueProvider extends AbstractMultidime
 		return variantValueCategoryModelSequenceComparator;
 	}
 
-	@Required
 	public void setVariantValueCategoryModelSequenceComparator(
 			final Comparator<VariantValueCategoryModel> variantValueCategoryModelSequenceComparator)
 	{
@@ -192,7 +189,6 @@ public class FirstVariantCategoryNameListValueProvider extends AbstractMultidime
 		return categoryManager;
 	}
 
-	@Required
 	public void setCategoryManager(final SolrFirstVariantCategoryManager categoryManager)
 	{
 		this.categoryManager = categoryManager;

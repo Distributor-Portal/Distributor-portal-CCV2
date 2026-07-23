@@ -22,7 +22,7 @@ import de.hybris.platform.servicelayer.user.UserService;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
 
@@ -209,7 +209,7 @@ public class DefaultEnergizerQuickOrderFacade implements EnergizerQuickOrderFaca
 				product.setName(productModel.getName());
 				product.setUom(cmir.getUom());
 				product.setMoq(cmir.getOrderingUnit());
-				orderEntry.setQuantity(new Long(cmir.getOrderingUnit()));
+				orderEntry.setQuantity(Long.valueOf(cmir.getOrderingUnit()));
 				//orderEntry.setQuantity(cmir.getOrderingUnit() != null ? new Long(cmir.getOrderingUnit()) : null);
 				orderEntry.setProduct(product);
 				orderEntry.setShippingPoint(cmir.getShippingPoint());

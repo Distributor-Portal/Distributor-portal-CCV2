@@ -22,8 +22,6 @@ import com.energizer.core.suggestion.dao.SimpleSuggestionDao;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Default implementation of {@link SimpleSuggestionService}.
@@ -55,7 +53,6 @@ public class DefaultSimpleSuggestionService implements SimpleSuggestionService
 		return simpleSuggestionDao;
 	}
 
-	@Required
 	public void setSimpleSuggestionDao(final SimpleSuggestionDao simpleSuggestionDao)
 	{
 		this.simpleSuggestionDao = simpleSuggestionDao;

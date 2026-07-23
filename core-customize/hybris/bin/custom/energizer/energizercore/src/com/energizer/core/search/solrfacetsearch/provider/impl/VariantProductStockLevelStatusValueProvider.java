@@ -26,8 +26,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * This ValueProvider will provide the product stock level status for all the variant of a product. The stock level
@@ -58,7 +56,6 @@ public class VariantProductStockLevelStatusValueProvider extends ProductStockLev
 		return productSource;
 	}
 
-	@Required
 	public void setProductSource(final ProductSource productSource)
 	{
 		this.productSource = productSource;

@@ -18,9 +18,9 @@ import com.energizer.storefront.filters.btg.support.UrlParsingStrategy;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 import org.springframework.web.util.UrlPathHelper;
@@ -41,7 +41,7 @@ public class DefaultUrlParsingStrategy implements UrlParsingStrategy, Initializi
 	 */
 	public void setRegex(final String regex)
 	{
-		Assert.hasLength(regex);
+		Assert.hasLength(regex, "must have length; it must not be null or empty");
 		this.regex = regex;
 	}
 
@@ -61,14 +61,14 @@ public class DefaultUrlParsingStrategy implements UrlParsingStrategy, Initializi
 		{
 			urlPathHelper = new UrlPathHelper();
 		}
-		Assert.hasLength(regex);
+		Assert.hasLength(regex, "must have length; it must not be null or empty");
 		pattern = Pattern.compile(regex);
 	}
 
 	@Override
 	public String parse(final HttpServletRequest request)
 	{
-		Assert.notNull(request);
+		Assert.notNull(request, "must not be null");
 		String result = null;
 		final String path = urlPathHelper.getPathWithinApplication(request);
 		if (!StringUtils.isBlank(path))

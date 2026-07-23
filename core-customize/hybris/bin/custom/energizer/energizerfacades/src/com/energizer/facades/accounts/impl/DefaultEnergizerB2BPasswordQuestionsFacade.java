@@ -8,7 +8,7 @@ import de.hybris.platform.servicelayer.dto.converter.Converter;
 
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
 

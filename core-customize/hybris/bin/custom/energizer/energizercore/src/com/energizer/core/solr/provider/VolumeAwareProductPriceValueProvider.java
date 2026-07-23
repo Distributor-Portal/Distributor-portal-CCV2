@@ -41,7 +41,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -184,7 +183,6 @@ public class VolumeAwareProductPriceValueProvider extends AbstractPropertyFieldV
 		return fieldNameProvider;
 	}
 
-	@Required
 	public void setFieldNameProvider(final FieldNameProvider fieldNameProvider)
 	{
 		this.fieldNameProvider = fieldNameProvider;
@@ -195,7 +193,6 @@ public class VolumeAwareProductPriceValueProvider extends AbstractPropertyFieldV
 		return priceService;
 	}
 
-	@Required
 	public void setPriceService(final PriceService priceService)
 	{
 		this.priceService = priceService;
@@ -206,7 +203,6 @@ public class VolumeAwareProductPriceValueProvider extends AbstractPropertyFieldV
 		return userService;
 	}
 
-	@Required
 	public void setUserService(final UserService userService)
 	{
 		this.userService = userService;
@@ -217,7 +213,6 @@ public class VolumeAwareProductPriceValueProvider extends AbstractPropertyFieldV
 		return sessionService;
 	}
 
-	@Required
 	public void setSessionService(final SessionService sessionService)
 	{
 		this.sessionService = sessionService;
@@ -228,7 +223,6 @@ public class VolumeAwareProductPriceValueProvider extends AbstractPropertyFieldV
 		return commonI18NService;
 	}
 
-	@Required
 	public void setCommonI18NService(final CommonI18NService commonI18NService)
 	{
 		this.commonI18NService = commonI18NService;
@@ -239,7 +233,6 @@ public class VolumeAwareProductPriceValueProvider extends AbstractPropertyFieldV
 		return priceComparator;
 	}
 
-	@Required
 	public void setPriceComparator(final Comparator<PriceInformation> priceComparator)
 	{
 		this.priceComparator = priceComparator;
@@ -250,7 +243,6 @@ public class VolumeAwareProductPriceValueProvider extends AbstractPropertyFieldV
 		return catalogVersionService;
 	}
 
-	@Required
 	public void setCatalogVersionService(final CatalogVersionService catalogVersionService)
 	{
 		this.catalogVersionService = catalogVersionService;

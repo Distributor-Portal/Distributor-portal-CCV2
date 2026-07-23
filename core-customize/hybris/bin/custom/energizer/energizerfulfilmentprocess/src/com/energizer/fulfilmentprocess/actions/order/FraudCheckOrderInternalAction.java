@@ -25,8 +25,6 @@ import de.hybris.platform.servicelayer.util.ServicesUtil;
 import de.hybris.platform.util.Config;
 import com.energizer.fulfilmentprocess.constants.EnergizerFulfilmentProcessConstants;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 public class FraudCheckOrderInternalAction extends AbstractFraudCheckAction<OrderProcessModel>
 {
@@ -38,7 +36,6 @@ public class FraudCheckOrderInternalAction extends AbstractFraudCheckAction<Orde
 		return fraudService;
 	}
 
-	@Required
 	public void setFraudService(final FraudService fraudService)
 	{
 		this.fraudService = fraudService;

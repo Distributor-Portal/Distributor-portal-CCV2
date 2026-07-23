@@ -16,9 +16,12 @@ package com.energizer.fulfilmentprocess.events;
 import de.hybris.platform.orderprocessing.events.OrderProcessingEvent;
 import de.hybris.platform.orderprocessing.model.OrderProcessModel;
 
+import java.io.Serial;
+
 
 public class OrderCancelledEvent extends OrderProcessingEvent
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	public OrderCancelledEvent(final OrderProcessModel process)

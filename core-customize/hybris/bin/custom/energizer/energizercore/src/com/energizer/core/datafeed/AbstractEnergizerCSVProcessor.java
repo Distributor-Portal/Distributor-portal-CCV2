@@ -27,19 +27,18 @@ import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.lang.NumberUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -149,8 +148,8 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 		{ "" }, locale));
 
 
-		final Path fileDirectory = Paths
-				.get(this.getCronjob().getPath() + fileSeperator + fileSeperator + toProcess + fileSeperator + getFileName());
+		final Path fileDirectory = Path
+				.of(this.getCronjob().getPath() + fileSeperator + fileSeperator + toProcess + fileSeperator + getFileName());
 		message.append(messageSource.getMessage("text.error.message.email.template.section2", new Object[]
 		{ cronjob.getDisplayName(), cronjob.getStartTime(), getTotalRecords(), CronJobResult.ERROR, "", getRecordSucceeded(),
 				CronJobStatus.FINISHED, getFileName(), (getTotalRecords() - getRecordSucceeded()), fileDirectory }, locale));
@@ -319,9 +318,9 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 			//			errors.clear();
 			try
 			{
-				final Path sourcePath1 = Paths.get(this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess
+				final Path sourcePath1 = Path.of(this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess
 						+ fileSeperator + file.getName());
-				final Path targetPath = Paths.get(this.getCronjob().getPath() + fileSeperator + type + fileSeperator + ErrorFiles
+				final Path targetPath = Path.of(this.getCronjob().getPath() + fileSeperator + type + fileSeperator + ErrorFiles
 						+ fileSeperator + file.getName());
 				Files.move(sourcePath1, targetPath, StandardCopyOption.REPLACE_EXISTING);
 			}
@@ -334,9 +333,9 @@ public class AbstractEnergizerCSVProcessor implements EnergizerCSVProcessor
 		{
 			try
 			{
-				final Path sourcePath1 = Paths.get(this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess
+				final Path sourcePath1 = Path.of(this.getCronjob().getPath() + fileSeperator + type + fileSeperator + toProcess
 						+ fileSeperator + file.getName());
-				final Path targetPath = Paths.get(this.getCronjob().getPath() + fileSeperator + type + fileSeperator
+				final Path targetPath = Path.of(this.getCronjob().getPath() + fileSeperator + type + fileSeperator
 						+ ProcessedWithNoErrors + fileSeperator + file.getName());
 				Files.move(sourcePath1, targetPath, StandardCopyOption.REPLACE_EXISTING);
 			}

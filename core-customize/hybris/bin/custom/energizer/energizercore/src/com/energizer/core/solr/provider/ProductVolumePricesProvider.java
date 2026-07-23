@@ -32,8 +32,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Provides value for volumePrices flag. "true" if product has volume prices, "false" otherwise.
@@ -102,7 +100,6 @@ public class ProductVolumePricesProvider extends AbstractPropertyFieldValueProvi
 		return priceService;
 	}
 
-	@Required
 	public void setPriceService(final PriceService priceService)
 	{
 		this.priceService = priceService;
@@ -113,7 +110,6 @@ public class ProductVolumePricesProvider extends AbstractPropertyFieldValueProvi
 		return fieldNameProvider;
 	}
 
-	@Required
 	public void setFieldNameProvider(final FieldNameProvider fieldNameProvider)
 	{
 		this.fieldNameProvider = fieldNameProvider;

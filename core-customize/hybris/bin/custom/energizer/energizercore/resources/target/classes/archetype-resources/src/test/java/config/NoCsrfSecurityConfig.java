@@ -1,15 +1,18 @@
 package ${package}.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class NoCsrfSecurityConfig extends SecurityConfig {
+public class NoCsrfSecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+	@Bean
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.csrf().disable();
+		http.csrf(csrf -> csrf.disable());
+		return http.build();
     }
 
 }

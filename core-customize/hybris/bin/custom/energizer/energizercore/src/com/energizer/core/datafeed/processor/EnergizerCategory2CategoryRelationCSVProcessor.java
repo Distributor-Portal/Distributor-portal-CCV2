@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
@@ -96,7 +96,7 @@ public class EnergizerCategory2CategoryRelationCSVProcessor extends AbstractEner
 			return null;
 		}
 		long succeedRecord = getRecordSucceeded();
-		CSV_HEADERS = Config.getParameter(CATEGORY_CATEGORY_FEED_HEADERS_KEY).split(new Character(DELIMETER).toString());
+		CSV_HEADERS = Config.getParameter(CATEGORY_CATEGORY_FEED_HEADERS_KEY).split(Character.valueOf(DELIMETER).toString());
 		for (final CSVRecord record : records)
 		{
 			final Map<String, String> csvValuesMap = record.toMap();
@@ -119,7 +119,7 @@ public class EnergizerCategory2CategoryRelationCSVProcessor extends AbstractEner
 			{
 				childCategory = (EnergizerCategoryModel) categoryService.getCategoryForCode(catalogModelVersionModel,
 						csvValuesMap.get(CSV_HEADERS[0]));
-				childCategory.setName(csvValuesMap.get(CSV_HEADERS[1]), new Locale(csvValuesMap.get(CSV_HEADERS[5]).toLowerCase()));
+				childCategory.setName(csvValuesMap.get(CSV_HEADERS[1]), Locale.of(csvValuesMap.get(CSV_HEADERS[5]).toLowerCase()));
 				childCategory.setCategoryType(csvValuesMap.get(CSV_HEADERS[4]));
 				modelService.save(childCategory);
 
@@ -147,7 +147,7 @@ public class EnergizerCategory2CategoryRelationCSVProcessor extends AbstractEner
 					parentCategory = (EnergizerCategoryModel) categoryService.getCategoryForCode(catalogModelVersionModel,
 							csvValuesMap.get(CSV_HEADERS[2]));
 					parentCategory.setName(csvValuesMap.get(CSV_HEADERS[3]),
-							new Locale(csvValuesMap.get(CSV_HEADERS[5]).toLowerCase()));
+							Locale.of(csvValuesMap.get(CSV_HEADERS[5]).toLowerCase()));
 					modelService.save(parentCategory);
 				}
 				catch (final UnknownIdentifierException ep)
@@ -172,8 +172,8 @@ public class EnergizerCategory2CategoryRelationCSVProcessor extends AbstractEner
 				boolean alreadyExists = false;
 				for (final CategoryModel category : childCategory.getSupercategories())
 				{
-					if (category.getName(new Locale(csvValuesMap.get(CSV_HEADERS[5]).toLowerCase()))
-							.equals(parentCategory.getName(new Locale(csvValuesMap.get(CSV_HEADERS[5]).toLowerCase()))))
+					if (category.getName(Locale.of(csvValuesMap.get(CSV_HEADERS[5]).toLowerCase()))
+							.equals(parentCategory.getName(Locale.of(csvValuesMap.get(CSV_HEADERS[5]).toLowerCase()))))
 					{
 						alreadyExists = true;
 					}
@@ -212,7 +212,7 @@ public class EnergizerCategory2CategoryRelationCSVProcessor extends AbstractEner
 		if (!hasMandatoryFields(record, getHeadersForFeed(CATEGORY_CATEGORY_FEED_FEED_HEADERS_MANDATORY_KEY)))
 		{
 			final List<String> mandatoryFields = Arrays.asList(
-					Config.getParameter(CATEGORY_CATEGORY_FEED_FEED_HEADERS_MANDATORY_KEY).split(new Character(DELIMETER).toString()));
+					Config.getParameter(CATEGORY_CATEGORY_FEED_FEED_HEADERS_MANDATORY_KEY).split(Character.valueOf(DELIMETER).toString()));
 			final Map<String, String> map = record.toMap();
 			Integer columnNumber = 0;
 			for (final String columnHeader : map.keySet())
@@ -254,7 +254,7 @@ public class EnergizerCategory2CategoryRelationCSVProcessor extends AbstractEner
 		category.setCode(categoryCode);
 		category.setCatalogVersion(catalogVersion);
 		category.setSupercategories(new ArrayList<CategoryModel>());
-		category.setName(categoryName, new Locale(language.toLowerCase()));
+		category.setName(categoryName, Locale.of(language.toLowerCase()));
 		category.setCategoryType(categoryType);
 		category.setAllowedPrincipals(Arrays.asList(new PrincipalModel[]
 		{ userService.getUserGroupForUID("customergroup") }));

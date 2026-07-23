@@ -16,8 +16,6 @@ import de.hybris.platform.servicelayer.dto.converter.Converter;
 
 import java.math.BigDecimal;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import com.energizer.core.data.EnergizerB2BUnitData;
 import com.energizer.core.model.EnergizerB2BUnitModel;
 
@@ -82,7 +80,6 @@ public class EnergizerB2BUnitPopulator implements Populator<EnergizerB2BUnitMode
 		return currencyConverter;
 	}
 
-	@Required
 	public void setCurrencyConverter(final Converter<CurrencyModel, CurrencyData> currencyConverter)
 	{
 		this.currencyConverter = currencyConverter;

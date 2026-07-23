@@ -5,7 +5,7 @@ package com.energizer.facades.b2bemployee.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import com.energizer.core.model.EnergizerB2BEmployeeModel;
 import com.energizer.core.model.EnergizerB2BUnitModel;

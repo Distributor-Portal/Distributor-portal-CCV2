@@ -31,9 +31,8 @@ import de.hybris.platform.store.BaseStoreModel;
 import java.util.Collections;
 import java.util.Date;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import static com.energizer.test.constants.EnergizerTestConstants.POWERTOOLS_SITE;
 
@@ -110,7 +109,6 @@ public class AccountManagerApproveScheduleService
 		return modelService;
 	}
 
-	@Required
 	public void setModelService(final ModelService modelService)
 	{
 		this.modelService = modelService;
@@ -121,7 +119,6 @@ public class AccountManagerApproveScheduleService
 		return cronJobService;
 	}
 
-	@Required
 	public void setCronJobService(final CronJobService cronJobService)
 	{
 		this.cronJobService = cronJobService;
@@ -132,7 +129,6 @@ public class AccountManagerApproveScheduleService
 		return accountManagerTestDataJobId;
 	}
 
-	@Required
 	public void setAccountManagerTestDataJobId(final String accountManagerTestDataJobId)
 	{
 		this.accountManagerTestDataJobId = accountManagerTestDataJobId;
@@ -143,7 +139,6 @@ public class AccountManagerApproveScheduleService
 		return customerAccountService;
 	}
 
-	@Required
 	public void setCustomerAccountService(final CustomerAccountService customerAccountService)
 	{
 		this.customerAccountService = customerAccountService;
@@ -154,7 +149,6 @@ public class AccountManagerApproveScheduleService
 		return userService;
 	}
 
-	@Required
 	public void setUserService(final UserService userService)
 	{
 		this.userService = userService;
@@ -165,7 +159,6 @@ public class AccountManagerApproveScheduleService
 		return baseStoreSelectorStrategy;
 	}
 
-	@Required
 	public void setBaseStoreSelectorStrategy(final BaseStoreSelectorStrategy baseStoreSelectorStrategy)
 	{
 		this.baseStoreSelectorStrategy = baseStoreSelectorStrategy;

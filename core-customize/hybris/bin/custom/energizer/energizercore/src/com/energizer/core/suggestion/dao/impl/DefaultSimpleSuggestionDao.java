@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.util.Assert;
 
 
@@ -59,8 +59,8 @@ public class DefaultSimpleSuggestionDao extends AbstractItemDao implements Simpl
 	public List<ProductModel> findProductsRelatedToPurchasedProductsByCategory(final CategoryModel category, final UserModel user,
 			final List<ProductReferenceTypeEnum> referenceTypes, final boolean excludePurchased, final Integer limit)
 	{
-		Assert.notNull(category);
-		Assert.notNull(user);
+		Assert.notNull(category, "must not be null");
+		Assert.notNull(user, "must not be null");
 
 		final int maxResultCount = limit == null ? DEFAULT_LIMIT : limit.intValue();
 
@@ -95,8 +95,8 @@ public class DefaultSimpleSuggestionDao extends AbstractItemDao implements Simpl
 	public List<ProductModel> findProductsRelatedToPurchasedProductsByCategory(final CategoryModel category, final UserModel user,
 			final ProductReferenceTypeEnum referenceType, final boolean excludePurchased, final Integer limit)
 	{
-		Assert.notNull(category);
-		Assert.notNull(user);
+		Assert.notNull(category, "must not be null");
+		Assert.notNull(user, "must not be null");
 
 		final int maxResultCount = limit == null ? DEFAULT_LIMIT : limit.intValue();
 

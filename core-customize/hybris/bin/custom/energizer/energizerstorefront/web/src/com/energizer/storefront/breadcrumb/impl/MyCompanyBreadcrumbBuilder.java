@@ -20,8 +20,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSource;
 
 import com.energizer.storefront.breadcrumb.Breadcrumb;
@@ -63,7 +62,6 @@ public class MyCompanyBreadcrumbBuilder
 		return i18nService;
 	}
 
-	@Required
 	public void setI18nService(final I18NService i18nService)
 	{
 		this.i18nService = i18nService;
@@ -74,7 +72,6 @@ public class MyCompanyBreadcrumbBuilder
 		return messageSource;
 	}
 
-	@Required
 	public void setMessageSource(final MessageSource messageSource)
 	{
 		this.messageSource = messageSource;

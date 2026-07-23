@@ -20,12 +20,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.Assert;
 import org.springframework.web.util.CookieGenerator;
 
@@ -46,8 +45,8 @@ public class DefaultGUIDCookieStrategy implements GUIDCookieStrategy
 	{
 		random = SecureRandom.getInstance("SHA1PRNG");
 		sha = MessageDigest.getInstance("SHA-1");
-		Assert.notNull(random);
-		Assert.notNull(sha);
+		Assert.notNull(random, "must not be null");
+		Assert.notNull(sha, "must not be null");
 	}
 
 	@Override
@@ -100,7 +99,6 @@ public class DefaultGUIDCookieStrategy implements GUIDCookieStrategy
 	 * @param cookieGenerator
 	 *           the cookieGenerator to set
 	 */
-	@Required
 	public void setCookieGenerator(final CookieGenerator cookieGenerator)
 	{
 		this.cookieGenerator = cookieGenerator;

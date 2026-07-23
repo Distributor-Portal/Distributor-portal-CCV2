@@ -27,8 +27,7 @@ import de.hybris.platform.variants.model.VariantProductModel;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.collections4.CollectionUtils;
 
 
 public abstract class AbstractB2BProductSearchFacade<ITEM extends ProductData> implements B2BProductSearchFacade<ITEM>
@@ -109,19 +108,16 @@ public abstract class AbstractB2BProductSearchFacade<ITEM extends ProductData> i
 	}
 
 
-	@Required
 	public void setProductFacade(final ProductFacade productFacade)
 	{
 		this.productFacade = productFacade;
 	}
 
-	@Required
 	public void setProductService(final ProductService productService)
 	{
 		this.productService = productService;
 	}
 
-	@Required
 	public void setProductConfiguredPopulator(
 			final ConfigurablePopulator<ProductModel, ITEM, ProductOption> productConfiguredPopulator)
 	{

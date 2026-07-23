@@ -37,15 +37,17 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -87,7 +89,7 @@ public class UserManagementPageController extends MyCompanyPageController
 	@Resource(name = "customerAccountService")
 	private CustomerAccountService customerAccountService;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	@RequireHardLogIn
 	public String manageUsers(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final ShowMode showMode,
@@ -109,7 +111,7 @@ public class UserManagementPageController extends MyCompanyPageController
 	}
 
 	@Override
-	@RequestMapping(value = "/details", method = RequestMethod.GET)
+	@GetMapping("/details")
 	@RequireHardLogIn
 	public String manageUserDetail(@RequestParam("user") final String user, final Model model, final HttpServletRequest request)
 			throws CMSItemNotFoundException
@@ -119,7 +121,7 @@ public class UserManagementPageController extends MyCompanyPageController
 	}
 
 	@Override
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	@GetMapping("/edit")
 	@RequireHardLogIn
 	public String editUser(@RequestParam("user") final String user, final Model model) throws CMSItemNotFoundException
 	{
@@ -127,7 +129,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return super.editUser(user, model);
 	}
 
-	@RequestMapping(value = "/edit-approver", method = RequestMethod.GET)
+	@GetMapping("/edit-approver")
 	@RequireHardLogIn
 	public String editUsersApprover(@RequestParam("user") final String user, @RequestParam("approver") final String approver,
 			final Model model, final HttpServletRequest request) throws CMSItemNotFoundException
@@ -148,7 +150,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return editUserUrl;
 	}
 
-	@RequestMapping(value = "/edit-approver", method = RequestMethod.POST)
+	@PostMapping("/edit-approver")
 	@RequireHardLogIn
 	public String editUsersApprover(@RequestParam("user") final String user, @RequestParam("approver") final String approver,
 			@Valid final B2BCustomerForm b2BCustomerForm, final BindingResult bindingResult, final Model model,
@@ -192,7 +194,7 @@ public class UserManagementPageController extends MyCompanyPageController
 	}
 
 	@Override
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	@PostMapping("/edit")
 	@RequireHardLogIn
 	public String editUser(@RequestParam("user") final String user, @Valid final B2BCustomerForm b2BCustomerForm,
 			final BindingResult bindingResult, final Model model, final RedirectAttributes redirectModel)
@@ -202,7 +204,7 @@ public class UserManagementPageController extends MyCompanyPageController
 	}
 
 	@Override
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	@GetMapping("/create")
 	@RequireHardLogIn
 	public String createUser(final Model model) throws CMSItemNotFoundException, Exception
 	{
@@ -237,7 +239,7 @@ public class UserManagementPageController extends MyCompanyPageController
 	}
 
 	@Override
-	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	@PostMapping("/create")
 	@RequireHardLogIn
 	public String createUser(@Valid final B2BCustomerForm b2BCustomerForm, final BindingResult bindingResult, final Model model,
 			final RedirectAttributes redirectModel) throws CMSItemNotFoundException
@@ -246,7 +248,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return super.createUser(b2BCustomerForm, bindingResult, model, redirectModel);
 	}
 
-	@RequestMapping(value = "/disable", method = RequestMethod.GET)
+	@GetMapping("/disable")
 	@RequireHardLogIn
 	public String disableUserConfirmation(@RequestParam("user") final String user, final Model model)
 			throws CMSItemNotFoundException
@@ -265,7 +267,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUserDisbaleConfirmPage;
 	}
 
-	@RequestMapping(value = "/disable", method = RequestMethod.POST)
+	@PostMapping("/disable")
 	@RequireHardLogIn
 	public String disableUser(@RequestParam("user") final String user, final Model model, final RedirectAttributes redirectModel)
 			throws CMSItemNotFoundException, DuplicateUidException
@@ -284,7 +286,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return String.format(REDIRECT_TO_USER_DETAILS, urlEncode(user));
 	}
 
-	@RequestMapping(value = "/enable", method = RequestMethod.POST)
+	@PostMapping("/enable")
 	@RequireHardLogIn
 	public String enableUser(@RequestParam("user") final String user, final RedirectAttributes redirectModel)
 			throws CMSItemNotFoundException, DuplicateUidException
@@ -294,7 +296,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return String.format(REDIRECT_TO_USER_DETAILS, urlEncode(user));
 	}
 
-	@RequestMapping(value = "/resetpassword", method = RequestMethod.GET)
+	@GetMapping("/resetpassword")
 	@RequireHardLogIn
 	public String updatePassword(@RequestParam("user") final String user, final Model model) throws CMSItemNotFoundException
 	{
@@ -315,7 +317,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUserResetPasswordPage;
 	}
 
-	@RequestMapping(value = "/resetpassword", method = RequestMethod.POST)
+	@PostMapping("/resetpassword")
 	@RequireHardLogIn
 	public String updatePassword(@RequestParam("user") final String user,
 			@Valid final CustomerResetPasswordForm customerResetPasswordForm, final BindingResult bindingResult, final Model model,
@@ -354,7 +356,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return String.format(REDIRECT_TO_USER_DETAILS, urlEncode(customerResetPasswordForm.getUid()));
 	}
 
-	@RequestMapping(value = "/approvers", method = RequestMethod.GET)
+	@GetMapping("/approvers")
 	@RequireHardLogIn
 	public String getPagedApproversForCustomer(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -402,7 +404,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return populateDisplayNamesForRoles(b2bApproverFacade.removeApproverFromCustomer(user, approver));
 	}
 
-	@RequestMapping(value = "/permissions", method = RequestMethod.GET)
+	@GetMapping("/permissions")
 	@RequireHardLogIn
 	public String getPagedPermissionsForCustomer(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -472,8 +474,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return String.format(REDIRECT_TO_USER_DETAILS, urlEncode(user));
 	}
 
-	@RequestMapping(value = "/permissions/confirm/remove", method =
-	{ RequestMethod.GET })
+	@GetMapping("/permissions/confirm/remove")
 	@RequireHardLogIn
 	public String confirmRemovePermissionFromUser(@RequestParam("user") final String user,
 			@RequestParam("permission") final String permission, final Model model, final HttpServletRequest request)
@@ -498,8 +499,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyRemoveDisableConfirmationPage;
 	}
 
-	@RequestMapping(value = "/approvers/confirm/remove", method =
-	{ RequestMethod.GET })
+	@GetMapping("/approvers/confirm/remove")
 	@RequireHardLogIn
 	public String confirmRemoveApproverFromUser(@RequestParam("user") final String user,
 			@RequestParam("approver") final String approver, final Model model, final HttpServletRequest request)
@@ -525,7 +525,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyRemoveDisableConfirmationPage;
 	}
 
-	@RequestMapping(value = "/usergroups", method = RequestMethod.GET)
+	@GetMapping("/usergroups")
 	@RequireHardLogIn
 	public String getPagedB2BUserGroupsForCustomer(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -572,8 +572,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return b2bCommerceUserFacade.deselectB2BUserGroupFromCustomer(user, usergroup);
 	}
 
-	@RequestMapping(value = "/usergroups/confirm/remove", method =
-	{ RequestMethod.GET })
+	@GetMapping("/usergroups/confirm/remove")
 	@RequireHardLogIn
 	public String confirmRemoveUserGroupFromUser(@RequestParam("user") final String user,
 			@RequestParam("usergroup") final String usergroup, final Model model, final HttpServletRequest request)
@@ -622,7 +621,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return String.format(REDIRECT_TO_USER_DETAILS, urlEncode(user));
 	}
 
-	@RequestMapping(value = "/edit-permission", method = RequestMethod.GET)
+	@GetMapping("/edit-permission")
 	@RequireHardLogIn
 	public String editUsersPermission(@RequestParam("user") final String user,
 			@RequestParam("permission") final String permission, final Model model, final HttpServletRequest request)
@@ -646,7 +645,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		return editPermissionUrl;
 	}
 
-	@RequestMapping(value = "/edit-permission", method = RequestMethod.POST)
+	@PostMapping("/edit-permission")
 	@RequireHardLogIn
 	public String editUsersPermission(@RequestParam("user") final String user,
 			@RequestParam("permission") final String permission, @Valid final B2BPermissionForm b2BPermissionForm,

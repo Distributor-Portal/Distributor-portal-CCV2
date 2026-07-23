@@ -144,6 +144,7 @@
 		<security:intercept-url pattern="/search/autocompleteSecure/**" requires-channel="https"/>
 
 		<!-- Only allow logged in customers to see the ordering form page -->
+		<!-- FRAMEWORK_UPDATE - TODO - AntPathMatcher was replaced with PathPatternParser as the new default path parser in Spring 6. Adjust this path to the new matching rules or re-enable deprecated AntPathMatcher. Consult "Adapting to PathPatternParser new default URL Matcher" JDK21 Upgrade Step in SAP Help documentation.-->
 		<security:intercept-url pattern="/**/p/**/orderForm" access="ROLE_B2BCUSTOMERGROUP"/>
 
 		<!-- OPEN / ANONYMOUS pages Run all other (public) pages openly. Note that while credentials are secure, the session id can be sniffed.

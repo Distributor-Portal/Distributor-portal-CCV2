@@ -23,12 +23,13 @@ import de.hybris.platform.core.model.order.OrderModel;
 import de.hybris.platform.task.RetryLaterException;
 
 import java.util.Collection;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
 
 
@@ -87,19 +88,14 @@ public class CheckOrderEntryCostCentersActive extends AbstractSimpleB2BApproveOr
 	 */
 	protected Collection<AbstractOrderEntryModel> getExpiredCostCenterEntries(final OrderModel cart)
 	{
-		return CollectionUtils.select(cart.getEntries(), new Predicate()
-		{
-			@Override
-			public boolean evaluate(final Object object)
+		return cart.getEntries().stream().filter(object -> {
+			final B2BCostCenterModel costCenter = ((AbstractOrderEntryModel) object).getCostCenter();
+			if (costCenter != null && BooleanUtils.isFalse(costCenter.getActive()))
 			{
-				final B2BCostCenterModel costCenter = ((AbstractOrderEntryModel) object).getCostCenter();
-				if (costCenter != null && BooleanUtils.isFalse(costCenter.getActive()))
-				{
-					return true;
-				}
-				return false;
+				return true;
 			}
-		});
+			return false;
+		}).collect(Collectors.toList());
 
 	}
 

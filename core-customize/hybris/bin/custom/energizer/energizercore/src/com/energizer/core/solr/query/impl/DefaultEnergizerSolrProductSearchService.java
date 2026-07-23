@@ -17,7 +17,7 @@ import de.hybris.platform.commerceservices.search.solrfacetsearch.impl.DefaultSo
 import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.solrfacetsearch.search.impl.SolrSearchResult;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
 

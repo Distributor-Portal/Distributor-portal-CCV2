@@ -19,7 +19,6 @@ import de.hybris.platform.orderprocessing.model.OrderProcessModel;
 import de.hybris.platform.processengine.BusinessProcessService;
 import de.hybris.platform.servicelayer.event.impl.AbstractEventListener;
 import de.hybris.platform.servicelayer.model.ModelService;
-import org.springframework.beans.factory.annotation.Required;
 
 
 public class OrderPendingApprovalEventListener extends AbstractEventListener<OrderPendingApprovalEvent>
@@ -32,7 +31,6 @@ public class OrderPendingApprovalEventListener extends AbstractEventListener<Ord
 		return businessProcessService;
 	}
 
-	@Required
 	public void setBusinessProcessService(final BusinessProcessService businessProcessService)
 	{
 		this.businessProcessService = businessProcessService;
@@ -43,7 +41,6 @@ public class OrderPendingApprovalEventListener extends AbstractEventListener<Ord
 		return modelService;
 	}
 
-	@Required
 	public void setModelService(final ModelService modelService)
 	{
 		this.modelService = modelService;

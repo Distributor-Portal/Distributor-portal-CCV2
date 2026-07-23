@@ -19,7 +19,7 @@ import de.hybris.platform.cronjob.enums.DayOfWeek;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.AssertTrue;
 
 
 /**

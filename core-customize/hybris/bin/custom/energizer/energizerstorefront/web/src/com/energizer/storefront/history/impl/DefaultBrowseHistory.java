@@ -20,8 +20,6 @@ import com.energizer.storefront.history.BrowseHistoryEntry;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Default implementation of history browsing service.
@@ -39,7 +37,6 @@ public class DefaultBrowseHistory implements BrowseHistory
 		return sessionService;
 	}
 
-	@Required
 	public void setSessionService(final SessionService sessionService)
 	{
 		this.sessionService = sessionService;
@@ -50,7 +47,6 @@ public class DefaultBrowseHistory implements BrowseHistory
 		return capacity;
 	}
 
-	@Required
 	public void setCapacity(final int capacity)
 	{
 		this.capacity = capacity;

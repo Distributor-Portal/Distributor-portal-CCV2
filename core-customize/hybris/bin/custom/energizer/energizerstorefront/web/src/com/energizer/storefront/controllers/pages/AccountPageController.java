@@ -64,17 +64,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -85,8 +84,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -289,7 +290,7 @@ public class AccountPageController extends AbstractSearchPageController
 
 
 
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	@RequireHardLogIn
 	public String account(final Model model) throws CMSItemNotFoundException
 	{
@@ -300,7 +301,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountHomePage;
 	}
 
-	@RequestMapping(value = "/orders", method = RequestMethod.GET)
+	@GetMapping("/orders")
 	@RequireHardLogIn
 	public String orders(@RequestParam(value = "page", defaultValue = "0")
 	final int page, @RequestParam(value = "show", defaultValue = "Page")
@@ -341,7 +342,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountOrderHistoryPage;
 	}
 
-	@RequestMapping(value = "/order/" + ORDER_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/order/" + ORDER_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String order(@PathVariable("orderCode")
 	final String orderCode, final Model model) throws CMSItemNotFoundException
@@ -434,7 +435,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountOrderPage;
 	}
 
-	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	@GetMapping("/profile")
 	@RequireHardLogIn
 	public String profile(final Model model) throws CMSItemNotFoundException, Exception
 	{
@@ -447,18 +448,13 @@ public class AccountPageController extends AbstractSearchPageController
 				//				customerData.setContactNumber(energizerCompanyB2BCommerceFacade.getContactNumber(customerData.getUid(), customerData));
 				if (customerData.getTitleCode() != null)
 				{
-					model.addAttribute("title", CollectionUtils.find(titles, new Predicate()
-					{
-						@Override
-						public boolean evaluate(final Object object)
+					model.addAttribute("title", titles.stream().filter(object -> {
+						if (object instanceof TitleData)
 						{
-							if (object instanceof TitleData)
-							{
-								return customerData.getTitleCode().equals(((TitleData) object).getCode());
-							}
-							return false;
+							return customerData.getTitleCode().equals(((TitleData) object).getCode());
 						}
-					}));
+						return false;
+					}).findFirst().orElse(null));
 				}
 
 				model.addAttribute("customerData", customerData);
@@ -467,18 +463,13 @@ public class AccountPageController extends AbstractSearchPageController
 			{
 				if (getSalesRepEmployeeData().getTitleCode() != null)
 				{
-					model.addAttribute("title", CollectionUtils.find(titles, new Predicate()
-					{
-						@Override
-						public boolean evaluate(final Object object)
+					model.addAttribute("title", titles.stream().filter(object -> {
+						if (object instanceof TitleData)
 						{
-							if (object instanceof TitleData)
-							{
-								return getSalesRepEmployeeData().getTitleCode().equals(((TitleData) object).getCode());
-							}
-							return false;
+							return getSalesRepEmployeeData().getTitleCode().equals(((TitleData) object).getCode());
 						}
-					}));
+						return false;
+					}).findFirst().orElse(null));
 				}
 				model.addAttribute("salesRepEmployeeData", getSalesRepEmployeeData());
 			}
@@ -496,7 +487,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountProfilePage;
 	}
 
-	@RequestMapping(value = "/update-email", method = RequestMethod.GET)
+	@GetMapping("/update-email")
 	@RequireHardLogIn
 	public String editEmail(final Model model) throws CMSItemNotFoundException
 	{
@@ -522,7 +513,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountProfileEmailEditPage;
 	}
 
-	@RequestMapping(value = "/update-email", method = RequestMethod.POST)
+	@PostMapping("/update-email")
 	@RequireHardLogIn
 	public String updateEmail(@Valid
 	final UpdateEmailForm updateEmailForm, final BindingResult bindingResult, final Model model,
@@ -582,7 +573,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return returnAction;
 	}
 
-	@RequestMapping(value = "/update-profile", method = RequestMethod.GET)
+	@GetMapping("/update-profile")
 	@RequireHardLogIn
 	public String editProfile(final Model model) throws CMSItemNotFoundException, Exception
 	{
@@ -637,7 +628,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountProfileEditPage;
 	}
 
-	@RequestMapping(value = "/update-profile", method = RequestMethod.POST)
+	@PostMapping("/update-profile")
 	@RequireHardLogIn
 	public String updateProfile(@Valid
 	final UpdateProfileForm updateProfileForm, final BindingResult bindingResult, final Model model,
@@ -739,7 +730,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return returnAction;
 	}
 
-	@RequestMapping(value = "/update-password", method = RequestMethod.GET)
+	@GetMapping("/update-password")
 	@RequireHardLogIn
 	public String updatePassword(final Model model) throws CMSItemNotFoundException
 	{
@@ -756,7 +747,7 @@ public class AccountPageController extends AbstractSearchPageController
 	}
 
 
-	@RequestMapping(value = "/update-password", method = RequestMethod.POST)
+	@PostMapping("/update-password")
 	@RequireHardLogIn
 	public String updatePassword(@Valid
 	final UpdatePasswordForm updatePasswordForm, final BindingResult bindingResult, final Model model,
@@ -851,7 +842,7 @@ public class AccountPageController extends AbstractSearchPageController
 	}
 
 
-	@RequestMapping(value = "/address-book", method = RequestMethod.GET)
+	@GetMapping("/address-book")
 	@RequireHardLogIn
 	public String getAddressBook(final Model model) throws CMSItemNotFoundException
 	{
@@ -864,7 +855,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountAddressBookPage;
 	}
 
-	@RequestMapping(value = "/add-address", method = RequestMethod.GET)
+	@GetMapping("/add-address")
 	@RequireHardLogIn
 	public String addAddress(final Model model) throws CMSItemNotFoundException
 	{
@@ -887,7 +878,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountEditAddressPage;
 	}
 
-	@RequestMapping(value = "/add-address", method = RequestMethod.POST)
+	@PostMapping("/add-address")
 	@RequireHardLogIn
 	public String addAddress(@Valid
 	final AddressForm addressForm, final BindingResult bindingResult, final Model model, final HttpServletRequest request,
@@ -934,7 +925,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_TO_ADDRESS_BOOK_PAGE;
 	}
 
-	@RequestMapping(value = "/edit-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/edit-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String editAddress(@PathVariable("addressCode")
 	final String addressCode, final Model model) throws CMSItemNotFoundException
@@ -982,7 +973,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountEditAddressPage;
 	}
 
-	@RequestMapping(value = "/edit-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.POST)
+	@PostMapping("/edit-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String editAddress(@Valid
 	final AddressForm addressForm, final BindingResult bindingResult, final Model model, final RedirectAttributes redirectModel)
@@ -1032,7 +1023,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_TO_ADDRESS_BOOK_PAGE;
 	}
 
-	@RequestMapping(value = "/remove-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/remove-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String removeAddress(@PathVariable("addressCode")
 	final String addressCode, final RedirectAttributes redirectModel)
@@ -1044,7 +1035,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_TO_ADDRESS_BOOK_PAGE;
 	}
 
-	@RequestMapping(value = "/set-default-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/set-default-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String setDefaultAddress(@PathVariable("addressCode")
 	final String addressCode, final RedirectAttributes redirectModel)
@@ -1059,7 +1050,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_TO_ADDRESS_BOOK_PAGE;
 	}
 
-	@RequestMapping(value = "/payment-details", method = RequestMethod.GET)
+	@GetMapping("/payment-details")
 	@RequireHardLogIn
 	public String paymentDetails(final Model model) throws CMSItemNotFoundException
 	{
@@ -1072,7 +1063,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountPaymentInfoPage;
 	}
 
-	@RequestMapping(value = "/set-default-payment-details", method = RequestMethod.POST)
+	@PostMapping("/set-default-payment-details")
 	@RequireHardLogIn
 	public String setDefaultPaymentDetails(@RequestParam
 	final String paymentInfoId)
@@ -1086,7 +1077,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_TO_PAYMENT_INFO_PAGE;
 	}
 
-	@RequestMapping(value = "/remove-payment-method", method = RequestMethod.POST)
+	@PostMapping("/remove-payment-method")
 	@RequireHardLogIn
 	public String removePaymentMethod(final Model model, @RequestParam(value = "paymentInfoId")
 	final String paymentMethodId, final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
@@ -1097,7 +1088,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_TO_PAYMENT_INFO_PAGE;
 	}
 
-	@RequestMapping(value = "/orderApprovalDetails/" + WORKFLOW_ACTION_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/orderApprovalDetails/" + WORKFLOW_ACTION_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String orderApprovalDetails(@PathVariable("workflowActionCode")
 	final String workflowActionCode, final Model model) throws CMSItemNotFoundException
@@ -1138,7 +1129,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountOrderApprovalDetailsPage;
 	}
 
-	@RequestMapping(value = "/order/approvalDecision", method = RequestMethod.POST)
+	@PostMapping("/order/approvalDecision")
 	@RequireHardLogIn
 	public String orderApprovalDecision(@ModelAttribute("orderApprovalDecisionForm")
 	final OrderApprovalDecisionForm orderApprovalDecisionForm, final Model model, final RedirectAttributes redirectAttributes)
@@ -1199,7 +1190,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_MY_ACCOUNT + "/orderApprovalDetails/" + orderApprovalDecisionForm.getWorkFlowActionCode();
 	}
 
-	@RequestMapping(value = "/my-quotes", method = RequestMethod.GET)
+	@GetMapping("/my-quotes")
 	@RequireHardLogIn
 	public String myQuotes(@RequestParam(value = "page", defaultValue = "0")
 	final int page, @RequestParam(value = "show", defaultValue = "Page")
@@ -1224,7 +1215,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountMyQuotesPage;
 	}
 
-	@RequestMapping(value = "/my-quote/" + ORDER_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/my-quote/" + ORDER_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String quotesDetails(@PathVariable("orderCode")
 	final String orderCode, final Model model) throws CMSItemNotFoundException
@@ -1337,7 +1328,7 @@ public class AccountPageController extends AbstractSearchPageController
 		GlobalMessages.addErrorMessage(model, "text.quote.empty");
 	}
 
-	@RequestMapping(value = "/my-replenishment", method = RequestMethod.GET)
+	@GetMapping("/my-replenishment")
 	@RequireHardLogIn
 	public String myReplenishment(@RequestParam(value = "page", defaultValue = "0")
 	final int page, @RequestParam(value = "show", defaultValue = "Page")
@@ -1354,7 +1345,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountReplenishmentSchedule;
 	}
 
-	@RequestMapping(value = "/my-replenishment/" + JOB_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/my-replenishment/" + JOB_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String replenishmentDetails(@RequestParam(value = "page", defaultValue = "0")
 	final int page, @RequestParam(value = "show", defaultValue = "Page")
@@ -1407,8 +1398,8 @@ public class AccountPageController extends AbstractSearchPageController
 		return String.format(REDIRECT_TO_MYREPLENISHMENTS_DETAIL_PAGE, jobCode);
 	}
 
-	@RequestMapping(value = "/my-replenishment/detail/confirmation/cancel/"
-			+ JOB_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/my-replenishment/detail/confirmation/cancel/"
+			+ JOB_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String confirmCancelReplenishmentFromDetailsPage(@PathVariable("jobCode")
 	final String jobCode, final Model model, final HttpServletRequest request) throws CMSItemNotFoundException
@@ -1435,7 +1426,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountCancelActionConfirmationPage;
 	}
 
-	@RequestMapping(value = "/my-replenishment/confirmation/cancel/" + JOB_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/my-replenishment/confirmation/cancel/" + JOB_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String confirmCancelReplenishment(@PathVariable("jobCode")
 	final String jobCode, final Model model, final HttpServletRequest request) throws CMSItemNotFoundException
@@ -1459,7 +1450,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountCancelActionConfirmationPage;
 	}
 
-	@RequestMapping(value = "/approval-dashboard", method = RequestMethod.GET)
+	@GetMapping("/approval-dashboard")
 	@RequireHardLogIn
 	public String orderApprovalDashboard(@RequestParam(value = "page", defaultValue = "0")
 	final int page, @RequestParam(value = "show", defaultValue = "Page")
@@ -1490,8 +1481,8 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountOrderApprovalDashboardPage;
 	}
 
-	@RequestMapping(value = "/my-replenishment/" + JOB_CODE_PATH_VARIABLE_PATTERN + "/"
-			+ ORDER_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/my-replenishment/" + JOB_CODE_PATH_VARIABLE_PATTERN + "/"
+			+ ORDER_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String replenishmentOrderDetail(@PathVariable("jobCode")
 	final String jobCode, @PathVariable("orderCode")
@@ -1527,7 +1518,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountOrderPage;
 	}
 
-	@RequestMapping(value = "/orderApproval/" + ORDER_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/orderApproval/" + ORDER_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String orderApproval(@PathVariable("orderCode")
 	final String orderCode, final Model model) throws CMSItemNotFoundException
@@ -1558,7 +1549,7 @@ public class AccountPageController extends AbstractSearchPageController
 	}
 
 
-	@RequestMapping(value = QUICK_ORDER_PAGE_URL, method = RequestMethod.GET)
+	@GetMapping(QUICK_ORDER_PAGE_URL)
 	@RequireHardLogIn
 	public String quickOrder(final Model model, final HttpSession session) throws CMSItemNotFoundException, Exception
 	{
@@ -1593,7 +1584,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountQuickOrderPage;
 	}
 
-	@RequestMapping(value = QUICK_ORDER_ADD_ITEM_PAGE_URL, method = RequestMethod.POST)
+	@PostMapping(QUICK_ORDER_ADD_ITEM_PAGE_URL)
 	@RequireHardLogIn
 	public String quickOrderAddItem(final Model model, @RequestParam("energizerMaterialID")
 	final String energizerMaterialID, @RequestParam("distributorMaterialID")
@@ -1725,7 +1716,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_MY_ACCOUNT_QUICK_ORDER;
 	}
 
-	@RequestMapping(value = QUICK_ORDER_REMOVE_ITEM_PAGE_URL, method = RequestMethod.POST)
+	@PostMapping(QUICK_ORDER_REMOVE_ITEM_PAGE_URL)
 	@RequireHardLogIn
 	public String quickOrderRemoveItem(final Model model, @RequestParam("energizerMaterialID")
 	final String energizerMaterialID, final HttpSession session) throws CMSItemNotFoundException, Exception
@@ -1758,7 +1749,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_MY_ACCOUNT_QUICK_ORDER;
 	}
 
-	@RequestMapping(value = QUICK_ORDER_RESET_PAGE_URL, method = RequestMethod.GET)
+	@GetMapping(QUICK_ORDER_RESET_PAGE_URL)
 	@RequireHardLogIn
 	public String quickOrderReset(final Model model, final HttpSession session) throws CMSItemNotFoundException, Exception
 	{
@@ -1784,7 +1775,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_MY_ACCOUNT_QUICK_ORDER;
 	}
 
-	@RequestMapping(value = QUICK_ORDER_ADD_TO_CART_PAGE_URL, method = RequestMethod.GET)
+	@GetMapping(QUICK_ORDER_ADD_TO_CART_PAGE_URL)
 	@RequireHardLogIn
 	public String quickOrderAddToCartAndContinue(final Model model, final HttpSession session)
 			throws CMSItemNotFoundException, Exception
@@ -1815,7 +1806,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_QUICK_ORDER_TO_CART;
 	}
 
-	@RequestMapping(value = "/excelfileupload", method = RequestMethod.GET)
+	@GetMapping("/excelfileupload")
 	@RequireHardLogIn
 	public String redirectToUploadFile(final Model model) throws CMSItemNotFoundException
 	{
@@ -1826,7 +1817,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountExcelUpload;
 	}
 
-	@RequestMapping(value = QUICK_ORDER_AJAX_UPDATE_URL, method = RequestMethod.GET)
+	@GetMapping(QUICK_ORDER_AJAX_UPDATE_URL)
 	@RequireHardLogIn
 	public @ResponseBody QuickOrderData quickOrderAjaxOrderUpdate(final Model model, @RequestParam("productCode")
 	final String productCode, @RequestParam("qty")
@@ -1857,7 +1848,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return quickOrder;
 	}
 
-	@RequestMapping(value = "/uploadDeliveryNotesFile", method = RequestMethod.POST)
+	@PostMapping("/uploadDeliveryNotesFile")
 	@RequireHardLogIn
 	public String uploadDeliveryNotesFile(final Model model, @RequestParam("file")
 	final CommonsMultipartFile file, @RequestParam("orderCode")
@@ -1916,7 +1907,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return REDIRECT_TO_ORDER_DETAIL_PAGE + orderCode;
 	}
 
-	@RequestMapping(value = "/downloadDeliveryNoteFile", method = RequestMethod.GET)
+	@GetMapping("/downloadDeliveryNoteFile")
 	public void downloadDeliveryNoteFile(@RequestParam("orderCode")
 	final String orderCode, @RequestParam("fileName")
 	final String fileName, @RequestParam(value = "inline", required = true)
@@ -1972,7 +1963,7 @@ public class AccountPageController extends AbstractSearchPageController
 		}
 	}
 
-	@RequestMapping(value = "/removeDeliveryNoteFile", method = RequestMethod.POST)
+	@PostMapping("/removeDeliveryNoteFile")
 	@ResponseBody
 	public String removeDeliveryNoteFile(final Model model, @RequestParam("orderCode")
 	final String orderCode, @RequestParam("fileName")

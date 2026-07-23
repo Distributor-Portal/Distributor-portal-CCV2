@@ -41,16 +41,16 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
         return requestMappingHandlerMapping;
     }
 
-    @Bean(name = "messageSource")
-    public MessageSource messageSource() {
+	@Bean(name = "messageSource")
+	MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename(MESSAGE_SOURCE);
         messageSource.setCacheSeconds(5);
         return messageSource;
     }
 
-    @Bean
-    public TemplateResolver templateResolver() {
+	@Bean
+	TemplateResolver templateResolver() {
         TemplateResolver templateResolver = new ServletContextTemplateResolver();
         templateResolver.setPrefix(VIEWS);
         templateResolver.setSuffix(".html");
@@ -59,16 +59,16 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
         return templateResolver;
     }
 
-    @Bean
-    public SpringTemplateEngine templateEngine() {
+	@Bean
+	SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.addDialect(new SpringSecurityDialect());
         return templateEngine;
     }
 
-    @Bean
-    public ThymeleafViewResolver viewResolver() {
+	@Bean
+	ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
         thymeleafViewResolver.setTemplateEngine(templateEngine());
         thymeleafViewResolver.setCharacterEncoding("UTF-8");

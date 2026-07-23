@@ -3,7 +3,7 @@ package basic.config;
 import org.junit.Before;
 import org.springframework.security.web.FilterChainProxy;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 

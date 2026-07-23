@@ -27,7 +27,6 @@ import de.hybris.platform.servicelayer.dto.converter.Converter;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -81,7 +80,6 @@ public class CustomerEmailContext extends AbstractEmailContext<StoreFrontCustome
 		return customerConverter;
 	}
 
-	@Required
 	public void setCustomerConverter(final Converter<UserModel, CustomerData> customerConverter)
 	{
 		this.customerConverter = customerConverter;
@@ -104,7 +102,6 @@ public class CustomerEmailContext extends AbstractEmailContext<StoreFrontCustome
 	}
 
 	@Override
-	@Required
 	public void setConfigurationService(final ConfigurationService configurationService)
 	{
 	this.configurationService = configurationService;

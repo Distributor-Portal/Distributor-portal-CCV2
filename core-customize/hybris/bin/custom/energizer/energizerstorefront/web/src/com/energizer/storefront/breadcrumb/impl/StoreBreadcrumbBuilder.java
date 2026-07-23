@@ -20,7 +20,6 @@ import com.energizer.storefront.breadcrumb.Breadcrumb;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.MessageSource;
 
 
@@ -39,7 +38,6 @@ public class StoreBreadcrumbBuilder
 		return i18nService;
 	}
 
-	@Required
 	public void setI18nService(final I18NService i18nService)
 	{
 		this.i18nService = i18nService;
@@ -50,7 +48,6 @@ public class StoreBreadcrumbBuilder
 		return messageSource;
 	}
 
-	@Required
 	public void setMessageSource(final MessageSource messageSource)
 	{
 		this.messageSource = messageSource;

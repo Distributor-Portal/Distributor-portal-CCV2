@@ -13,18 +13,17 @@
  */
 package com.energizer.storefront.interceptors;
 
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
  * A postHandle HandlerInterceptor that runs a number of BeforeViewHandlers before the view is rendered.
  */
-public class BeforeViewHandlerInterceptor extends HandlerInterceptorAdapter
+public class BeforeViewHandlerInterceptor implements HandlerInterceptor
 {
 	private List<BeforeViewHandler> beforeViewHandlers;
 
@@ -33,7 +32,6 @@ public class BeforeViewHandlerInterceptor extends HandlerInterceptorAdapter
 		return beforeViewHandlers;
 	}
 
-	@Required
 	public void setBeforeViewHandlers(final List<BeforeViewHandler> beforeViewHandlers)
 	{
 		this.beforeViewHandlers = beforeViewHandlers;

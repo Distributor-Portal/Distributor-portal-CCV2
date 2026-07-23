@@ -27,8 +27,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 public class VariantOptionDataMediaPopulator<SOURCE extends VariantProductModel, TARGET extends VariantOptionData> implements
 		Populator<SOURCE, TARGET>
@@ -85,7 +83,6 @@ public class VariantOptionDataMediaPopulator<SOURCE extends VariantProductModel,
 		return imageFormats;
 	}
 
-	@Required
 	public void setImageFormats(final List<String> imageFormats)
 	{
 		this.imageFormats = imageFormats;
@@ -96,7 +93,6 @@ public class VariantOptionDataMediaPopulator<SOURCE extends VariantProductModel,
 		return acceleratorImageFormatMapping;
 	}
 
-	@Required
 	public void setAcceleratorImageFormatMapping(final ImageFormatMapping acceleratorImageFormatMapping)
 	{
 		this.acceleratorImageFormatMapping = acceleratorImageFormatMapping;

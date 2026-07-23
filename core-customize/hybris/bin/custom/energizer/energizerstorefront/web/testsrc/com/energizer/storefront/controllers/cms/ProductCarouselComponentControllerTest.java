@@ -28,11 +28,10 @@ import de.hybris.platform.core.model.product.ProductModel;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -93,7 +92,7 @@ public class ProductCarouselComponentControllerTest
 		//verify(productFacade).getProductForOptions(Mockito.same(productModelCategories),
 		//		(List<ProductOption>) Mockito.argThat(new OptionsMatcher()));
 		verify(model).addAttribute("title", COMPONENT_TITLE);
-		verify(model).addAttribute(Mockito.same("productData"), Mockito.anyListOf(ProductData.class));
+		verify(model).addAttribute(Mockito.same("productData"), Mockito.anyList());
 	}
 
 	/*

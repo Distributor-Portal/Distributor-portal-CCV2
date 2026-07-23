@@ -15,10 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.energizer.core.constants.EnergizerCoreConstants;
@@ -66,7 +66,7 @@ public class EnergizerProduct2CategoryRelationCSVProcessor extends AbstractEnerg
 		final String catalogVersion = Config.getParameter(FEED_PROCESSOR_PRODUCT_CATALOG_VERSION);
 		//final CatalogVersionModel catalogModelVersionModel = catalogVersionService.getCatalogVersion(catalogName, catalogVersion);
 		long succeedRecord = getRecordSucceeded();
-		CSV_HEADERS = Config.getParameter(PRODUCT_CATEGORY_FEED_HEADERS_KEY).split(new Character(DELIMETER).toString());
+		CSV_HEADERS = Config.getParameter(PRODUCT_CATEGORY_FEED_HEADERS_KEY).split(Character.valueOf(DELIMETER).toString());
 		for (final CSVRecord record : records)
 		{
 			final Map<String, String> csvValuesMap = record.toMap();
@@ -216,7 +216,7 @@ public class EnergizerProduct2CategoryRelationCSVProcessor extends AbstractEnerg
 		if (!hasMandatoryFields(record, getHeadersForFeed(PRODUCT_CATEGORY_FEED_HEADERS_KEY)))
 		{
 			final List<String> mandatoryFields = Arrays.asList(
-					Config.getParameter(PRODUCT_CATEGORY_FEED_HEADERS_MANDATORY_KEY).split(new Character(DELIMETER).toString()));
+					Config.getParameter(PRODUCT_CATEGORY_FEED_HEADERS_MANDATORY_KEY).split(Character.valueOf(DELIMETER).toString()));
 			final Map<String, String> map = record.toMap();
 			Integer columnNumber = 0;
 			final List<String> columnNames = new ArrayList<String>();

@@ -22,7 +22,7 @@ import de.hybris.platform.store.services.BaseStoreService;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
 

@@ -18,7 +18,7 @@ import de.hybris.platform.core.model.c2l.LanguageModel;
 import de.hybris.platform.servicelayer.i18n.CommonI18NService;
 import com.energizer.storefront.interceptors.beforecontroller.SetLanguageBeforeControllerHandler;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -83,8 +83,8 @@ public class SetLanguageBeforeControllerHandlerTest
 
 		beforeControllerHandler.beforeController(request, null, null);
 
-		Mockito.verifyZeroInteractions(commonI18NService);
-		Mockito.verifyZeroInteractions(languageResolver);
+		Mockito.verifyNoInteractions(commonI18NService);
+		Mockito.verifyNoInteractions(languageResolver);
 
 		Mockito.reset(languageResolver, request, commonI18NService);
 	}

@@ -17,7 +17,6 @@ import de.hybris.platform.core.Registry;
 import de.hybris.platform.servicelayer.session.SessionService;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.energizer.core.enums.B2BCheckoutFlowEnum;
 import com.energizer.core.enums.B2BCheckoutPciOptionEnum;
@@ -43,7 +42,6 @@ public class SessionOverrideB2BCheckoutFlowFacade extends DefaultB2BCheckoutFlow
 		return sessionService;
 	}
 
-	@Required
 	public void setSessionService(final SessionService sessionService)
 	{
 		this.sessionService = sessionService;

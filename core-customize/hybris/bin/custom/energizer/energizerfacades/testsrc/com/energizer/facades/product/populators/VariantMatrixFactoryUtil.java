@@ -34,8 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeSet;
+import java.util.concurrent.ThreadLocalRandom;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 import com.energizer.core.search.solrfacetsearch.provider.entity.VariantValueCategoryModelPriorityComparator;
 import com.google.common.collect.Iterables;
@@ -185,7 +186,7 @@ public class VariantMatrixFactoryUtil
 		addVariantsWithValueCategories(productModel, dimension);
 
 		// from 0 to size - 1
-		final int randomIndex = (int) Math.floor(Math.random() * (productModel.getVariants().size()));
+		final int randomIndex = (int) Math.floor(ThreadLocalRandom.current().nextDouble() * (productModel.getVariants().size()));
 
 
 		return Iterables.get(productModel.getVariants(), randomIndex);

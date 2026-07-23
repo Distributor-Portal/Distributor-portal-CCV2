@@ -13,8 +13,6 @@
  */
 package com.energizer.core.checkout.flow.impl;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import com.energizer.core.checkout.flow.B2BCheckoutFlowStrategy;
 import com.energizer.core.enums.B2BCheckoutFlowEnum;
 
@@ -35,7 +33,6 @@ public class FixedB2BCheckoutFlowStrategy implements B2BCheckoutFlowStrategy
 		return checkoutFlow;
 	}
 
-	@Required
 	public void setCheckoutFlow(final B2BCheckoutFlowEnum checkoutFlow)
 	{
 		this.checkoutFlow = checkoutFlow;

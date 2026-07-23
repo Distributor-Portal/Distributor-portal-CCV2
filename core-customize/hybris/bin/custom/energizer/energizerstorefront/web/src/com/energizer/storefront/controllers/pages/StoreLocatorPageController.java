@@ -35,17 +35,18 @@ import com.energizer.storefront.util.MetaSanitizerUtil;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.energizer.storefront.util.XSSFilterUtil;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -93,7 +94,7 @@ public class StoreLocatorPageController extends AbstractSearchPageController
 	}
 
 	// Method to get the empty search form
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	public String getStoreFinderPage(final Model model) throws CMSItemNotFoundException
 	{
 		setUpPageForms(model);
@@ -103,7 +104,7 @@ public class StoreLocatorPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.StoreFinder.StoreFinderSearchPage;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, params = "q")
+	@GetMapping( params = "q")
 	public String findStores(@RequestParam(value = "page", defaultValue = "0") final int page, @RequestParam(value = "show",
 			defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode, @RequestParam(value = "sort",
 			required = false) final String sortCode, @RequestParam(value = "q") final String locationQuery, @RequestParam(
@@ -191,7 +192,7 @@ public class StoreLocatorPageController extends AbstractSearchPageController
 			final List<Breadcrumb> breadCrumbsList)
 	{
 		populateModel(model, searchResult, ShowMode.Page);
-		model.addAttribute("locationQuery", StringEscapeUtils.escapeHtml(searchResult.getLocationText()));
+		model.addAttribute("locationQuery", StringEscapeUtils.escapeHtml4(searchResult.getLocationText()));
 		model.addAttribute(WebConstants.BREADCRUMBS_KEY, breadCrumbsList);
 	}
 

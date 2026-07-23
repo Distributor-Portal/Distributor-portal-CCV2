@@ -11,7 +11,7 @@ import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;

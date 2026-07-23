@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.energizer.core.model.EnergizerCategoryModel;
 import com.energizer.core.model.EnergizerProductModel;
@@ -99,8 +98,8 @@ public class EnergizerProductFamilyValueProvider extends AbstractPropertyFieldVa
 
 									for (final String fieldName : names)
 									{
-										fieldValues.add(new FieldValue(fieldName, segment.getName(new Locale(language.getIsocode()))));
-										LOG.debug("Family added  :" + segment.getName(new Locale(language.getIsocode())));
+										fieldValues.add(new FieldValue(fieldName, segment.getName(Locale.of(language.getIsocode()))));
+										LOG.debug("Family added  :" + segment.getName(Locale.of(language.getIsocode())));
 									}
 
 								}
@@ -136,7 +135,6 @@ public class EnergizerProductFamilyValueProvider extends AbstractPropertyFieldVa
 		return fieldNameProvider;
 	}
 
-	@Required
 	public void setFieldNameProvider(final FieldNameProvider fieldNameProvider)
 	{
 		this.fieldNameProvider = fieldNameProvider;

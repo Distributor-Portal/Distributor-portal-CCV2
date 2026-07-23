@@ -9,6 +9,8 @@ import de.hybris.platform.commerceservices.event.AbstractCommerceUserEvent;
 
 import com.energizer.core.model.EnergizerB2BEmployeeModel;
 
+import java.io.Serial;
+
 
 /**
  * @author Srivenkata_N
@@ -19,6 +21,7 @@ public abstract class B2BEmployeeAbstractCommerceUserEvent extends AbstractComme
 	/**
 	 *
 	 */
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	public EnergizerB2BEmployeeModel salesRepUser;

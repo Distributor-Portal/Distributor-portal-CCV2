@@ -28,9 +28,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.energizer.core.model.EnergizerCMIRModel;
 import com.energizer.core.model.EnergizerPriceRowModel;
@@ -127,7 +126,6 @@ public class EnergizerProductShippingPointValueProvider extends AbstractProperty
 		return fieldNameProvider;
 	}
 
-	@Required
 	public void setFieldNameProvider(final FieldNameProvider fieldNameProvider)
 	{
 		this.fieldNameProvider = fieldNameProvider;
@@ -145,7 +143,6 @@ public class EnergizerProductShippingPointValueProvider extends AbstractProperty
 	 * @param energizerProductService
 	 *                                   the energizerProductService to set
 	 */
-	@Required
 	public void setEnergizerProductService(final EnergizerProductService energizerProductService)
 	{
 		this.energizerProductService = energizerProductService;

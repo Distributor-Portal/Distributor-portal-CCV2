@@ -61,11 +61,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -844,7 +843,6 @@ public class B2BAcceleratorTestOrderData
 		return i18nService;
 	}
 
-	@Required
 	public void setI18nService(final CommonI18NService i18nService)
 	{
 		this.i18nService = i18nService;
@@ -855,7 +853,6 @@ public class B2BAcceleratorTestOrderData
 		return cmsAdminSiteService;
 	}
 
-	@Required
 	public void setCmsAdminSiteService(final CMSAdminSiteService cmsAdminSiteService)
 	{
 		this.cmsAdminSiteService = cmsAdminSiteService;
@@ -866,7 +863,6 @@ public class B2BAcceleratorTestOrderData
 		return userService;
 	}
 
-	@Required
 	public void setUserService(final UserService userService)
 	{
 		this.userService = userService;
@@ -877,7 +873,6 @@ public class B2BAcceleratorTestOrderData
 		return impersonationService;
 	}
 
-	@Required
 	public void setImpersonationService(final ImpersonationService impersonationService)
 	{
 		this.impersonationService = impersonationService;
@@ -888,7 +883,6 @@ public class B2BAcceleratorTestOrderData
 		return customerAccountService;
 	}
 
-	@Required
 	public void setCustomerAccountService(final CustomerAccountService customerAccountService)
 	{
 		this.customerAccountService = customerAccountService;
@@ -899,7 +893,6 @@ public class B2BAcceleratorTestOrderData
 		return cartFacade;
 	}
 
-	@Required
 	public void setCartFacade(final CartFacade cartFacade)
 	{
 		this.cartFacade = cartFacade;
@@ -910,7 +903,6 @@ public class B2BAcceleratorTestOrderData
 		return cartService;
 	}
 
-	@Required
 	public void setCartService(final CartService cartService)
 	{
 		this.cartService = cartService;
@@ -921,7 +913,6 @@ public class B2BAcceleratorTestOrderData
 		return commerceCheckoutService;
 	}
 
-	@Required
 	public void setCommerceCheckoutService(final CommerceCheckoutService commerceCheckoutService)
 	{
 		this.commerceCheckoutService = commerceCheckoutService;
@@ -932,7 +923,6 @@ public class B2BAcceleratorTestOrderData
 		return baseStoreSelectorStrategy;
 	}
 
-	@Required
 	public void setBaseStoreSelectorStrategy(final BaseStoreSelectorStrategy baseStoreSelectorStrategy)
 	{
 		this.baseStoreSelectorStrategy = baseStoreSelectorStrategy;
@@ -943,7 +933,6 @@ public class B2BAcceleratorTestOrderData
 		return modelService;
 	}
 
-	@Required
 	public void setModelService(final ModelService modelService)
 	{
 		this.modelService = modelService;
@@ -954,7 +943,6 @@ public class B2BAcceleratorTestOrderData
 		return orderFacade;
 	}
 
-	@Required
 	public void setOrderFacade(final B2BOrderFacade orderFacade)
 	{
 		this.orderFacade = orderFacade;
@@ -965,7 +953,6 @@ public class B2BAcceleratorTestOrderData
 		return b2bCheckoutFacade;
 	}
 
-	@Required
 	public void setB2bCheckoutFacade(final B2BCheckoutFacade b2bCheckoutFacade)
 	{
 		this.b2bCheckoutFacade = b2bCheckoutFacade;
@@ -976,7 +963,6 @@ public class B2BAcceleratorTestOrderData
 		return b2bWorkflowIntegrationService;
 	}
 
-	@Required
 	public void setB2bWorkflowIntegrationService(final B2BWorkflowIntegrationService b2bWorkflowIntegrationService)
 	{
 		this.b2bWorkflowIntegrationService = b2bWorkflowIntegrationService;
@@ -987,7 +973,6 @@ public class B2BAcceleratorTestOrderData
 		return addressReversePopulator;
 	}
 
-	@Required
 	public void setAddressReversePopulator(final AddressReversePopulator addressReversePopulator)
 	{
 		this.addressReversePopulator = addressReversePopulator;
@@ -998,7 +983,6 @@ public class B2BAcceleratorTestOrderData
 		return b2bCustomerAccountService;
 	}
 
-	@Required
 	public void setB2bCustomerAccountService(final B2BCustomerAccountService b2bCustomerAccountService)
 	{
 		this.b2bCustomerAccountService = b2bCustomerAccountService;
@@ -1009,7 +993,6 @@ public class B2BAcceleratorTestOrderData
 		return cronJobService;
 	}
 
-	@Required
 	public void setCronJobService(final CronJobService cronJobService)
 	{
 		this.cronJobService = cronJobService;
@@ -1031,7 +1014,6 @@ public class B2BAcceleratorTestOrderData
 		return calculationService;
 	}
 
-	@Required
 	public void setCalculationService(final CalculationService calculationService)
 	{
 		this.calculationService = calculationService;
@@ -1042,7 +1024,6 @@ public class B2BAcceleratorTestOrderData
 		return transactionManager;
 	}
 
-	@Required
 	public void setTransactionManager(final PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;

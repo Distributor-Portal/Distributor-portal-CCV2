@@ -13,7 +13,7 @@
  */
 package com.energizer.storefront.forms;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 
 /**

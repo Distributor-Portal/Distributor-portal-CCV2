@@ -14,9 +14,9 @@ import de.hybris.platform.servicelayer.user.UserService;
 
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 import com.energizer.core.data.EnergizerB2BUnitData;
 import com.energizer.core.model.EnergizerB2BEmployeeModel;

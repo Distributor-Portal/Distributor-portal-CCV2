@@ -18,7 +18,6 @@ import de.hybris.platform.orderscheduling.model.CartToOrderCronJobModel;
 import de.hybris.platform.servicelayer.event.EventService;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -34,7 +33,6 @@ public class SendReplenishmentOrderPlacedNotification
 		Logger.getLogger(getClass()).info("Published cartToOrder: " + cartToOrder.getCode());
 	}
 
-	@Required
 	public void setEventService(final EventService eventService)
 	{
 		this.eventService = eventService;

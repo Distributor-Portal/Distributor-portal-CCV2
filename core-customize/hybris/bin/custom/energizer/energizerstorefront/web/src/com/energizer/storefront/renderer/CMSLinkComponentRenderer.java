@@ -25,13 +25,12 @@ import com.energizer.storefront.tags.Functions;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.PageContext;
 
 import org.apache.taglibs.standard.tag.common.core.UrlSupport;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  */
@@ -45,7 +44,6 @@ public class CMSLinkComponentRenderer implements CMSComponentRenderer<CMSLinkCom
 		return productUrlConverter;
 	}
 
-	@Required
 	public void setProductUrlConverter(final Converter<ProductModel, ProductData> productUrlConverter)
 	{
 		this.productUrlConverter = productUrlConverter;
@@ -56,7 +54,6 @@ public class CMSLinkComponentRenderer implements CMSComponentRenderer<CMSLinkCom
 		return categoryUrlConverter;
 	}
 
-	@Required
 	public void setCategoryUrlConverter(final Converter<CategoryModel, CategoryData> categoryUrlConverter)
 	{
 		this.categoryUrlConverter = categoryUrlConverter;

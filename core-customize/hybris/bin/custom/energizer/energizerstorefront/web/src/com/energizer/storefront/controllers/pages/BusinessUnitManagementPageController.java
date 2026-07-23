@@ -32,15 +32,17 @@ import de.hybris.platform.core.model.user.UserModel;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,7 +69,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 {
 	private static final Logger LOG = Logger.getLogger(BusinessUnitManagementPageController.class);
 
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	@RequireHardLogIn
 	public String manageUnits(final Model model) throws CMSItemNotFoundException
 	{
@@ -83,7 +85,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 	}
 
 	@Override
-	@RequestMapping(value = "/details", method = RequestMethod.GET)
+	@GetMapping("/details")
 	@RequireHardLogIn
 	public String unitDetails(@RequestParam("unit") final String unit, final Model model, final HttpServletRequest request)
 			throws CMSItemNotFoundException
@@ -91,7 +93,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return super.unitDetails(unit, model, request);
 	}
 
-	@RequestMapping(value = "/addcostcenter", method = RequestMethod.GET)
+	@GetMapping("/addcostcenter")
 	@RequireHardLogIn
 	public String addCostCenterToUnit(@RequestParam("unit") final String unit, final Model model, final HttpServletRequest request)
 			throws CMSItemNotFoundException
@@ -125,7 +127,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return addCostCenterUrl;
 	}
 
-	@RequestMapping(value = "/addcostcenter", method = RequestMethod.POST)
+	@PostMapping("/addcostcenter")
 	@RequireHardLogIn
 	public String addCostCenterToUnit(@RequestParam("unit") final String unit, @Valid final B2BCostCenterForm b2BCostCenterForm,
 			final BindingResult bindingResult, final Model model, final HttpServletRequest request,
@@ -163,7 +165,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		}
 	}
 
-	@RequestMapping(value = "/editcostcenter", method = RequestMethod.GET)
+	@GetMapping("/editcostcenter")
 	@RequireHardLogIn
 	public String editCostCenterToUnit(@RequestParam("unit") final String unit,
 			@RequestParam("costCenterCode") final String costCenterCode, final Model model, final HttpServletRequest request)
@@ -194,7 +196,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return url;
 	}
 
-	@RequestMapping(value = "/editcostcenter", method = RequestMethod.POST)
+	@PostMapping("/editcostcenter")
 	@RequireHardLogIn
 	public String editCostCenterToUnit(@RequestParam("unit") final String unit,
 			@RequestParam("costCenterCode") final String costCenterCode, @Valid final B2BCostCenterForm b2BCostCenterForm,
@@ -232,7 +234,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		}
 	}
 
-	@RequestMapping(value = "/disable", method = RequestMethod.GET)
+	@GetMapping("/disable")
 	@RequireHardLogIn
 	public String disableUnitConfirmation(@RequestParam("unit") final String unit, final Model model)
 			throws CMSItemNotFoundException
@@ -251,7 +253,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUnitDisablePage;
 	}
 
-	@RequestMapping(value = "/disable", method = RequestMethod.POST)
+	@PostMapping("/disable")
 	@RequireHardLogIn
 	public String disableUnit(@RequestParam("unit") final String unit, final Model model) throws CMSItemNotFoundException
 	{
@@ -268,7 +270,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return String.format(REDIRECT_TO_UNIT_DETAILS, urlEncode(unit));
 	}
 
-	@RequestMapping(value = "/enable", method = RequestMethod.GET)
+	@GetMapping("/enable")
 	@RequireHardLogIn
 	public String enableUnit(@RequestParam("unit") final String unit, final Model model) throws CMSItemNotFoundException
 	{
@@ -283,7 +285,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return String.format(REDIRECT_TO_UNIT_DETAILS, urlEncode(unit));
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	@GetMapping("/edit")
 	@RequireHardLogIn
 	public String editUnit(@RequestParam("unit") final String unit, final Model model) throws CMSItemNotFoundException
 	{
@@ -316,7 +318,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUnitEditPage;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	@PostMapping("/edit")
 	@RequireHardLogIn
 	public String editUnit(@RequestParam("unit") final String unit, @Valid final B2BUnitForm unitForm,
 			final BindingResult bindingResult, final Model model, final RedirectAttributes redirectModel)
@@ -380,7 +382,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return String.format(REDIRECT_TO_UNIT_DETAILS, urlEncode(unitForm.getUid()));
 	}
 
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	@GetMapping("/create")
 	@RequireHardLogIn
 	public String createUnit(@RequestParam("unit") final String unit, final Model model, final HttpServletRequest request)
 			throws CMSItemNotFoundException
@@ -421,7 +423,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUnitCreatePage;
 	}
 
-	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	@PostMapping("/create")
 	@RequireHardLogIn
 	public String createUnit(@Valid final B2BUnitForm unitForm, final BindingResult bindingResult, final Model model,
 			final HttpServletRequest request, final RedirectAttributes redirectModel) throws CMSItemNotFoundException
@@ -472,7 +474,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return String.format(REDIRECT_TO_UNIT_DETAILS, urlEncode(unitForm.getUid()));
 	}
 
-	@RequestMapping(value = "/costcenter", method = RequestMethod.GET)
+	@GetMapping("/costcenter")
 	@RequireHardLogIn
 	public String viewCostCenterForUnit(@RequestParam("unit") final String unit,
 			@RequestParam("costCenterCode") final String costCenterCode, final Model model, final HttpServletRequest request)
@@ -492,7 +494,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return url;
 	}
 
-	@RequestMapping(value = "/createuser", method = RequestMethod.GET)
+	@GetMapping("/createuser")
 	@RequireHardLogIn
 	public String createCustomerOfUnit(@RequestParam("unit") final String unit, @RequestParam("role") final String role,
 			final Model model, final HttpServletRequest request) throws Exception
@@ -524,7 +526,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return url;
 	}
 
-	@RequestMapping(value = "/createuser", method = RequestMethod.POST)
+	@PostMapping("/createuser")
 	@RequireHardLogIn
 	public String createCustomerOfUnit(@RequestParam("unit") final String unit, @RequestParam("role") final String role,
 			@Valid final B2BCustomerForm b2bCustomerForm, final BindingResult bindingResult, final Model model,
@@ -555,7 +557,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		}
 	}
 
-	@RequestMapping(value = "/edituser", method = RequestMethod.GET)
+	@GetMapping("/edituser")
 	@RequireHardLogIn
 	public String editCustomerOfUnit(@RequestParam("unit") final String unit, @RequestParam("user") final String user,
 			final Model model, final HttpServletRequest request) throws CMSItemNotFoundException
@@ -575,7 +577,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return url;
 	}
 
-	@RequestMapping(value = "/edituser", method = RequestMethod.POST)
+	@PostMapping("/edituser")
 	@RequireHardLogIn
 	public String editCustomerOfUnit(@RequestParam("unit") final String unit, @RequestParam("user") final String user,
 			@Valid final B2BCustomerForm b2bCustomerForm, final BindingResult bindingResult, final Model model,
@@ -603,7 +605,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		}
 	}
 
-	@RequestMapping(value = "/approvers", method = RequestMethod.GET)
+	@GetMapping("/approvers")
 	@RequireHardLogIn
 	public String getPagedApproversForUnit(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -631,7 +633,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUnitApproverListPage;
 	}
 
-	@RequestMapping(value = "/customers", method = RequestMethod.GET)
+	@GetMapping("/customers")
 	@RequireHardLogIn
 	public String getPagedCustomersForUnit(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -661,7 +663,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUnitUserListPage;
 	}
 
-	@RequestMapping(value = "/administrators", method = RequestMethod.GET)
+	@GetMapping("/administrators")
 	@RequireHardLogIn
 	public String getPagedAdministratorsForUnit(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -692,7 +694,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUnitUserListPage;
 	}
 
-	@RequestMapping(value = "/managers", method = RequestMethod.GET)
+	@GetMapping("/managers")
 	@RequireHardLogIn
 	public String getPagedManagersForUnit(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -769,8 +771,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return String.format(REDIRECT_TO_UNIT_DETAILS, urlEncode(unit));
 	}
 
-	@RequestMapping(value = "/members/confirm/remove", method =
-	{ RequestMethod.GET })
+	@GetMapping("/members/confirm/remove")
 	@RequireHardLogIn
 	public String confirmRemoveMemberFromUnit(@RequestParam("unit") final String unit, @RequestParam("user") final String user,
 			@RequestParam("role") final String role, final Model model, final HttpServletRequest request)
@@ -798,8 +799,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 
 	}
 
-	@RequestMapping(value = "/approvers/confirm/remove", method =
-	{ RequestMethod.GET })
+	@GetMapping("/approvers/confirm/remove")
 	@RequireHardLogIn
 	public String confirmRemoveApproverFromUnit(@RequestParam("unit") final String unit, @RequestParam("user") final String user,
 			@RequestParam("role") final String role, final Model model, final HttpServletRequest request)
@@ -845,7 +845,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return populateDisplayNamesForRoles(b2bCommerceUserFacade.removeUserRole(user, role));
 	}
 
-	@RequestMapping(value = "/add-address", method = RequestMethod.GET)
+	@GetMapping("/add-address")
 	@RequireHardLogIn
 	public String addAddress(@RequestParam("unit") final String unit, final Model model) throws CMSItemNotFoundException
 	{
@@ -870,7 +870,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUnitAddAddressPage;
 	}
 
-	@RequestMapping(value = "/add-address", method = RequestMethod.POST)
+	@PostMapping("/add-address")
 	@RequireHardLogIn
 	public String addAddress(@RequestParam("unit") final String unit, @Valid final AddressForm addressForm,
 			final BindingResult bindingResult, final Model model, final RedirectAttributes redirectModel)
@@ -948,8 +948,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return String.format(REDIRECT_TO_UNIT_DETAILS, urlEncode(unit));
 	}
 
-	@RequestMapping(value = "/edit-address", method =
-	{ RequestMethod.GET })
+	@GetMapping("/edit-address")
 	@RequireHardLogIn
 	public String editAddress(@RequestParam("unit") final String unit, @RequestParam("addressId") final String addressId,
 			final Model model, final RedirectAttributes redirectModel) throws CMSItemNotFoundException
@@ -999,8 +998,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageUnitAddAddressPage;
 	}
 
-	@RequestMapping(value = "/edit-address", method =
-	{ RequestMethod.POST })
+	@PostMapping("/edit-address")
 	@RequireHardLogIn
 	public String editAddress(@RequestParam("unit") final String unit, @RequestParam("addressId") final String addressId,
 			@Valid final AddressForm addressForm, final BindingResult bindingResult, final Model model,
@@ -1062,7 +1060,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		return String.format(REDIRECT_TO_UNIT_DETAILS, urlEncode(unit));
 	}
 
-	@RequestMapping(value = "/viewuser", method = RequestMethod.GET)
+	@GetMapping("/viewuser")
 	@RequireHardLogIn
 	public String viewCustomerOfUnit(@RequestParam("unit") final String unit, @RequestParam("user") final String user,
 			final Model model, final HttpServletRequest request) throws CMSItemNotFoundException

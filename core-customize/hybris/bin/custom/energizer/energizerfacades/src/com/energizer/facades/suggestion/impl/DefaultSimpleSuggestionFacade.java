@@ -28,8 +28,6 @@ import com.energizer.facades.suggestion.SimpleSuggestionFacade;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Default implementation of {@link SimpleSuggestionFacade}.
@@ -104,7 +102,6 @@ public class DefaultSimpleSuggestionFacade implements SimpleSuggestionFacade
 	 * @param userService
 	 *           the userService to set
 	 */
-	@Required
 	public void setUserService(final UserService userService)
 	{
 		this.userService = userService;
@@ -115,7 +112,6 @@ public class DefaultSimpleSuggestionFacade implements SimpleSuggestionFacade
 		return categoryService;
 	}
 
-	@Required
 	public void setCategoryService(final CategoryService categoryService)
 	{
 		this.categoryService = categoryService;
@@ -133,7 +129,6 @@ public class DefaultSimpleSuggestionFacade implements SimpleSuggestionFacade
 	 * @param productPrimaryImagePopulator
 	 *           the productPrimaryImagePopulator to set
 	 */
-	@Required
 	public void setProductPrimaryImagePopulator(final Populator<ProductModel, ProductData> productPrimaryImagePopulator)
 	{
 		this.productPrimaryImagePopulator = productPrimaryImagePopulator;
@@ -151,7 +146,6 @@ public class DefaultSimpleSuggestionFacade implements SimpleSuggestionFacade
 	 * @param productPricePopulator
 	 *           the productPricePopulator to set
 	 */
-	@Required
 	public void setProductPricePopulator(final Populator<ProductModel, ProductData> productPricePopulator)
 	{
 		this.productPricePopulator = productPricePopulator;
@@ -169,7 +163,6 @@ public class DefaultSimpleSuggestionFacade implements SimpleSuggestionFacade
 	 * @param productConverter
 	 *           the productConverter to set
 	 */
-	@Required
 	public void setProductConverter(final Converter<ProductModel, ProductData> productConverter)
 	{
 		this.productConverter = productConverter;
@@ -187,7 +180,6 @@ public class DefaultSimpleSuggestionFacade implements SimpleSuggestionFacade
 	 * @param simpleSuggestionService
 	 *           the simpleSuggestionService to set
 	 */
-	@Required
 	public void setB2bSimpleSuggestionService(final SimpleSuggestionService simpleSuggestionService)
 	{
 		this.b2bSimpleSuggestionService = simpleSuggestionService;

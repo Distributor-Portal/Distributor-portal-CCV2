@@ -4,7 +4,7 @@
  Tag to display the category navigation.
  If the first facet is the cateogry facet, then only that facet is shown. Otherwise the full facet nav is shown.
 --%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags" %>
 <%@ taglib prefix="nav" tagdir="/WEB-INF/tags/desktop/nav" %>

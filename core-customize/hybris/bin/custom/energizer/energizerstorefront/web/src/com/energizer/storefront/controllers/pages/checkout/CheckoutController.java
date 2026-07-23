@@ -29,16 +29,16 @@ import de.hybris.platform.servicelayer.session.SessionService;
 
 import java.util.Arrays;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -81,7 +81,7 @@ public class CheckoutController extends AbstractCheckoutController
 	@Resource(name = "sessionService")
 	private SessionService sessionService;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	public String checkout()
 	{
 		if (hasItemsInCart())
@@ -94,7 +94,7 @@ public class CheckoutController extends AbstractCheckoutController
 		return REDIRECT_PREFIX + "/cart";
 	}
 
-	@RequestMapping(value = "/orderConfirmation/" + ORDER_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/orderConfirmation/" + ORDER_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String orderConfirmation(@PathVariable("orderCode") final String orderCode, final Model model)
 			throws CMSItemNotFoundException
@@ -142,7 +142,7 @@ public class CheckoutController extends AbstractCheckoutController
 		return ControllerConstants.Views.Pages.Checkout.CheckoutConfirmationPage;
 	}
 
-	@RequestMapping(value = "/quoteOrderConfirmation/" + ORDER_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/quoteOrderConfirmation/" + ORDER_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String quoteOrderConfirmation(@PathVariable("orderCode") final String orderCode, final Model model)
 			throws CMSItemNotFoundException
@@ -174,7 +174,7 @@ public class CheckoutController extends AbstractCheckoutController
 		return ControllerConstants.Views.Pages.Checkout.QuoteCheckoutConfirmationPage;
 	}
 
-	@RequestMapping(value = "/replenishmentConfirmation/" + JOB_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping("/replenishmentConfirmation/" + JOB_CODE_PATH_VARIABLE_PATTERN)
 	@RequireHardLogIn
 	public String replenishmentConfirmation(@PathVariable("jobCode") final String jobCode, final Model model)
 			throws CMSItemNotFoundException

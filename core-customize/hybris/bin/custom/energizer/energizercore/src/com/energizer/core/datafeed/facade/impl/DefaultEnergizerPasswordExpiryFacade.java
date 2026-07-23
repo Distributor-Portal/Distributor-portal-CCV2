@@ -10,7 +10,7 @@ import de.hybris.platform.servicelayer.search.SearchResult;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import com.energizer.core.datafeed.facade.EnergizerPasswordExpiryFacade;
 import com.energizer.core.model.EnergizerB2BCustomerModel;

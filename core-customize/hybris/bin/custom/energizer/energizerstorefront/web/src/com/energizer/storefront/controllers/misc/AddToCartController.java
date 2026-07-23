@@ -36,11 +36,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -49,10 +49,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -157,7 +157,7 @@ public class AddToCartController extends AbstractController
 		binder.setAutoGrowCollectionLimit(Integer.MAX_VALUE);
 	}
 
-	@RequestMapping(value = "/cart/add", method = RequestMethod.POST, produces = "application/json")
+	@PostMapping(value = "/cart/add", produces = "application/json")
 	public String addToCart(@RequestParam("productCodePost") final String code, final Model model, @Valid final AddToCartForm form,
 			final BindingResult bindingErrors, final HttpSession session) throws Exception
 	{
@@ -372,7 +372,7 @@ public class AddToCartController extends AbstractController
 	}
 
 
-	@RequestMapping(value = "/cart/addGrid", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/cart/addGrid", produces = MediaType.APPLICATION_JSON_VALUE)
 	public final String addGridToCart(@RequestBody final AddToCartOrderForm form, final Model model) throws Exception
 	{
 		try
@@ -534,7 +534,7 @@ public class AddToCartController extends AbstractController
 		return configurationService.getConfiguration().getString(key);
 	}
 
-	@RequestMapping(value = "/validateUOM", method = RequestMethod.POST)
+	@PostMapping("/validateUOM")
 	@ResponseBody
 	public String validateUOM(@RequestParam("productCode") final String code, @RequestParam("uom") final String uom)
 	{
@@ -568,7 +568,7 @@ public class AddToCartController extends AbstractController
 	 * final String uom) { return validateUOM(code, uom); }
 	 */
 
-	@RequestMapping(value = "/updateUOM", method = RequestMethod.GET)
+	@GetMapping("/updateUOM")
 	public String updateUOM(@RequestParam("productCode") final String code, @RequestParam("uom") final String uom,
 			@RequestParam("uomQty") final String uomQty) throws Exception
 	{
@@ -593,14 +593,14 @@ public class AddToCartController extends AbstractController
 		return REDIRECT_PREFIX + "/cart";
 	}
 
-	@RequestMapping(value = "/updateUOM", method = RequestMethod.POST)
+	@PostMapping("/updateUOM")
 	public String updateUOM_POST(@RequestParam("productCode") final String code, @RequestParam("uom") final String uom,
 			@RequestParam("uomQty") final String uomQty) throws Exception
 	{
 		return updateUOM(code, uom, uomQty);
 	}
 
-	@RequestMapping(value = "/validatePBG", method = RequestMethod.POST)
+	@PostMapping("/validatePBG")
 	@ResponseBody
 	public String validatePBG(@RequestParam("productCode") final String productCode, @RequestParam("isPBG") final String isPBG)
 	{

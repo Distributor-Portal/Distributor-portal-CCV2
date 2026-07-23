@@ -22,7 +22,7 @@ import de.hybris.platform.solrfacetsearch.search.SearchResult;
 import org.apache.log4j.Logger;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

@@ -21,14 +21,13 @@ import de.hybris.platform.site.BaseSiteService;
 
 import java.io.IOException;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.energizer.storefront.constants.WebConstants;
@@ -132,7 +131,6 @@ public class CartRestorationFilter extends OncePerRequestFilter
 		return sessionService;
 	}
 
-	@Required
 	public void setSessionService(final SessionService sessionService)
 	{
 		this.sessionService = sessionService;
@@ -143,7 +141,6 @@ public class CartRestorationFilter extends OncePerRequestFilter
 		return cartRestoreCookieGenerator;
 	}
 
-	@Required
 	public void setCartRestoreCookieGenerator(final CartRestoreCookieGenerator cartRestoreCookieGenerator)
 	{
 		this.cartRestoreCookieGenerator = cartRestoreCookieGenerator;
@@ -154,7 +151,6 @@ public class CartRestorationFilter extends OncePerRequestFilter
 		return cartFacade;
 	}
 
-	@Required
 	public void setCartFacade(final CartFacade cartFacade)
 	{
 		this.cartFacade = cartFacade;
@@ -165,7 +161,6 @@ public class CartRestorationFilter extends OncePerRequestFilter
 		return baseSiteService;
 	}
 
-	@Required
 	public void setBaseSiteService(final BaseSiteService baseSiteService)
 	{
 		this.baseSiteService = baseSiteService;
@@ -176,7 +171,6 @@ public class CartRestorationFilter extends OncePerRequestFilter
 		return userService;
 	}
 
-	@Required
 	public void setUserService(final UserService userService)
 	{
 		this.userService = userService;

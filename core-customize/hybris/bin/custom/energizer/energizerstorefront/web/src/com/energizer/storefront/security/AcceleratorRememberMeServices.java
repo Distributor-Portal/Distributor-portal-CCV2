@@ -24,11 +24,10 @@ import de.hybris.platform.servicelayer.user.UserService;
 import com.energizer.storefront.constants.WebConstants;
 import com.energizer.storefront.web.wrappers.RemoveEncodingHttpServletRequestWrapper;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -125,7 +124,6 @@ public class AcceleratorRememberMeServices extends TokenBasedRememberMeServices
 		return userService;
 	}
 
-	@Required
 	public void setUserService(final UserService userService)
 	{
 		this.userService = userService;
@@ -136,7 +134,6 @@ public class AcceleratorRememberMeServices extends TokenBasedRememberMeServices
 		return customerFacade;
 	}
 
-	@Required
 	public void setCustomerFacade(final CustomerFacade customerFacade)
 	{
 		this.customerFacade = customerFacade;
@@ -147,7 +144,6 @@ public class AcceleratorRememberMeServices extends TokenBasedRememberMeServices
 		return urlEncoderService;
 	}
 
-	@Required
 	public void setUrlEncoderService(final UrlEncoderService urlEncoderService)
 	{
 		this.urlEncoderService = urlEncoderService;
@@ -158,7 +154,6 @@ public class AcceleratorRememberMeServices extends TokenBasedRememberMeServices
 		return storeSessionFacade;
 	}
 
-	@Required
 	public void setStoreSessionFacade(final StoreSessionFacade storeSessionFacade)
 	{
 		this.storeSessionFacade = storeSessionFacade;
@@ -169,7 +164,6 @@ public class AcceleratorRememberMeServices extends TokenBasedRememberMeServices
 		return commonI18NService;
 	}
 
-	@Required
 	public void setCommonI18NService(final CommonI18NService commonI18NService)
 	{
 		this.commonI18NService = commonI18NService;
@@ -180,7 +174,6 @@ public class AcceleratorRememberMeServices extends TokenBasedRememberMeServices
 		return secureTokenService;
 	}
 
-	@Required
 	public void setSecureTokenService(final SecureTokenService secureTokenService)
 	{
 		this.secureTokenService = secureTokenService;

@@ -26,8 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang3.StringUtils;
 
 
 public class DefaultB2BFlexibleSearchPopulator implements
@@ -81,7 +80,6 @@ public class DefaultB2BFlexibleSearchPopulator implements
 		return productDataList;
 	}
 
-	@Required
 	public void setProductConfiguredPopulator(
 			final ConfigurablePopulator<ProductModel, ProductData, ProductOption> productConfiguredPopulator)
 	{

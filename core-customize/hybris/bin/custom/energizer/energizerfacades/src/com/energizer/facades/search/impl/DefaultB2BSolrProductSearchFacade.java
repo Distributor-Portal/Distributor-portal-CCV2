@@ -27,8 +27,6 @@ import de.hybris.platform.commerceservices.search.pagedata.PageableData;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import com.energizer.facades.search.AbstractB2BProductSearchFacade;
 
 
@@ -117,7 +115,6 @@ public class DefaultB2BSolrProductSearchFacade<ITEM extends ProductData> extends
 		return this.productSearchFacade;
 	}
 
-	@Required
 	public void setProductSearchFacade(final ProductSearchFacade<ProductData> productSearchFacade)
 	{
 		this.productSearchFacade = productSearchFacade;

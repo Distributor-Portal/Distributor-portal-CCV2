@@ -4,7 +4,7 @@ import com.energizer.services.product.EnergizerProductService;
 import de.hybris.platform.solrfacetsearch.config.IndexedProperty;
 import de.hybris.platform.solrfacetsearch.provider.impl.AbstractFacetValueDisplayNameProvider;
 import de.hybris.platform.solrfacetsearch.search.SearchQuery;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class ShippingPointFacetDisplayNameProvider extends AbstractFacetValueDisplayNameProvider {
 

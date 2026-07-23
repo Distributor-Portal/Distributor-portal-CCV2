@@ -5,5 +5,5 @@
 // Generated on: 2020.10.20 at 03:32:49 PM IST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://edgewell.com/B2B_OrderCreate")
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://edgewell.com/B2B_OrderCreate")
 package com.energizer.core.createorder.jaxb.xsd.objects;

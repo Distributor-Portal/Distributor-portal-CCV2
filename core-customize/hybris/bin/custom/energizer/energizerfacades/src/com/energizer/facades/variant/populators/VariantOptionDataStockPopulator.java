@@ -21,7 +21,6 @@ import de.hybris.platform.core.model.product.ProductModel;
 import de.hybris.platform.ordersplitting.model.StockLevelModel;
 import de.hybris.platform.servicelayer.dto.converter.ConversionException;
 import de.hybris.platform.variants.model.VariantProductModel;
-import org.springframework.beans.factory.annotation.Required;
 
 
 public class VariantOptionDataStockPopulator<SOURCE extends VariantProductModel, TARGET extends VariantOptionData> implements

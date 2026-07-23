@@ -44,11 +44,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.PredicateUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.PredicateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 public class StartWorkFlowForAdmin extends AbstractSimpleB2BApproveOrderDecisionAction
@@ -135,7 +134,7 @@ public class StartWorkFlowForAdmin extends AbstractSimpleB2BApproveOrderDecision
 		LOG.info("Order placed by this customer ::: " + customer.getUid() + " , customer name ::: " + customer.getName());
 		LOG.info("This customer gets removed from the list who are all part of  this b2bunit & b2badmingroup combined .....");
 		// remove the user who placed the order.
-		CollectionUtils.filter(b2bAdminGroupUsers, PredicateUtils.notPredicate(PredicateUtils.equalPredicate(customer)));
+		b2bAdminGroupUsers.removeIf(Predicate.not(PredicateUtils.notPredicate(PredicateUtils.equalPredicate(customer))));
 		LOG.info("Number of users in the b2b unit after the customer (who placed the order) gets removed from the list ::: "
 				+ b2bAdminGroupUsers.size());
 		return (CollectionUtils.isNotEmpty(b2bAdminGroupUsers) ? b2bAdminGroupUsers.get(0) : null);
@@ -195,7 +194,6 @@ public class StartWorkFlowForAdmin extends AbstractSimpleB2BApproveOrderDecision
 		return b2bUnitService;
 	}
 
-	@Required
 	public void setB2bUnitService(final B2BUnitService<B2BUnitModel, B2BCustomerModel> b2bUnitService)
 	{
 		this.b2bUnitService = b2bUnitService;
@@ -206,7 +204,6 @@ public class StartWorkFlowForAdmin extends AbstractSimpleB2BApproveOrderDecision
 		return b2bWorkflowIntegrationService;
 	}
 
-	@Required
 	public void setB2bWorkflowIntegrationService(final B2BWorkflowIntegrationService b2bWorkflowIntegrationService)
 	{
 		this.b2bWorkflowIntegrationService = b2bWorkflowIntegrationService;
@@ -217,7 +214,6 @@ public class StartWorkFlowForAdmin extends AbstractSimpleB2BApproveOrderDecision
 		return workflowProcessingService;
 	}
 
-	@Required
 	public void setWorkflowProcessingService(final WorkflowProcessingService workflowProcessingService)
 	{
 		this.workflowProcessingService = workflowProcessingService;
@@ -228,7 +224,6 @@ public class StartWorkFlowForAdmin extends AbstractSimpleB2BApproveOrderDecision
 		return workflowService;
 	}
 
-	@Required
 	public void setWorkflowService(final WorkflowService workflowService)
 	{
 		this.workflowService = workflowService;
@@ -239,7 +234,6 @@ public class StartWorkFlowForAdmin extends AbstractSimpleB2BApproveOrderDecision
 		return permissionResultHelper;
 	}
 
-	@Required
 	public void setPermissionResultHelper(final B2BPermissionResultHelperImpl permissionResultHelper)
 	{
 		this.permissionResultHelper = permissionResultHelper;
@@ -250,7 +244,6 @@ public class StartWorkFlowForAdmin extends AbstractSimpleB2BApproveOrderDecision
 		return userService;
 	}
 
-	@Required
 	public void setUserService(final UserService userService)
 	{
 		this.userService = userService;

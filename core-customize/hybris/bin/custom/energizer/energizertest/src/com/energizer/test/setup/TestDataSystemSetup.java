@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.energizer.test.constants.EnergizerTestConstants;
 import com.energizer.test.orders.B2BAcceleratorTestOrderData;
@@ -51,7 +50,6 @@ public class TestDataSystemSetup extends AbstractSystemSetup
 		return b2bAcceleratorTestOrderData;
 	}
 
-	@Required
 	public void setB2BAcceleratorTestOrderData(final B2BAcceleratorTestOrderData b2bAcceleratorTestOrderData)
 	{
 		this.b2bAcceleratorTestOrderData = b2bAcceleratorTestOrderData;

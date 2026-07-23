@@ -27,8 +27,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.collections4.CollectionUtils;
 
 import com.energizer.facades.product.ProductVariantOption;
 
@@ -157,7 +156,6 @@ public class ProductVariantOptionDataPopulator<SOURCE extends ProductModel, TARG
 		return variantOptionDataPopulator;
 	}
 
-	@Required
 	public void setVariantOptionDataPopulator(
 			final ConfigurablePopulator<VariantProductModel, VariantOptionData, ProductVariantOption> variantOptionDataPopulator)
 	{
@@ -170,7 +168,6 @@ public class ProductVariantOptionDataPopulator<SOURCE extends ProductModel, TARG
 		return this.productVariantOptionList;
 	}
 
-	@Required
 	public void setProductVariantOptionList(final Collection<ProductVariantOption> productVariantOptionList)
 	{
 		this.productVariantOptionList = productVariantOptionList;

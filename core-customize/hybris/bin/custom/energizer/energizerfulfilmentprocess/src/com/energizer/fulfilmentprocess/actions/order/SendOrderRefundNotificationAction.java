@@ -14,7 +14,6 @@
 package com.energizer.fulfilmentprocess.actions.order;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 import de.hybris.platform.orderprocessing.model.OrderProcessModel;
@@ -42,7 +41,6 @@ public class SendOrderRefundNotificationAction extends AbstractProceduralAction<
 		return eventService;
 	}
 
-	@Required
 	public void setEventService(final EventService eventService)
 	{
 		this.eventService = eventService;

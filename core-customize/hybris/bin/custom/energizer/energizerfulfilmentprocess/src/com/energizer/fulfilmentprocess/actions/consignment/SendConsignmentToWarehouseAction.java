@@ -18,7 +18,6 @@ import de.hybris.platform.processengine.action.AbstractProceduralAction;
 import de.hybris.platform.warehouse.Process2WarehouseAdapter;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 public class SendConsignmentToWarehouseAction extends AbstractProceduralAction<ConsignmentProcessModel>
@@ -36,7 +35,6 @@ public class SendConsignmentToWarehouseAction extends AbstractProceduralAction<C
 		LOG.info("Setting waitForConsignment to true");
 	}
 
-	@Required
 	public void setProcess2WarehouseAdapter(final Process2WarehouseAdapter process2WarehouseAdapter)
 	{
 		this.process2WarehouseAdapter = process2WarehouseAdapter;

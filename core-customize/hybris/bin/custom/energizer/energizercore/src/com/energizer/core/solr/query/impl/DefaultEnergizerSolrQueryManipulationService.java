@@ -6,22 +6,20 @@ package com.energizer.core.solr.query.impl;
 import de.hybris.platform.b2b.company.B2BCommerceUserService;
 import de.hybris.platform.servicelayer.user.UserService;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
 
 import com.energizer.core.model.EnergizerB2BUnitModel;
 import com.energizer.core.solr.query.EnergizerSolrQueryManipulationService;
-import com.energizer.core.solr.query.EnergizerSolrQueryManipulationServiceTest;
 
 
 
 /**
  * This class implements the EnergizerSolrQueryManipulationService to define the logic for manipulating the solr query
  * to enforce the b2bunit specific catalog.
- * 
+ *
  * @author kaushik.ganguly
- * @see EnergizerSolrQueryManipulationServiceTest
  */
 public class DefaultEnergizerSolrQueryManipulationService implements EnergizerSolrQueryManipulationService
 {

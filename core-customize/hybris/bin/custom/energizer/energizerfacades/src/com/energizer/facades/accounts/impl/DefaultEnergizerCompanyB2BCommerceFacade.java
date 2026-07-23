@@ -38,12 +38,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.PredicateUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.PredicateUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
@@ -752,9 +752,8 @@ public class DefaultEnergizerCompanyB2BCommerceFacade extends DefaultCustomerFac
 		final List<String> roles = new ArrayList<String>();
 		final EnergizerB2BCustomerModel model = userService.getUserForUID(uuid, EnergizerB2BCustomerModel.class);
 		final Set<PrincipalGroupModel> roleModels = new HashSet<PrincipalGroupModel>(model.getGroups());
-		CollectionUtils.filter(roleModels, PredicateUtils.notPredicate(PredicateUtils.instanceofPredicate(B2BUnitModel.class)));
-		CollectionUtils.filter(roleModels,
-				PredicateUtils.notPredicate(PredicateUtils.instanceofPredicate(B2BUserGroupModel.class)));
+		roleModels.removeIf(Predicate.not(PredicateUtils.notPredicate(PredicateUtils.instanceofPredicate(B2BUnitModel.class))));
+		roleModels.removeIf(Predicate.not(PredicateUtils.notPredicate(PredicateUtils.instanceofPredicate(B2BUserGroupModel.class))));
 		for (final PrincipalGroupModel role : roleModels)
 		{
 			// only display allowed usergroups

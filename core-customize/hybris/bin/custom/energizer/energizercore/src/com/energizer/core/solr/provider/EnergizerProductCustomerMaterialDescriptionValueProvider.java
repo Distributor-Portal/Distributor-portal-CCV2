@@ -28,9 +28,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.energizer.core.model.EnergizerCMIRModel;
 import com.energizer.core.model.EnergizerPriceRowModel;
@@ -98,10 +97,10 @@ public class EnergizerProductCustomerMaterialDescriptionValueProvider extends Ab
 
 									for (final String fieldN : names)
 									{
-										if (cmir.getCustomerMaterialDescription(new Locale(language.getIsocode())) != null)
+										if (cmir.getCustomerMaterialDescription(Locale.of(language.getIsocode())) != null)
 										{
 											fieldValues.add(new FieldValue(fieldN,
-													cmir.getCustomerMaterialDescription(new Locale(language.getIsocode())).toLowerCase()));
+													cmir.getCustomerMaterialDescription(Locale.of(language.getIsocode())).toLowerCase()));
 										}
 										if (cmir.getCustomerMaterialId() != null)
 										{
@@ -115,14 +114,14 @@ public class EnergizerProductCustomerMaterialDescriptionValueProvider extends Ab
 										{
 											fieldValues.add(new FieldValue(fieldN, energizerProduct.getCode().toLowerCase()));
 										}
-										if (energizerProduct.getName(new Locale(language.getIsocode())) != null)
+										if (energizerProduct.getName(Locale.of(language.getIsocode())) != null)
 										{
 											fieldValues.add(new FieldValue(fieldN,
-													energizerProduct.getName(new Locale(language.getIsocode())).toLowerCase()));
+													energizerProduct.getName(Locale.of(language.getIsocode())).toLowerCase()));
 										}
 
 										LOG.debug(
-												"Family added  :" + cmir.getCustomerMaterialDescription(new Locale(language.getIsocode())));
+												"Family added  :" + cmir.getCustomerMaterialDescription(Locale.of(language.getIsocode())));
 									}
 
 								}
@@ -160,7 +159,6 @@ public class EnergizerProductCustomerMaterialDescriptionValueProvider extends Ab
 		return fieldNameProvider;
 	}
 
-	@Required
 	public void setFieldNameProvider(final FieldNameProvider fieldNameProvider)
 	{
 		this.fieldNameProvider = fieldNameProvider;
@@ -178,7 +176,6 @@ public class EnergizerProductCustomerMaterialDescriptionValueProvider extends Ab
 	 * @param energizerProductService
 	 *           the energizerProductService to set
 	 */
-	@Required
 	public void setEnergizerProductService(final EnergizerProductService energizerProductService)
 	{
 		this.energizerProductService = energizerProductService;

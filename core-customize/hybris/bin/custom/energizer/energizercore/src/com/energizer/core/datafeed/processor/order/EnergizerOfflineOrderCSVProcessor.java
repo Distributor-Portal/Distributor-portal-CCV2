@@ -29,11 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 
 import com.energizer.core.datafeed.AbstractEnergizerCSVProcessor;
@@ -272,7 +272,7 @@ public class EnergizerOfflineOrderCSVProcessor extends AbstractEnergizerCSVProce
 	private void prepareEmail()
 	{
 		final List<String> possibleOrderStatusValues = Arrays
-				.asList(SEND_EMAIL_FOR_ORDER_STATUS.split(new Character(',').toString()));
+				.asList(SEND_EMAIL_FOR_ORDER_STATUS.split(Character.valueOf(',').toString()));
 		final String orderStatusCode = status.toUpperCase();
 		final boolean result = possibleOrderStatusValues.contains(orderStatusCode);
 
@@ -544,7 +544,7 @@ public class EnergizerOfflineOrderCSVProcessor extends AbstractEnergizerCSVProce
 					{
 						// for pilot project we are only suppose to get final conversions for PAL and LAY UOM's
 						// and they are always bigger than incoming UOM(sales uom)
-						energizerOrderEntry.setAdjustedQty(new Integer(0));
+						energizerOrderEntry.setAdjustedQty(Integer.valueOf(0));
 						energizerOrderEntry.setAdjustedLinePrice(new BigDecimal("0.00"));
 						// update the value with incoming value
 						energizerOrderEntry.setAdjustedQty(orderEntryQty.intValue() / finalConversionFactor);
@@ -562,7 +562,7 @@ public class EnergizerOfflineOrderCSVProcessor extends AbstractEnergizerCSVProce
 					if (orderEntryQty != energizerOrderEntry.getQuantity())
 					{
 						//clear the previous value before updating
-						energizerOrderEntry.setAdjustedQty(new Integer(0));
+						energizerOrderEntry.setAdjustedQty(Integer.valueOf(0));
 						energizerOrderEntry.setAdjustedLinePrice(new BigDecimal("0.00"));
 						// update the value with incoming value
 						energizerOrderEntry.setAdjustedQty(orderEntryQty.intValue());
@@ -743,7 +743,7 @@ public class EnergizerOfflineOrderCSVProcessor extends AbstractEnergizerCSVProce
 		if (!hasMandatoryFields(record, getHeadersForFeed(ENERGIZER_OFFLINE_ORDER_FEED_MANDATORY_KEY)))
 		{
 			final List<String> mandatoryFields = Arrays.asList(
-					Config.getParameter(ENERGIZER_OFFLINE_ORDER_FEED_MANDATORY_KEY).split(new Character(DELIMETER).toString()));
+					Config.getParameter(ENERGIZER_OFFLINE_ORDER_FEED_MANDATORY_KEY).split(Character.valueOf(DELIMETER).toString()));
 			error = new EnergizerCSVFeedError();
 			final List<String> columnNames = new ArrayList<String>();
 			final List<Integer> columnNumbers = new ArrayList<Integer>();

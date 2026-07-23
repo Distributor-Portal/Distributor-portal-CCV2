@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.MessageSource;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.support.AbstractMessageSource;
@@ -56,7 +55,6 @@ public class CustomResourceBundleThemeSource implements ThemeSource, ResourceLoa
 		return parentMessageSource;
 	}
 
-	@Required
 	public void setParentMessageSource(final MessageSource parentMessageSource)
 	{
 		this.parentMessageSource = parentMessageSource;
@@ -67,7 +65,6 @@ public class CustomResourceBundleThemeSource implements ThemeSource, ResourceLoa
 		return defaultEncoding;
 	}
 
-	@Required
 	public void setDefaultEncoding(final String defaultEncoding)
 	{
 		this.defaultEncoding = defaultEncoding;
@@ -78,7 +75,6 @@ public class CustomResourceBundleThemeSource implements ThemeSource, ResourceLoa
 		return cacheSeconds;
 	}
 
-	@Required
 	public void setCacheSeconds(final int cacheSeconds)
 	{
 		this.cacheSeconds = cacheSeconds;
@@ -121,7 +117,6 @@ public class CustomResourceBundleThemeSource implements ThemeSource, ResourceLoa
 	 *           the base name prefix
 	 * @see java.util.ResourceBundle#getBundle(String)
 	 */
-	@Required
 	public void setSiteBasenamePrefix(final String basenamePrefix)
 	{
 		this.siteBasenamePrefix = (basenamePrefix != null ? basenamePrefix : "");
@@ -144,7 +139,6 @@ public class CustomResourceBundleThemeSource implements ThemeSource, ResourceLoa
 	 *           the base name prefix
 	 * @see java.util.ResourceBundle#getBundle(String)
 	 */
-	@Required
 	public void setThemeBasenamePrefix(final String basenamePrefix)
 	{
 		this.themeBasenamePrefix = (basenamePrefix != null ? basenamePrefix : "");

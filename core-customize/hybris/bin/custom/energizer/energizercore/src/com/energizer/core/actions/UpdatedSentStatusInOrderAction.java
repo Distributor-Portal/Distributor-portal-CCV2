@@ -17,8 +17,6 @@ import de.hybris.platform.orderprocessing.model.OrderProcessModel;
 import de.hybris.platform.processengine.action.AbstractProceduralAction;
 import de.hybris.platform.servicelayer.model.ModelService;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Sends Order Pending Approval Notification event.
@@ -36,7 +34,6 @@ public class UpdatedSentStatusInOrderAction extends AbstractProceduralAction<Ord
 
 
 	@Override
-	@Required
 	public void setModelService(final ModelService modelService)
 	{
 		this.modelService = modelService;

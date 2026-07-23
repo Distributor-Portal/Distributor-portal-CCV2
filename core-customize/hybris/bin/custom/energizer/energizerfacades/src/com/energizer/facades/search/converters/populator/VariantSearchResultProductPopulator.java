@@ -24,8 +24,7 @@ import de.hybris.platform.commerceservices.search.resultdata.SearchResultValueDa
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang3.StringUtils;
 
 import com.energizer.core.search.solrfacetsearch.provider.entity.SolrPriceRange;
 import com.energizer.core.search.solrfacetsearch.provider.entity.SolrPriceRangeEntry;
@@ -111,7 +110,6 @@ public class VariantSearchResultProductPopulator extends SearchResultProductPopu
 		return categoryManager;
 	}
 
-	@Required
 	public void setCategoryManager(final SolrFirstVariantCategoryManager categoryManager)
 	{
 		this.categoryManager = categoryManager;

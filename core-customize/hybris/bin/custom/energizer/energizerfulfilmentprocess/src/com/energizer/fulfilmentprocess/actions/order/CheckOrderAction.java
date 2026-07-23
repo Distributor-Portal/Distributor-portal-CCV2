@@ -20,7 +20,6 @@ import de.hybris.platform.processengine.action.AbstractSimpleDecisionAction;
 import com.energizer.fulfilmentprocess.CheckOrderService;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -65,7 +64,6 @@ public class CheckOrderAction extends AbstractSimpleDecisionAction<OrderProcessM
 		return checkOrderService;
 	}
 
-	@Required
 	public void setCheckOrderService(final CheckOrderService checkOrderService)
 	{
 		this.checkOrderService = checkOrderService;

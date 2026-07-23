@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Class to process {@link SolrFirstVariantCategoryEntryData} operations.
@@ -110,7 +108,6 @@ public class SolrFirstVariantCategoryManager
 		return l10NService;
 	}
 
-	@Required
 	public void setL10NService(final L10NService l10NService)
 	{
 		this.l10NService = l10NService;

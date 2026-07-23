@@ -27,9 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.google.common.base.Preconditions;
 
@@ -104,7 +103,6 @@ public class MultipleCatalogsSyncJobPerformable extends AbstractJobPerformable<M
 		return setupSyncJobService;
 	}
 
-	@Required
 	public void setSetupSyncJobService(final SetupSyncJobService setup)
 	{
 		this.setupSyncJobService = setup;

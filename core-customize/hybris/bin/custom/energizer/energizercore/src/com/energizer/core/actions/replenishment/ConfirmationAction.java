@@ -20,8 +20,6 @@ import de.hybris.platform.processengine.action.AbstractProceduralAction;
 import de.hybris.platform.processengine.model.BusinessProcessParameterModel;
 import de.hybris.platform.servicelayer.event.EventService;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Action for confirming orders.
@@ -44,7 +42,6 @@ public class ConfirmationAction extends AbstractProceduralAction<ReplenishmentPr
 		return eventService;
 	}
 
-	@Required
 	public void setEventService(final EventService eventService)
 	{
 		this.eventService = eventService;

@@ -26,7 +26,6 @@ import java.util.Set;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
@@ -75,7 +74,6 @@ public class StorefrontResourceBundleSource implements ThemeSource, ResourceLoad
 		return parentMessageSource;
 	}
 
-	@Required
 	public void setParentMessageSource(final MessageSource parentMessageSource)
 	{
 		this.parentMessageSource = parentMessageSource;
@@ -86,7 +84,6 @@ public class StorefrontResourceBundleSource implements ThemeSource, ResourceLoad
 		return defaultEncoding;
 	}
 
-	@Required
 	public void setDefaultEncoding(final String defaultEncoding)
 	{
 		this.defaultEncoding = defaultEncoding;
@@ -97,7 +94,6 @@ public class StorefrontResourceBundleSource implements ThemeSource, ResourceLoad
 		return cacheSeconds;
 	}
 
-	@Required
 	public void setCacheSeconds(final int cacheSeconds)
 	{
 		this.cacheSeconds = cacheSeconds;
@@ -113,7 +109,6 @@ public class StorefrontResourceBundleSource implements ThemeSource, ResourceLoad
 		return sitePrefix;
 	}
 
-	@Required
 	public void setSitePrefix(final String sitePrefix)
 	{
 		this.sitePrefix = sitePrefix;
@@ -124,7 +119,6 @@ public class StorefrontResourceBundleSource implements ThemeSource, ResourceLoad
 		return themePrefix;
 	}
 
-	@Required
 	public void setThemePrefix(final String themePrefix)
 	{
 		this.themePrefix = themePrefix;
@@ -141,7 +135,6 @@ public class StorefrontResourceBundleSource implements ThemeSource, ResourceLoad
 		return requiredAddOnsNameProvider;
 	}
 
-	@Required
 	public void setRequiredAddOnsNameProvider(final RequiredAddOnsNameProvider requiredAddOnsNameProvider)
 	{
 		this.requiredAddOnsNameProvider = requiredAddOnsNameProvider;
@@ -166,13 +159,11 @@ public class StorefrontResourceBundleSource implements ThemeSource, ResourceLoad
 		return addonBasenamePrefix;
 	}
 
-	@Required
 	public void setAddonBasenamePrefix(final String addonBasenamePrefix)
 	{
 		this.addonBasenamePrefix = addonBasenamePrefix;
 	}
 
-	@Required
 	public void setBasenamePrefix(final String basenamePrefix)
 	{
 		this.basenamePrefix = basenamePrefix;
@@ -183,7 +174,6 @@ public class StorefrontResourceBundleSource implements ThemeSource, ResourceLoad
 		return basePrefix;
 	}
 
-	@Required
 	public void setBasePrefix(final String basePrefix)
 	{
 		this.basePrefix = basePrefix;

@@ -26,8 +26,7 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang3.StringUtils;
 
 import com.energizer.core.search.solrfacetsearch.provider.ProductSource;
 
@@ -53,7 +52,6 @@ public class VariantCategorySource extends DefaultCategorySource
 		return productSource;
 	}
 
-	@Required
 	public void setProductSource(final ProductSource productSource)
 	{
 		this.productSource = productSource;

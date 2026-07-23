@@ -16,9 +16,12 @@ package com.energizer.fulfilmentprocess.events;
 import de.hybris.platform.orderprocessing.events.OrderProcessingEvent;
 import de.hybris.platform.orderprocessing.model.OrderProcessModel;
 
+import java.io.Serial;
+
 
 public class OrderRefundEvent extends OrderProcessingEvent
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	public OrderRefundEvent(final OrderProcessModel process)

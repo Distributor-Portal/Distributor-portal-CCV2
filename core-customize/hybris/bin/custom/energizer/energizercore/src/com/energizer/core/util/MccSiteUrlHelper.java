@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -50,7 +49,6 @@ public class MccSiteUrlHelper
 		return cmsSiteService;
 	}
 
-	@Required
 	public void setCmsSiteService(final CMSSiteService cmsSiteService)
 	{
 		this.cmsSiteService = cmsSiteService;
@@ -61,7 +59,6 @@ public class MccSiteUrlHelper
 		return siteBaseUrlResolutionService;
 	}
 
-	@Required
 	public void setSiteBaseUrlResolutionService(final SiteBaseUrlResolutionService siteBaseUrlResolutionService)
 	{
 		this.siteBaseUrlResolutionService = siteBaseUrlResolutionService;

@@ -23,7 +23,6 @@ import de.hybris.platform.payment.model.PaymentTransactionModel;
 import de.hybris.platform.processengine.action.AbstractSimpleDecisionAction;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -66,7 +65,6 @@ public class TakePaymentAction extends AbstractSimpleDecisionAction<OrderProcess
 		return paymentService;
 	}
 
-	@Required
 	public void setPaymentService(final PaymentService paymentService)
 	{
 		this.paymentService = paymentService;

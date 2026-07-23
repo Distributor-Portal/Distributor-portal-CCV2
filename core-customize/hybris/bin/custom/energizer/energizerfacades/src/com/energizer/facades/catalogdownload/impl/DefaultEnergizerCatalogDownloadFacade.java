@@ -22,16 +22,15 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.annotation.Resource;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -102,7 +101,7 @@ public class DefaultEnergizerCatalogDownloadFacade implements EnergizerCatalogDo
 				}
 				else if (dir.isDirectory() && dir.canWrite())
 				{
-					final Path dirPath = Paths.get(dir.getAbsolutePath());
+					final Path dirPath = Path.of(dir.getAbsolutePath());
 					copyExportedMediaFile(dirPath, result.getExportedData());
 				}
 				else
@@ -121,7 +120,7 @@ public class DefaultEnergizerCatalogDownloadFacade implements EnergizerCatalogDo
 	public void copyExportedMediaFile(final Path targetDir, final ImpExMediaModel impexModel) throws IOException
 	{
 
-		Files.copy(Paths.get(findRealMediaPath(impexModel)), targetDir.resolve(impexModel.getRealFileName()));
+		Files.copy(Path.of(findRealMediaPath(impexModel)), targetDir.resolve(impexModel.getRealFileName()));
 		LOG.info(" The Source Filename: " + impexModel.getRealFileName() + " Path " + impexModel.getLocation()
 				+ " Field Separator: " + impexModel.getFieldSeparator() + " Target DIR: " + targetDir);
 		convertCSVToExcel(targetDir + "\\" + impexModel.getRealFileName(), impexModel.getLocation(),

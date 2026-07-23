@@ -10,7 +10,7 @@ import de.hybris.platform.servicelayer.config.ConfigurationService;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 
 /**

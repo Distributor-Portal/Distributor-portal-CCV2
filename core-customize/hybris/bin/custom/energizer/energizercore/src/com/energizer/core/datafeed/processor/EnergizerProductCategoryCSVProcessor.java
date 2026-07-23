@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
@@ -95,7 +95,7 @@ public class EnergizerProductCategoryCSVProcessor extends AbstractEnergizerCSVPr
 		}
 		/* End EMEA Code refactor for get value from Model instead of properties */
 		long succeedRecord = getRecordSucceeded();
-		CSV_HEADERS = Config.getParameter(MATERIAL_CATEGORY_FEED_HEADERS_KEY).split(new Character(DELIMETER).toString());
+		CSV_HEADERS = Config.getParameter(MATERIAL_CATEGORY_FEED_HEADERS_KEY).split(Character.valueOf(DELIMETER).toString());
 		for (final CSVRecord record : records)
 		{
 
@@ -185,7 +185,7 @@ public class EnergizerProductCategoryCSVProcessor extends AbstractEnergizerCSVPr
 		//if (!hasMandatoryFields(record, getHeadersForFeed(MATERIAL_CATEGORY_FEED_HEADERS_MANDATORY_KEY)))
 		//{
 		final List<String> mandatoryFields = Arrays
-				.asList(Config.getParameter(MATERIAL_CATEGORY_FEED_HEADERS_MANDATORY_KEY).split(new Character(DELIMETER).toString()));
+				.asList(Config.getParameter(MATERIAL_CATEGORY_FEED_HEADERS_MANDATORY_KEY).split(Character.valueOf(DELIMETER).toString()));
 		final Map<String, String> map = record.toMap();
 		Integer columnNumber = 0;
 		long recordFailed = getRecordFailed();

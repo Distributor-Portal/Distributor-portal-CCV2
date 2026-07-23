@@ -18,8 +18,7 @@ import com.energizer.storefront.controllers.ControllerConstants;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 /**
@@ -29,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Scope("tenant")
 public class RobotsController extends AbstractController
 {
-	@RequestMapping(value = "/robots.txt", method = RequestMethod.GET)
+	@GetMapping("/robots.txt")
 	public String getRobots()
 	{
 		return ControllerConstants.Views.Pages.Misc.MiscRobotsPage;

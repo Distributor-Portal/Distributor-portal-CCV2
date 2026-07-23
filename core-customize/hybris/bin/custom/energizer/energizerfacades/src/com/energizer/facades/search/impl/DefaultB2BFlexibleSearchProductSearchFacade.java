@@ -29,8 +29,6 @@ import de.hybris.platform.converters.ConfigurablePopulator;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import com.energizer.facades.search.AbstractB2BProductSearchFacade;
 
 
@@ -59,14 +57,12 @@ public class DefaultB2BFlexibleSearchProductSearchFacade<ITEM extends ProductDat
 		return productSearchPageData;
 	}
 
-	@Required
 	public void setFlexibleSearchPopulator(
 			final ConfigurablePopulator<SearchPageData, ProductSearchPageData, ProductOption> flexibleSearchPopulator)
 	{
 		this.flexibleSearchPopulator = flexibleSearchPopulator;
 	}
 
-	@Required
 	public void setB2bProductService(final B2BProductService b2bFlexibleSearchProductSearchService)
 	{
 		this.b2bProductService = b2bFlexibleSearchProductSearchService;

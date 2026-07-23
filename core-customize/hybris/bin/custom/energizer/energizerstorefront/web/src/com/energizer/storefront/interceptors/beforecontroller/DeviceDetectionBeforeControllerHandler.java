@@ -16,9 +16,9 @@ package com.energizer.storefront.interceptors.beforecontroller;
 import de.hybris.platform.acceleratorfacades.device.DeviceDetectionFacade;
 import com.energizer.storefront.interceptors.BeforeControllerHandler;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.web.method.HandlerMethod;
 

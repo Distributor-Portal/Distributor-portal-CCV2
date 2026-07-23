@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 
 import com.energizer.core.constants.EnergizerCoreConstants;
@@ -231,7 +231,7 @@ public class EnergizerProductCSVProcessor extends AbstractEnergizerCSVProcessor
 				}
 				else
 				{
-					oldPriceRow.setPrice(new Double(listPrice));
+					oldPriceRow.setPrice(Double.valueOf(listPrice));
 					oldPriceRow.setPriceUOM(priceUOM);
 					modelService.save(oldPriceRow);
 					modelService.refresh(oldPriceRow);
@@ -246,7 +246,7 @@ public class EnergizerProductCSVProcessor extends AbstractEnergizerCSVProcessor
 			newPriceRow.setProduct(energizerProd);
 			newPriceRow.setCurrency(defaultCommonI18NService.getCurrency(listPriceCurrency));
 			newPriceRow.setUnit(defaultUnitService.getUnitForCode(UNIT));
-			newPriceRow.setPrice(new Double(listPrice));
+			newPriceRow.setPrice(Double.valueOf(listPrice));
 			newPriceRow.setPriceUOM(priceUOM);
 			modelService.save(newPriceRow);
 			modelService.refresh(newPriceRow);

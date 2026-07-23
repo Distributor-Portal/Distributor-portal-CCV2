@@ -16,11 +16,10 @@ package com.energizer.storefront.security.impl;
 import de.hybris.platform.servicelayer.session.SessionService;
 import com.energizer.storefront.constants.WebConstants;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.PortResolver;
 import org.springframework.security.web.PortResolverImpl;
@@ -50,7 +49,6 @@ public class WebHttpSessionRequestCache extends HttpSessionRequestCache
 	private boolean createSessionAllowed = true;
 	private SessionService sessionService;
 
-	@Required
 	public void setSessionService(final SessionService sessionService)
 	{
 		this.sessionService = sessionService;

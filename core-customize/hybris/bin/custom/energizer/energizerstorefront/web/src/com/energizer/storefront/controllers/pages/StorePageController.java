@@ -29,18 +29,18 @@ import com.energizer.storefront.forms.StoreFinderForm;
 import com.energizer.storefront.forms.StorePositionForm;
 import com.energizer.storefront.util.MetaSanitizerUtil;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -50,6 +50,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 @Controller
 @Scope("tenant")
+// FRAMEWORK_UPDATE - TODO - AntPathMatcher was replaced with PathPatternParser as the new default path parser in Spring 6. Adjust this path to the new matching rules or re-enable deprecated AntPathMatcher. Consult "Adapting to PathPatternParser new default URL Matcher" JDK21 Upgrade Step in SAP Help documentation.
 @RequestMapping(value = "/**/store")
 public class StorePageController extends AbstractPageController
 {
@@ -92,7 +93,7 @@ public class StorePageController extends AbstractPageController
 		return googleApiKey;
 	}
 
-	@RequestMapping(value = STORE_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
+	@GetMapping(STORE_CODE_PATH_VARIABLE_PATTERN)
 	public String storeDetail(@PathVariable("storeCode") final String storeCode,
 			@RequestParam(value = "lat", required = false) final Double sourceLatitude,
 			@RequestParam(value = "long", required = false) final Double sourceLongitude,

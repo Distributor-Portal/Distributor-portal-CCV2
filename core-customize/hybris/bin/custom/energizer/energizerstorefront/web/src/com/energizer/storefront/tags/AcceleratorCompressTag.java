@@ -17,9 +17,9 @@ import com.energizer.storefront.web.wrappers.RemoveEncodingHttpServletRequestWra
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.BodyContent;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.tagext.BodyContent;
 
 import com.granule.CompressTag;
 import com.granule.CompressTagHandler;

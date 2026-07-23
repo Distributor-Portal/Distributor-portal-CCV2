@@ -3,9 +3,9 @@
 <%@ attribute name="showName" required="false" type="java.lang.Boolean"%>
 <%@ attribute name="filterSkus" required="false" type="java.util.List" %>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="grid" tagdir="/WEB-INF/tags/desktop/grid" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 <c:set var="loopIndex" value="0"/>
 <c:set var="loopIndexColor" value="0"/>

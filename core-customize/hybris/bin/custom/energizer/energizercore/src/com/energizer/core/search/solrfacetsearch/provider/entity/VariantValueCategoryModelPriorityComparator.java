@@ -20,8 +20,6 @@ import de.hybris.platform.variants.model.VariantValueCategoryModel;
 import java.util.Comparator;
 import java.util.LinkedList;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Comparator for type {@link VariantValueCategoryModel}.
@@ -56,7 +54,6 @@ public class VariantValueCategoryModelPriorityComparator implements Comparator<V
 		return categoryService;
 	}
 
-	@Required
 	public void setCategoryService(final CategoryService categoryService)
 	{
 		this.categoryService = categoryService;

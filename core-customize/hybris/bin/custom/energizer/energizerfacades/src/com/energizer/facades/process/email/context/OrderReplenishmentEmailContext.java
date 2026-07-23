@@ -23,7 +23,6 @@ import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.orderscheduling.model.CartToOrderCronJobModel;
 import de.hybris.platform.servicelayer.dto.converter.Converter;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -68,7 +67,6 @@ public class OrderReplenishmentEmailContext extends AbstractEmailContext<Repleni
 		return scheduledCartConverter;
 	}
 
-	@Required
 	public void setScheduledCartConverter(final Converter<CartToOrderCronJobModel, ScheduledCartData> scheduledCartConverter)
 	{
 		this.scheduledCartConverter = scheduledCartConverter;
@@ -85,7 +83,6 @@ public class OrderReplenishmentEmailContext extends AbstractEmailContext<Repleni
 		return configurationService;
 	}
 
-	@Required
 	public void setConfigurationService(final ConfigurationService configurationService)
 	{
 		this.configurationService = configurationService;

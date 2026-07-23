@@ -14,12 +14,10 @@
 package com.energizer.storefront.security;
 
 import java.util.Set;
+import java.util.function.Predicate;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.PathMatcher;
 
@@ -37,12 +35,7 @@ public class ExcludeUrlRequestMatcher implements RequestMatcher
 	public boolean matches(final HttpServletRequest request)
 	{
 		// Do not match patterns specified in the excludeUrlSet to the servletPath
-		return !CollectionUtils.exists(this.excludeUrlSet, new Predicate() {
-			@Override
-			public boolean evaluate(final Object excludeUrl) {
-				return pathMatcher.match((String) excludeUrl, request.getServletPath());
-			}
-		});
+		return !this.excludeUrlSet.stream().anyMatch(excludeUrl -> pathMatcher.match((String) excludeUrl, request.getServletPath()));
 	}
 
 	protected Set<String> getExcludeUrlSet()
@@ -50,17 +43,10 @@ public class ExcludeUrlRequestMatcher implements RequestMatcher
 		return excludeUrlSet;
 	}
 
-	@Required
 	public void setExcludeUrlSet(final Set<String> excludeUrlSet)
 	{
 		// Ensure only valid urls are added to the excludeUrlSet
-		CollectionUtils.filter(excludeUrlSet, new Predicate() {
-			@Override
-			public boolean evaluate(final Object object)
-			{
-				return (object != null) && (object instanceof String) && ((String) object).startsWith("/");
-			}
-		});
+		excludeUrlSet.removeIf(object -> !(object != null) && (object instanceof String) && ((String) object).startsWith("/"));
 
 		this.excludeUrlSet = excludeUrlSet;
 	}
@@ -70,7 +56,6 @@ public class ExcludeUrlRequestMatcher implements RequestMatcher
 		return pathMatcher;
 	}
 
-	@Required
 	public void setPathMatcher(final PathMatcher pathMatcher)
 	{
 		this.pathMatcher = pathMatcher;

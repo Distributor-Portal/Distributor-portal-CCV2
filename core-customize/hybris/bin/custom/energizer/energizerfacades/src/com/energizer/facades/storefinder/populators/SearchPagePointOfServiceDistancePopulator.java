@@ -20,7 +20,6 @@ import de.hybris.platform.commerceservices.storefinder.data.PointOfServiceDistan
 import de.hybris.platform.commerceservices.storefinder.data.StoreFinderSearchPageData;
 import de.hybris.platform.servicelayer.dto.converter.Converter;
 
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
@@ -34,7 +33,6 @@ public class SearchPagePointOfServiceDistancePopulator<SOURCE extends StoreFinde
 		return pointOfServiceDistanceConverter;
 	}
 
-	@Required
 	public void setPointOfServiceDistanceConverter(
 			final Converter<PointOfServiceDistanceData, PointOfServiceData> pointOfServiceDistanceConverter)
 	{

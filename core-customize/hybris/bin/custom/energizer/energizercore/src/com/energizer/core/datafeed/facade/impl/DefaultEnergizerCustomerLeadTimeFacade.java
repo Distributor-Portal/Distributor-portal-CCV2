@@ -5,7 +5,7 @@ package com.energizer.core.datafeed.facade.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import com.energizer.core.datafeed.facade.EnergizerCustomerLeadTimeFacade;
 import com.energizer.core.datafeed.service.impl.DefaultEnergizerCustomerLeadTimeService;

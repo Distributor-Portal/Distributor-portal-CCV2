@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.energizer.core.search.solrfacetsearch.provider.entity.VariantValueCategoryModelSequenceComparator;
 
@@ -121,7 +121,7 @@ public class SolrFirstVariantCategoryManagerTest
 
 			final VariantValueCategoryModel category = Mockito.mock(VariantValueCategoryModel.class);
 			Mockito.when(category.getName()).thenReturn(categoryName);
-			Mockito.when(category.getSequence()).thenReturn(new Integer(sequences[i]));
+			Mockito.when(category.getSequence()).thenReturn(Integer.valueOf(sequences[i]));
 			final GenericVariantProductModel variant = Mockito.mock(GenericVariantProductModel.class);
 			Mockito.when(variant.getCode()).thenReturn(variantCodes[i]);
 			categoryVariantPairs.put(category, variant);

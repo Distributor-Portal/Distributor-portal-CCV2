@@ -24,8 +24,6 @@ import de.hybris.platform.processengine.action.AbstractProceduralAction;
 import de.hybris.platform.processengine.model.BusinessProcessParameterModel;
 import de.hybris.platform.tx.Transaction;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Action for placing orders.
@@ -75,7 +73,6 @@ public class PlaceOrderAction extends AbstractProceduralAction<ReplenishmentProc
 		return commerceCheckoutService;
 	}
 
-	@Required
 	public void setCommerceCheckoutService(final CommerceCheckoutService commerceCheckoutService)
 	{
 		this.commerceCheckoutService = commerceCheckoutService;
@@ -86,7 +83,6 @@ public class PlaceOrderAction extends AbstractProceduralAction<ReplenishmentProc
 		return impersonationService;
 	}
 
-	@Required
 	public void setImpersonationService(final ImpersonationService impersonationService)
 	{
 		this.impersonationService = impersonationService;

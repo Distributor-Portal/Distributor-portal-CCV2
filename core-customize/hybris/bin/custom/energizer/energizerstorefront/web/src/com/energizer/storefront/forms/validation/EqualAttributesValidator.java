@@ -13,11 +13,11 @@
  */
 package com.energizer.storefront.forms.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.beanutils2.PropertyUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.util.Assert;
 
@@ -35,13 +35,13 @@ public class EqualAttributesValidator implements ConstraintValidator<EqualAttrib
 	@Override
 	public void initialize(final EqualAttributes constraintAnnotation)
 	{
-		Assert.notEmpty(constraintAnnotation.value());
-		Assert.isTrue(constraintAnnotation.value().length == 2);
+		Assert.notEmpty(constraintAnnotation.value(), "must not be empty");
+		Assert.isTrue(constraintAnnotation.value().length == 2, "must be true");
 		firstAttribute = constraintAnnotation.value()[0];
 		secondAttribute = constraintAnnotation.value()[1];
-		Assert.hasText(firstAttribute);
-		Assert.hasText(secondAttribute);
-		Assert.isTrue(!firstAttribute.equals(secondAttribute));
+		Assert.hasText(firstAttribute, "must have text; it must not be null, empty, or blank");
+		Assert.hasText(secondAttribute, "must have text; it must not be null, empty, or blank");
+		Assert.isTrue(!firstAttribute.equals(secondAttribute), "must be true");
 	}
 
 	@Override

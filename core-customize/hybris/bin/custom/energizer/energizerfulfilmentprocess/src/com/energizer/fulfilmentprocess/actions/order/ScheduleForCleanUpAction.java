@@ -26,8 +26,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 public class ScheduleForCleanUpAction extends AbstractSimpleDecisionAction<OrderProcessModel>
 {
@@ -39,7 +37,6 @@ public class ScheduleForCleanUpAction extends AbstractSimpleDecisionAction<Order
 		return timeService;
 	}
 
-	@Required
 	public void setTimeService(final TimeService timeService)
 	{
 		this.timeService = timeService;

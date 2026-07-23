@@ -47,23 +47,24 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.mail.internet.AddressException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import javax.xml.bind.JAXBException;
+import jakarta.annotation.Resource;
+import jakarta.mail.internet.AddressException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import jakarta.xml.bind.JAXBException;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
@@ -210,7 +211,7 @@ public class CartPageController extends AbstractPageController
 
 	boolean enableButton = false;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	public String showCart(final Model model, final HttpSession session)
 			throws CMSItemNotFoundException, NullPointerException, Exception
 	{
@@ -239,7 +240,7 @@ public class CartPageController extends AbstractPageController
 		return Views.Pages.Cart.CartPage;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@PostMapping
 	@RequireHardLogIn
 	public String updateContainerUtil(@Valid
 	final ContainerUtilizationForm containerUtilizationForm, final Model model, final BindingResult bindingErrors,
@@ -304,7 +305,7 @@ public class CartPageController extends AbstractPageController
 	}
 
 
-	@RequestMapping(value = "/clearCart", method = RequestMethod.GET)
+	@GetMapping("/clearCart")
 	@RequireHardLogIn
 	public String clearCart(final Model model, final RedirectAttributes redirectModel) throws CMSItemNotFoundException
 	{
@@ -330,7 +331,7 @@ public class CartPageController extends AbstractPageController
 	}
 
 
-	@RequestMapping(value = "/checkout", method = RequestMethod.GET)
+	@GetMapping("/checkout")
 	@RequireHardLogIn
 	public String cartCheck(final Model model, final RedirectAttributes redirectModel) throws Exception
 	{
@@ -375,7 +376,7 @@ public class CartPageController extends AbstractPageController
 
 	}
 
-	@RequestMapping(value = "/getProductVariantMatrix", method = RequestMethod.GET)
+	@GetMapping("/getProductVariantMatrix")
 	@RequireHardLogIn
 	public String getProductVariantMatrix(@RequestParam("productCode")
 	final String productCode, final Model model)
@@ -406,7 +407,7 @@ public class CartPageController extends AbstractPageController
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/update/expectedUnitPrice", method = RequestMethod.POST)
+	@PostMapping("/update/expectedUnitPrice")
 	@RequireHardLogIn
 	public String updateExpectedUnitPrice(@RequestParam("entryNumber")
 	final Integer entryNumber, @RequestParam("productCode")
@@ -438,7 +439,7 @@ public class CartPageController extends AbstractPageController
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/update/agreeEdgewellUnitPrice", method = RequestMethod.POST)
+	@PostMapping("/update/agreeEdgewellUnitPrice")
 	@RequireHardLogIn
 	public String updateAgreeEdgewellUnitPrice(@RequestParam("entryNumber")
 	final Integer entryNumber, @RequestParam("productCode")
@@ -492,7 +493,7 @@ public class CartPageController extends AbstractPageController
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/update/agreeEdgewellUnitPriceForAllProducts", method = RequestMethod.POST)
+	@PostMapping("/update/agreeEdgewellUnitPriceForAllProducts")
 	@RequireHardLogIn
 	public String updateAgreeEdgewellUnitPriceForAllProducts(@RequestParam("agreeEdgewellPriceForAllProducts")
 	final String agreeEdgewellPriceForAllProducts, final Model model, @Valid
@@ -522,7 +523,7 @@ public class CartPageController extends AbstractPageController
 
 	@SuppressWarnings("unchecked")
 	@ResponseBody
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@PostMapping("/update")
 	@RequireHardLogIn
 	public CartData updateCartQuantities(@RequestParam("entryNumber")
 	final Integer entryNumber, @RequestParam("productCode")
@@ -975,18 +976,18 @@ public class CartPageController extends AbstractPageController
 					final HashMap productsNotDoubleStacked = energizerCartService.getProductsNotDoublestacked();
 
 					final List<String> containerHeightList = Arrays
-							.asList(Config.getParameter("possibleContainerHeights").split(new Character(',').toString()));
+							.asList(Config.getParameter("possibleContainerHeights").split(Character.valueOf(',').toString()));
 
 					final List<String> packingOptionsList;
 					if (containerHeight.equals("20FT"))
 					{
 						packingOptionsList = Arrays
-								.asList(Config.getParameter("possiblePackingOptions.20FT").split(new Character(',').toString()));
+								.asList(Config.getParameter("possiblePackingOptions.20FT").split(Character.valueOf(',').toString()));
 					}
 					else
 					{
 						packingOptionsList = Arrays
-								.asList(Config.getParameter("possiblePackingOptions").split(new Character(',').toString()));
+								.asList(Config.getParameter("possiblePackingOptions").split(Character.valueOf(',').toString()));
 					}
 
 					cartData.setFloorSpaceProductsMap(energizerCartService.getFloorSpaceProductsMap());
@@ -1073,7 +1074,7 @@ public class CartPageController extends AbstractPageController
 				}
 
 				final List<String> containerHeightList = Arrays
-						.asList(getConfigValue("possibleContainerHeights").split(new Character(',').toString()));
+						.asList(getConfigValue("possibleContainerHeights").split(Character.valueOf(',').toString()));
 
 
 				packingOptionsList.add("Wooden Base");
@@ -1139,7 +1140,7 @@ public class CartPageController extends AbstractPageController
 		}
 	}
 
-	@RequestMapping(value = "/updateprofile", method = RequestMethod.POST)
+	@PostMapping("/updateprofile")
 	@RequireHardLogIn
 	public void updateProfile(@Valid
 	final UpdateProfileForm updateProfileForm, final BindingResult bindingResult, final Model model,
@@ -1395,7 +1396,7 @@ public class CartPageController extends AbstractPageController
 	}
 
 	//Added Code changes for WeSell Implementation - START
-	@RequestMapping(value = "/getPrice", method = RequestMethod.GET)
+	@GetMapping("/getPrice")
 	@RequireHardLogIn
 	public String getPrice(final Model model, final HttpSession session, final RedirectAttributes redirectModel) throws Exception
 	{

@@ -28,22 +28,24 @@ import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.servicelayer.user.UserService;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -310,7 +312,7 @@ public class LoginPageController extends AbstractLoginPageController
 		}
 	}
 
-	@RequestMapping(value = "/redirectSiteURL", method = RequestMethod.POST)
+	@PostMapping("/redirectSiteURL")
 	public void redirectToRegionBasedSiteURL(@RequestParam("siteId")
 	final String siteId, @RequestParam("currency")
 	final String currency, @RequestParam("region")
@@ -331,7 +333,7 @@ public class LoginPageController extends AbstractLoginPageController
 			//Initializing the CMS Site to null, so that we create a fresh CMS Site request based on dropdown region selection in the login page
 			this.getCmsSiteService().setCurrentSite(null);
 
-			final CMSSiteModel cmsSiteModel = this.getCmsSiteService().getSiteForURL(new URL(redirectURL));
+			final CMSSiteModel cmsSiteModel = this.getCmsSiteService().getSiteForURL(URI.create(redirectURL).toURL());
 
 			// Setting user session language to cms site default language for dropdown selection
 			if (null != cmsSiteModel)

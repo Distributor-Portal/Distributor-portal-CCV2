@@ -21,8 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang3.StringUtils;
 
 import com.energizer.core.model.EnergizerB2BCustomerModel;
 import com.energizer.facades.accounts.impl.DefaultEnergizerGroupsLookUpStrategy;
@@ -70,7 +69,6 @@ public class EnergizerB2BCustomerReversePopulator implements Populator<CustomerD
 		return userService;
 	}
 
-	@Required
 	public void setUserService(final UserService userService)
 	{
 		this.userService = userService;
@@ -81,7 +79,6 @@ public class EnergizerB2BCustomerReversePopulator implements Populator<CustomerD
 		return (T) b2bCommerceUnitService;
 	}
 
-	@Required
 	public void setB2bCommerceUnitService(final B2BCommerceUnitService companyB2BCommerceService)
 	{
 		this.b2bCommerceUnitService = companyB2BCommerceService;
@@ -92,7 +89,6 @@ public class EnergizerB2BCustomerReversePopulator implements Populator<CustomerD
 		return customerNameStrategy;
 	}
 
-	@Required
 	public void setCustomerNameStrategy(final CustomerNameStrategy customerNameStrategy)
 	{
 		this.customerNameStrategy = customerNameStrategy;
@@ -103,7 +99,6 @@ public class EnergizerB2BCustomerReversePopulator implements Populator<CustomerD
 		return b2BCommerceB2BUserGroupService;
 	}
 
-	@Required
 	public void setB2BCommerceB2BUserGroupService(final B2BCommerceB2BUserGroupService b2bCommerceB2BUserGroupService)
 	{
 		b2BCommerceB2BUserGroupService = b2bCommerceB2BUserGroupService;
@@ -114,7 +109,6 @@ public class EnergizerB2BCustomerReversePopulator implements Populator<CustomerD
 		return b2bUnitService;
 	}
 
-	@Required
 	public void setB2bUnitService(final B2BUnitService<B2BUnitModel, UserModel> b2bUnitService)
 	{
 		this.b2bUnitService = b2bUnitService;

@@ -18,7 +18,7 @@ import de.hybris.bootstrap.annotations.UnitTest;
 import java.io.File;
 import java.io.IOException;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 import org.junit.Test;
 import org.mockito.Mockito;

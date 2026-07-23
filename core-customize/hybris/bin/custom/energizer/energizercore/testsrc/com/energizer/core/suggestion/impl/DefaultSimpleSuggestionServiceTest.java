@@ -28,7 +28,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

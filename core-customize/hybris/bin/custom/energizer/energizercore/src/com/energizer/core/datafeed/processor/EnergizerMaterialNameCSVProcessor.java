@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.energizer.core.datafeed.AbstractEnergizerCSVProcessor;
@@ -93,7 +93,7 @@ public class EnergizerMaterialNameCSVProcessor extends AbstractEnergizerCSVProce
 		}
 		/* End implementation for EMEA */
 		long succeedRecord = getRecordSucceeded();
-		CSV_HEADERS = Config.getParameter(MATERIAL_NAME_FEED_HEADERS_KEY).split(new Character(DELIMETER).toString());
+		CSV_HEADERS = Config.getParameter(MATERIAL_NAME_FEED_HEADERS_KEY).split(Character.valueOf(DELIMETER).toString());
 		int descriptionSavedCount = 0;
 		int descriptionNotSavedCount = 0;
 		for (final CSVRecord record : records)
@@ -128,7 +128,7 @@ public class EnergizerMaterialNameCSVProcessor extends AbstractEnergizerCSVProce
 				{
 					try
 					{
-						pm.setName(csvValuesMap.get(CSV_HEADERS[2]), new Locale(csvValuesMap.get(CSV_HEADERS[1]).toLowerCase()));
+						pm.setName(csvValuesMap.get(CSV_HEADERS[2]), Locale.of(csvValuesMap.get(CSV_HEADERS[1]).toLowerCase()));
 						modelService.save(pm);
 						//LOG.info("EnergizerProductModel is saved");
 						descriptionSavedCount += 1;
@@ -186,7 +186,7 @@ public class EnergizerMaterialNameCSVProcessor extends AbstractEnergizerCSVProce
 			setTotalRecords(record.getRecordNumber());
 			final String value = map.get(columnHeader).trim();
 			final List<String> mandatoryFields = Arrays
-					.asList(Config.getParameter(MATERIAL_NAME_FEED_HEADERS_MANDATORY_KEY).split(new Character(DELIMETER).toString()));
+					.asList(Config.getParameter(MATERIAL_NAME_FEED_HEADERS_MANDATORY_KEY).split(Character.valueOf(DELIMETER).toString()));
 
 			if (!hasMandatoryFields(record, getHeadersForFeed(MATERIAL_NAME_FEED_HEADERS_MANDATORY_KEY)))
 			{

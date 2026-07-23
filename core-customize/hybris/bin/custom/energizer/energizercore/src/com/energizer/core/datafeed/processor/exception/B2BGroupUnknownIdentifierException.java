@@ -3,6 +3,8 @@
  */
 package com.energizer.core.datafeed.processor.exception;
 
+import java.io.Serial;
+
 
 /**
  * @author m9005673
@@ -14,6 +16,7 @@ public class B2BGroupUnknownIdentifierException extends de.hybris.platform.servi
 	/**
 	 * 
 	 */
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	/**

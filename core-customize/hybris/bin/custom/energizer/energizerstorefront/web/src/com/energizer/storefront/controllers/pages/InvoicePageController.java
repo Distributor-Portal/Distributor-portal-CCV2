@@ -21,15 +21,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.energizer.core.azure.blob.EnergizerWindowsAzureBlobStorageStrategy;
@@ -65,7 +65,7 @@ public class InvoicePageController extends AbstractSearchPageController
 	@Resource(name = "b2bOrderFacade")
 	private B2BOrderFacade orderFacade;
 
-	@RequestMapping(value = "/invoicePdfDisplay", method = RequestMethod.GET)
+	@GetMapping("/invoicePdfDisplay")
 	@RequireHardLogIn
 	public void invoice(@RequestParam("orderCode")
 	final String invoiceNumber, @RequestParam(value = "inline", required = false)

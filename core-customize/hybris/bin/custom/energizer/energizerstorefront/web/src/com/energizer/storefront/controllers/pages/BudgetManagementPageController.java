@@ -23,16 +23,17 @@ import de.hybris.platform.commerceservices.search.pagedata.SearchPageData;
 import java.text.ParseException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -53,7 +54,7 @@ public class BudgetManagementPageController extends MyCompanyPageController
 {
 	private static final Logger LOG = Logger.getLogger(BudgetManagementPageController.class);
 
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	@RequireHardLogIn
 	public String manageBudgets(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -71,7 +72,7 @@ public class BudgetManagementPageController extends MyCompanyPageController
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageBudgetsPage;
 	}
 
-	@RequestMapping(value = "/view", method = RequestMethod.GET)
+	@GetMapping("/view")
 	@RequireHardLogIn
 	public String viewBudgetsDetails(@RequestParam("budgetCode") final String budgetCode, final Model model)
 			throws CMSItemNotFoundException
@@ -91,7 +92,7 @@ public class BudgetManagementPageController extends MyCompanyPageController
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageBudgetsViewPage;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	@GetMapping("/edit")
 	@RequireHardLogIn
 	public String editBudgetsDetails(@RequestParam("budgetCode") final String budgetCode, final Model model)
 			throws CMSItemNotFoundException
@@ -122,7 +123,7 @@ public class BudgetManagementPageController extends MyCompanyPageController
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageBudgetsEditPage;
 	}
 
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@PostMapping("/update")
 	@RequireHardLogIn
 	public String updateBudgetsDetails(@RequestParam("budgetCode") final String budgetCode,
 			@Valid final B2BBudgetForm b2BBudgetForm, final BindingResult bindingResult, final Model model,
@@ -164,7 +165,7 @@ public class BudgetManagementPageController extends MyCompanyPageController
 		return String.format(REDIRECT_TO_BUDGET_DETAILS, urlEncode(b2BBudgetData.getCode()));
 	}
 
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	@GetMapping("/add")
 	@RequireHardLogIn
 	public String getAddBudgetPage(final Model model) throws CMSItemNotFoundException
 	{
@@ -185,7 +186,7 @@ public class BudgetManagementPageController extends MyCompanyPageController
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyManageBudgetsAddPage;
 	}
 
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@PostMapping("/add")
 	@RequireHardLogIn
 	public String addNewBudget(@Valid final B2BBudgetForm b2BBudgetForm, final BindingResult bindingResult, final Model model,
 			final RedirectAttributes redirectModel) throws CMSItemNotFoundException, ParseException
@@ -226,7 +227,7 @@ public class BudgetManagementPageController extends MyCompanyPageController
 		return String.format(REDIRECT_TO_BUDGET_DETAILS, urlEncode(b2BBudgetData.getCode()));
 	}
 
-	@RequestMapping(value = "/enable", method = RequestMethod.GET)
+	@GetMapping("/enable")
 	@RequireHardLogIn
 	public String enableBudget(@RequestParam("budgetCode") final String budgetCode, final Model model)
 			throws CMSItemNotFoundException
@@ -260,7 +261,7 @@ public class BudgetManagementPageController extends MyCompanyPageController
 		return String.format(REDIRECT_TO_BUDGET_DETAILS, urlEncode(budgetCode));
 	}
 
-	@RequestMapping(value = "/disable", method = RequestMethod.GET)
+	@GetMapping("/disable")
 	@RequireHardLogIn
 	public String confirmDisableBudgets(@RequestParam("budgetCode") final String budgetCode, final Model model)
 			throws CMSItemNotFoundException
@@ -275,7 +276,7 @@ public class BudgetManagementPageController extends MyCompanyPageController
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyBudgetDisableConfirm;
 	}
 
-	@RequestMapping(value = "/disable", method = RequestMethod.POST)
+	@PostMapping("/disable")
 	@RequireHardLogIn
 	public String disableBudget(@RequestParam("budgetCode") final String budgetCode, final Model model)
 			throws CMSItemNotFoundException
@@ -292,7 +293,7 @@ public class BudgetManagementPageController extends MyCompanyPageController
 		return String.format(REDIRECT_TO_BUDGET_DETAILS, urlEncode(budgetCode));
 	}
 
-	@RequestMapping(value = "/unitDetails", method = RequestMethod.GET)
+	@GetMapping("/unitDetails")
 	@RequireHardLogIn
 	public String viewBudgetUnitDetails(@RequestParam("budgetCode") final String budgetCode,
 			@RequestParam("unit") final String unit, final Model model, final HttpServletRequest request)

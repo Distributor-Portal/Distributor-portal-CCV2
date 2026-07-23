@@ -22,7 +22,6 @@ import de.hybris.platform.store.BaseStoreModel;
 import de.hybris.platform.task.RetryLaterException;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 public class StartFulfilmentProcessAction extends AbstractProceduralB2BOrderApproveAction
@@ -60,7 +59,6 @@ public class StartFulfilmentProcessAction extends AbstractProceduralB2BOrderAppr
 		return businessProcessService;
 	}
 
-	@Required
 	public void setBusinessProcessService(final BusinessProcessService businessProcessService)
 	{
 		this.businessProcessService = businessProcessService;

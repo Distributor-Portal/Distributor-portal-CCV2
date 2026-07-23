@@ -3,6 +3,8 @@
  */
 package com.energizer.core.event;
 
+import java.io.Serial;
+
 import com.energizer.core.model.EnergizerB2BEmployeeModel;
 
 
@@ -15,6 +17,7 @@ public class B2BEmployeeForgottenPwdEvent extends B2BEmployeeAbstractCommerceUse
 	/**
 	 *
 	 */
+	@Serial
 	private static final long serialVersionUID = 1L;
 	private String token;
 	//private EnergizerB2BEmployeeModel salesRepUser;

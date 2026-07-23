@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 
 public class SplitOrderAction extends AbstractProceduralAction<OrderProcessModel>
@@ -85,7 +84,6 @@ public class SplitOrderAction extends AbstractProceduralAction<OrderProcessModel
 		return orderSplittingService;
 	}
 
-	@Required
 	public void setOrderSplittingService(final OrderSplittingService orderSplittingService)
 	{
 		this.orderSplittingService = orderSplittingService;
@@ -96,7 +94,6 @@ public class SplitOrderAction extends AbstractProceduralAction<OrderProcessModel
 		return businessProcessService;
 	}
 
-	@Required
 	public void setBusinessProcessService(final BusinessProcessService businessProcessService)
 	{
 		this.businessProcessService = businessProcessService;

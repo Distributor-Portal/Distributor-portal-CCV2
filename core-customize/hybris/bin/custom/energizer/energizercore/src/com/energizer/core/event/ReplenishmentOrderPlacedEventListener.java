@@ -19,7 +19,6 @@ import de.hybris.platform.orderscheduling.model.CartToOrderCronJobModel;
 import de.hybris.platform.processengine.BusinessProcessService;
 import de.hybris.platform.servicelayer.event.impl.AbstractEventListener;
 import de.hybris.platform.servicelayer.model.ModelService;
-import org.springframework.beans.factory.annotation.Required;
 
 
 public class ReplenishmentOrderPlacedEventListener extends AbstractEventListener<ReplenishmentOrderPlacedEvent>
@@ -33,7 +32,6 @@ public class ReplenishmentOrderPlacedEventListener extends AbstractEventListener
 		return businessProcessService;
 	}
 
-	@Required
 	public void setBusinessProcessService(final BusinessProcessService businessProcessService)
 	{
 		this.businessProcessService = businessProcessService;
@@ -44,7 +42,6 @@ public class ReplenishmentOrderPlacedEventListener extends AbstractEventListener
 		return modelService;
 	}
 
-	@Required
 	public void setModelService(final ModelService modelService)
 	{
 		this.modelService = modelService;

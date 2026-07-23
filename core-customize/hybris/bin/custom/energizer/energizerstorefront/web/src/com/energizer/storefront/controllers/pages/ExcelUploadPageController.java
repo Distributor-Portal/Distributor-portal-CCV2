@@ -44,12 +44,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -63,9 +63,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -193,7 +194,7 @@ public class ExcelUploadPageController extends AbstractSearchPageController
 
 	Map<String, String> shipmentNameMap = new HashMap<String, String>();
 
-	@RequestMapping(value = "/excelFileToUpload", method = RequestMethod.POST)
+	@PostMapping("/excelFileToUpload")
 	@RequireHardLogIn
 	public String uploadExcelFile(final Model model, @RequestParam("file") final CommonsMultipartFile file)
 			throws CMSItemNotFoundException
@@ -302,7 +303,7 @@ public class ExcelUploadPageController extends AbstractSearchPageController
 									final String val = (StringUtils.isNotEmpty(row.getCell(3).toString())
 											? row.getCell(3).toString().trim()
 											: "0");
-									final Long quantity = new Double(val).longValue();
+									final Long quantity = Double.valueOf(val).longValue();
 
 									if (quantity > 0)
 									{
@@ -467,7 +468,7 @@ public class ExcelUploadPageController extends AbstractSearchPageController
 		return ControllerConstants.Views.Pages.Account.AccountExcelUploadEntries;
 	}
 
-	@RequestMapping(value = "/addtocart", method = RequestMethod.POST)
+	@PostMapping("/addtocart")
 	@RequireHardLogIn
 	public String addtocart(@ModelAttribute("excelUploadForm") final ExcelUploadForm excelUploadForm, final Model model,
 			final HttpSession session) throws CMSItemNotFoundException
@@ -898,19 +899,19 @@ public class ExcelUploadPageController extends AbstractSearchPageController
 				cartData.setBusinesRuleErrors(businessRuleErrors);
 
 				final List<String> containerHeightList = Arrays
-						.asList(Config.getParameter("possibleContainerHeights").split(new Character(',').toString()));
+						.asList(Config.getParameter("possibleContainerHeights").split(Character.valueOf(',').toString()));
 
 				final List<String> packingOptionsList;
 				if (containerHeight.equals("20FT"))
 				{
 					packingOptionsList = Arrays
-							.asList(Config.getParameter("possiblePackingOptions.20FT").split(new Character(',').toString()));
+							.asList(Config.getParameter("possiblePackingOptions.20FT").split(Character.valueOf(',').toString()));
 				}
 				else
 				{
 
 					packingOptionsList = Arrays
-							.asList(Config.getParameter("possiblePackingOptions").split(new Character(',').toString()));
+							.asList(Config.getParameter("possiblePackingOptions").split(Character.valueOf(',').toString()));
 				}
 
 				contUtilForm.setContainerHeight(containerHeight);
@@ -998,7 +999,7 @@ public class ExcelUploadPageController extends AbstractSearchPageController
 			}
 
 			final List<String> containerHeightList = Arrays
-					.asList(getConfigValue("possibleContainerHeights").split(new Character(',').toString()));
+					.asList(getConfigValue("possibleContainerHeights").split(Character.valueOf(',').toString()));
 
 			contUtilForm.setContainerHeight(containerHeight);
 			packingOptionsList.add("Wooden Base");
@@ -1038,7 +1039,7 @@ public class ExcelUploadPageController extends AbstractSearchPageController
 		}
 	}
 
-	@RequestMapping(value = EXCEL_ORDER_AJAX_CALL, method = RequestMethod.GET)
+	@GetMapping(EXCEL_ORDER_AJAX_CALL)
 	@RequireHardLogIn
 	public @ResponseBody Map<String, List<EnergizerFileUploadData>> excelUploadQuantityUpdate(final Model model,
 			@RequestParam("quantity") final Long quantity, @RequestParam("erpMaterialCode") final String erpMaterialCode)
@@ -1084,7 +1085,7 @@ public class ExcelUploadPageController extends AbstractSearchPageController
 	 * Redirect to /my-cart/cart page ,once action is performed on /my-cart/addtoCart Page...
 	 */
 
-	@RequestMapping(value = CART, method = RequestMethod.POST)
+	@PostMapping(CART)
 	@RequireHardLogIn
 	public String updateContainerUtil(@Valid final ContainerUtilizationForm containerUtilizationForm, final Model model,
 			final BindingResult bindingErrors, final RedirectAttributes redirectAttributes, final HttpServletRequest request,

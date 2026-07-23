@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.energizer.core.constants.EnergizerCoreConstants;
 import com.energizer.core.model.EnergizerPriceRowModel;
@@ -112,7 +111,6 @@ public class EnergizerProductB2BUnitValueProvider extends AbstractPropertyFieldV
 		return fieldNameProvider;
 	}
 
-	@Required
 	public void setFieldNameProvider(final FieldNameProvider fieldNameProvider)
 	{
 		this.fieldNameProvider = fieldNameProvider;

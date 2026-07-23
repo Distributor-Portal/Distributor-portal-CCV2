@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
@@ -151,7 +151,7 @@ public class EnergizerQuickOrderFacadeTest extends ServicelayerTransactionalTest
 		product.setUom(string3);
 		product.setMoq(moq);
 		orderEntry.setProduct(product);
-		orderEntry.setQuantity(new Long(i));
+		orderEntry.setQuantity(Long.valueOf(i));
 		return orderEntry;
 
 	}

@@ -31,16 +31,17 @@ import de.hybris.platform.commerceservices.search.pagedata.SearchPageData;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -62,7 +63,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 {
 	private static final Logger LOG = Logger.getLogger(CostCenterManagementPageController.class);
 
-	@RequestMapping(value = "/unitDetails", method = RequestMethod.GET)
+	@GetMapping("/unitDetails")
 	@RequireHardLogIn
 	public String viewCostCenterUnitDetails(@RequestParam("costCenterCode") final String costCenterCode,
 			@RequestParam("unit") final String unit, final Model model, final HttpServletRequest request)
@@ -82,7 +83,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 		return viewCostCenterUnitUrl;
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@GetMapping("")
 	@RequireHardLogIn
 	public String manageCostCenters(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -103,7 +104,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 	}
 
 	@Override
-	@RequestMapping(value = "/view", method = RequestMethod.GET)
+	@GetMapping("/view")
 	@RequireHardLogIn
 	public String viewCostCenterDetails(@RequestParam("costCenterCode") final String costCenterCode, final Model model)
 			throws CMSItemNotFoundException
@@ -111,7 +112,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 		return super.viewCostCenterDetails(costCenterCode, model);
 	}
 
-	@RequestMapping(value = "/selectBudget", method = RequestMethod.GET)
+	@GetMapping("/selectBudget")
 	@RequireHardLogIn
 	public String assignBudgetsForCostCenter(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final AbstractSearchPageController.ShowMode showMode,
@@ -139,8 +140,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/budgets/select", method =
-	{ RequestMethod.POST })
+	@PostMapping("/budgets/select")
 	@RequireHardLogIn
 	public B2BSelectionData selectBudgetForCostCenter(@RequestParam("costCenterCode") final String costCenterCode,
 			@RequestParam("budgetCode") final String budgetCode) throws CMSItemNotFoundException
@@ -159,8 +159,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/budgets/deselect", method =
-	{ RequestMethod.POST })
+	@PostMapping("/budgets/deselect")
 	@RequireHardLogIn
 	public B2BSelectionData deselectBudgetForCostCenter(@RequestParam("costCenterCode") final String costCenterCode,
 			@RequestParam("budgetCode") final String budgetCode) throws CMSItemNotFoundException
@@ -187,7 +186,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 		return b2BSelectionData;
 	}
 
-	@RequestMapping(value = "/enable", method = RequestMethod.GET)
+	@GetMapping("/enable")
 	@RequireHardLogIn
 	public String enableCostCenter(@RequestParam("costCenterCode") final String costCenterCode, final Model model)
 			throws CMSItemNotFoundException
@@ -217,7 +216,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 		return String.format(REDIRECT_TO_COSTCENTER_DETAILS, urlEncode(costCenterCode));
 	}
 
-	@RequestMapping(value = "/disable", method = RequestMethod.GET)
+	@GetMapping("/disable")
 	@RequireHardLogIn
 	public String confirmDisableCostCenter(@RequestParam("costCenterCode") final String costCenterCode, final Model model)
 			throws CMSItemNotFoundException
@@ -232,7 +231,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 		return ControllerConstants.Views.Pages.MyCompany.MyCompanyCostCenterDisableConfirm;
 	}
 
-	@RequestMapping(value = "/disable", method = RequestMethod.POST)
+	@PostMapping("/disable")
 	@RequireHardLogIn
 	public String disableCostCenter(@RequestParam("costCenterCode") final String costCenterCode, final Model model)
 			throws CMSItemNotFoundException
@@ -252,7 +251,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 	}
 
 	@Override
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	@GetMapping("/edit")
 	@RequireHardLogIn
 	public String editCostCenterDetails(@RequestParam("costCenterCode") final String costCenterCode, final Model model)
 			throws CMSItemNotFoundException
@@ -261,7 +260,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 	}
 
 	@Override
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@PostMapping("/update")
 	@RequireHardLogIn
 	public String updateCostCenterDetails(@Valid final B2BCostCenterForm b2BCostCenterForm, final BindingResult bindingResult,
 			final Model model, final RedirectAttributes redirectModel) throws CMSItemNotFoundException
@@ -270,7 +269,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 	}
 
 	@Override
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	@GetMapping("/add")
 	@RequireHardLogIn
 	public String addCostCenter(final Model model) throws CMSItemNotFoundException
 	{
@@ -282,7 +281,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 	}
 
 	@Override
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@PostMapping("/add")
 	@RequireHardLogIn
 	public String saveCostCenter(@Valid final B2BCostCenterForm b2BCostCenterForm, final BindingResult bindingResult,
 			final Model model, final RedirectAttributes redirectModel) throws CMSItemNotFoundException

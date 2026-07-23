@@ -27,8 +27,6 @@ import de.hybris.platform.servicelayer.user.UserService;
 
 import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Required;
-
 
 /**
  * Action for cloning carts.
@@ -66,7 +64,6 @@ public class CloneCartAction extends AbstractProceduralAction<ReplenishmentProce
 		return cartService;
 	}
 
-	@Required
 	public void setCartService(final CartService cartService)
 	{
 		this.cartService = cartService;
@@ -77,7 +74,6 @@ public class CloneCartAction extends AbstractProceduralAction<ReplenishmentProce
 		return typeService;
 	}
 
-	@Required
 	public void setTypeService(final TypeService typeService)
 	{
 		this.typeService = typeService;
@@ -88,7 +84,6 @@ public class CloneCartAction extends AbstractProceduralAction<ReplenishmentProce
 		return userService;
 	}
 
-	@Required
 	public void setUserService(final UserService userService)
 	{
 		this.userService = userService;
@@ -99,7 +94,6 @@ public class CloneCartAction extends AbstractProceduralAction<ReplenishmentProce
 		return guidKeyGenerator;
 	}
 
-	@Required
 	public void setGuidKeyGenerator(final KeyGenerator guidKeyGenerator)
 	{
 		this.guidKeyGenerator = guidKeyGenerator;

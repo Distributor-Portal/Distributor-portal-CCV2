@@ -32,10 +32,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.energizer.core.constants.EnergizerCoreConstants;
 import com.energizer.core.data.EnergizerDeliveryNoteData;
@@ -141,7 +140,6 @@ public class OrderNotificationEmailContext extends AbstractEmailContext<OrderPro
 		return orderConverter;
 	}
 
-	@Required
 	public void setOrderConverter(final Converter<OrderModel, OrderData> orderConverter)
 	{
 		this.orderConverter = orderConverter;
@@ -165,7 +163,6 @@ public class OrderNotificationEmailContext extends AbstractEmailContext<OrderPro
 	}
 
 	@Override
-	@Required
 	public void setConfigurationService(final ConfigurationService configurationService)
 	{
 		this.configurationService = configurationService;

@@ -18,7 +18,7 @@ import de.hybris.platform.commercefacades.order.data.CartData;
 import com.energizer.facades.flow.B2BCheckoutFlowFacade;
 import com.energizer.storefront.controllers.pages.AbstractPageController;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * Base controller for all checkout page controllers. Provides common functionality for all checkout page controllers.

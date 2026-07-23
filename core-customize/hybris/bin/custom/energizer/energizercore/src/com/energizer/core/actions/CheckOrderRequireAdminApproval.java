@@ -12,7 +12,6 @@ import de.hybris.platform.processengine.action.AbstractSimpleDecisionAction;
 import de.hybris.platform.task.RetryLaterException;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.energizer.services.order.EnergizerB2BPermissionService;
 
@@ -74,7 +73,6 @@ public class CheckOrderRequireAdminApproval extends AbstractSimpleB2BApproveOrde
 		return this.b2bPermissionService;
 	}
 
-	@Required
 	public void setB2bPermissionService(final EnergizerB2BPermissionService b2bPermissionService)
 	{
 		this.b2bPermissionService = b2bPermissionService;
@@ -85,7 +83,6 @@ public class CheckOrderRequireAdminApproval extends AbstractSimpleB2BApproveOrde
 		return this.permissionResultHelper;
 	}
 
-	@Required
 	public void setPermissionResultHelper(final B2BPermissionResultHelperImpl permissionResultHelper)
 	{
 		this.permissionResultHelper = permissionResultHelper;
