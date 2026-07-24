@@ -196,9 +196,14 @@ public class EnergizerB2BEmployeeCSVProcessor extends AbstractEnergizerCSVProces
 					final String wesellCustomerUid = virtualIDPrefix + "_" + b2bUnitModel.getUid()
 							+ getConfigValue(EnergizerCoreConstants.WESELL_USERID_SUFFIX);
 
-					@SuppressWarnings("unchecked")
-					final List<EnergizerB2BCustomerModel> b2bCustomerList = ((List<EnergizerB2BCustomerModel>) CollectionUtils
-							.select(b2bUnitModel.getMembers(), PredicateUtils.instanceofPredicate(EnergizerB2BCustomerModel.class)));
+					final List<EnergizerB2BCustomerModel> b2bCustomerList = new ArrayList<>();
+					for (final Object member : b2bUnitModel.getMembers())
+					{
+						if (member instanceof EnergizerB2BCustomerModel)
+						{
+							b2bCustomerList.add((EnergizerB2BCustomerModel) member);
+						}
+					}
 					if (null != b2bCustomerList && CollectionUtils.isNotEmpty(b2bCustomerList))
 					{
 						for (final EnergizerB2BCustomerModel b2bCustomer : b2bCustomerList)
@@ -339,9 +344,14 @@ public class EnergizerB2BEmployeeCSVProcessor extends AbstractEnergizerCSVProces
 				final String wesellCustomerUid = virtualIDPrefix + "_" + b2bUnitModel.getUid()
 						+ getConfigValue(EnergizerCoreConstants.WESELL_USERID_SUFFIX);
 
-				@SuppressWarnings("unchecked")
-				final List<EnergizerB2BCustomerModel> b2bCustomerList = ((List<EnergizerB2BCustomerModel>) CollectionUtils
-						.select(b2bUnitModel.getMembers(), PredicateUtils.instanceofPredicate(EnergizerB2BCustomerModel.class)));
+				final List<EnergizerB2BCustomerModel> b2bCustomerList = new ArrayList<>();
+				for (final Object member : b2bUnitModel.getMembers())
+				{
+					if (member instanceof EnergizerB2BCustomerModel)
+					{
+						b2bCustomerList.add((EnergizerB2BCustomerModel) member);
+					}
+				}
 				if (null != b2bCustomerList && CollectionUtils.isNotEmpty(b2bCustomerList))
 				{
 					for (final EnergizerB2BCustomerModel b2bCustomer : b2bCustomerList)

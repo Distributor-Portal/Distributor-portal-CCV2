@@ -92,7 +92,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.energizer.business.BusinessRuleError;
@@ -1851,7 +1851,7 @@ public class AccountPageController extends AbstractSearchPageController
 	@PostMapping("/uploadDeliveryNotesFile")
 	@RequireHardLogIn
 	public String uploadDeliveryNotesFile(final Model model, @RequestParam("file")
-	final CommonsMultipartFile file, @RequestParam("orderCode")
+	final MultipartFile file, @RequestParam("orderCode")
 	final String orderCode) throws CMSItemNotFoundException
 	{
 		LOG.info("Inside /uploadDeliveryNotesFile method !!!");
@@ -1862,10 +1862,10 @@ public class AccountPageController extends AbstractSearchPageController
 
 		if (null != file && !file.isEmpty())
 		{
-			// Creating the directory to store delivery note file
-			final byte[] bytes = file.getBytes();
 			try
 			{
+				// Creating the directory to store delivery note file
+				final byte[] bytes = file.getBytes();
 				final String rootPath = getConfigValue(MEDIA_ROOT_DIRECTORY) + File.separator + SYS_MASTER + File.separator
 						+ DELIVERY_NOTE_FILE_DIRECTORY + File.separator + EnergizerCoreConstants.EMEA + File.separator + orderCode;
 				final File dir = new File(rootPath);

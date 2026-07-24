@@ -134,7 +134,7 @@ public class StartWorkFlowForAdmin extends AbstractSimpleB2BApproveOrderDecision
 		LOG.info("Order placed by this customer ::: " + customer.getUid() + " , customer name ::: " + customer.getName());
 		LOG.info("This customer gets removed from the list who are all part of  this b2bunit & b2badmingroup combined .....");
 		// remove the user who placed the order.
-		b2bAdminGroupUsers.removeIf(Predicate.not(PredicateUtils.notPredicate(PredicateUtils.equalPredicate(customer))));
+		b2bAdminGroupUsers.removeIf(user -> user.equals(customer));
 		LOG.info("Number of users in the b2b unit after the customer (who placed the order) gets removed from the list ::: "
 				+ b2bAdminGroupUsers.size());
 		return (CollectionUtils.isNotEmpty(b2bAdminGroupUsers) ? b2bAdminGroupUsers.get(0) : null);

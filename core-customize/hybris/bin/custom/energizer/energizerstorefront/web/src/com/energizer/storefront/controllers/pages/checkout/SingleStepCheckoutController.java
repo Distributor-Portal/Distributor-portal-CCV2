@@ -96,7 +96,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.energizer.business.BusinessRuleError;
@@ -1564,7 +1564,7 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 	@RequireHardLogIn
 	@ResponseBody
 	public String uploadDeliveryNotesFile(final Model model, @RequestParam("file")
-	final CommonsMultipartFile file) throws CMSItemNotFoundException
+	final MultipartFile file) throws CMSItemNotFoundException
 	{
 		LOG.info("Inside /uploadDeliveryNotesFile method !!!");
 
@@ -1578,10 +1578,10 @@ public class SingleStepCheckoutController extends AbstractCheckoutController
 		{
 			LOG.info("Cart ID : " + cartData.getCode() + " , File uploaded : "
 					+ (null != file ? file.getOriginalFilename().toString() : null));
-			// Creating the directory to store delivery note file
-			final byte[] bytes = file.getBytes();
 			try
 			{
+				// Creating the directory to store delivery note file
+				final byte[] bytes = file.getBytes();
 				final String rootPath = getConfigValue(EnergizerCoreConstants.MEDIA_ROOT_DIRECTORY) + File.separator
 						+ EnergizerCoreConstants.SYS_MASTER + File.separator + EnergizerCoreConstants.DELIVERY_NOTE_FILE_DIRECTORY
 						+ File.separator + EnergizerCoreConstants.LATAM + File.separator + cartData.getCode();

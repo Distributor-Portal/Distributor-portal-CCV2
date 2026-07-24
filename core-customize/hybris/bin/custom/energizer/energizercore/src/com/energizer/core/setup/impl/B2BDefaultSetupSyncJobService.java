@@ -16,7 +16,6 @@ package com.energizer.core.setup.impl;
 import de.hybris.platform.commerceservices.setup.impl.DefaultSetupSyncJobService;
 import de.hybris.platform.servicelayer.cronjob.CronJobService;
 import de.hybris.platform.servicelayer.cronjob.PerformResult;
-import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import com.energizer.core.model.MultipleCatalogsSyncCronJobModel;
 
 import com.google.common.base.Preconditions;
@@ -31,7 +30,6 @@ import com.google.common.base.Preconditions;
 public class B2BDefaultSetupSyncJobService extends DefaultSetupSyncJobService
 {
 
-	private FlexibleSearchService flexibleSearchService;
 	private CronJobService cronJobService;
 
 	private static final String CRON_JOB_SUBFIX = "SyncCronJob";
@@ -53,7 +51,7 @@ public class B2BDefaultSetupSyncJobService extends DefaultSetupSyncJobService
 		final MultipleCatalogsSyncCronJobModel example = new MultipleCatalogsSyncCronJobModel();
 		example.setCode(catalog + CRON_JOB_SUBFIX);
 
-		final MultipleCatalogsSyncCronJobModel cronJobModel = flexibleSearchService.getModelByExample(example);
+		final MultipleCatalogsSyncCronJobModel cronJobModel = getFlexibleSearchService().getModelByExample(example);
 
 		Preconditions.checkNotNull(cronJobModel);
 
@@ -65,11 +63,6 @@ public class B2BDefaultSetupSyncJobService extends DefaultSetupSyncJobService
 	public void setCronJobService(final CronJobService cronJobService)
 	{
 		this.cronJobService = cronJobService;
-	}
-
-	public void setFlexibleSearchService(final FlexibleSearchService flexibleSearchService)
-	{
-		this.flexibleSearchService = flexibleSearchService;
 	}
 
 }

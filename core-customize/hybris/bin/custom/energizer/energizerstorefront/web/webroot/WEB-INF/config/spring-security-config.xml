@@ -27,7 +27,7 @@
 	<security:http pattern="/_ui/**" security="none"/>
 	
 	
-	<security:http disable-url-rewriting="true" use-expressions="false" pattern="/checkout/**">
+	<security:http disable-url-rewriting="true" use-expressions="false" use-authorization-manager="false" pattern="/checkout/**">
 	
 	<security:headers>
             <security:frame-options disabled="true"/>
@@ -84,7 +84,7 @@
 	<bean id="antPathMatcher" class="org.springframework.util.AntPathMatcher"/>
 
 	<!-- Default security config -->
-	<security:http disable-url-rewriting="true" use-expressions="false" request-matcher-ref="excludeUrlRequestMatcher">
+	<security:http disable-url-rewriting="true" use-expressions="false" use-authorization-manager="false" request-matcher-ref="excludeUrlRequestMatcher">
 	
 	<security:headers>
             <security:frame-options disabled="true"/>

@@ -34,6 +34,7 @@ import de.hybris.platform.site.BaseSiteService;
 import de.hybris.platform.spring.security.CoreAuthenticationProvider;
 import de.hybris.platform.spring.security.CoreUserDetails;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -464,8 +465,14 @@ public class AcceleratorAuthenticationProvider extends CoreAuthenticationProvide
 
 			final EnergizerB2BUnitModel b2bUnitModel = (EnergizerB2BUnitModel) b2bUnitService.getUnitForUid(b2bUnitID);
 			boolean isB2BCustomerAvailable = false;
-			final List<EnergizerB2BCustomerModel> b2bCustomerList = ((List<EnergizerB2BCustomerModel>) CollectionUtils
-					.select(b2bUnitModel.getMembers(), PredicateUtils.instanceofPredicate(EnergizerB2BCustomerModel.class)));
+			final List<EnergizerB2BCustomerModel> b2bCustomerList = new ArrayList<>();
+			for (final Object member : b2bUnitModel.getMembers())
+			{
+				if (member instanceof EnergizerB2BCustomerModel)
+				{
+					b2bCustomerList.add((EnergizerB2BCustomerModel) member);
+				}
+			}
 			if (null != b2bCustomerList && CollectionUtils.isNotEmpty(b2bCustomerList))
 			{
 				for (final EnergizerB2BCustomerModel customer : b2bCustomerList)

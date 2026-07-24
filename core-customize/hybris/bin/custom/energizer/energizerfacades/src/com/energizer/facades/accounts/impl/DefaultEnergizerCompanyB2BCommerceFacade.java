@@ -752,8 +752,8 @@ public class DefaultEnergizerCompanyB2BCommerceFacade extends DefaultCustomerFac
 		final List<String> roles = new ArrayList<String>();
 		final EnergizerB2BCustomerModel model = userService.getUserForUID(uuid, EnergizerB2BCustomerModel.class);
 		final Set<PrincipalGroupModel> roleModels = new HashSet<PrincipalGroupModel>(model.getGroups());
-		roleModels.removeIf(Predicate.not(PredicateUtils.notPredicate(PredicateUtils.instanceofPredicate(B2BUnitModel.class))));
-		roleModels.removeIf(Predicate.not(PredicateUtils.notPredicate(PredicateUtils.instanceofPredicate(B2BUserGroupModel.class))));
+		roleModels.removeIf(role -> role instanceof B2BUnitModel);
+		roleModels.removeIf(role -> role instanceof B2BUserGroupModel);
 		for (final PrincipalGroupModel role : roleModels)
 		{
 			// only display allowed usergroups

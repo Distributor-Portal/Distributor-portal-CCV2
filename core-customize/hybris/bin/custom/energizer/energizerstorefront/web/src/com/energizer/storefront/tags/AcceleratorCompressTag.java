@@ -9,7 +9,7 @@
  * Information and shall use it only in accordance with the terms of the
  * license agreement you entered into with hybris.
  *
- *  
+ *
  */
 package com.energizer.storefront.tags;
 
@@ -20,18 +20,18 @@ import java.io.IOException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.JspTagException;
 import jakarta.servlet.jsp.tagext.BodyContent;
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
 
-import com.granule.CompressTag;
 import com.granule.CompressTagHandler;
 import com.granule.CompressorSettings;
-import com.granule.RealRequestProxy;
+import com.granule.IRequestProxy;
 
 
-public class AcceleratorCompressTag extends CompressTag
+public class AcceleratorCompressTag extends BodyTagSupport
 {
-	public static final String COMPREST_TAG_CONTENT = CompressTag.class.getName() + "Content";
-	public static final String COMPREST_TAG_JS = CompressTag.class.getName() + "js";
-	public static final String COMPREST_TAG_CSS = CompressTag.class.getName() + "css";
+	public static final String COMPREST_TAG_CONTENT = "com.granule.CompressTagContent";
+	public static final String COMPREST_TAG_JS = "com.granule.CompressTagjs";
+	public static final String COMPREST_TAG_CSS = "com.granule.CompressTagcss";
 	private static final String NOT_PROCESS_PARAMETER = "granule";
 
 	private final String method = null;
@@ -75,7 +75,7 @@ public class AcceleratorCompressTag extends CompressTag
 		try
 		{
 			final CompressTagHandler compressor = new CompressTagHandler(id, method, options, basepath);
-			final RealRequestProxy runtimeRequest = new RealRequestProxy(httpRequest);
+			final IRequestProxy runtimeRequest = new JakartaRequestProxy(httpRequest);
 			final String newBody = compressor.handleTag(runtimeRequest, runtimeRequest, oldBody);
 			getPreviousOut().print(newBody);
 		}
@@ -94,5 +94,51 @@ public class AcceleratorCompressTag extends CompressTag
 	public void setUrlpattern(final String urlpattern)
 	{
 		this.urlpattern = urlpattern;
+	}
+
+	private static class JakartaRequestProxy implements IRequestProxy
+	{
+		private final HttpServletRequest request;
+
+		JakartaRequestProxy(final HttpServletRequest request)
+		{
+			this.request = request;
+		}
+
+		@Override
+		public String getRealPath(final String path)
+		{
+			return request.getServletContext().getRealPath(path);
+		}
+
+		@Override
+		public Object getAttribute(final String name)
+		{
+			return request.getAttribute(name);
+		}
+
+		@Override
+		public void setAttribute(final String name, final Object value)
+		{
+			request.setAttribute(name, value);
+		}
+
+		@Override
+		public String getServletPath()
+		{
+			return request.getServletPath();
+		}
+
+		@Override
+		public String getBasePath()
+		{
+			return request.getContextPath();
+		}
+
+		@Override
+		public String getContextPath()
+		{
+			return request.getContextPath();
+		}
 	}
 }

@@ -45,7 +45,6 @@ import de.hybris.platform.workflow.model.WorkflowActionModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Predicate;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -120,28 +119,22 @@ public class AccountManagerJob extends AbstractJobPerformable<OrderScheduleCronJ
 				getB2bWorkflowIntegrationService().getWorkflowActionsForUser(employee));
 
 		LOG.debug(ACCOUNTMANAGERUID + " has actions count:" + workFlowActionModelList.size());
-		CollectionUtils.filter(workFlowActionModelList, new Predicate()
+		CollectionUtils.filter(workFlowActionModelList, (org.apache.commons.collections4.Predicate<WorkflowActionModel>) workflowActionModel ->
 		{
-			@Override
-			public boolean test(final Object object)
+			if (APPROVAL.name().equals(workflowActionModel.getQualifier()))
 			{
-				final WorkflowActionModel workflowActionModel = (WorkflowActionModel) object;
-
-				if (APPROVAL.name().equals(workflowActionModel.getQualifier()))
-				{
-					return workflowActionModel.getAttachmentItems().stream().anyMatch(object -> {
-						if (object instanceof OrderModel)
-						{
-							LOG.debug("This approval action is for order " + ((OrderModel) object).getCode() + " vs " + orderCode);
-							return (orderCode.equals(((OrderModel) object).getCode()));
-						}
-						return false;
-					});
-				}
-				else
-				{
+				return workflowActionModel.getAttachmentItems().stream().anyMatch(item -> {
+					if (item instanceof OrderModel)
+					{
+						LOG.debug("This approval action is for order " + ((OrderModel) item).getCode() + " vs " + orderCode);
+						return (orderCode.equals(((OrderModel) item).getCode()));
+					}
 					return false;
-				}
+				});
+			}
+			else
+			{
+				return false;
 			}
 		});
 
