@@ -1,5 +1,5 @@
 {
-    "commerceSuiteVersion": "2211.43",
+    "commerceSuiteVersion": "2211-jdk21.13",
     "enableImageProcessingService": true,
     "extensions": [
 	    "azurecloud",
@@ -46,7 +46,7 @@
     "properties": [
         {
             "key": "lang.packs",
-            "value": "en,es"
+            "value": "en,es,de"
         },
 		{
 		  "key": "build.development.mode",
