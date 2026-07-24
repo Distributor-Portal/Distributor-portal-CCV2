@@ -324,5 +324,23 @@
 	
 	<bean id="energizerPasswordNotificationUtil" class ="com.energizer.storefront.util.EnergizerPasswordNotificationUtil" autowire="byName">
 	</bean>
+
+	<!-- RequestMappingHandlerMapping still uses antPathMatcher, patternParser needs to be set to nul -->
+	<bean id="requestMappingHandlerMapping"
+		  class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="pathMatcher" ref="defaultPathMatcher"/>
+		<property name="patternParser">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- IntegrationRequestMappingHandlerMapping still uses antPathMatcher, patternParser needs to be set to nul -->
+	<bean id="integrationRequestMappingHandlerMapping"
+		  class="org.springframework.integration.http.inbound.IntegrationRequestMappingHandlerMapping">
+		<property name="pathMatcher" ref="defaultPathMatcher"/>
+		<property name="patternParser">
+			<null/>
+		</property>
+	</bean>
 	
 </beans>
