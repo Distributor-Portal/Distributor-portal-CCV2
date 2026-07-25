@@ -42,6 +42,7 @@
 			<bean id="jaxbMessageConverterMVC" parent="jaxbMessageConverter"/>
 			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
 		</mvc:message-converters>
+		<mvc:path-matching path-matcher="defaultPathMatcher"/>
 	</mvc:annotation-driven>
 	
 	<!-- Scan for annotation configured controller -->
