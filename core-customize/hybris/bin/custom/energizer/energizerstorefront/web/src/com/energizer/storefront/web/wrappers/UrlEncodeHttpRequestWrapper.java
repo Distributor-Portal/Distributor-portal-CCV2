@@ -40,13 +40,24 @@ public class UrlEncodeHttpRequestWrapper extends HttpServletRequestWrapper
 	public String getRequestURI()
 	{
 		final String originalRequestURI = super.getRequestURI();
-		final String tempRequestURI = StringUtils.remove(originalRequestURI, super.getContextPath());
+		final String originalContextPath = super.getContextPath();
+		final String contextPath = this.getContextPath();
+		final String originalRequestUriMinusAnyContextPath;
 
-		if (StringUtils.isEmpty(tempRequestURI) || StringUtils.containsOnly(tempRequestURI, "/"))
+		if (StringUtils.startsWith(originalRequestURI, contextPath))
 		{
-			return "/";
+			originalRequestUriMinusAnyContextPath = StringUtils.removeStart(originalRequestURI, contextPath);
 		}
-		return originalRequestURI;
+		else if (StringUtils.startsWith(originalRequestURI, originalContextPath))
+		{
+			originalRequestUriMinusAnyContextPath = StringUtils.removeStart(originalRequestURI, originalContextPath);
+		}
+		else
+		{
+			originalRequestUriMinusAnyContextPath = originalRequestURI;
+		}
+
+		return getContextPath() + originalRequestUriMinusAnyContextPath;
 	}
 
 
