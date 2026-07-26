@@ -108,7 +108,7 @@ public class AcceleratorAddOnFilter extends GenericFilterBean
 
 		public boolean supports(final HttpServletRequest request)
 		{
-			final String includeServletPath = (String) request.getAttribute("javax.servlet.include.servlet_path");
+			final String includeServletPath = (String) request.getAttribute("jakarta.servlet.include.servlet_path");
 			if (includeServletPath != null)
 			{
 				if ((patternMatcher = pattern.matcher(includeServletPath)).matches())
