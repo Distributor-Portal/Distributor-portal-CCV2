@@ -28,7 +28,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.util.UrlPathHelper;
 
 
@@ -50,7 +51,7 @@ public class DefaultPageController extends AbstractPageController
 	@Resource(name = "b2bContentPageBreadcrumbBuilder")
 	private ContentPageBreadcrumbBuilder contentPageBreadcrumbBuilder;
 
-	@GetMapping("/**")
+	@RequestMapping(value = "/**", method = RequestMethod.GET)
 	public String get(final Model model, final HttpServletRequest request, final HttpServletResponse response) throws CMSItemNotFoundException
 	{
 		// Check for CMS Page where label or id is like /page

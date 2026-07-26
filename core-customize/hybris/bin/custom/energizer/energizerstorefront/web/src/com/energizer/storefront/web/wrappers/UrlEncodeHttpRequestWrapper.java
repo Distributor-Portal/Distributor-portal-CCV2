@@ -44,7 +44,40 @@ public class UrlEncodeHttpRequestWrapper extends HttpServletRequestWrapper
 	@Override
 	public String getRequestURI()
 	{
-		return super.getRequestURI();
+		final String originalContextPath = super.getContextPath();
+		if (StringUtils.isBlank(originalContextPath))
+		{
+			// Storefront deployed at root: strip the encoding pattern from the URI
+			// so Spring sees /login instead of /USD/login
+			final String originalRequestURI = super.getRequestURI();
+			final String patternPrefix = "/" + pattern;
+			if (StringUtils.startsWith(originalRequestURI, patternPrefix + "/"))
+			{
+				return StringUtils.removeStart(originalRequestURI, patternPrefix);
+			}
+			else if (originalRequestURI.equals(patternPrefix))
+			{
+				return "/";
+			}
+			return originalRequestURI;
+		}
+		// Non-root context path: prepend pattern to context path
+		final String contextPath = this.getContextPath();
+		final String originalRequestURI = super.getRequestURI();
+		final String originalRequestUriMinusAnyContextPath;
+		if (StringUtils.startsWith(originalRequestURI, contextPath))
+		{
+			originalRequestUriMinusAnyContextPath = StringUtils.removeStart(originalRequestURI, contextPath);
+		}
+		else if (StringUtils.startsWith(originalRequestURI, originalContextPath))
+		{
+			originalRequestUriMinusAnyContextPath = StringUtils.removeStart(originalRequestURI, originalContextPath);
+		}
+		else
+		{
+			originalRequestUriMinusAnyContextPath = originalRequestURI;
+		}
+		return contextPath + originalRequestUriMinusAnyContextPath;
 	}
 
 
