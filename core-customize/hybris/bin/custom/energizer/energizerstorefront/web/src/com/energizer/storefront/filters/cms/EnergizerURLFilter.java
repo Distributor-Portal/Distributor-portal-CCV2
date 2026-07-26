@@ -92,27 +92,27 @@ public class EnergizerURLFilter extends OncePerRequestFilter implements CMSFilte
 	{
 		try
 		{
-			final String requestURL = httpRequest.getRequestURL().toString();
-			final String websiteURL = configurationService.getConfiguration().getString(
-					WEBSITE + getCurrentCmsSite().getUid() + HTTPS);
-			final URL aURL = URI.create(requestURL).toURL();
-			final URL bURL = URI.create(websiteURL).toURL();
-			if (requestURL.indexOf(bURL.getHost()) != -1 && requestURL.indexOf(aURL.getHost()) != -1
-					&& requestURL.indexOf(bURL.getHost()) != requestURL.lastIndexOf(aURL.getHost()))
+			final CMSSiteModel currentSite = getCurrentCmsSite();
+			if (currentSite != null)
 			{
-				httpResponse.sendRedirect(HOMEPAGE);
+				final String requestURL = httpRequest.getRequestURL().toString();
+				final String websiteURL = configurationService.getConfiguration().getString(
+						WEBSITE + currentSite.getUid() + HTTPS);
+				final URL aURL = URI.create(requestURL).toURL();
+				final URL bURL = URI.create(websiteURL).toURL();
+				if (requestURL.indexOf(bURL.getHost()) != -1 && requestURL.indexOf(aURL.getHost()) != -1
+						&& requestURL.indexOf(bURL.getHost()) != requestURL.lastIndexOf(aURL.getHost()))
+				{
+					httpResponse.sendRedirect(HOMEPAGE);
+					return;
+				}
 			}
-			else
-			{
-				filterChain.doFilter(httpRequest, httpResponse);
-			}
-
 		}
 		catch (final Exception ex)
 		{
-			filterChain.doFilter(httpRequest, httpResponse);
+			LOG.error("EnergizerURLFilter error: " + ex.getMessage(), ex);
 		}
-
+		filterChain.doFilter(httpRequest, httpResponse);
 	}
 
 	protected CMSSiteModel getCurrentCmsSite()
