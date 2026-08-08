@@ -476,7 +476,7 @@
 			</c:if>
 					
 					<td headers="header10" class="quantity"><c:url
-							value="/cart/update/" var="cartUpdateFormAction" /> <form:form
+							value="/cart/update" var="cartUpdateFormAction" /> <form:form
 							id="updateCartForm${entry.entryNumber}"
 							action="${cartUpdateFormAction}" method="post"
 							modelAttribute="updateQuantityForm${entry.entryNumber}">
