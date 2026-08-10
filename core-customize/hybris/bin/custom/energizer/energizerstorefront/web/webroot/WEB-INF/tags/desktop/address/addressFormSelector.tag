@@ -42,7 +42,7 @@
 		
 	</div>
 	
-	<sec:authorize ifNotGranted="ROLE_ANONYMOUS">
+	<sec:authorize access="hasAnyRole('ROLE_CUSTOMERGROUP')">
 	<div class="form-additionals">
 		<c:choose>
 			<c:when test="${showSaveToAddressBook}">
