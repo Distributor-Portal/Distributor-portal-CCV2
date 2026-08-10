@@ -8,7 +8,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="format" tagdir="/WEB-INF/tags/shared/format" %>
 
-<sec:authorize ifNotGranted="ROLE_CUSTOMERGROUP">
+<sec:authorize access="hasAnyRole('ROLE_CUSTOMERGROUP')">
     <p class="login-to-get-prices">
         <c:url value='/login' var="loginUrl"/>
         <a href="${loginUrl}"><spring:theme code="product.volumePrices.log.for.price"/></a>
