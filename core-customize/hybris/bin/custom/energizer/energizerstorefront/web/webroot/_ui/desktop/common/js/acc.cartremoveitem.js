@@ -780,11 +780,9 @@ ACC.cartremoveitem = {
                         if (quantityBefore != quantityAfter)
                         {
                               var method = "POST";
-							  var csrf = ACC.config.CSRFToken;
                               $.ajax({
                                     url: ACC.config.contextPath + '/cart/update',
                                     data: {productCode: variantCode, quantity: quantityAfter, entryNumber: -1},
-								    headers: { "CSRFToken": csrf },
                                     type: method,
                                     success: function(data) 
                                     {
