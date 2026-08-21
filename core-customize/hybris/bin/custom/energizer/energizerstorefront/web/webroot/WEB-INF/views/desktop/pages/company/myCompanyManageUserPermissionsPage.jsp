@@ -98,12 +98,12 @@
 							<ycommerce:testId code="${action}_actions_label">
 								<p>
 									<span id="span-${ycommerce:normalizedCode(result.code)}">
-											<spring:url value="${baseUrl}/${action}/select/"
+											<spring:url value="${baseUrl}/${action}/select"
 														var="selectUrl">
 												<spring:param name="user" value="${param.user}"/>
 												<spring:param name="permission" value="${result.code}"/>
 											</spring:url>
-											<spring:url value="${baseUrl}/${action}/deselect/"
+											<spring:url value="${baseUrl}/${action}/deselect"
 														var="deselectUrl">
 												<spring:param name="user" value="${param.user}"/>
 												<spring:param name="permission" value="${result.code}"/>
@@ -148,11 +148,11 @@
 <script id="enableDisableLinksTemplate" type="text/x-jquery-tmpl">
 	{{if selected}}
 	${selectAction} | <a href="#"
-				url="${actionLink}/deselect/?permission={{= id}}&user=${param.user}"
+				url="${actionLink}/deselect?permission={{= id}}&user=${param.user}"
 				class="deselectionLink">${deselectAction}</a>
 	{{else}}
 	<a href="#"
-	   url="${actionLink}/select/?permission={{= id}}&user=${param.user}"
+	   url="${actionLink}/select?permission={{= id}}&user=${param.user}"
 	   class="selectionLink">${selectAction}</a> | ${deselectAction}
 	{{/if}}
 </script>

@@ -59,18 +59,18 @@
 									var="viewUrl">
 							<spring:param name="user" value="${user.uid}"/>
 						</spring:url>
-						<spring:url value="${baseUrl}/${action}/select/"
+						<spring:url value="${baseUrl}/${action}/select"
 									var="selectUrl">
 							<spring:param name="user" value="${user.uid}"/>
 							<spring:param name="usergroup" value="${param.usergroup}"/>
 						</spring:url>
-						<spring:url value="${baseUrl}/${action}/deselect/"
+						<spring:url value="${baseUrl}/${action}/deselect"
 									var="deselectUrl">
 							<spring:param name="user" value="${user.uid}"/>
 							<spring:param name="usergroup" value="${param.usergroup}"/>
 						</spring:url>
 						<spring:url
-							value="/my-company/organization-management/manage-units/details/"
+							value="/my-company/organization-management/manage-units/details"
 							var="unitDetailUrl">
 							<spring:param name="unit" value="${user.unit.uid}"/>
 						</spring:url>
@@ -140,11 +140,11 @@
 	<script id="enableDisableLinksTemplate" type="text/x-jquery-tmpl">
 		{{if selected}}
 		${selectAction} | <a href="#"
-							 url="${actionLink}/deselect/?user={{= uid}}&usergroup=${param.usergroup}"
+							 url="${actionLink}/deselect?user={{= uid}}&usergroup=${param.usergroup}"
 							 class="deselectUser">${deselectAction}</a>
 		{{else}}
 		<a href="#"
-		   url="${actionLink}/select/?user={{= uid}}&usergroup=${param.usergroup}"
+		   url="${actionLink}/select?user={{= uid}}&usergroup=${param.usergroup}"
 		   class="selectUser">${selectAction}</a> | ${deselectAction}
 		{{/if}}
 	</script>

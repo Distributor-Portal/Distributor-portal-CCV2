@@ -545,7 +545,7 @@ public class MyCompanyPageController extends AbstractSearchPageController
 		storeCmsPageInModel(model, getContentPageForLabelOrId(ORGANIZATION_MANAGEMENT_CMS_PAGE));
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ORGANIZATION_MANAGEMENT_CMS_PAGE));
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.getBreadcrumbs(null);
-		breadcrumbs.add(new Breadcrumb("/my-company/organization-management/",
+		breadcrumbs.add(new Breadcrumb("/my-company/organization-management",
 				getMessageSource().getMessage("text.company.organizationManagement", null, getI18nService().getCurrentLocale()),
 				null));
 		breadcrumbs.add(new Breadcrumb("/my-company/organization-management/manage-users",

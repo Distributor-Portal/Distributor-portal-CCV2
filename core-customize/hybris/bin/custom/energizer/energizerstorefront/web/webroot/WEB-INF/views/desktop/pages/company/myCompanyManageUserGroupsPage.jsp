@@ -62,12 +62,12 @@
 						<tr id="row-${result.normalizedId}">
 							<td headers="header1">
 								<spring:url
-									value="/my-company/organization-management/manage-usergroups/details/"
+									value="/my-company/organization-management/manage-usergroups/details"
 									var="viewUrl">
 									<spring:param name="usergroup" value="${group.uid}"/>
 								</spring:url>
 								<spring:url
-									value="/my-company/organization-management/manage-units/details/"
+									value="/my-company/organization-management/manage-units/details"
 									var="viewUnitUrl">
 									<spring:param name="unit" value="${group.unit.uid}"/>
 								</spring:url>

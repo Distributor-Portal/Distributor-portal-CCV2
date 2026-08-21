@@ -12,8 +12,8 @@
 <%@ taglib prefix="common" tagdir="/WEB-INF/tags/desktop/common" %>
 <%@ taglib prefix="breadcrumb" tagdir="/WEB-INF/tags/desktop/nav/breadcrumb" %>
 <%@ taglib prefix="company" tagdir="/WEB-INF/tags/desktop/company" %>
-<spring:url value="/my-company/organization-management/manage-usergroups/create/" var="formUrl"/>
-<spring:url value="/my-company/organization-management/manage-usergroups/" var="cancelUrl"/>
+<spring:url value="/my-company/organization-management/manage-usergroups/create" var="formUrl"/>
+<spring:url value="/my-company/organization-management/manage-usergroups" var="cancelUrl"/>
 <template:page pageTitle="${pageTitle}">
 	<div id="breadcrumb" class="breadcrumb">
 		<breadcrumb:breadcrumb breadcrumbs="${breadcrumbs}"/>

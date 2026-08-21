@@ -75,7 +75,7 @@ public class CostCenterManagementPageController extends MyCompanyPageController
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageCostCenterBreadCrumbs();
 		myCompanyBreadcrumbBuilder.addViewCostCenterBreadCrumbs(breadcrumbs, costCenterCode);
 		breadcrumbs.add(new Breadcrumb(String.format(
-				"/organization-management/manage-costcenters/unitDetails/?costCenterCode=%s&unit=%s", urlEncode(costCenterCode),
+				"/organization-management/manage-costcenters/unitDetails?costCenterCode=%s&unit=%s", urlEncode(costCenterCode),
 				urlEncode(unit)), getMessageSource().getMessage("text.company.manage.units.details", new Object[]
 		{ unit }, "View {0} Business Unit ", getI18nService().getCurrentLocale()), null));
 		model.addAttribute("breadcrumbs", breadcrumbs);

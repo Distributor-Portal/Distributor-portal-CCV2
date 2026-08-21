@@ -317,7 +317,7 @@
 								</td>
 								<td headers="header6">
 									<spring:url
-										value="/my-company/organization-management/manage-users/edit-permission/"
+										value="/my-company/organization-management/manage-users/edit-permission"
 										var="editPermissionUrl">
 										<spring:param name="user" value="${customerData.uid}"/>
 										<spring:param name="permission" value="${permission.code}"/>
@@ -372,7 +372,7 @@
 								<td headers="header1">
 									<ycommerce:testId code="permissiongroup_id_link">
 										<spring:url
-											value="/my-company/organization-management/manage-usergroups/details/"
+											value="/my-company/organization-management/manage-usergroups/details"
 											var="permissionGroupUrl">
 											<spring:param name="usergroup" value="${group.uid}"/>
 										</spring:url>
@@ -414,7 +414,7 @@
 										<spring:param name="usergroup" value="${group.uid}"/>
 									</spring:url>
 									<spring:url
-										value="/my-company/organization-management/manage-users/usergroups/confirm/remove/"
+										value="/my-company/organization-management/manage-users/usergroups/confirm/remove"
 										var="removeUserGroupUrl">
 										<spring:param name="user" value="${customerData.uid}"/>
 										<spring:param name="usergroup" value="${group.uid}"/>

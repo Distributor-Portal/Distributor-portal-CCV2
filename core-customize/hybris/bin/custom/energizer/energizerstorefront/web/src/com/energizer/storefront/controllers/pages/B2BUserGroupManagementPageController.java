@@ -281,7 +281,7 @@ public class B2BUserGroupManagementPageController extends MyCompanyPageControlle
 		storeCmsPageInModel(model, getContentPageForLabelOrId(MANAGE_USERGROUPS_CMS_PAGE));
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(MANAGE_USERGROUPS_CMS_PAGE));
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUserGroupDetailsBreadCrumbs(usergroup);
-		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-usergroups/edit/?usergroup=%s",
+		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-usergroups/edit?usergroup=%s",
 				urlEncode(usergroup)), getMessageSource().getMessage("text.company.manageUsergroups.editUsergroup.breadcrumb",
 				new Object[]
 				{ usergroup }, "Edit {0} Usergroup ", getI18nService().getCurrentLocale()), null));

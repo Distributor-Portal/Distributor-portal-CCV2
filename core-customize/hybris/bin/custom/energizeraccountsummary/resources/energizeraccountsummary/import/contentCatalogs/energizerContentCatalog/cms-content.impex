@@ -11,28 +11,28 @@ INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;ch
 
 # CMS Link Components - My Company
 INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow']
-;;CompanyHomeLink;Company Home Link;/my-company/organization-management/;CompanyHomeLink;CompanyHomeLink
-;;CompanyOrganizationtLink;Company Manage Organization Link;/my-company/organization-management/;CompanyOrganizationtLink;CompanyOrganizationtLink
-;;CompanyBudgetLink;Company Manage Budget Link;/my-company/organization-management/manage-budgets/;CompanyBudgetLink;CompanyBudgetLink
+;;CompanyHomeLink;Company Home Link;/my-company/organization-management;CompanyHomeLink;CompanyHomeLink
+;;CompanyOrganizationtLink;Company Manage Organization Link;/my-company/organization-management;CompanyOrganizationtLink;CompanyOrganizationtLink
+;;CompanyBudgetLink;Company Manage Budget Link;/my-company/organization-management/manage-budgets;CompanyBudgetLink;CompanyBudgetLink
 ;;CompanyBudgetAddLink;Company Add Budget Link;/my-company/organization-management/manage-budgets/add;CompanyBudgetAddLink;CompanyBudgetAddLink
-;;CompanyBudgetEditLink;Company Edit Budget Link;/my-company/organization-management/manage-budgets/;CompanyBudgetEditLink;CompanyBudgetEditLink
-;;CompanyCostCenterLink;Company Manage Cost Centers Link;/my-company/organization-management/manage-costcenters/;CompanyCostCenterLink;CompanyCostCenterLink
+;;CompanyBudgetEditLink;Company Edit Budget Link;/my-company/organization-management/manage-budgets;CompanyBudgetEditLink;CompanyBudgetEditLink
+;;CompanyCostCenterLink;Company Manage Cost Centers Link;/my-company/organization-management/manage-costcenters;CompanyCostCenterLink;CompanyCostCenterLink
 ;;CompanyCostCenterAddLink;Company Add Cost Centers Link;/my-company/organization-management/manage-costcenters/add;CompanyCostCenterAddLink;CompanyCostCenterAddLink
-;;CompanyCostCenterEditLink;Company Manage Cost Centers Link;/my-company/organization-management/manage-costcenters/;CompanyCostCenterEditLink;CompanyCostCenterEditLink
-;;CompanyUnitsLink;Company Manage Units Link;/my-company/organization-management/manage-units/;CompanyUnitsLink;CompanyUnitsLink
-;;CompanyUnitsAddLink;Company Add Units Link;/my-company/organization-management/manage-units/;CompanyUnitsAddLink;CompanyUnitsAddLink
-;;CompanyUnitsEditLink;Company Edit Units Link;/my-company/organization-management/manage-units/;CompanyUnitsEditLink;CompanyUnitsEditLink
-;;CompanyUsersLink;Company Manage Users Link;/my-company/organization-management/manage-users/;CompanyUsersLink;CompanyUsersLink
-;;CompanyUsersAddLink;Company Add Users Link;/my-company/organization-management/manage-users/;CompanyUsersAddLink;CompanyUsersAddLink
-;;CompanyUsersEditLink;Company Edit Users Link;/my-company/organization-management/manage-users/;CompanyUsersEditLink;CompanyUsersEditLink
-;;CompanyUserGroupsLink;Company Manage User Groups Link;/my-company/organization-management/manage-usergroups/;CompanyUserGroupsLink;CompanyUserGroupsLink
-;;CompanyUserGroupsAddLink;Company Add User Groups Link;/my-company/organization-management/manage-usergroups/;CompanyUserGroupsAddLink;CompanyUserGroupsAddLink
-;;CompanyUserGroupsEditLink;Company Edit User Groups Link;/my-company/organization-management/manage-usergroups/;CompanyUserGroupsEditLink;CompanyUserGroupsEditLink
-;;CompanyPermissionsLink;Company Manage User Groups Link;/my-company/organization-management/manage-permissions/;CompanyPermissionsLink;CompanyPermissionsLink
-;;CompanyPermissionsAddLink;Company Add User Groups Link;/my-company/organization-management/manage-permissions/;CompanyPermissionsAddLink;CompanyPermissionsAddLink
-;;CompanyPermissionsEditLink;Company Edit User Groups Link;/my-company/organization-management/manage-permissions/;CompanyPermissionsEditLink;CompanyPermissionsEditLink
-;;CompanySummaryLink;Company Account Summary Link;/my-company/organization-management/accountstatus/;CompanySummaryLink;CompanySummaryLink
-;;CompanySummaryViewLink;Company Account Summary Link;/my-company/organization-management/accountstatus/;CompanySummaryViewLink;CompanySummaryViewLink
+;;CompanyCostCenterEditLink;Company Manage Cost Centers Link;/my-company/organization-management/manage-costcenters;CompanyCostCenterEditLink;CompanyCostCenterEditLink
+;;CompanyUnitsLink;Company Manage Units Link;/my-company/organization-management/manage-units;CompanyUnitsLink;CompanyUnitsLink
+;;CompanyUnitsAddLink;Company Add Units Link;/my-company/organization-management/manage-units;CompanyUnitsAddLink;CompanyUnitsAddLink
+;;CompanyUnitsEditLink;Company Edit Units Link;/my-company/organization-management/manage-units;CompanyUnitsEditLink;CompanyUnitsEditLink
+;;CompanyUsersLink;Company Manage Users Link;/my-company/organization-management/manage-users;CompanyUsersLink;CompanyUsersLink
+;;CompanyUsersAddLink;Company Add Users Link;/my-company/organization-management/manage-users;CompanyUsersAddLink;CompanyUsersAddLink
+;;CompanyUsersEditLink;Company Edit Users Link;/my-company/organization-management/manage-users;CompanyUsersEditLink;CompanyUsersEditLink
+;;CompanyUserGroupsLink;Company Manage User Groups Link;/my-company/organization-management/manage-usergroups;CompanyUserGroupsLink;CompanyUserGroupsLink
+;;CompanyUserGroupsAddLink;Company Add User Groups Link;/my-company/organization-management/manage-usergroups;CompanyUserGroupsAddLink;CompanyUserGroupsAddLink
+;;CompanyUserGroupsEditLink;Company Edit User Groups Link;/my-company/organization-management/manage-usergroups;CompanyUserGroupsEditLink;CompanyUserGroupsEditLink
+;;CompanyPermissionsLink;Company Manage User Groups Link;/my-company/organization-management/manage-permissions;CompanyPermissionsLink;CompanyPermissionsLink
+;;CompanyPermissionsAddLink;Company Add User Groups Link;/my-company/organization-management/manage-permissions;CompanyPermissionsAddLink;CompanyPermissionsAddLink
+;;CompanyPermissionsEditLink;Company Edit User Groups Link;/my-company/organization-management/manage-permissions;CompanyPermissionsEditLink;CompanyPermissionsEditLink
+;;CompanySummaryLink;Company Account Summary Link;/my-company/organization-management/accountstatus;CompanySummaryLink;CompanySummaryLink
+;;CompanySummaryViewLink;Company Account Summary Link;/my-company/organization-management/accountstatus;CompanySummaryViewLink;CompanySummaryViewLink
 
 
 
@@ -45,7 +45,7 @@ INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url
 ;;ManageUsersLink;Manage Users Link;/my-company/organization-management/manage-users;ManageUsersLink
 ;;ManageUsergroupsLink;Manage Usergroups Link;/my-company/organization-management/manage-usergroups;ManageUsergroupsLink
 ;;ManagePermissionsLink;Manage Permissions Link;/my-company/organization-management/manage-permissions;ManagePermissionsLink
-;;CompanySummaryLink;Company Account Summary Link;/my-company/organization-management/accountstatus/;CompanySummaryLink
+;;CompanySummaryLink;Company Account Summary Link;/my-company/organization-management/accountstatus;CompanySummaryLink
 
 
 INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);links(uid,$contentCV)[mode=append];&nodeRef

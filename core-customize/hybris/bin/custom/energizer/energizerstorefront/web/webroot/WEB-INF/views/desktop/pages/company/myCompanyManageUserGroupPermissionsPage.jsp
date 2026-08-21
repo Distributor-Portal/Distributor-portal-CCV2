@@ -60,7 +60,7 @@
 				<tbody>
 				<c:forEach items="${searchPageData.results}" var="result">
 
-					<spring:url value="/my-company/organization-management/manage-permissions/"
+					<spring:url value="/my-company/organization-management/manage-permissions"
 								var="viewUrl">
 						<spring:param name="permission" value="${result.code}"/>
 					</spring:url>
@@ -95,12 +95,12 @@
 							<ycommerce:testId code="${action}_actions_label">
 								<p>
 									<span id="span-${ycommerce:normalizedCode(result.code)}">
-											<spring:url value="${baseUrl}/${action}/select/"
+											<spring:url value="${baseUrl}/${action}/select"
 														var="selectUrl">
 												<spring:param name="usergroup" value="${param.usergroup}"/>
 												<spring:param name="permission" value="${result.code}"/>
 											</spring:url>
-											<spring:url value="${baseUrl}/${action}/deselect/"
+											<spring:url value="${baseUrl}/${action}/deselect"
 														var="deselectUrl">
 												<spring:param name="usergroup" value="${param.usergroup}"/>
 												<spring:param name="permission" value="${result.code}"/>
@@ -145,11 +145,11 @@
 <script id="enableDisableLinksTemplate" type="text/x-jquery-tmpl">
 	{{if selected}}
 	${selectAction} | <a href="#"
-				url="${actionLink}/deselect/?permission={{= id}}&usergroup=${param.usergroup}"
+				url="${actionLink}/deselect?permission={{= id}}&usergroup=${param.usergroup}"
 				class="deselectionLink">${deselectAction}</a>
 	{{else}}
 	<a href="#"
-	   url="${actionLink}/select/?permission={{= id}}&usergroup=${param.usergroup}"
+	   url="${actionLink}/select?permission={{= id}}&usergroup=${param.usergroup}"
 	   class="selectionLink">${selectAction}</a> | ${deselectAction}
 	{{/if}}
 </script>

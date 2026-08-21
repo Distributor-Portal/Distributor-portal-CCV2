@@ -58,12 +58,12 @@
 								var="viewUrl">
 						<spring:param name="user" value="${user.uid}"/>
 					</spring:url>
-					<spring:url value="${baseUrl}/approvers/select/"
+					<spring:url value="${baseUrl}/approvers/select"
 								var="selectUrl">
 						<spring:param name="user" value="${user.uid}"/>
 						<spring:param name="unit" value="${param.unit}"/>
 					</spring:url>
-					<spring:url value="${baseUrl}/approvers/deselect/"
+					<spring:url value="${baseUrl}/approvers/deselect"
 								var="deselectUrl">
 						<spring:param name="user" value="${user.uid}"/>
 						<spring:param name="unit" value="${param.unit}"/>

@@ -48,10 +48,10 @@
 						</thead>
 						<tbody>
 							<c:forEach items="${searchPageData.results}" var="costCenter">
-								<spring:url value="/my-company/organization-management/manage-costcenters/view/" var="viewCostCenterDetailsUrl">
+								<spring:url value="/my-company/organization-management/manage-costcenters/view" var="viewCostCenterDetailsUrl">
 									<spring:param name="costCenterCode" value="${costCenter.code}"/>
 								</spring:url>
-								<spring:url value="/my-company/organization-management/manage-units/details/" var="viewUnitDetailsUrl">
+								<spring:url value="/my-company/organization-management/manage-units/details" var="viewUnitDetailsUrl">
 									<spring:param name="unit" value="${costCenter.unit.uid}"/>
 								</spring:url>
 								<tr>

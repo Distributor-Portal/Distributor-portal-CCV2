@@ -55,11 +55,11 @@
 				</thead>
 				<tbody>
 				<c:forEach items="${searchPageData.results}" var="result">
-					<spring:url value="/my-company/organization-management/manage-usergroups/details/"
+					<spring:url value="/my-company/organization-management/manage-usergroups/details"
 								var="viewUserGroupUrl">
 						<spring:param name="usergroup" value="${result.uid}"/>
 					</spring:url>
-					<spring:url value="/my-company/organization-management/manage-units/details/"
+					<spring:url value="/my-company/organization-management/manage-units/details"
 								var="unitUrl">
 						<spring:param name="unit" value="${result.unit.uid}"/>
 					</spring:url>
@@ -84,12 +84,12 @@
 							<ycommerce:testId code="${action}_actions_label">
 								<p>
 									<span id="span-${ycommerce:normalizedCode(result.uid)}">
-											<spring:url value="${baseUrl}/${action}/select/"
+											<spring:url value="${baseUrl}/${action}/select"
 														var="selectUrl">
 												<spring:param name="user" value="${param.user}"/>
 												<spring:param name="usergroup" value="${result.uid}"/>
 											</spring:url>
-											<spring:url value="${baseUrl}/${action}/deselect/"
+											<spring:url value="${baseUrl}/${action}/deselect"
 														var="deselectUrl">
 												<spring:param name="user" value="${param.user}"/>
 												<spring:param name="usergroup" value="${result.uid}"/>
@@ -133,11 +133,11 @@
 <script id="enableDisableLinksTemplate" type="text/x-jquery-tmpl">
 	{{if selected}}
 	${selectAction} | <a href="#"
-				url="${actionLink}/deselect/?usergroup={{= id}}&user=${param.user}"
+				url="${actionLink}/deselect?usergroup={{= id}}&user=${param.user}"
 				class="deselectionLink">${deselectAction}</a>
 	{{else}}
 	<a href="#"
-	   url="${actionLink}/select/?usergroup={{= id}}&user=${param.user}"
+	   url="${actionLink}/select?usergroup={{= id}}&user=${param.user}"
 	   class="selectionLink">${selectAction}</a> | ${deselectAction}
 	{{/if}}
 </script>

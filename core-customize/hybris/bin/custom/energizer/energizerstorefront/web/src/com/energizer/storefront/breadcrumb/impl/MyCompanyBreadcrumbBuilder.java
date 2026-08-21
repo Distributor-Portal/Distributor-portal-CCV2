@@ -33,7 +33,7 @@ public class MyCompanyBreadcrumbBuilder
 {
 	private static final String MY_COMPANY_URL = "/my-company";
 	private static final String MY_COMPANY_MESSAGE_KEY = "header.link.company";
-	protected static final String MANAGE_COSTCENTERS_VIEW_URL = "/my-company/organization-management/manage-costcenters/view/?costCenterCode=%s";
+	protected static final String MANAGE_COSTCENTERS_VIEW_URL = "/my-company/organization-management/manage-costcenters/view?costCenterCode=%s";
 
 	private MessageSource messageSource;
 	private I18NService i18nService;
@@ -80,7 +80,7 @@ public class MyCompanyBreadcrumbBuilder
 	public List<Breadcrumb> createManageUnitsBreadcrumbs()
 	{
 		final List<Breadcrumb> breadcrumbs = createOrganizationManagementBreadcrumbs();
-		breadcrumbs.add(new Breadcrumb("/my-company/organization-management/manage-units/", messageSource.getMessage(
+		breadcrumbs.add(new Breadcrumb("/my-company/organization-management/manage-units", messageSource.getMessage(
 				"text.company.manage.units", null, i18nService.getCurrentLocale()), null));
 		return breadcrumbs;
 	}
@@ -88,7 +88,7 @@ public class MyCompanyBreadcrumbBuilder
 	protected List<Breadcrumb> createOrganizationManagementBreadcrumbs()
 	{
 		final List<Breadcrumb> breadcrumbs = this.getBreadcrumbs(null);
-		breadcrumbs.add(new Breadcrumb("/my-company/organization-management/", messageSource.getMessage(
+		breadcrumbs.add(new Breadcrumb("/my-company/organization-management", messageSource.getMessage(
 				"text.company.organizationManagement", null, i18nService.getCurrentLocale()), null));
 		return breadcrumbs;
 	}
@@ -96,7 +96,7 @@ public class MyCompanyBreadcrumbBuilder
 	public List<Breadcrumb> createManageUnitsDetailsBreadcrumbs(final String uid)
 	{
 		final List<Breadcrumb> breadcrumbs = this.createManageUnitsBreadcrumbs();
-		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/details/?unit=%s", uid),
+		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/details?unit=%s", uid),
 				messageSource.getMessage("text.company.manage.units.details", new Object[]
 				{ uid }, "View Unit: {0} ", i18nService.getCurrentLocale()), null));
 		return breadcrumbs;
@@ -131,7 +131,7 @@ public class MyCompanyBreadcrumbBuilder
 	public List<Breadcrumb> createManageBudgetsBreadCrumbs()
 	{
 		final List<Breadcrumb> breadcrumbs = this.getBreadcrumbs(null);
-		breadcrumbs.add(new Breadcrumb("/my-company/organization-management/", messageSource.getMessage(
+		breadcrumbs.add(new Breadcrumb("/my-company/organization-management", messageSource.getMessage(
 				"text.company.organizationManagement", null, i18nService.getCurrentLocale()), null));
 		breadcrumbs.add(new Breadcrumb("/my-company/organization-management/manage-budgets", messageSource.getMessage(
 				"text.company.manageBudgets", null, i18nService.getCurrentLocale()), null));
@@ -172,7 +172,7 @@ public class MyCompanyBreadcrumbBuilder
 
 	public void addViewBudgetBreadCrumbs(final List<Breadcrumb> breadcrumbs, final String budgetCode)
 	{
-		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-budgets/view/?budgetCode=%s",
+		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-budgets/view?budgetCode=%s",
 				urlEncode(budgetCode)), messageSource.getMessage("text.company.budget.viewPage", new Object[]
 		{ budgetCode }, "View Budget: {0}", i18nService.getCurrentLocale()), null));
 	}

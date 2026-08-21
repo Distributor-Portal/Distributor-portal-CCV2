@@ -213,7 +213,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		storeCmsPageInModel(model, getContentPageForLabelOrId(MANAGE_UNITS_CMS_PAGE));
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(MANAGE_UNITS_CMS_PAGE));
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
-		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/?unit=%s&costCenterCode=%s",
+		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units?unit=%s&costCenterCode=%s",
 				urlEncode(unit), urlEncode(costCenterCode)), getMessageSource().getMessage(
 				"text.company.manage.units.editCostCenter.breadcrumb", new Object[]
 				{ unit }, "Edit Cost Center for Unit: {0}", getI18nService().getCurrentLocale()), null));
@@ -790,7 +790,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		model.addAttribute("page", "units");
 		model.addAttribute("role", role);
 		model.addAttribute("disableUrl", String.format(request.getContextPath()
-				+ "/my-company/organization-management/manage-units/members/remove/?unit=%s&user=%s&role=%s", urlEncode(unit),
+				+ "/my-company/organization-management/manage-units/members/remove?unit=%s&user=%s&role=%s", urlEncode(unit),
 				urlEncode(user), urlEncode(role)));
 		model.addAttribute("cancelUrl", String.format(request.getContextPath()
 				+ "/my-company/organization-management/manage-units/details?unit=%s", urlEncode(unit)));

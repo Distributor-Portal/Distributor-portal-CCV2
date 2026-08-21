@@ -97,7 +97,7 @@
 									<td headers="header4">
 										<ycommerce:testId code="my-company_user_costcenter_label">
 											<c:forEach items="${user.unit.costCenters}" var="costCenter">
-												<spring:url value="/my-company/organization-management/manage-costcenters/view/"
+												<spring:url value="/my-company/organization-management/manage-costcenters/view"
 													var="viewCostCenterUrl">
 													<spring:param name="costCenterCode" value="${costCenter.code}"/>
 												</spring:url>

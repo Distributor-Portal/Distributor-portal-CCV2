@@ -18,7 +18,7 @@
 <c:if test="${empty saveUrl}">
 	<spring:url value="/my-company/organization-management/manage-units/create" var="saveUrl"/>
 </c:if>
-<spring:url value="/my-company/organization-management/manage-units/" var="cancelUrl"/>
+<spring:url value="/my-company/organization-management/manage-units" var="cancelUrl"/>
 
 <template:page pageTitle="${pageTitle}">
 	<div id="breadcrumb" class="breadcrumb">

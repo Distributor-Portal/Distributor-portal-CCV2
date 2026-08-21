@@ -56,7 +56,7 @@
 							<c:forEach items="${searchPageData.results}" var="b2bBudget">
 								<tr class="${b2bBudget.selected ? 'selected' : ''}" id="row-${ycommerce:normalizedCode(b2bBudget.code)}">
 									<td headers="header1">
-										<spring:url value="/my-company/organization-management/manage-budgets/view/"
+										<spring:url value="/my-company/organization-management/manage-budgets/view"
 													var="viewBudgetUrl">
 											<spring:param name="budgetCode" value="${b2bBudget.code}"/>
 										</spring:url>
@@ -92,12 +92,12 @@
 									<td headers="header7" >
 										<ycommerce:testId code="budget_select_link_label">
 										<span id="span-${ycommerce:normalizedCode(b2bBudget.code)}">
-											<spring:url value="${baseUrl}/budgets/deselect/"
+											<spring:url value="${baseUrl}/budgets/deselect"
 													var="deselectUrl">
 												<spring:param name="costCenterCode" value="${param.costCenterCode}"/>
 												<spring:param name="budgetCode" value="${b2bBudget.code}"/>
 										</spring:url>
-												<spring:url value="${baseUrl}/budgets/select/"
+												<spring:url value="${baseUrl}/budgets/select"
 													var="selectUrl">
 													<spring:param name="costCenterCode" value="${param.costCenterCode}"/>
 													<spring:param name="budgetCode" value="${b2bBudget.code}"/>

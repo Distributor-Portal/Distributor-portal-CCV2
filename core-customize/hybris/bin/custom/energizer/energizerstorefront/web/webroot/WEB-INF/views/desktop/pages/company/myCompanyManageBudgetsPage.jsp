@@ -50,10 +50,10 @@
 						</thead>
 						<tbody>
 							<c:forEach items="${searchPageData.results}" var="b2bBudget">
-								<spring:url value="/my-company/organization-management/manage-budgets/view/" var="viewBudgetDetailsUrl">
+								<spring:url value="/my-company/organization-management/manage-budgets/view" var="viewBudgetDetailsUrl">
 									<spring:param name="budgetCode" value="${b2bBudget.code}"/>
 								</spring:url>
-								<spring:url value="/my-company/organization-management/manage-units/details/" var="unitDetailsUrl">
+								<spring:url value="/my-company/organization-management/manage-units/details" var="unitDetailsUrl">
 									<spring:param name="unit" value="${b2bBudget.unit.name}"/>
 								</spring:url>
 								<tr> 

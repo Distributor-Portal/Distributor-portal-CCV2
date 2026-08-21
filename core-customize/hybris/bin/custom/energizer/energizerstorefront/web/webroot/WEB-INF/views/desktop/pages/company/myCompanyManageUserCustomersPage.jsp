@@ -58,12 +58,12 @@
 								var="viewUrl">
 						<spring:param name="user" value="${user.uid}"/>
 					</spring:url>
-					<spring:url value="${baseUrl}/${action}/select/"
+					<spring:url value="${baseUrl}/${action}/select"
 								var="selectUrl">
 						<spring:param name="approver" value="${user.uid}"/>
 						<spring:param name="user" value="${param.user}"/>
 					</spring:url>
-					<spring:url value="${baseUrl}/${action}/deselect/"
+					<spring:url value="${baseUrl}/${action}/deselect"
 								var="deselectUrl">
 						<spring:param name="approver" value="${user.uid}"/>
 						<spring:param name="user" value="${param.user}"/>
@@ -145,11 +145,11 @@
 <script id="enableDisableLinksTemplate" type="text/x-jquery-tmpl">
 		{{if selected}}
 		${selectAction} | <a href="#"
-					url="${actionLink}/deselect/?approver={{= id}}&user=${param.user}"
+					url="${actionLink}/deselect?approver={{= id}}&user=${param.user}"
 					class="deselectUser">${deselectAction}</a>
 		{{else}}
 		<a href="#"
-			url="${actionLink}/select/?approver={{= id}}&user=${param.user}"
+			url="${actionLink}/select?approver={{= id}}&user=${param.user}"
 			class="selectUser">${selectAction}</a> | ${deselectAction}
 		{{/if}}
 </script>

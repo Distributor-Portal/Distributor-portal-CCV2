@@ -12,39 +12,39 @@
 <%@ taglib prefix="breadcrumb" tagdir="/WEB-INF/tags/desktop/nav/breadcrumb"%>
 
 <spring:url
-	value="/my-company/organization-management/manage-usergroups/permissions/"
+	value="/my-company/organization-management/manage-usergroups/permissions"
 	var="permissionsUrl">
 	<spring:param name="usergroup" value="${usergroup.uid}"/>
 </spring:url>
 <spring:url
-	value="/my-company/organization-management/manage-usergroups/members/"
+	value="/my-company/organization-management/manage-usergroups/members"
 	var="membersUrl">
 	<spring:param name="usergroup" value="${usergroup.uid}"/>
 </spring:url>
 
 <spring:url
-	value="/my-company/organization-management/manage-units/details/"
+	value="/my-company/organization-management/manage-units/details"
 	var="unitDetailsUrl">
 	<spring:param name="unit" value="${usergroup.unit.uid}"/>
 </spring:url>
 
 <c:if test="${empty editUrl}">
 	<spring:url
-		value="/my-company/organization-management/manage-usergroups/edit/"
+		value="/my-company/organization-management/manage-usergroups/edit"
 		var="editUrl">
 		<spring:param name="usergroup" value="${usergroup.uid}"/>
 	</spring:url>
 </c:if>
 <c:if test="${empty disableUrl}">
 	<spring:url
-		value="/my-company/organization-management/manage-usergroups/disable/"
+		value="/my-company/organization-management/manage-usergroups/disable"
 		var="disableUrl">
 		<spring:param name="usergroup" value="${usergroup.uid}"/>
 	</spring:url>
 </c:if>
 <c:if test="${empty removeUrl}">
 	<spring:url
-		value="/my-company/organization-management/manage-usergroups/remove/"
+		value="/my-company/organization-management/manage-usergroups/remove"
 		var="removeUrl">
 		<spring:param name="usergroup" value="${usergroup.uid}"/>
 	</spring:url>
@@ -138,12 +138,12 @@
 									<tbody>
 									<c:forEach items="${usergroup.permissions}" var="permission">
 										<spring:url
-											value="/my-company/organization-management/manage-units/details/"
+											value="/my-company/organization-management/manage-units/details"
 											var="unitDetailUrl">
 											<spring:param name="unit" value="${permission.unit.uid}"/>
 										</spring:url>
 										<spring:url
-											value="/my-company/organization-management/manage-permissions/view/"
+											value="/my-company/organization-management/manage-permissions/view"
 											var="permissionDetailsUrl">
 											<spring:param name="permissionCode" value="${permission.code}"/>
 										</spring:url>
@@ -201,12 +201,12 @@
 									<tbody>
 									<c:forEach items="${usergroup.members}" var="user">
 										<spring:url
-											value="/my-company/organization-management/manage-units/details/"
+											value="/my-company/organization-management/manage-units/details"
 											var="unitDetailUrl">
 											<spring:param name="unit" value="${user.unit.uid}"/>
 										</spring:url>
 										<spring:url
-											value="/my-company/organization-management//manage-users/details/"
+											value="/my-company/organization-management/manage-users/details"
 											var="userDetailUrl">
 											<spring:param name="user" value="${user.uid}"/>
 										</spring:url>
