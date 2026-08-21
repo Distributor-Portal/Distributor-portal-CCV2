@@ -196,7 +196,7 @@
 		<c:forEach items="${unit.addresses}" var="address">
 			<tr>
 				<spring:url
-						value="/my-company/organization-management/manage-units/edit-address/"
+						value="/my-company/organization-management/manage-units/edit-address"
 						var="editUnitAddressUrl">
 					<spring:param name="unit" value="${unit.uid}"/>
 					<spring:param name="addressId" value="${address.id}"/>
@@ -213,7 +213,7 @@
 					</a>
 					|
 					<spring:url
-							value="/my-company/organization-management/manage-units/remove-address/"
+							value="/my-company/organization-management/manage-units/remove-address"
 							var="removeUnitAddressUrl">
 						<spring:param name="unit" value="${unit.uid}"/>
 						<spring:param name="addressId" value="${address.id}"/>
@@ -265,14 +265,14 @@
 			<tbody>
 			<c:forEach items="${unit.costCenters}" var="b2bCostCenter">
 				<spring:url
-						value="/my-company/organization-management/manage-units/costcenter/"
+						value="/my-company/organization-management/manage-units/costcenter"
 						var="viewCostcenterUrl">
 					<spring:param name="unit" value="${unit.uid}"/>
 					<spring:param name="costCenterCode" value="${b2bCostCenter.code}"/>
 				</spring:url>
 
 				<spring:url
-						value="/my-company/organization-management/manage-units/editcostcenter/"
+						value="/my-company/organization-management/manage-units/editcostcenter"
 						var="editCostcenterUrl">
 					<spring:param name="unit" value="${unit.uid}"/>
 					<spring:param name="costCenterCode" value="${b2bCostCenter.code}"/>

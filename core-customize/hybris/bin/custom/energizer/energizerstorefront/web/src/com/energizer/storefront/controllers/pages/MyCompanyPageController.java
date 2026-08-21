@@ -109,19 +109,19 @@ public class MyCompanyPageController extends AbstractSearchPageController
 	protected static final String MANAGE_UNITS_CMS_PAGE = "manageUnits";
 	protected static final String MANAGE_USERGROUPS_CMS_PAGE = "manageUsergroups";
 	protected static final String REDIRECT_TO_UNIT_DETAILS = REDIRECT_PREFIX
-			+ "/my-company/organization-management/manage-units/details/?unit=%s";
+			+ "/my-company/organization-management/manage-units/details?unit=%s";
 	protected static final String REDIRECT_TO_COSTCENTER_DETAILS = REDIRECT_PREFIX
 			+ "/my-company/organization-management/manage-costcenters/view?costCenterCode=%s";
 	protected static final String REDIRECT_TO_USER_DETAILS = REDIRECT_PREFIX
 			+ "/my-company/organization-management/manage-users/details?user=%s";
 	protected static final String REDIRECT_TO_BUDGET_DETAILS = REDIRECT_PREFIX
-			+ "/my-company/organization-management/manage-budgets/view/?budgetCode=%s";
+			+ "/my-company/organization-management/manage-budgets/view?budgetCode=%s";
 	protected static final String MANAGE_COST_CENTER_BASE_URL = "/my-company/organization-management/manage-costcenters";
-	protected static final String MANAGE_COSTCENTERS_EDIT_URL = "/my-company/organization-management/manage-costcenters/edit/?costCenterCode=%s";
-	protected static final String MANAGE_COSTCENTERS_VIEW_URL = "/my-company/organization-management/manage-costcenters/view/?costCenterCode=%s";
-	protected static final String MANAGE_COSTCENTERS_SELECTBUDGET_URL = "/my-company/organization-management/manage-costcenters/selectBudget/?costCenterCode=%s";
-	protected static final String MANAGE_PERMISSIONS_VIEW_URL = "/my-company/organization-management/manage-permissions/view/?permissionCode=%s";
-	protected static final String MANAGE_PERMISSIONS_EDIT_URL = "/my-company/organization-management/manage-permissions/edit/?permissionCode=%s";
+	protected static final String MANAGE_COSTCENTERS_EDIT_URL = "/my-company/organization-management/manage-costcenters/edit?costCenterCode=%s";
+	protected static final String MANAGE_COSTCENTERS_VIEW_URL = "/my-company/organization-management/manage-costcenters/view?costCenterCode=%s";
+	protected static final String MANAGE_COSTCENTERS_SELECTBUDGET_URL = "/my-company/organization-management/manage-costcenters/selectBudget?costCenterCode=%s";
+	protected static final String MANAGE_PERMISSIONS_VIEW_URL = "/my-company/organization-management/manage-permissions/view?permissionCode=%s";
+	protected static final String MANAGE_PERMISSIONS_EDIT_URL = "/my-company/organization-management/manage-permissions/edit?permissionCode=%s";
 	protected static final String REDIRECT_TO_PERMISSION_DETAILS = REDIRECT_PREFIX + MANAGE_PERMISSIONS_VIEW_URL;
 	protected static final String REDIRECT_TO_USERGROUP_DETAILS = REDIRECT_PREFIX
 			+ "/my-company/organization-management/manage-usergroups/details?usergroup=%s";
@@ -133,7 +133,7 @@ public class MyCompanyPageController extends AbstractSearchPageController
 	protected static final String MANAGE_USERGROUPS_BASE_URL = "/my-company/organization-management/manage-usergroups";
 	protected static final String ADD_COSTCENTER_URL = "/my-company/organization-management/manage-costcenters/add";
 	protected static final String EDIT_COSTCENTER_URL = "/my-company/organization-management/manage-costcenters/update";
-	protected static final String REDIRECT_TO_MANAGE_USERS = FORWARD_PREFIX + "/my-company/organization-management/manage-users/";
+	protected static final String REDIRECT_TO_MANAGE_USERS = FORWARD_PREFIX + "/my-company/organization-management/manage-users";
 	protected final static String DEFAULT_PASSWORD = "energizer.default.password";
 	protected final static String DEFAULT_PACKING_OPTION = "energizer.default.packingOption";
 

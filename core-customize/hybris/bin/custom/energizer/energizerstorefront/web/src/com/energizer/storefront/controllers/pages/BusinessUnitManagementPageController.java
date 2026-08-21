@@ -182,7 +182,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(MANAGE_UNITS_CMS_PAGE));
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
 		breadcrumbs.add(new Breadcrumb(String.format(
-				"/my-company/organization-management/manage-units/details/editcostcenter/?unit=%s&costCenterCode=%s",
+				"/my-company/organization-management/manage-units/details/editcostcenter?unit=%s&costCenterCode=%s",
 				urlEncode(unit), urlEncode(costCenterCode)), getMessageSource().getMessage(
 				"text.company.manage.units.editCostCenter.breadcrumb", new Object[]
 				{ unit }, "Edit Cost Center for Unit: {0}", getI18nService().getCurrentLocale()), null));
@@ -191,7 +191,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 				request.getContextPath(), urlEncode(unit)));
 		model.addAttribute(
 				"saveUrl",
-				String.format("%s/my-company/organization-management/manage-units/editcostcenter/?unit=%s&costCenterCode=%s",
+				String.format("%s/my-company/organization-management/manage-units/editcostcenter?unit=%s&costCenterCode=%s",
 						request.getContextPath(), urlEncode(unit), urlEncode(costCenterCode)));
 		return url;
 	}
@@ -222,7 +222,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		model.addAttribute("cancelUrl", String.format("%s/my-company/organization-management/manage-units/details?unit=%s",
 				request.getContextPath(), urlEncode(unit)));
 		model.addAttribute("saveUrl", String.format(
-				"%s/my-company/organization-management/manage-units/details/editcostcenter/?unit=%s&costCenterCode=%s",
+				"%s/my-company/organization-management/manage-units/details/editcostcenter?unit=%s&costCenterCode=%s",
 				request.getContextPath(), urlEncode(unit), urlEncode(costCenterCode)));
 		if (bindingResult.hasErrors())
 		{
@@ -396,7 +396,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		{
 			unitData = companyB2BCommerceFacade.getUnitForUid(unit);
 			breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
-			model.addAttribute("cancelUrl", String.format("%s/my-company/organization-management/manage-units/details/?unit=%s",
+			model.addAttribute("cancelUrl", String.format("%s/my-company/organization-management/manage-units/details?unit=%s",
 					request.getContextPath(), urlEncode(unit)));
 		}
 		else
@@ -483,13 +483,13 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		final String url = viewCostCenterDetails(costCenterCode, model);
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
 		breadcrumbs.add(new Breadcrumb(String.format(
-				"/my-company/organization-management/manage-units/costcenter/?unit=%s&costCenterCode=%s", urlEncode(unit),
+				"/my-company/organization-management/manage-units/costcenter?unit=%s&costCenterCode=%s", urlEncode(unit),
 				urlEncode(costCenterCode)), getMessageSource().getMessage("text.company.manage.units.viewcostcenter.breadcrumb",
 				new Object[]
 				{ costCenterCode }, "View Cost Center {0} ", getI18nService().getCurrentLocale()), null));
 		model.addAttribute("breadcrumbs", breadcrumbs);
 		model.addAttribute("editUrl", String.format(request.getContextPath()
-				+ "/my-company/organization-management/manage-units/editcostcenter/?unit=%s&costCenterCode=%s", urlEncode(unit),
+				+ "/my-company/organization-management/manage-units/editcostcenter?unit=%s&costCenterCode=%s", urlEncode(unit),
 				urlEncode(costCenterCode)));
 		return url;
 	}
@@ -509,7 +509,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
 		breadcrumbs
-				.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/createuser/?unit=%s&role=%s",
+				.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/createuser?unit=%s&role=%s",
 						urlEncode(unit), urlEncode(role)), getMessageSource().getMessage("text.company.organizationManagement", null,
 						getI18nService().getCurrentLocale()), null));
 		model.addAttribute("breadcrumbs", breadcrumbs);
@@ -564,14 +564,14 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 	{
 		final String url = editUser(user, model);
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
-		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/edituser/?unit=%s&user=%s",
+		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/edituser?unit=%s&user=%s",
 				urlEncode(unit), urlEncode(user)), getMessageSource().getMessage("text.company.manage.units.editcustomer.breadcrumb",
 				new Object[]
 				{ user }, "Edit Customer {0} ", getI18nService().getCurrentLocale()), null));
 		model.addAttribute("breadcrumbs", breadcrumbs);
 		model.addAttribute("action", "manage.units");
 		model.addAttribute("saveUrl", String.format(request.getContextPath()
-				+ "/my-company/organization-management/manage-units/edituser/?unit=%s&user=%s", urlEncode(unit), urlEncode(user)));
+				+ "/my-company/organization-management/manage-units/edituser?unit=%s&user=%s", urlEncode(unit), urlEncode(user)));
 		model.addAttribute("cancelUrl", String.format(request.getContextPath()
 				+ "/my-company/organization-management/manage-units/details?unit=%s", urlEncode(unit)));
 		return url;
@@ -585,7 +585,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 	{
 		final String url = editUser(user, b2bCustomerForm, bindingResult, model, redirectModel);
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
-		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/edituser/?unit=%s&user=%s",
+		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/edituser?unit=%s&user=%s",
 				urlEncode(unit), urlEncode(user)), getMessageSource().getMessage("text.company.manage.units.editcustomer.breadcrumb",
 				new Object[]
 				{ user }, "Edit Customer {0} ", getI18nService().getCurrentLocale()), null));
@@ -594,7 +594,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		{
 			model.addAttribute("action", "manage.units");
 			model.addAttribute("saveUrl", String.format(request.getContextPath()
-					+ "/my-company/organization-management/manage-units/edituser/?unit=%s&user=%s", urlEncode(unit), urlEncode(user)));
+					+ "/my-company/organization-management/manage-units/edituser?unit=%s&user=%s", urlEncode(unit), urlEncode(user)));
 			model.addAttribute("cancelUrl", String.format(request.getContextPath()
 					+ "/my-company/organization-management/manage-units/details?unit=%s", urlEncode(unit)));
 			return url;
@@ -616,7 +616,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(MANAGE_UNITS_CMS_PAGE));
 
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
-		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/approvers/?unit=%s",
+		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/approvers?unit=%s",
 				urlEncode(unit)), getMessageSource().getMessage("text.company.manage.units.approvers", new Object[]
 		{ unit }, "Business Unit {0} Approvers", getI18nService().getCurrentLocale()), null));
 		model.addAttribute("breadcrumbs", breadcrumbs);
@@ -817,7 +817,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		model.addAttribute("page", "units");
 		model.addAttribute("role", role);
 		model.addAttribute("disableUrl", String.format(request.getContextPath()
-				+ "/my-company/organization-management/manage-units/approvers/remove/?unit=%s&user=%s", urlEncode(unit),
+				+ "/my-company/organization-management/manage-units/approvers/remove?unit=%s&user=%s", urlEncode(unit),
 				urlEncode(user)));
 		model.addAttribute("cancelUrl", String.format(request.getContextPath()
 				+ "/my-company/organization-management/manage-units/details?unit=%s", urlEncode(unit)));
@@ -856,7 +856,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		storeCmsPageInModel(model, getContentPageForLabelOrId(MANAGE_UNITS_CMS_PAGE));
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(MANAGE_UNITS_CMS_PAGE));
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
-		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/add-address/?unit=%s",
+		breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/add-address?unit=%s",
 				urlEncode(unit)), getMessageSource().getMessage("text.company.manage.units.addAddress", new Object[]
 		{ unit }, "Add Address for {0} Business Unit ", getI18nService().getCurrentLocale()), null));
 		final B2BUnitData unitData = companyB2BCommerceFacade.getUnitForUid(unit);
@@ -879,7 +879,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		if (bindingResult.hasErrors())
 		{
 			final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
-			breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/add-address/?unit=%s",
+			breadcrumbs.add(new Breadcrumb(String.format("/my-company/organization-management/manage-units/add-address?unit=%s",
 					urlEncode(unit)), getMessageSource().getMessage("text.company.manage.units.addAddress", new Object[]
 			{ unit }, "Add Address to {0} Business Unit ", getI18nService().getCurrentLocale()), null));
 			model.addAttribute("breadcrumbs", breadcrumbs);
@@ -987,7 +987,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(MANAGE_UNITS_CMS_PAGE));
 		final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
 		breadcrumbs.add(new Breadcrumb(String.format(
-				"/my-company/organization-management/manage-units/edit-address/?unit=%s&addressId=%s", urlEncode(unit),
+				"/my-company/organization-management/manage-units/edit-address?unit=%s&addressId=%s", urlEncode(unit),
 				urlEncode(addressId)), getMessageSource().getMessage("text.company.manage.units.editAddress", new Object[]
 		{ unit }, "Edit Address for {0} Business Unit ", getI18nService().getCurrentLocale()), null));
 
@@ -1009,7 +1009,7 @@ public class BusinessUnitManagementPageController extends MyCompanyPageControlle
 		{
 			final List<Breadcrumb> breadcrumbs = myCompanyBreadcrumbBuilder.createManageUnitsDetailsBreadcrumbs(unit);
 			breadcrumbs.add(new Breadcrumb(String.format(
-					"/my-company/organization-management/manage-units/edit-address/?unit=%s&addressId=%s", urlEncode(unit),
+					"/my-company/organization-management/manage-units/edit-address?unit=%s&addressId=%s", urlEncode(unit),
 					urlEncode(addressId)), getMessageSource().getMessage("text.company.manage.units.editAddress.breadcrumb",
 					new Object[]
 					{ unit }, "Edit Address of {0} Business Unit ", getI18nService().getCurrentLocale()), null));

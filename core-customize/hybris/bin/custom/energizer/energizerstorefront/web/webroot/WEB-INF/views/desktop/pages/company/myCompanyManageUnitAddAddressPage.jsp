@@ -13,20 +13,20 @@
 <%@ taglib prefix="breadcrumb" tagdir="/WEB-INF/tags/desktop/nav/breadcrumb" %>
 <%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags" %>
 
-<spring:url value="/my-company/organization-management/manage-units/details/"
+<spring:url value="/my-company/organization-management/manage-units/details"
 			var="cancelUrl">
 	<spring:param name="unit" value="${uid}"/>
 </spring:url>
 <c:choose>
 	<c:when test="${not empty addressData.id}">
-		<spring:url value="/my-company/organization-management/manage-units/edit-address/"
+		<spring:url value="/my-company/organization-management/manage-units/edit-address"
 					var="actionUrl">
 			<spring:param name="unit" value="${uid}"/>
 			<spring:param name="addressId" value="${addressData.id}"/>
 		</spring:url>
 	</c:when>
 	<c:otherwise>
-		<spring:url value="/my-company/organization-management/manage-units/add-address/"
+		<spring:url value="/my-company/organization-management/manage-units/add-address"
 					var="actionUrl">
 			<spring:param name="unit" value="${uid}"/>
 		</spring:url>

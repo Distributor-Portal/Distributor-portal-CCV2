@@ -491,7 +491,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		model.addAttribute("page", "users");
 		model.addAttribute("role", "permission");
 		model.addAttribute("disableUrl", String.format(request.getContextPath()
-				+ "/my-company/organization-management/manage-users/permissions/remove/?user=%s&permission=%s", urlEncode(user),
+				+ "/my-company/organization-management/manage-users/permissions/remove?user=%s&permission=%s", urlEncode(user),
 				urlEncode(permission)));
 		model.addAttribute("cancelUrl", String.format(request.getContextPath()
 				+ "/my-company/organization-management/manage-users/details?user=%s", urlEncode(user)));
@@ -517,7 +517,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		model.addAttribute("page", "users");
 		model.addAttribute("role", B2BConstants.B2BAPPROVERGROUP);
 		model.addAttribute("disableUrl", String.format(request.getContextPath()
-				+ "/my-company/organization-management/manage-users/approvers/remove/?user=%s&approver=%s", urlEncode(user),
+				+ "/my-company/organization-management/manage-users/approvers/remove?user=%s&approver=%s", urlEncode(user),
 				urlEncode(approver)));
 		model.addAttribute("cancelUrl", String.format(request.getContextPath()
 				+ "/my-company/organization-management/manage-users/details?user=%s", urlEncode(user)));
@@ -589,7 +589,7 @@ public class UserManagementPageController extends MyCompanyPageController
 		model.addAttribute("page", "users");
 		model.addAttribute("role", "usergroup");
 		model.addAttribute("disableUrl", String.format(request.getContextPath()
-				+ "/my-company/organization-management/manage-users/usergroups/remove/?user=%s&usergroup=%s", urlEncode(user),
+				+ "/my-company/organization-management/manage-users/usergroups/remove?user=%s&usergroup=%s", urlEncode(user),
 				urlEncode(usergroup)));
 		model.addAttribute("cancelUrl", String.format(request.getContextPath()
 				+ "/my-company/organization-management/manage-users/details?user=%s", urlEncode(user)));

@@ -219,12 +219,12 @@
 								<td headers="4">
 
 									<spring:url
-										value="/my-company/organization-management/manage-users/edit-approver/"
+										value="/my-company/organization-management/manage-users/edit-approver"
 										var="editUserUrl">
 										<spring:param name="user" value="${customerData.uid}"/>
 										<spring:param name="approver" value="${user.uid}"/>
 									</spring:url>
-									<spring:url value="/my-company/organization-management/manage-users/approvers/confirm/remove/"
+									<spring:url value="/my-company/organization-management/manage-users/approvers/confirm/remove"
 										var="removeUserUrl">
 										<spring:param name="user" value="${customerData.uid}"/>
 										<spring:param name="approver" value="${user.uid}"/>

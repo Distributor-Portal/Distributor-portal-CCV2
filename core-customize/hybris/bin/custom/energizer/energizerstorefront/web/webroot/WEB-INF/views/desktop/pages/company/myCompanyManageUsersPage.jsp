@@ -63,11 +63,11 @@
 							<tbody>
 							<c:forEach items="${searchPageData.results}" var="user">
 								<tr>
-									<spring:url value="/my-company/organization-management/manage-users/details/"
+									<spring:url value="/my-company/organization-management/manage-users/details"
 												var="viewUserUrl">
 										<spring:param name="user" value="${user.uid}"/>
 									</spring:url>
-									<spring:url value="/my-company/organization-management/manage-units/details/"
+									<spring:url value="/my-company/organization-management/manage-units/details"
 												var="viewUnitUrl">
 										<spring:param name="unit" value="${user.unit.uid}"/>
 									</spring:url>

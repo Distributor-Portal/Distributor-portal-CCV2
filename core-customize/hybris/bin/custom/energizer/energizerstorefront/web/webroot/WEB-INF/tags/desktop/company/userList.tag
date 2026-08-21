@@ -35,12 +35,12 @@
 						</thead>
 						<tbody>
 						<c:forEach items="${users}" var="user">
-							<spring:url value="/my-company/organization-management/manage-units/edituser/"
+							<spring:url value="/my-company/organization-management/manage-units/edituser"
 										var="editUserUrl">
 								<spring:param name="unit" value="${unit.uid}"/>
 								<spring:param name="user" value="${user.uid}"/>
 							</spring:url>
-							<spring:url value="/my-company/organization-management/manage-units/viewuser/"
+							<spring:url value="/my-company/organization-management/manage-units/viewuser"
 										var="viewUserUrl">
 								<spring:param name="unit" value="${unit.uid}"/>
 								<spring:param name="user" value="${user.uid}"/>
