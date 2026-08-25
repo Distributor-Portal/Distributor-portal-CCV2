@@ -117,7 +117,7 @@ public class DefaultEnergizerDeliveryNoteService implements EnergizerDeliveryNot
 		if (mediaContainer == null)
 		{
 			LOG.info("Creatating new Media Model for code : " + mediaCode);
-			LOG.info("Creatating new path Model for code : " + serverFile.getAbsolutePath);
+			LOG.info("Creatating new path Model for code : " + serverFile.getAbsolutePath());
 			
 			mediaContainer = modelService.create(MediaContainerModel.class);
 			mediaContainer.setQualifier(mediaContainerQualifier);
