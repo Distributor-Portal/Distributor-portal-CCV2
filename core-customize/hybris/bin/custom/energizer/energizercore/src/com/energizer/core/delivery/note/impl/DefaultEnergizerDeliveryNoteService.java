@@ -92,7 +92,7 @@ public class DefaultEnergizerDeliveryNoteService implements EnergizerDeliveryNot
 			mediaModel = modelService.create(MediaModel.class);
 			mediaModel.setCode(mediaCode);
 			mediaModel.setCatalogVersion(catalogVersion);
-			mediaModel.setURL(serverFile.getAbsolutePath());
+
 			mediaModel.setAltText(fileName);
 			mediaModel.setRealFileName(fileName);
 		}
@@ -116,6 +116,9 @@ public class DefaultEnergizerDeliveryNoteService implements EnergizerDeliveryNot
 
 		if (mediaContainer == null)
 		{
+			LOG.info("Creatating new Media Model for code : " + mediaCode);
+			LOG.info("Creatating new path Model for code : " + serverFile.getAbsolutePath);
+			
 			mediaContainer = modelService.create(MediaContainerModel.class);
 			mediaContainer.setQualifier(mediaContainerQualifier);
 			mediaContainer.setCatalogVersion(catalogVersion);
