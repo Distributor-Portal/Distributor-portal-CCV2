@@ -226,7 +226,7 @@ public class DefaultEnergizerDeliveryNoteService implements EnergizerDeliveryNot
 			mediaModel = modelService.create(MediaModel.class);
 			mediaModel.setCode(mediaCode);
 			mediaModel.setCatalogVersion(catalogVersion);
-			mediaModel.setURL(serverFile.getAbsolutePath());
+			
 			mediaModel.setAltText(fileName);
 			mediaModel.setRealFileName(fileName);
 
